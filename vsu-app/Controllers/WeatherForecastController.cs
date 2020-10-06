@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Gov.Cscp.Victims.Public.Services;
+using Gov.Cscp.Victims.Public.Models;
 
 namespace vsu_app.Controllers
 {
@@ -11,6 +13,8 @@ namespace vsu_app.Controllers
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
+        private readonly IDynamicsResultService _dynamicsResultService;
+
         private static readonly string[] Summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
@@ -18,9 +22,10 @@ namespace vsu_app.Controllers
 
         private readonly ILogger<WeatherForecastController> _logger;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, IDynamicsResultService dynamicsResultService)
         {
             _logger = logger;
+            this._dynamicsResultService = dynamicsResultService;
         }
 
         [HttpGet]
@@ -34,6 +39,22 @@ namespace vsu_app.Controllers
                 Summary = Summaries[rng.Next(Summaries.Length)]
             })
             .ToArray();
+        }
+
+        [HttpGet("countries")]
+        public async Task<IActionResult> GetCountries()
+        {
+            try
+            {
+                // set the endpoint action
+                string endpointUrl = "vsd_countries?$select=vsd_name&$filter=statecode eq 0";
+
+                // get the response
+                DynamicsResult result = await _dynamicsResultService.Get(endpointUrl);
+
+                return StatusCode(200, result.result.ToString());
+            }
+            finally { }
         }
     }
 }

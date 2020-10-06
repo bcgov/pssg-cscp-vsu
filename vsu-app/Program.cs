@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace vsu_app
+namespace Gov.Cscp.Victims.Public
 {
     public class Program
     {

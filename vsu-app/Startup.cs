@@ -6,7 +6,18 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace vsu_app
+using Gov.Cscp.Victims.Public.Services;
+using Gov.Cscp.Victims.Public.Models;
+
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.CookiePolicy;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
+
+namespace Gov.Cscp.Victims.Public
 {
     public class Startup
     {
@@ -20,6 +31,10 @@ namespace vsu_app
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // add singleton to allow Controllers to query the Request object
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<IDynamicsResultService, DynamicsResultService>();
+
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

@@ -11,10 +11,12 @@
     <!-- Set this to true if you enable server-side prerendering -->
     <BuildServerSideRenderer>false</BuildServerSideRenderer>
     <RootNamespace>vsu_app</RootNamespace>
+    <UserSecretsId>ab7f2089-818d-4ee2-b214-6a100f317f9e</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.4" />
+    <PackageReference Include="Microsoft.Rest.ClientRuntime" Version="2.3.22" />
   </ItemGroup>
 
   <ItemGroup>
