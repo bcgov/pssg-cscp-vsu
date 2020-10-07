@@ -1,0 +1,63 @@
+<div class="form-wrapper" style="position: relative;">
+    <div class="row" [formGroup]="form">
+        <div class="col-lg-3 col-sm-12 application-gutter" [class.hidden]="showPrintView">
+            <h3>Notification Application Form</h3>
+            <section class="application-nav sticky-top">
+                <div>
+                    <mat-vertical-stepper linear (selectionChange)="gotoPage($event)" #stepper>
+                        <ng-template matStepperIcon="edit">
+                            <mat-icon>done</mat-icon>
+                        </ng-template>
+                        <ng-template matStepperIcon="error">
+                            <mat-icon>clear</mat-icon>
+                        </ng-template>
+                        <ng-template matStepperIcon="number">
+                        </ng-template>
+                        <!-- [hasError]="!isMyControlValid(form.get('introduction'))" -->
+                        <mat-step label="Overview" [hasError]="!isMyControlValid(form.get('overview'))"></mat-step>
+                        <mat-step label="Case Information" [hasError]="!isMyControlValid(form.get('caseInformation'))"></mat-step>
+                        <mat-step label="Applicant Information" [hasError]="!isMyControlValid(form.get('applicantInformation'))"></mat-step>
+                        <mat-step label="Notification Recipient & Details" [hasError]="!isMyControlValid(form.get('recipientInformation'))"></mat-step>
+                        <mat-step label="Declaration & Authorization" [hasError]="!isMyControlValid(form.get('authorizationInformation'))"></mat-step>
+                    </mat-vertical-stepper>
+
+
+                    <div class="submit-container learn-benefits">
+                        <div class="submit-content">
+                            <h3>More information about the Victim Safety Unit</h3>
+                            <p>If you have any questions or need help filling out this form, contact us:</p>
+                            <p>add info...</p>
+                            <!-- <p><button class="btn btn-secondary btn-wrappable" (click)="showSummaryOfBenefits()">View Summary of Benefits</button></p> -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div id="pdfPrintGroup" class="col-lg-7 col-sm-12">
+            <form [formGroup]="form">
+                <div *ngIf="isIE" class="alert alert-danger warning-message">
+                    <p>It looks like you are using an unsupported browser.</p>
+                    <p>For best results, we recommend you use Chrome, Firefox, Edge, or Safari.</p>
+                </div>
+
+                <!-- insert components here! -->
+                <p>form goes here...</p>
+
+                <div *ngIf="showValidationMessage" class="error-summary">
+                    <i class="fas fa-exclamation-triangle" style="margin-right: 10px;"></i>
+                    <span>There are errors with some fields on this page. Please scroll up to review and fix the errors (marked in red) before continuing.</span>
+                </div>
+
+                <section class="button-container" *ngIf="!showPrintView">
+                    <span class="right-buttons">
+                        <!-- [class.disabled]="!didLoad" -->
+                        <button (click)="gotoNextStep(stepper);" class="btn btn-primary continue-btn" *ngIf="stepper.selectedIndex < 4">CONTINUE <i class="fas fa-chevron-right"></i></button>
+                        <button (click)="gotoPreviousStep(stepper);" class="btn btn-primary continue-btn" *ngIf="stepper.selectedIndex > 0">BACK</button>
+                        <!-- <button (click)="markAsTouched(); producePDF();" class="btn btn-primary print-button" *ngIf="stepper.selectedIndex == 4">PRINT PDF</button> -->
+                    </span>
+                </section>
+            </form>
+        </div>
+    </div>
+</div>
