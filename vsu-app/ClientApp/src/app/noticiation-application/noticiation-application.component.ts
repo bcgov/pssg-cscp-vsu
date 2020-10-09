@@ -1,6 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatStepper, MatVerticalStepper } from '@angular/material';
+import { Router } from '@angular/router';
+import { iLookupData } from '../models/lookup-data.model';
+import { LookupService } from '../services/lookup.service';
+import { CaseInfoInfoHelper } from '../shared/components/case-information/case-information.helper';
 import { FormBase } from '../shared/form-base';
 
 @Component({
@@ -11,14 +15,26 @@ import { FormBase } from '../shared/form-base';
 export class NotificationApplicationComponent extends FormBase implements OnInit {
     @ViewChild('stepper', { static: true }) applicationStepper: MatVerticalStepper;
     isIE: boolean = false;
+    didLoad: boolean = false;
     showValidationMessage: boolean;
     submitting: boolean = false;
     public currentFormStep: number = 0;
     public showPrintView: boolean = false;
 
-    elements: string[] = ['overview', 'caseInformation', 'applicantInformation', 'recipientInformation', 'authorizationInformation']
+    elements: string[] = ['overview', 'caseInformation', 'applicantInformation', 'recipientInformation', 'authorizationInformation'];
 
-    constructor(private fb: FormBuilder,) {
+    lookupData: iLookupData = {
+        countries: [],
+        provinces: [],
+        cities: [],
+        courts: [],
+    };
+
+    caseInfoHelper = new CaseInfoInfoHelper();
+
+    constructor(private fb: FormBuilder,
+        private router: Router,
+        private lookupService: LookupService,) {
         super();
     }
 
@@ -26,14 +42,54 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
         var ua = window.navigator.userAgent;
         this.isIE = /MSIE|Trident/.test(ua);
         this.form = this.buildApplicationForm();
+
+        let promise_array = [];
+
+        promise_array.push(new Promise((resolve, reject) => {
+            this.lookupService.getCountries().subscribe((res) => {
+                this.lookupData.countries = res.value;
+                if (this.lookupData.countries) {
+                    this.lookupData.countries.sort(function (a, b) {
+                        return a.vsd_name.localeCompare(b.vsd_name);
+                    });
+                }
+                resolve();
+            });
+        }));
+
+        promise_array.push(new Promise((resolve, reject) => {
+            this.lookupService.getProvinces().subscribe((res) => {
+                this.lookupData.provinces = res.value;
+                if (this.lookupData.provinces) {
+                    this.lookupData.provinces.sort(function (a, b) {
+                        return a.vsd_name.localeCompare(b.vsd_name);
+                    });
+                }
+                resolve();
+            });
+        }));
+
+        Promise.all(promise_array).then((res) => {
+            this.didLoad = true;
+            console.log("Lookup data");
+            console.log(this.lookupData);
+        });
+    }
+
+
+    downloadPDF() {
+        console.log("download pdf");
+    }
+
+    exit() {
+        this.router.navigate(['']);
     }
 
     buildApplicationForm(): FormGroup {
         let group = {
             overview: this.fb.group({
             }),
-            caseInformation: this.fb.group({
-            }),
+            caseInformation: this.caseInfoHelper.setupFormGroup(this.fb),
             applicantInformation: this.fb.group({
             }),
             recipientInformation: this.fb.group({

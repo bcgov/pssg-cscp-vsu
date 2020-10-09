@@ -22,12 +22,24 @@
                     </mat-vertical-stepper>
 
 
-                    <div class="submit-container learn-benefits">
-                        <div class="submit-content">
+                    <div class="additional-info-container learn-benefits">
+                        <div class="additional-info">
                             <h3>More information about the Victim Safety Unit</h3>
                             <p>If you have any questions or need help filling out this form, contact us:</p>
-                            <p>add info...</p>
-                            <!-- <p><button class="btn btn-secondary btn-wrappable" (click)="showSummaryOfBenefits()">View Summary of Benefits</button></p> -->
+                            <p>
+                                Telephone: 604-660-0316<br>
+                                Toll Free: 1-877-315-8822<br>
+                                Fax: 604-660-0335<br>
+                                Email: <a href="mailto: vsug@gov.bc.ca">vsug@gov.bc.ca</a><br>
+                            </p>
+                            <p>
+                                Mailing address:<br>
+                                #312 - 815 Hornby St.<br>
+                                Vancouver, BC | V6Z 2E6<br>
+                            </p>
+                            <p>Victim Service Working (VSW) / VictimLinkBC Contact: 1-800-563-0808</p>
+                            <p><button class="btn btn-secondary btn-wrappable" (click)="downloadPDF()">DOWNLOAD PDF OF FORM</button></p>
+                            <p><button class="btn btn-secondary btn-wrappable" (click)="exit()"><i class="fas fa-chevron-left"></i> GO BACK TO VSU HOME</button></p>
                         </div>
                     </div>
                 </div>
@@ -42,7 +54,10 @@
                 </div>
 
                 <!-- insert components here! -->
-                <p>form goes here...</p>
+                <app-overview *ngIf="this.currentFormStep == 0 || showPrintView"></app-overview>
+
+                <div class="pagebreak"> </div>
+                <app-case-information [formGroup]="form" formGroupName="caseInformation" [lookupData]="lookupData" *ngIf="this.currentFormStep == 1 || showPrintView"></app-case-information>
 
                 <div *ngIf="showValidationMessage" class="error-summary">
                     <i class="fas fa-exclamation-triangle" style="margin-right: 10px;"></i>
@@ -52,8 +67,8 @@
                 <section class="button-container" *ngIf="!showPrintView">
                     <span class="right-buttons">
                         <!-- [class.disabled]="!didLoad" -->
-                        <button (click)="gotoNextStep(stepper);" class="btn btn-primary continue-btn" *ngIf="stepper.selectedIndex < 4">CONTINUE <i class="fas fa-chevron-right"></i></button>
-                        <button (click)="gotoPreviousStep(stepper);" class="btn btn-primary continue-btn" *ngIf="stepper.selectedIndex > 0">BACK</button>
+                        <button (click)="gotoNextStep(stepper);" class="btn btn-primary continue-btn" *ngIf="stepper.selectedIndex < 4">{{stepper.selectedIndex === 0 ? 'START APPLICATION' : 'CONTINUE'}} <i class="fas fa-chevron-right"></i></button>
+                        <button (click)="gotoPreviousStep(stepper);" class="btn btn-primary continue-btn" *ngIf="stepper.selectedIndex > 0"><i class="fas fa-chevron-left"></i> BACK</button>
                         <!-- <button (click)="markAsTouched(); producePDF();" class="btn btn-primary print-button" *ngIf="stepper.selectedIndex == 4">PRINT PDF</button> -->
                     </span>
                 </section>

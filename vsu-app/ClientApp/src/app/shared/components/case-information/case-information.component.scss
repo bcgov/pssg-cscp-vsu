@@ -1,0 +1,36 @@
+::ng-deep .mat-calendar-body-selected {
+    background-color: #337ab7;
+    color: #000 !important;
+}
+
+::ng-deep .mat-calendar-body-cell-content {
+    color: #54708b;
+}
+
+::ng-deep .mat-calendar-header {
+    background-color: #337ab7;
+    color: #fff;
+}
+
+.separator-div {
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.add-additional-accused-btn-container {
+    margin-bottom: 10px;
+    text-align: right;
+}
+
+.flex-col {
+    display: flex;
+}
+
+.remove-button {
+    padding-left: 10px;
+}
+
+.center-clear-btn {
+    padding-top: 10px;
+}

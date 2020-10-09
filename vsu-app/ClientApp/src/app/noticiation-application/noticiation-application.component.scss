@@ -1,16 +1,17 @@
-h3 span {
-    font-size: 14px;
-    font-weight: 400;
-}
 
-h1,
-h2,
-h3 {
-    font-weight: 600;
-}
-
-h2,
-h3 {
-    margin-top: 30px;
+.additional-info-container {
+    margin-top: 15px;
+    background-color: #38598a;
+    border-bottom: solid 2px #ffcc00;
+    color: #fff;
     margin-bottom: 20px;
+    padding: 30px;
+    padding-top: 20px;
+    h2,
+    h3 {
+        color: #fff;
+    }
+    button {
+        width: 100%;
+    }
 }
