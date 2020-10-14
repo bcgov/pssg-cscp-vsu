@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { ControlContainer, FormArray, FormBuilder, FormGroup } from "@angular/forms";
+import { ControlContainer, FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/material";
 import { MomentDateAdapter } from "@angular/material-moment-adapter";
 import { iLookupData } from "../../../models/lookup-data.model";
@@ -62,5 +62,16 @@ export class CaseInformationComponent extends FormBase implements OnInit {
   removeAdditionalAccused(index: number) {
     let additionalAccused = this.form.get('additionalAccused') as FormArray;
     additionalAccused.removeAt(index);
+  }
+
+  showOtherGender(show: boolean) {
+    let genderOther = this.form.get('genderOther');
+    if (show) {
+      this.setControlValidators(genderOther, [Validators.required]);
+    }
+    else {
+      this.clearControlValidators(genderOther);
+      genderOther.patchValue('');
+    }
   }
 }

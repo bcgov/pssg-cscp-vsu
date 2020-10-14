@@ -24,11 +24,45 @@
     <div class="row">
         <div class="col-md-4">
             <app-field label="Birthdate" [required]="true" [valid]="isFieldValid('birthDate')" errorMessage="Please enter your birth date">
-                <input type="text" class="form-control date-picker" formControlName="birthDate" placeholder="yyyy-mm-dd" [matDatepicker]="birthDatePicker" (focus)="birthDatePicker.open()" (click)="birthDatePicker.open()" [max]="todaysDate" [min]="oldestHuman" readonly>
-                <mat-datepicker #birthDatePicker></mat-datepicker>
+                <input class="form-control" type="text" formControlName="birthDate" placeholder="yyyy/mm/dd" mask="0000/00/00">
+                <!-- <input type="text" class="form-control date-picker" formControlName="birthDate" placeholder="yyyy-mm-dd" [matDatepicker]="birthDatePicker" (focus)="birthDatePicker.open()" (click)="birthDatePicker.open()" [max]="todaysDate" [min]="oldestHuman" readonly>
+                <mat-datepicker #birthDatePicker></mat-datepicker> -->
             </app-field>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col flex-col">
+            <app-field label="Gender" [required]="true" [valid]="isFieldValid('gender')" errorMessage="Please select your gender">
+                <label class="inline-label">
+                    <input type="radio" [value]="100000000" name="gender" formControlName="gender" (change)="showOtherGender(false)">
+                    <span>M</span>
+                </label>
+                <label class="inline-label">
+                    <input type="radio" [value]="100000001" name="gender" formControlName="gender" (change)="showOtherGender(false)">
+                    <span>F</span>
+                </label>
+                <label class="inline-label">
+                    <input type="radio" [value]="100000002" name="gender" formControlName="gender" (change)="showOtherGender(true)">
+                    <span>X</span>
+                </label>
+            </app-field>
+
+            <!-- I'm not loving these "Other" inputs, need a better layout/alignment. Hopefully they'll copy CVAP and not even need it -->
+            <!-- <span class="other-gender-container" *ngIf="form.get('gender').value === 100000002">
+                <app-field label=" " [valid]="isFieldValid('genderOther')" errorMessage="Please enter a value">
+                    <input class="form-control" type="text" formControlName="genderOther" maxlength="100">
+                </app-field>
+            </span> -->
+        </div>
+
+        <!-- <div class="col-md-4" *ngIf="form.get('gender').value === 100000002">
+            <app-field label="Other" [required]="true" [valid]="isFieldValid('genderOther')" errorMessage="Please enter a value">
+                <input class="form-control" type="text" formControlName="genderOther" maxlength="100">
+            </app-field>
+        </div> -->
+    </div>
+
     <div class="row">
         <div class="col-md-4">
             <app-field label="Court File Number" [required]="true" [valid]="isFieldValid('courtFileNumber')" errorMessage="Please enter the court file number">
@@ -64,8 +98,9 @@
     <div class="row">
         <div class="col-md-4">
             <app-field label="Birthdate" [required]="true" [valid]="isFieldValid('accusedBirthDate')" errorMessage="Please enter birth date">
-                <input type="text" class="form-control date-picker" formControlName="accusedBirthDate" placeholder="yyyy-mm-dd" [matDatepicker]="accusedBirthDatePicker" (focus)="accusedBirthDatePicker.open()" (click)="accusedBirthDatePicker.open()" [max]="todaysDate" [min]="oldestHuman" readonly>
-                <mat-datepicker #accusedBirthDatePicker></mat-datepicker>
+                <input class="form-control" type="text" formControlName="accusedBirthDate" placeholder="yyyy/mm/dd" mask="0000/00/00">
+                <!-- <input type="text" class="form-control date-picker" formControlName="accusedBirthDate" placeholder="yyyy-mm-dd" [matDatepicker]="accusedBirthDatePicker" (focus)="accusedBirthDatePicker.open()" (click)="accusedBirthDatePicker.open()" [max]="todaysDate" [min]="oldestHuman" readonly>
+                <mat-datepicker #accusedBirthDatePicker></mat-datepicker> -->
             </app-field>
         </div>
     </div>
@@ -80,8 +115,9 @@
                 </div>
                 <div class="col-md-4 flex-col">
                     <app-field label="Date of Birth (if known)">
-                        <input type="text" class="form-control date-picker" formControlName="birthDate" placeholder="yyyy-mm-dd" [matDatepicker]="additionalAccusedBirthDatePicker_i" (focus)="additionalAccusedBirthDatePicker_i.open()" (click)="additionalAccusedBirthDatePicker_i.open()" [max]="todaysDate" [min]="oldestHuman" readonly>
-                        <mat-datepicker #additionalAccusedBirthDatePicker_i></mat-datepicker>
+                        <input class="form-control" type="text" formControlName="birthDate" placeholder="yyyy/mm/dd" mask="0000/00/00">
+                        <!-- <input type="text" class="form-control date-picker" formControlName="birthDate" placeholder="yyyy-mm-dd" [matDatepicker]="additionalAccusedBirthDatePicker_i" (focus)="additionalAccusedBirthDatePicker_i.open()" (click)="additionalAccusedBirthDatePicker_i.open()" [max]="todaysDate" [min]="oldestHuman" readonly>
+                        <mat-datepicker #additionalAccusedBirthDatePicker_i></mat-datepicker> -->
                     </app-field>
 
                     <div class="remove-button" *ngIf="form.get('additionalAccused')['controls'].length > 1">

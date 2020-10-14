@@ -18,6 +18,7 @@ import { NotificationApplicationComponent } from './noticiation-application/noti
 import { OverviewComponent } from './shared/components/overview/overview.component';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+import { NgxMaskModule } from 'ngx-mask';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
     MatIconModule,
     MatStepperModule,
     ReactiveFormsModule,
+    NgxMaskModule.forRoot(),
     TooltipModule.forRoot(),
     TypeaheadModule.forRoot(),
   ],

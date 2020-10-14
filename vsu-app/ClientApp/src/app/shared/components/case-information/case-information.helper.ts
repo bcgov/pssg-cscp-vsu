@@ -8,6 +8,8 @@ export class CaseInfoInfoHelper {
             lastName: ['', Validators.required],
 
             birthDate: ['', [Validators.required]],
+            gender: ['', [Validators.required]],
+            genderOther: [''],
             courtFileNumber: ['', [Validators.required]],
             courtLocation: ['', [Validators.required]],
 
