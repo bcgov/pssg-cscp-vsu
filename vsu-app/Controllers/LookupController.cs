@@ -24,7 +24,7 @@ namespace Gov.Cscp.Victims.Public.Controllers
                 string endpointUrl = "vsd_countries?$select=vsd_name&$filter=statecode eq 0";
 
                 // get the response
-                DynamicsResult result = await _dynamicsResultService.Get(endpointUrl);
+                DynamicsResult result = await _dynamicsResultService.GetResultAsync(endpointUrl);
 
                 return StatusCode(200, result.result.ToString());
             }
@@ -40,7 +40,7 @@ namespace Gov.Cscp.Victims.Public.Controllers
                 string endpointUrl = "vsd_provinces?$select=vsd_code,_vsd_countryid_value,vsd_name&$filter=statecode eq 0";
 
                 // get the response
-                DynamicsResult result = await _dynamicsResultService.Get(endpointUrl);
+                DynamicsResult result = await _dynamicsResultService.GetResultAsync(endpointUrl);
 
                 return StatusCode(200, result.result.ToString());
             }
@@ -56,7 +56,7 @@ namespace Gov.Cscp.Victims.Public.Controllers
                 string endpointUrl = "vsd_cities?$select=_vsd_countryid_value,vsd_name,_vsd_stateid_value&$filter=statecode eq 0";
 
                 // get the response
-                DynamicsResult result = await _dynamicsResultService.Get(endpointUrl);
+                DynamicsResult result = await _dynamicsResultService.GetResultAsync(endpointUrl);
                 // DynamicsResult result = await _dynamicsResultService.GetResultAsync(endpointUrl, requestJson);
 
                 return StatusCode(200, result.result.ToString());
@@ -107,7 +107,7 @@ namespace Gov.Cscp.Victims.Public.Controllers
 
                 // get the response
                 // DynamicsResult result = await _dynamicsResultService.GetResultAsync(endpointUrl, requestJson);
-                DynamicsResult result = await _dynamicsResultService.Get(endpointUrl);
+                DynamicsResult result = await _dynamicsResultService.GetResultAsync(endpointUrl);
 
                 return StatusCode(200, result.result.ToString());
             }
@@ -123,7 +123,7 @@ namespace Gov.Cscp.Victims.Public.Controllers
                 string endpointUrl = $"vsd_cities?$select=_vsd_countryid_value,vsd_name,_vsd_stateid_value&$filter=statecode eq 0 and _vsd_countryid_value eq {countryId} and _vsd_stateid_value eq {provinceId}";
 
                 // get the response
-                DynamicsResult result = await _dynamicsResultService.Get(endpointUrl);
+                DynamicsResult result = await _dynamicsResultService.GetResultAsync(endpointUrl);
 
                 return StatusCode(200, result.result.ToString());
             }
@@ -139,7 +139,7 @@ namespace Gov.Cscp.Victims.Public.Controllers
                 string endpointUrl = "vsd_courts?$select=vsd_name&$filter=statecode eq 0";
 
                 // get the response
-                DynamicsResult result = await _dynamicsResultService.Get(endpointUrl);
+                DynamicsResult result = await _dynamicsResultService.GetResultAsync(endpointUrl);
 
                 return StatusCode(200, result.result.ToString());
             }

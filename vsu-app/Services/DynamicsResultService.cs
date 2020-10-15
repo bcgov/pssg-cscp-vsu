@@ -28,9 +28,9 @@ namespace Gov.Cscp.Victims.Public.Services
             this._didInit = true;
         }
 
-        public async Task<DynamicsResult> Get(string endpointUrl)
+        public async Task<DynamicsResult> GetResultAsync(string endpointUrl)
         {
-            DynamicsResult blob = await DynamicsGetAsync(endpointUrl);
+            DynamicsResult blob = await DynamicsResultAsync(endpointUrl, "");
             return blob;
         }
 
@@ -80,18 +80,24 @@ namespace Gov.Cscp.Victims.Public.Services
         }
         private async Task<DynamicsResult> PerformAction(HttpClient client, string endpointUrl, string requestJson)
         {
-
             // this is a generic action for dynamics. It could be set or get.
             // add the dynamics url
             endpointUrl = _configuration["DYNAMICS_ODATA_URI"] + endpointUrl;
-            // replace all the fortune cookies with @odata.
-            requestJson = requestJson.Replace("fortunecookie", "@odata.");
 
-            //easily view sent json to dynamics
-            Console.WriteLine(requestJson);
-
-            HttpRequestMessage _httpRequest = new HttpRequestMessage(HttpMethod.Post, endpointUrl);
-            _httpRequest.Content = new StringContent(requestJson, System.Text.Encoding.UTF8, "application/json");
+            HttpRequestMessage _httpRequest;
+            if (string.IsNullOrEmpty(requestJson))
+            {
+                _httpRequest = new HttpRequestMessage(HttpMethod.Get, endpointUrl);
+            }
+            else
+            {
+                // replace all the fortune cookies with @odata.
+                requestJson = requestJson.Replace("fortunecookie", "@odata.");
+                _httpRequest = new HttpRequestMessage(HttpMethod.Post, endpointUrl);
+                _httpRequest.Content = new StringContent(requestJson, System.Text.Encoding.UTF8, "application/json");
+                Console.WriteLine(requestJson);
+                //easily view sent json to dynamics
+            }
 
             var _httpResponse2 = await _client.SendAsync(_httpRequest);
             HttpStatusCode _statusCode = _httpResponse2.StatusCode;
@@ -113,101 +119,19 @@ namespace Gov.Cscp.Victims.Public.Services
             return result;
         }
 
-        private async Task<DynamicsResult> DynamicsGetAsync(string endpointUrl)
-        {
-            // if the value of the return is greater than zero we know that "now" is after expiry of the token
-            // if there is no access token expiration then this must be a new instance that has never handled a connection yet.
-            if (DateTime.Now.CompareTo(_accessTokenExpiration) > 0 || !(this._didInit == true))
-            {
-                this._didInit = true;
-                // we need a new connection and perform action
-                bool success = await MakeConnection();
-                if (success)
-                {
-                    // perform action is the thing that we want to wait on the return for
-                    return await PerformGet(_client, endpointUrl);
-                }
-                else
-                {
-                    // there is a problem. Return it to the user.
-                    DynamicsResult r = new DynamicsResult();
-                    r.statusCode = System.Net.HttpStatusCode.BadGateway;
-                    r.result = JObject.Parse("{\"message\":\"A connection to Dynamics couldn't be established for some reason.\"}");
-                    return r;
-                }
-            }
-            else
-            {
-                // perform action is the thing that we want to wait on the return for
-                // this else will happen when there is a fresh connection
-                return await PerformGet(_client, endpointUrl);
-            }
-        }
-
-        private async Task<DynamicsResult> PerformGet(HttpClient client, string endpointUrl)
-        {
-
-            // this is a generic action for dynamics. It could be set or get.
-            // add the dynamics url
-            endpointUrl = _configuration["DYNAMICS_ODATA_URI"] + endpointUrl;
-            // replace all the fortune cookies with @odata.
-
-            HttpRequestMessage _httpRequest = new HttpRequestMessage(HttpMethod.Get, endpointUrl);
-
-            var _httpResponse2 = await _client.SendAsync(_httpRequest);
-            HttpStatusCode _statusCode = _httpResponse2.StatusCode;
-
-            var _responseString = _httpResponse2.ToString();
-            var _responseContent2 = await _httpResponse2.Content.ReadAsStringAsync();
-            // replace the odata with a string that can be converted to a dotnet core property
-
-            // save the result to a returnable object
-            var result = new DynamicsResult();
-            result.statusCode = _statusCode;
-            result.responseMessage = _httpResponse2;
-            var clean = _responseContent2.Replace("@odata.", "fortunecookie");
-            result.result = Newtonsoft.Json.Linq.JObject.Parse(clean);
-            // send the result back
-            return result;
-        }
-
         private async Task<bool> MakeConnection()
         {
             try
             {
                 // ****************COLLECT CONFIGURATION*************
-                // Cloud AAD Tenant ID
-                string aadTenantId = _configuration["DYNAMICS_AAD_TENANT_ID"];
-                // Cloud Server App ID URI
-                string serverAppIdUri = _configuration["DYNAMICS_SERVER_APP_ID_URI"];
-                // Cloud App Registration Client Key
-                string appRegistrationClientKey = _configuration["DYNAMICS_APP_REG_CLIENT_KEY"];
-                // Cloud App Registration Client Id
-                string appRegistrationClientId = _configuration["DYNAMICS_APP_REG_CLIENT_ID"];
-
-                // One Premise ADFS (2016)
-                // ADFS OAUTH2 URI - usually /adfs/oauth2/token on STS
                 string adfsOauth2Uri = _configuration["ADFS_OAUTH2_URI"];
-                // ADFS 2016 Application Group resource (URI)
                 string applicationGroupResource = _configuration["DYNAMICS_APP_GROUP_RESOURCE"];
-                // ADFS 2016 Application Group Client ID
                 string applicationGroupClientId = _configuration["DYNAMICS_APP_GROUP_CLIENT_ID"];
-                // ADFS 2016 Application Group Secret
                 string applicationGroupSecret = _configuration["DYNAMICS_APP_GROUP_SECRET"];
-
-                // Service account username
                 string serviceAccountUsername = _configuration["DYNAMICS_USERNAME"];
-                // Service account password
                 string serviceAccountPassword = _configuration["DYNAMICS_PASSWORD"];
 
-                // API Gateway to NTLM user.  This is used in v8 environments.  Note that the SSG Username and password are not the same as the NTLM user.
-                // BASIC authentication username
-                string ssgUsername = _configuration["SSG_USERNAME"];
-                // BASIC authentication password
-                string ssgPassword = _configuration["SSG_PASSWORD"];
-
                 Microsoft.Rest.ServiceClientCredentials serviceClientCredentials = null;
-
 
                 // all credentials must be in place for ADFS authorization
                 if (!string.IsNullOrEmpty(adfsOauth2Uri) &&
