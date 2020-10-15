@@ -1,0 +1,185 @@
+<div [formGroup]="form">
+    <div class="page-header mb-0">
+        <h1>Applicant Information</h1>
+    </div>
+
+    <section class="radio-list per-line">
+        <app-field label="I am the:" [required]="true" [valid]="isMyControlValid(form.get('applicantType'))" errorMessage="Please select one">
+            <label>
+                <input type="radio" [value]="100000000" name="applicantType" formControlName="applicantType" (change)="setApplicantTypeOtherRequired(false)">
+                Victim
+            </label>
+            <label>
+                <input type="radio" [value]="100000001" name="applicantType" formControlName="applicantType" (change)="setApplicantTypeOtherRequired(false)">
+                Civil Protected Party
+            </label>
+            <label>
+                <input type="radio" [value]="100000002" name="applicantType" formControlName="applicantType" (change)="setApplicantTypeOtherRequired(false)">
+                Victim's Parent / Guardian
+            </label>
+            <label>
+                <input type="radio" [value]="100000003" name="applicantType" formControlName="applicantType" (change)="setApplicantTypeOtherRequired(true)">
+                Other Family Member
+                <span *ngIf="showOtherApplicantType" class="applicant-type-other-container">
+                    : <input class="form-control" type="text" formControlName="applicantTypeOther" maxlength="100">
+                </span>
+            </label>
+        </app-field>
+    </section>
+
+
+    <h2 class="blue-header mt-0">Applicant Information</h2>
+
+    <div>
+        <label class="inline-label inline-checkbox">
+            <input type="checkbox" type="checkbox" id="applicantInfoSameAsVictim" name="applicantInfoSameAsVictim" (change)="setApplicantInfoSameAsVictim($event.target.checked)">
+            <span>Select if the applicant's name is the same as Victim / Civil Protected Party in the Case Information section</span>
+        </label>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <app-field label="First Name" [required]="true" [valid]="isFieldValid('firstName')" errorMessage="Please enter your first name">
+                <input class="form-control" type="text" formControlName="firstName" maxlength="100">
+            </app-field>
+        </div>
+        <div class="col-md-4">
+            <app-field label="Middle Name" [required]="false" [valid]="isFieldValid('middleName')" errorMessage="Please enter your middle name">
+                <input class="form-control" type="text" formControlName="middleName" maxlength="100">
+            </app-field>
+        </div>
+        <div class="col-md-4">
+            <app-field label="Last Name" [required]="true" [valid]="isFieldValid('lastName')" errorMessage="Please enter your last name">
+                <input class="form-control" type="text" formControlName="lastName" maxlength="100">
+            </app-field>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <app-field label="Date of Birth" [required]="true" [valid]="isFieldValid('birthDate')" errorMessage="Please enter your birth date">
+                <input class="form-control" type="text" formControlName="birthDate" placeholder="yyyy/mm/dd" mask="0000/00/00" [dropSpecialCharacters]="false" (change)="validateDate(form.get('birthDate'))">
+            </app-field>
+        </div>
+
+        <div class="col flex-col">
+            <app-field label="Gender" [required]="true" [valid]="isFieldValid('gender')" errorMessage="Please select your gender">
+                <label class="inline-label">
+                    <input type="radio" [value]="100000000" name="gender" formControlName="gender" (change)="showOtherGender(false)">
+                    <span>M</span>
+                </label>
+                <label class="inline-label">
+                    <input type="radio" [value]="100000001" name="gender" formControlName="gender" (change)="showOtherGender(false)">
+                    <span>F</span>
+                </label>
+                <label class="inline-label">
+                    <input type="radio" [value]="100000002" name="gender" formControlName="gender" (change)="showOtherGender(true)">
+                    <span>X</span>
+                </label>
+            </app-field>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <app-field label="Preferred Language" [required]="false" [valid]="isFieldValid('preferredLanguage')" errorMessage="">
+                <input class="form-control" type="text" formControlName="preferredLanguage" maxlength="100">
+            </app-field>
+        </div>
+        <div class="col-md-4">
+            <app-field label="Interpreter Needed" errorMessage="">
+                <label class="inline-label">
+                    <input type="radio" [value]="true" name="interpreterNeeded" formControlName="interpreterNeeded">
+                    <span>Yes</span>
+                </label>
+                <label class="inline-label">
+                    <input type="radio" [value]="false" name="interpreterNeeded" formControlName="interpreterNeeded">
+                    <span>No</span>
+                </label>
+            </app-field>
+            <!-- <app-field label="Interpreter Needed" [required]="false" [valid]="isFieldValid('interpreterNeeded')" errorMessage="">
+                <select class="form-control" formControlName="interpreterNeeded">
+                    <option [value]="false">No</option>
+                    <option [value]="true">Yes</option>
+                </select>
+            </app-field> -->
+        </div>
+    </div>
+
+    <app-address [group]="form.get('address')" [lookupData]="lookupData" [showChildrenAsRequired]="true"></app-address>
+
+    <div class="row">
+        <div class="col">
+            <app-field label="May we send correspondence and notification information to the above address? (if no, please provide your email address below):" errorMessage="">
+                <label class="inline-label">
+                    <input type="radio" [value]="true" name="mayWeSendCorrespondence" formControlName="mayWeSendCorrespondence">
+                    <span>Yes</span>
+                </label>
+                <label class="inline-label">
+                    <input type="radio" [value]="false" name="mayWeSendCorrespondence" formControlName="mayWeSendCorrespondence">
+                    <span>No</span>
+                </label>
+            </app-field>
+        </div>
+    </div>
+
+    <p>Please list your contact information (telephone / cellular / email address) in order of preference and indicate if we may leave a detailed message (e.g. our organization name, phone number, case information, notification details):</p>
+
+    <div class="contactMethods" formArrayName="contactMethods" *ngFor="let item of form.get('contactMethods')['controls']; let i = index;">
+        <div [formGroupName]="i" class="contact-methods">
+            <div class="row">
+                <div class="col-md-4">
+                    <app-field label="Contact Type" [required]="false" [valid]="isMyControlValid(item.get('type'))" errorMessage="">
+                        <select class="form-control" formControlName="type" (change)="contactMethodChange(item)">
+                            <option value="telephone">Telephone</option>
+                            <option value="mobile">Cellular</option>
+                            <option value="email">Email</option>
+                        </select>
+                    </app-field>
+                </div>
+
+                <!-- contact type val options -->
+                <div class="col-md-4" *ngIf="item.get('type').value === 'telephone'">
+                    <app-field label="Telephone Number" [required]="false" [valid]="isMyControlValid(item.get('val'))" errorMessage="Please enter your phone number">
+                        <input class="form-control" mask='(000) 000 0000' type="text" formControlName="val" *ngIf="form.get('address.country').value === 'Canada' || form.get('primaryAddress.country').value === 'United States of America'; else phone_no_mask" (change)="checkAtLeastOneContactMethod()">
+                        <ng-template #phone_no_mask>
+                            <input class="form-control" type="text" formControlName="val" digitOnly (change)="checkAtLeastOneContactMethod()">
+                        </ng-template>
+                    </app-field>
+                </div>
+                <div class="col-md-4" *ngIf="item.get('type').value === 'mobile'">
+                    <app-field label="Cellular Number" [required]="false" [valid]="isMyControlValid(item.get('val'))" errorMessage="Please enter your cell number">
+                        <input class="form-control" mask='(000) 000 0000' type="text" formControlName="val" *ngIf="form.get('address.country').value === 'Canada' || form.get('primaryAddress.country').value === 'United States of America'; else cell_no_mask" (change)="checkAtLeastOneContactMethod()">
+                        <ng-template #cell_no_mask>
+                            <input class="form-control" type="text" formControlName="val" digitOnly (change)="checkAtLeastOneContactMethod()">
+                        </ng-template>
+                    </app-field>
+                </div>
+                <div class="col-md-4" *ngIf="item.get('type').value === 'email'">
+                    <app-field label="Email Address" [required]="false" [valid]="isMyControlValid(item.get('val'))" errorMessage="Please enter your email address">
+                        <input class="form-control" type="text" formControlName="val" maxlength="100" (change)="checkAtLeastOneContactMethod()">
+                    </app-field>
+                </div>
+                <!--  -->
+
+                <div class="col-md-4">
+                    <app-field label="May we leave a detailed message?" errorMessage="">
+                        <label class="inline-label">
+                            <input type="radio" [value]="true" name="leaveMessage" formControlName="leaveMessage">
+                            <span>Yes</span>
+                        </label>
+                        <label class="inline-label">
+                            <input type="radio" [value]="false" name="leaveMessage" formControlName="leaveMessage">
+                            <span>No</span>
+                        </label>
+                    </app-field>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <app-field [valid]="isFieldValid('atLeastOneContactMethod')" errorMessage="Please enter at least one contact method">
+        <input type="hidden" name="atLeastOneContactMethod" formControlName="atLeastOneContactMethod">
+    </app-field>
+
+</div>

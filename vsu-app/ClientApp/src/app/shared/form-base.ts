@@ -1,8 +1,10 @@
 import { ValidatorFn, AbstractControl, FormControl, FormGroup, FormArray } from '@angular/forms';
-import * as _moment from 'moment';
+import * as moment from 'moment';
 
 export class FormBase {
     form: FormGroup;
+    today = new Date(); // for the birthdate validation
+    oldestHuman = new Date(this.today.getFullYear() - 120, this.today.getMonth(), this.today.getDay());
 
     isFieldValid(field: string, disabled: boolean = false) {
         if (disabled === true) return true;
@@ -51,6 +53,25 @@ export class FormBase {
                 }
             }
         });
+    }
+
+    validateDate(control: AbstractControl) {
+
+        let date = moment(new Date(control.value));
+        console.log("validate date");
+        console.log(control.value);
+        console.log(date);
+        console.log(this.today);
+        console.log(this.oldestHuman);
+        if (date.isAfter(moment(this.today))) {
+            control.setErrors({ 'incorrect': true });
+        }
+        else if (date.isBefore(moment(this.oldestHuman))) {
+            control.setErrors({ 'incorrect': true });
+        }
+        else {
+            control.setErrors(null);
+        }
     }
 
     getErrors(formGroup: any, errors: any = {}) {

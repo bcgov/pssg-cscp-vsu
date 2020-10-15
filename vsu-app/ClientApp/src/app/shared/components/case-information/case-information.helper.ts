@@ -10,13 +10,15 @@ export class CaseInfoInfoHelper {
             birthDate: ['', [Validators.required]],
             gender: ['', [Validators.required]],
             genderOther: [''],
-            courtFileNumber: ['', [Validators.required]],
-            courtLocation: ['', [Validators.required]],
+            courtInfo: fb.array([this.createCourtInfo(fb)]),
+            // courtFileNumber: ['', [Validators.required]],
+            // courtLocation: ['', [Validators.required]],
 
             accusedFirstName: ['', Validators.required],
             accusedMiddleName: [''],
             accusedLastName: ['', Validators.required],
             accusedBirthDate: [''],
+            accusedGender: [''],
 
             additionalAccused: fb.array([this.createAdditionalAccused(fb)]),
         }
@@ -28,6 +30,13 @@ export class CaseInfoInfoHelper {
         return fb.group({
             name: [''],
             birthDate: [''],
+        });
+    }
+
+    public createCourtInfo(fb: FormBuilder, location: string = '') {
+        return fb.group({
+            courtFileNumber: ['', [Validators.required]],
+            courtLocation: [location,[Validators.required]],
         });
     }
 }

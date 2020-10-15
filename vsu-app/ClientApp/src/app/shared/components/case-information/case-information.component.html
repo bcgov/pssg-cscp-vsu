@@ -2,7 +2,7 @@
     <div class="page-header mb-0">
         <h1>Case Information</h1>
     </div>
-    <h2 class="blue-header mt-0">Name of Victim / Civil Protected Party</h2>
+    <h2 class="blue-header mt-0">Victim / Civil Protected Party Information</h2>
 
     <div class="row">
         <div class="col-md-4">
@@ -23,15 +23,13 @@
     </div>
     <div class="row">
         <div class="col-md-4">
-            <app-field label="Birthdate" [required]="true" [valid]="isFieldValid('birthDate')" errorMessage="Please enter your birth date">
-                <input class="form-control" type="text" formControlName="birthDate" placeholder="yyyy/mm/dd" mask="0000/00/00">
-                <!-- <input type="text" class="form-control date-picker" formControlName="birthDate" placeholder="yyyy-mm-dd" [matDatepicker]="birthDatePicker" (focus)="birthDatePicker.open()" (click)="birthDatePicker.open()" [max]="todaysDate" [min]="oldestHuman" readonly>
+            <app-field label="Date of Birth" [required]="true" [valid]="isFieldValid('birthDate')" errorMessage="Please enter your birth date">
+                <input class="form-control" type="text" formControlName="birthDate" placeholder="yyyy/mm/dd" mask="0000/00/00" [dropSpecialCharacters]="false" (change)="validateDate(form.get('birthDate'))">
+                <!-- <input type=" text" class="form-control date-picker" formControlName="birthDate" placeholder="yyyy-mm-dd" [matDatepicker]="birthDatePicker" (focus)="birthDatePicker.open()" (click)="birthDatePicker.open()" [max]="todaysDate" [min]="oldestHuman" readonly>
                 <mat-datepicker #birthDatePicker></mat-datepicker> -->
             </app-field>
         </div>
-    </div>
 
-    <div class="row">
         <div class="col flex-col">
             <app-field label="Gender" [required]="true" [valid]="isFieldValid('gender')" errorMessage="Please select your gender">
                 <label class="inline-label">
@@ -49,6 +47,7 @@
             </app-field>
 
             <!-- I'm not loving these "Other" inputs, need a better layout/alignment. Hopefully they'll copy CVAP and not even need it -->
+            <!-- option 1 -->
             <!-- <span class="other-gender-container" *ngIf="form.get('gender').value === 100000002">
                 <app-field label=" " [valid]="isFieldValid('genderOther')" errorMessage="Please enter a value">
                     <input class="form-control" type="text" formControlName="genderOther" maxlength="100">
@@ -56,6 +55,7 @@
             </span> -->
         </div>
 
+        <!-- option 2 -->
         <!-- <div class="col-md-4" *ngIf="form.get('gender').value === 100000002">
             <app-field label="Other" [required]="true" [valid]="isFieldValid('genderOther')" errorMessage="Please enter a value">
                 <input class="form-control" type="text" formControlName="genderOther" maxlength="100">
@@ -63,21 +63,40 @@
         </div> -->
     </div>
 
-    <div class="row">
-        <div class="col-md-4">
-            <app-field label="Court File Number" [required]="true" [valid]="isFieldValid('courtFileNumber')" errorMessage="Please enter the court file number">
-                <input class="form-control" type="text" formControlName="courtFileNumber" maxlength="100">
-            </app-field>
+    <!-- <div class="row">
+        
+    </div> -->
+
+    <h2 class="blue-header">Court Information</h2>
+
+    <div formArrayName="courtInfo" *ngFor="let item of form.get('courtInfo')['controls']; let i = index;">
+        <div [formGroupName]="i" class="court-info">
+            <div class="row">
+                <div class="col-md-4">
+                    <app-field label="Court File Number" [required]="true" [valid]="isMyControlValid(item.get('courtFileNumber'))" errorMessage="Please enter the court file number">
+                        <input class="form-control" type="text" formControlName="courtFileNumber" maxlength="100">
+                    </app-field>
+                </div>
+                <div class="col-md-4">
+                    <app-field label="Court Location" [required]="true" [valid]="isMyControlValid(item.get('courtLocation'))" errorMessage="Please enter a court location">
+                        <!-- [typeaheadMinLength]="0" -->
+                        <input class="form-control" type="text" formControlName="courtLocation" [typeahead]="courtList">
+                    </app-field>
+                </div>
+                <div class="col remove-button" *ngIf="form.get('courtInfo')['controls'].length > 1">
+                    <br>
+                    <i class="fas fa-times-circle text-danger center-clear-btn" (click)="removeAdditionalCourtInfo(i)"></i>
+                </div>
+            </div>
         </div>
-        <div class="col-md-4">
-            <app-field label="Court Location" [required]="true" [valid]="isFieldValid('courtLocation')" errorMessage="Please enter a court location">
-                <!-- [typeaheadMinLength]="0" -->
-                <input class="form-control" type="text" formControlName="courtLocation" [typeahead]="courtList">
-            </app-field>
-        </div>
+        <!-- <div *ngIf="form.get('courtInfo')['controls'].length > 1 && i < (form.get('courtInfo')['controls'].length - 1)" class="separator-div"></div> -->
     </div>
 
-    <h2 class=" blue-header">Name of Accused / Offender / Respondent</h2>
+    <div>
+        <button class="btn btn-secondary" (click)="addAdditionalCourtInfo()">+ ADD ADDITIONAL COURT FILE</button>
+    </div>
+
+    <h2 class="blue-header">Accused / Offender / Respondent Information</h2>
     <div class="row">
         <div class="col-md-4">
             <app-field label="First Name" [required]="true" [valid]="isFieldValid('accusedFirstName')" errorMessage="Please enter first name">
@@ -97,25 +116,44 @@
     </div>
     <div class="row">
         <div class="col-md-4">
-            <app-field label="Birthdate" [required]="true" [valid]="isFieldValid('accusedBirthDate')" errorMessage="Please enter birth date">
-                <input class="form-control" type="text" formControlName="accusedBirthDate" placeholder="yyyy/mm/dd" mask="0000/00/00">
+            <app-field label="Date of Birth" [required]="true" [valid]="isFieldValid('accusedBirthDate')" errorMessage="Please enter birth date">
+                <input class="form-control" type="text" formControlName="accusedBirthDate" placeholder="yyyy/mm/dd" mask="0000/00/00" [dropSpecialCharacters]="false" (change)="validateDate(form.get('accusedBirthDate'))">
                 <!-- <input type="text" class="form-control date-picker" formControlName="accusedBirthDate" placeholder="yyyy-mm-dd" [matDatepicker]="accusedBirthDatePicker" (focus)="accusedBirthDatePicker.open()" (click)="accusedBirthDatePicker.open()" [max]="todaysDate" [min]="oldestHuman" readonly>
                 <mat-datepicker #accusedBirthDatePicker></mat-datepicker> -->
             </app-field>
         </div>
+        <div class="col flex-col">
+            <app-field label="Gender" [valid]="isFieldValid('accusedGender')">
+                <label class="inline-label">
+                    <input type="radio" [value]="100000000" name="accusedGender" formControlName="accusedGender" (change)="showOtherGender(false)">
+                    <span>M</span>
+                </label>
+                <label class="inline-label">
+                    <input type="radio" [value]="100000001" name="accusedGender" formControlName="accusedGender" (change)="showOtherGender(false)">
+                    <span>F</span>
+                </label>
+                <label class="inline-label">
+                    <input type="radio" [value]="100000002" name="accusedGender" formControlName="accusedGender" (change)="showOtherGender(true)">
+                    <span>X</span>
+                </label>
+            </app-field>
+        </div>
     </div>
+    <!-- <div class="row">
+        
+    </div> -->
 
     <div class="additionalAccused" formArrayName="additionalAccused" *ngFor="let item of form.get('additionalAccused')['controls']; let i = index;">
         <div [formGroupName]="i" class="additional-accused">
             <div class="row">
                 <div class="col-md-8">
-                    <app-field label="Names(s) of Additional Accused / Offender(s) on this Court File">
+                    <app-field label="Name of Additional Accused / Offender on this Court File">
                         <input class="form-control" type="text" formControlName="name" maxlength="100">
                     </app-field>
                 </div>
                 <div class="col-md-4 flex-col">
-                    <app-field label="Date of Birth (if known)">
-                        <input class="form-control" type="text" formControlName="birthDate" placeholder="yyyy/mm/dd" mask="0000/00/00">
+                    <app-field label="Date of Birth">
+                        <input class="form-control" type="text" formControlName="birthDate" placeholder="yyyy/mm/dd" mask="0000/00/00" [dropSpecialCharacters]="false" (change)="validateDate(item.get('birthDate'))">
                         <!-- <input type="text" class="form-control date-picker" formControlName="birthDate" placeholder="yyyy-mm-dd" [matDatepicker]="additionalAccusedBirthDatePicker_i" (focus)="additionalAccusedBirthDatePicker_i.open()" (click)="additionalAccusedBirthDatePicker_i.open()" [max]="todaysDate" [min]="oldestHuman" readonly>
                         <mat-datepicker #additionalAccusedBirthDatePicker_i></mat-datepicker> -->
                     </app-field>
@@ -127,10 +165,10 @@
                 </div>
             </div>
         </div>
-        <div *ngIf="form.get('additionalAccused')['controls'].length > 1 && i < (form.get('additionalAccused')['controls'].length - 1)" class="separator-div"></div>
+        <!-- <div *ngIf="form.get('additionalAccused')['controls'].length > 1 && i < (form.get('additionalAccused')['controls'].length - 1)" class="separator-div"></div> -->
     </div>
 
-    <div class="add-additional-accused-btn-container">
+    <div class="add-additional-btn-container">
         <button class="btn btn-secondary" (click)="addAdditionalAccused()">+ ADD ADDITIONAL ACCUSED / OFFENDER</button>
     </div>
 

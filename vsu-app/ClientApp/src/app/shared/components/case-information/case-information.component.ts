@@ -21,9 +21,6 @@ export class CaseInformationComponent extends FormBase implements OnInit {
   @Input() lookupData: iLookupData;
   public form: FormGroup;
 
-  todaysDate = new Date(); // for the birthdate validation
-  oldestHuman = new Date(this.todaysDate.getFullYear() - 120, this.todaysDate.getMonth(), this.todaysDate.getDay());
-
   courtList: string[] = [];
 
   caseInfoHelper = new CaseInfoInfoHelper();
@@ -52,6 +49,18 @@ export class CaseInformationComponent extends FormBase implements OnInit {
         this.courtList = this.lookupData.courts.map(c => c.vsd_name);
       });
     }
+  }
+
+  addAdditionalCourtInfo() {
+    let courtInfo = this.form.get('courtInfo') as FormArray;
+    let previousCourt = courtInfo.controls[courtInfo.controls.length - 1];
+    let location = previousCourt.get('courtLocation').value;
+    courtInfo.push(this.caseInfoHelper.createCourtInfo(this.fb, location));
+  }
+
+  removeAdditionalCourtInfo(index: number) {
+    let courtInfo = this.form.get('courtInfo') as FormArray;
+    courtInfo.removeAt(index);
   }
 
   addAdditionalAccused() {

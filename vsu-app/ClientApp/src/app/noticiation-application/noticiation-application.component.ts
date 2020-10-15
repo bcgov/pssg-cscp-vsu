@@ -4,6 +4,7 @@ import { MatStepper, MatVerticalStepper } from '@angular/material';
 import { Router } from '@angular/router';
 import { iLookupData } from '../models/lookup-data.model';
 import { LookupService } from '../services/lookup.service';
+import { ApplicantInfoInfoHelper } from '../shared/components/applicant-information/applicant-information.helper';
 import { CaseInfoInfoHelper } from '../shared/components/case-information/case-information.helper';
 import { FormBase } from '../shared/form-base';
 
@@ -31,6 +32,7 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
     };
 
     caseInfoHelper = new CaseInfoInfoHelper();
+    applicantInfoInfoHelper = new ApplicantInfoInfoHelper();
 
     constructor(private fb: FormBuilder,
         private router: Router,
@@ -90,8 +92,7 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
             overview: this.fb.group({
             }),
             caseInformation: this.caseInfoHelper.setupFormGroup(this.fb),
-            applicantInformation: this.fb.group({
-            }),
+            applicantInformation: this.applicantInfoInfoHelper.setupFormGroup(this.fb),
             recipientInformation: this.fb.group({
             }),
             authorizationInformation: this.fb.group({

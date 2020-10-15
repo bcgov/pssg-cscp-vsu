@@ -19,10 +19,14 @@ import { OverviewComponent } from './shared/components/overview/overview.compone
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { NgxMaskModule } from 'ngx-mask';
+import { ApplicantInformationComponent } from './shared/components/applicant-information/applicant-information.component';
+import { AddressComponent } from './shared/components/address/address.component';
 
 @NgModule({
   declarations: [
+    AddressComponent,
     AppComponent,
+    ApplicantInformationComponent,
     CaseInformationComponent,
     CounterComponent,
     FetchDataComponent,

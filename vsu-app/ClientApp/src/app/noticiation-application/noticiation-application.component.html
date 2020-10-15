@@ -53,11 +53,13 @@
                     <p>For best results, we recommend you use Chrome, Firefox, Edge, or Safari.</p>
                 </div>
 
-                <!-- insert components here! -->
                 <app-overview *ngIf="this.currentFormStep == 0 || showPrintView"></app-overview>
 
                 <div class="pagebreak"> </div>
                 <app-case-information [formGroup]="form" formGroupName="caseInformation" [lookupData]="lookupData" *ngIf="this.currentFormStep == 1 || showPrintView"></app-case-information>
+
+                <div class="pagebreak"> </div>
+                <app-applicant-information [formGroup]="form" formGroupName="applicantInformation" [lookupData]="lookupData" *ngIf="this.currentFormStep == 2 || showPrintView"></app-applicant-information>
 
                 <div *ngIf="showValidationMessage" class="error-summary">
                     <i class="fas fa-exclamation-triangle" style="margin-right: 10px;"></i>
