@@ -1,26 +1,23 @@
-
+import { AddressComponent } from './shared/components/address/address.component';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { ApplicantInformationComponent } from './shared/components/applicant-information/applicant-information.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { CaseInformationComponent } from './shared/components/case-information/case-information.component';
-import { CounterComponent } from './counter/counter.component';
 import { FieldComponent } from './shared/field/field.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomeComponent } from './home/home.component';
 import { HttpClientModule } from '@angular/common/http';
 import { LookupService } from './services/lookup.service';
 import { MatDatepickerModule, MatIconModule, MatStepperModule } from '@angular/material';
-import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { NgModule } from '@angular/core';
+import { NgxMaskModule } from 'ngx-mask';
 import { NotificationApplicationComponent } from './noticiation-application/noticiation-application.component';
 import { OverviewComponent } from './shared/components/overview/overview.component';
+import { RecipientDetailsComponent } from './shared/components/recipient-details/recipient-details.component';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
-import { NgxMaskModule } from 'ngx-mask';
-import { ApplicantInformationComponent } from './shared/components/applicant-information/applicant-information.component';
-import { AddressComponent } from './shared/components/address/address.component';
-import { RecipientDetailsComponent } from './shared/components/recipient-details/recipient-details.component';
 
 @NgModule({
   declarations: [
@@ -28,10 +25,8 @@ import { RecipientDetailsComponent } from './shared/components/recipient-details
     AppComponent,
     ApplicantInformationComponent,
     CaseInformationComponent,
-    CounterComponent,
     FieldComponent,
     HomeComponent,
-    NavMenuComponent,
     NotificationApplicationComponent,
     OverviewComponent,
     RecipientDetailsComponent,
@@ -45,8 +40,8 @@ import { RecipientDetailsComponent } from './shared/components/recipient-details
     MatDatepickerModule,
     MatIconModule,
     MatStepperModule,
-    ReactiveFormsModule,
     NgxMaskModule.forRoot(),
+    ReactiveFormsModule,
     TooltipModule.forRoot(),
     TypeaheadModule.forRoot(),
   ],
