@@ -5,7 +5,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { CaseInformationComponent } from './shared/components/case-information/case-information.component';
 import { CounterComponent } from './counter/counter.component';
-import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { FieldComponent } from './shared/field/field.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomeComponent } from './home/home.component';
@@ -21,6 +20,7 @@ import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { NgxMaskModule } from 'ngx-mask';
 import { ApplicantInformationComponent } from './shared/components/applicant-information/applicant-information.component';
 import { AddressComponent } from './shared/components/address/address.component';
+import { RecipientDetailsComponent } from './shared/components/recipient-details/recipient-details.component';
 
 @NgModule({
   declarations: [
@@ -29,12 +29,12 @@ import { AddressComponent } from './shared/components/address/address.component'
     ApplicantInformationComponent,
     CaseInformationComponent,
     CounterComponent,
-    FetchDataComponent,
     FieldComponent,
     HomeComponent,
     NavMenuComponent,
     NotificationApplicationComponent,
     OverviewComponent,
+    RecipientDetailsComponent,
   ],
   imports: [
     AppRoutingModule,

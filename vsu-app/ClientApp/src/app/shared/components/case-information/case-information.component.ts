@@ -4,7 +4,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/materia
 import { MomentDateAdapter } from "@angular/material-moment-adapter";
 import { iLookupData } from "../../../models/lookup-data.model";
 import { LookupService } from "../../../services/lookup.service";
-import { MY_FORMATS } from "../../enums-list";
+import { EnumHelper, MY_FORMATS } from "../../enums-list";
 import { FormBase } from "../../form-base";
 import { CaseInfoInfoHelper } from "./case-information.helper";
 
@@ -23,6 +23,7 @@ export class CaseInformationComponent extends FormBase implements OnInit {
 
   courtList: string[] = [];
 
+  EnumHelper = new EnumHelper();
   caseInfoHelper = new CaseInfoInfoHelper();
 
   constructor(private controlContainer: ControlContainer,

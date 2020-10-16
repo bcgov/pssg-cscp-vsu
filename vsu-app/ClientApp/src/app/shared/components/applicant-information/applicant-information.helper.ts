@@ -1,12 +1,13 @@
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { POSTAL_CODE } from "../../regex.constants";
 
-export class ApplicantInfoInfoHelper {
+export class ApplicantInfoHelper {
     postalRegex = POSTAL_CODE;
     public setupFormGroup(fb: FormBuilder): FormGroup {
         let group = {
             applicantType: ['', Validators.required],
             applicantTypeOther: [''],
+            applicantInfoSameAsVictim: [''],
             firstName: ['', Validators.required],
             middleName: [''],
             lastName: ['', Validators.required],
@@ -22,8 +23,8 @@ export class ApplicantInfoInfoHelper {
                 line2: [''],
                 city: ['', [Validators.required]],
                 postalCode: ['', [Validators.required, Validators.pattern(this.postalRegex)]],
-                province: [{ value: 'British Columbia', disabled: false }, [Validators.required]],
-                country: [{ value: 'Canada', disabled: false }, [Validators.required]],
+                province: ['British Columbia', [Validators.required]],
+                country: ['Canada', [Validators.required]],
             }),
 
             mayWeSendCorrespondence: [true],

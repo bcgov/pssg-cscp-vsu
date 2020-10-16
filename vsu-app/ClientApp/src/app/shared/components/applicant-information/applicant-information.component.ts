@@ -1,12 +1,11 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { ControlContainer, FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { ControlContainer, FormArray, FormGroup, Validators } from "@angular/forms";
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/material";
 import { MomentDateAdapter } from "@angular/material-moment-adapter";
 import { iLookupData } from "../../../models/lookup-data.model";
-import { LookupService } from "../../../services/lookup.service";
-import { MY_FORMATS } from "../../enums-list";
+import { EnumHelper, MY_FORMATS } from "../../enums-list";
 import { FormBase } from "../../form-base";
-import { ApplicantInfoInfoHelper } from "./applicant-information.helper";
+import { ApplicantInfoHelper } from "./applicant-information.helper";
 
 @Component({
     selector: 'app-applicant-information',
@@ -23,11 +22,10 @@ export class ApplicantInformationComponent extends FormBase implements OnInit {
 
     showOtherApplicantType: boolean = false;
 
-    applicantInfoHelper = new ApplicantInfoInfoHelper();
+    EnumHelper = new EnumHelper();
+    applicantInfoHelper = new ApplicantInfoHelper();
 
-    constructor(private controlContainer: ControlContainer,
-        private lookupService: LookupService,
-        private fb: FormBuilder,) {
+    constructor(private controlContainer: ControlContainer) {
         super();
     }
     ngOnInit() {
@@ -58,20 +56,6 @@ export class ApplicantInformationComponent extends FormBase implements OnInit {
         else {
             this.showOtherApplicantType = false;
             this.clearControlValidators(control);
-        }
-    }
-
-    setApplicantInfoSameAsVictim(copy: boolean) {
-        let victimInfo = this.form.parent.get('caseInformation');
-        if (copy) {
-            this.form.get('firstName').patchValue(victimInfo.get('firstName').value);
-            this.form.get('middleName').patchValue(victimInfo.get('middleName').value);
-            this.form.get('lastName').patchValue(victimInfo.get('lastName').value);
-        }
-        else {
-            this.form.get('firstName').patchValue('');
-            this.form.get('middleName').patchValue('');
-            this.form.get('lastName').patchValue('');
         }
     }
 
@@ -110,11 +94,8 @@ export class ApplicantInformationComponent extends FormBase implements OnInit {
             }
         }
 
-        if (isValid) {
-            this.form.get('atLeastOneContactMethod').patchValue('valid');
-        }
-        else {
-            this.form.get('atLeastOneContactMethod').patchValue('');
-        }
+        let val = isValid ? 'valid' : '';
+
+        this.form.get('atLeastOneContactMethod').patchValue(val);
     }
 }

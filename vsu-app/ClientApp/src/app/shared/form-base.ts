@@ -16,7 +16,7 @@ export class FormBase {
     }
 
     isMyControlValid(control: AbstractControl) {
-        return control.valid || !control.touched;
+        return control.valid || !control.touched || control.disabled;
     }
 
     isArrayFieldValid(formArrayName: string, arrayControl: string, arrayIndex: number) {
@@ -206,5 +206,81 @@ export class FormBase {
         control.clearValidators();
         control.setErrors(null);
         control.updateValueAndValidity();
+    }
+
+    copyApplicantAddressToDeligate(form: FormGroup | FormArray) {
+        let designates = form.get('recipientDetails.designate') as FormArray;
+        if (designates.length == 0) return;
+        let copyAddress = designates.controls[0].get('addressSameAsApplicant').value === true;
+        let target = designates.controls[0].get('address');
+        let source = form.get('applicantInformation.address');
+        let options = { onlySelf: true, emitEvent: true };
+
+        if (copyAddress) {
+            target.get('line1').patchValue(source.get('line1').value, options);
+            target.get('line2').patchValue(source.get('line2').value, options);
+            target.get('city').patchValue(source.get('city').value, options);
+            target.get('postalCode').patchValue(source.get('postalCode').value, options);
+            target.get('province').patchValue(source.get('province').value, options);
+            target.get('country').patchValue(source.get('country').value, options);
+
+            target.get('line1').setErrors(null, options);
+            target.get('line2').setErrors(null, options);
+            target.get('city').setErrors(null, options);
+            target.get('postalCode').setErrors(null, options);
+            target.get('province').setErrors(null, options);
+            target.get('country').setErrors(null, options);
+
+            target.get('line1').disable(options);
+            target.get('line2').disable(options);
+            target.get('city').disable(options);
+            target.get('postalCode').disable(options);
+            target.get('province').disable(options);
+            target.get('country').disable(options);
+        }
+        else {
+            target.get('line1').enable(options);
+            target.get('line2').enable(options);
+            target.get('city').enable(options);
+            target.get('postalCode').enable(options);
+            target.get('province').enable(options);
+            target.get('country').enable(options);
+        }
+
+        target.get('line1').updateValueAndValidity(options);
+        target.get('line2').updateValueAndValidity(options);
+        target.get('city').updateValueAndValidity(options);
+        target.get('postalCode').updateValueAndValidity(options);
+        target.get('province').updateValueAndValidity(options);
+        target.get('country').updateValueAndValidity(options);
+    }
+
+    setApplicantInfoSameAsVictim(form: FormGroup | FormArray) {
+        let victimInfo = form.get('caseInformation');
+        let applicantInfo = form.get('applicantInformation');
+        let copy = applicantInfo.get('applicantInfoSameAsVictim').value;
+        let options = { onlySelf: true, emitEvent: true };
+        if (copy) {
+            applicantInfo.get('firstName').patchValue(victimInfo.get('firstName').value);
+            applicantInfo.get('middleName').patchValue(victimInfo.get('middleName').value);
+            applicantInfo.get('lastName').patchValue(victimInfo.get('lastName').value);
+
+            applicantInfo.get('firstName').setErrors(null, options);
+            applicantInfo.get('middleName').setErrors(null, options);
+            applicantInfo.get('lastName').setErrors(null, options);
+
+            applicantInfo.get('firstName').disable(options);
+            applicantInfo.get('middleName').disable(options);
+            applicantInfo.get('lastName').disable(options);
+        }
+        else {
+            applicantInfo.get('firstName').enable(options);
+            applicantInfo.get('middleName').enable(options);
+            applicantInfo.get('lastName').enable(options);
+        }
+
+        applicantInfo.get('firstName').updateValueAndValidity(options);
+        applicantInfo.get('middleName').updateValueAndValidity(options);
+        applicantInfo.get('lastName').updateValueAndValidity(options);
     }
 }

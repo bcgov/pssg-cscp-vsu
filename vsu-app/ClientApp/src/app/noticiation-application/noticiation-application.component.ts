@@ -4,8 +4,9 @@ import { MatStepper, MatVerticalStepper } from '@angular/material';
 import { Router } from '@angular/router';
 import { iLookupData } from '../models/lookup-data.model';
 import { LookupService } from '../services/lookup.service';
-import { ApplicantInfoInfoHelper } from '../shared/components/applicant-information/applicant-information.helper';
+import { ApplicantInfoHelper } from '../shared/components/applicant-information/applicant-information.helper';
 import { CaseInfoInfoHelper } from '../shared/components/case-information/case-information.helper';
+import { RecipientDetailsHelper } from '../shared/components/recipient-details/recipient-details.helper';
 import { FormBase } from '../shared/form-base';
 
 @Component({
@@ -22,7 +23,7 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
     public currentFormStep: number = 0;
     public showPrintView: boolean = false;
 
-    elements: string[] = ['overview', 'caseInformation', 'applicantInformation', 'recipientInformation', 'authorizationInformation'];
+    elements: string[] = ['overview', 'caseInformation', 'applicantInformation', 'recipientDetails', 'authorizationInformation'];
 
     lookupData: iLookupData = {
         countries: [],
@@ -32,7 +33,8 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
     };
 
     caseInfoHelper = new CaseInfoInfoHelper();
-    applicantInfoInfoHelper = new ApplicantInfoInfoHelper();
+    applicantInfoInfoHelper = new ApplicantInfoHelper();
+    recipientDetailsHelper = new RecipientDetailsHelper();
 
     constructor(private fb: FormBuilder,
         private router: Router,
@@ -93,8 +95,7 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
             }),
             caseInformation: this.caseInfoHelper.setupFormGroup(this.fb),
             applicantInformation: this.applicantInfoInfoHelper.setupFormGroup(this.fb),
-            recipientInformation: this.fb.group({
-            }),
+            recipientDetails: this.recipientDetailsHelper.setupFormGroup(this.fb),
             authorizationInformation: this.fb.group({
             }),
         };

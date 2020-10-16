@@ -26,7 +26,7 @@ namespace Gov.Cscp.Victims.Public.Controllers
                 // get the response
                 DynamicsResult result = await _dynamicsResultService.Get(endpointUrl);
 
-                return StatusCode(200, result.result.ToString());
+                return StatusCode((int)result.statusCode, result.result.ToString());
             }
             finally { }
         }
@@ -42,7 +42,7 @@ namespace Gov.Cscp.Victims.Public.Controllers
                 // get the response
                 DynamicsResult result = await _dynamicsResultService.Get(endpointUrl);
 
-                return StatusCode(200, result.result.ToString());
+                return StatusCode((int)result.statusCode, result.result.ToString());
             }
             finally { }
         }
@@ -58,7 +58,7 @@ namespace Gov.Cscp.Victims.Public.Controllers
                 // get the response
                 DynamicsResult result = await _dynamicsResultService.Get(endpointUrl);
 
-                return StatusCode(200, result.result.ToString());
+                return StatusCode((int)result.statusCode, result.result.ToString());
             }
             finally { }
         }
@@ -89,7 +89,7 @@ namespace Gov.Cscp.Victims.Public.Controllers
                 // get the response
                 DynamicsResult result = await _dynamicsResultService.Post(endpointUrl, requestJson);
 
-                return StatusCode(200, result.result.ToString());
+                return StatusCode((int)result.statusCode, result.result.ToString());
             }
             finally { }
         }
@@ -107,7 +107,7 @@ namespace Gov.Cscp.Victims.Public.Controllers
                 // get the response
                 DynamicsResult result = await _dynamicsResultService.Get(endpointUrl);
 
-                return StatusCode(200, result.result.ToString());
+                return StatusCode((int)result.statusCode, result.result.ToString());
             }
             finally { }
         }
@@ -123,7 +123,7 @@ namespace Gov.Cscp.Victims.Public.Controllers
                 // get the response
                 DynamicsResult result = await _dynamicsResultService.Get(endpointUrl);
 
-                return StatusCode(200, result.result.ToString());
+                return StatusCode((int)result.statusCode, result.result.ToString());
             }
             finally { }
         }
@@ -139,7 +139,7 @@ namespace Gov.Cscp.Victims.Public.Controllers
                 // get the response
                 DynamicsResult result = await _dynamicsResultService.Get(endpointUrl);
 
-                return StatusCode(200, result.result.ToString());
+                return StatusCode((int)result.statusCode, result.result.ToString());
             }
             finally { }
         }
