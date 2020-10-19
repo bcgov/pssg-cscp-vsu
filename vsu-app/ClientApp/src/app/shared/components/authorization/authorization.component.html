@@ -1,0 +1,84 @@
+<div [formGroup]="form">
+  <div class="page-header">
+    <h1>Declaration & Authorization</h1>
+  </div>
+
+  <p>Please indicate your information sharing preferences in the following section:</p>
+
+  <p><em>If the offender enters federal custody or applies for parole you will need to register with the Correctional Service of Canada (
+      <a href="https://www.csc-scc.gc.ca/victims/003006-0001-eng.shtml" target="_blank" title="Victims of Crime Act">CSC</a>) or the Parole Board of Canada (
+      <a href="https://www.canada.ca/en/parole-board/services/victims/how-to-register-as-a-victim.html" target="_blank" title="Victims of Crime Act">PBC</a>) if you would like to
+      receive federal notifications. CSC/PBC will assess your eligibility to register for federal notification.
+      Call 1-866-806-2275 (CSC) or 1-866-789-INFO/4636 (PBC) for more information.</em></p>
+
+  <div class="checkbox-container mt-3 mb-4">
+    <label class="inline-label inline-checkbox">
+      <input type="checkbox" [value]="true" name="registerForVictimNotification" formControlName="registerForVictimNotification">
+      <span>I want to register with CSC/PBC for victim notification if the offender enters federal custody or applies for parole. By checking this box, I give permission to the VSU to forward this application form to CSC/PBC on my behalf at the time of federal sentencing or parole application, or if the offender is already in federal custody.</span>
+    </label>
+  </div>
+
+  <div class="checkbox-container mb-4">
+    <label class="inline-label inline-checkbox">
+      <input type="checkbox" [value]="true" name="permissionToShareContactInfo" formControlName="permissionToShareContactInfo">
+      <span>I give permission to the VSU to share my contact information (including any updates) with BC Corrections and CSC/PBC for the purpose of contacting me regarding the accused / offender.</span>
+    </label>
+  </div>
+
+  <div class="checkbox-container">
+    <label class="inline-label inline-checkbox">
+      <input type="checkbox" [value]="true" name="permissionToContactMyVSW" formControlName="permissionToContactMyVSW">
+      <span>I give permission to the VSU to contact my VSW or other designate named on this form for the purpose of confirming / updating their contact information (to ensure they are able to receive notifications on my behalf).</span>
+    </label>
+  </div>
+
+  <section>
+    <h2 class="blue-header">Declaration & Authorization</h2>
+
+    <app-field [required]="true" [valid]="isMyControlValid(form.get('declaration'))" errorMessage="Please check this box to indicate that you accept Declaration">
+      <label>
+        <input type="checkbox" [value]="true" name="declaration" formControlName="declaration">
+        I certify that I am the applicant named on this form. I am requesting notification information about the accused/offender/respondent. By signing this application form, I give permission (where applicable) to the Victim Safety Unit to release notification information to the designate(s) that I have named above. I understand that any information provided by the Victim Safety Unit is confidential and is intended only for the named recipient (i.e. myself plus my designate(s) if applicable). This information may not be distributed, copied, or otherwise used without the express permission of the Victim Safety Unit. <span class="error-states">*</span>
+      </label>
+    </app-field>
+
+    <!-- <div class="checkbox-container mb-4">
+      <label class="inline-label inline-checkbox">
+        <input type="checkbox" [value]="true" name="declaration" formControlName="declaration">
+        <span>I certify that I am the applicant named on this form. I am requesting notification information about the accused/offender/respondent. By signing this application form, I give permission (where applicable) to the Victim Safety Unit to release notification information to the designate(s) that I have named above. I understand that any information provided by the Victim Safety Unit is confidential and is intended only for the named recipient (i.e. myself plus my designate(s) if applicable). This information may not be distributed, copied, or otherwise used without the express permission of the Victim Safety Unit.</span>
+      </label>
+    </div> -->
+
+    <div class="row">
+      <div class="col-md-6">
+        <app-field label="Full Name" [required]="true" [valid]="isMyControlValid(form.get('fullName'))" errorMessage="Please enter your full name">
+          <input class="form-control" type="text" formControlName="fullName" maxlength="100">
+        </app-field>
+      </div>
+      <div class="col-md-6">
+        <app-field label="Date" [required]="true" [valid]="isFieldValid('date')" errorMessage="Please enter the date">
+          <input class="form-control" type="text" formControlName="date" placeholder="yyyy/mm/dd" mask="0000/00/00" [dropSpecialCharacters]="false" (change)="validateDate(form.get('date'))">
+        </app-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <app-field label="Signature" [required]="true" [valid]="isFieldValid('signature')" errorMessage="Please provide your digital signature">
+          <div class="signature-trigger" (click)="showSignPad('signature')" *ngIf="!hasSignature('signature')">
+            <p>Click this box to sign</p>
+          </div>
+          <div *ngIf="hasSignature('signature')" class="signature-preview">
+            <img src="{{ valueOrEmpty('signature') }}" />
+            <a class="redo" (click)="showSignPad('signature')">Redo Signature</a>
+          </div>
+        </app-field>
+      </div>
+    </div>
+
+    <app-field label="Additional Comments">
+      <textarea class="form-control bigger" formControlName="additionalComments" maxlength="750"></textarea>
+    </app-field>
+
+  </section>
+</div>
