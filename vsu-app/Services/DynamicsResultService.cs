@@ -1,7 +1,6 @@
 ﻿using Gov.Cscp.Victims.Public.Models;
 using Microsoft.Extensions.Configuration;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Net;
 using System.Threading.Tasks;
 using System;
