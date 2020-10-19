@@ -33,6 +33,7 @@ export class CaseInformationComponent extends FormBase implements OnInit {
   }
   ngOnInit() {
     this.form = <FormGroup>this.controlContainer.control;
+    setTimeout(() => { this.form.markAsTouched(); }, 0);
     console.log("case info component");
     console.log(this.form);
 

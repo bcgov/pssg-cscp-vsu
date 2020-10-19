@@ -58,6 +58,19 @@ export class RecipientDetailsComponent extends FormBase implements OnInit {
     }
 
     ngOnInit() {
+        this.form = <FormGroup>this.controlContainer.control;
+        setTimeout(() => { this.form.markAsTouched(); }, 0);
+        console.log("recipient details component");
+        console.log(this.form);
+
+        this.NOTIFICATION_METHODS = [
+            'courtUpdates',
+            'courtResults',
+            'courtAppearances',
+            'courtOrders',
+            'correctionsInformation',
+        ];
+
         //city search
         this.suggestions$ = new Observable((observer: Observer<string>) => {
             observer.next(this.form['controls']['victimServiceWorker']['controls']['city'].value.toString());
@@ -86,19 +99,6 @@ export class RecipientDetailsComponent extends FormBase implements OnInit {
                 return of([]);
             })
         );
-
-
-        this.form = <FormGroup>this.controlContainer.control;
-        console.log("recipient details component");
-        console.log(this.form);
-
-        this.NOTIFICATION_METHODS = [
-            'courtUpdates',
-            'courtResults',
-            'courtAppearances',
-            'courtOrders',
-            'correctionsInformation',
-        ];
     }
 
     setupVictimAndDesignate(addVictim: boolean, addDesignate: boolean) {
@@ -174,7 +174,7 @@ export class RecipientDetailsComponent extends FormBase implements OnInit {
         let contactMethods = designates.controls[0].get('contactMethods') as FormArray;
         for (let i = 0; i < contactMethods.controls.length; ++i) {
             let thisMethod = contactMethods.controls[i];
-            if (thisMethod.get('val').value && thisMethod.get('val').valid) {
+            if (thisMethod.get('val').value && thisMethod.get('val').valid && thisMethod.get('leaveMessage').value == true) {
                 isValid = true;
             }
         }

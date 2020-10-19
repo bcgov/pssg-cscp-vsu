@@ -56,7 +56,6 @@ export class FormBase {
     }
 
     validateDate(control: AbstractControl) {
-
         let date = moment(new Date(control.value));
         console.log("validate date");
         console.log(control.value);
@@ -195,6 +194,25 @@ export class FormBase {
             address += postalCode;
 
         return address;
+    }
+
+    public hasValueSet(controlName: string): boolean {
+        var control = this.form.get(controlName);
+
+        if (control == null || control === undefined)
+            return false;
+
+        if (control.value == null || control.value === undefined)
+            return false;
+
+        if (control.value.length == 0 || control.value.length === undefined)
+            return false;
+
+        return control.value.length > 0;
+    }
+
+    public hasSignature(controlName: string): boolean {
+        return this.hasValueSet(controlName);
     }
 
     setControlValidators(control: AbstractControl | FormControl, newValidator: ValidatorFn | ValidatorFn[]) {

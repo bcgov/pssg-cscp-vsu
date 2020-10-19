@@ -4,7 +4,7 @@
             <h3>Notification Application Form</h3>
             <section class="application-nav sticky-top">
                 <div>
-                    <mat-vertical-stepper linear (selectionChange)="gotoPage($event)" #stepper>
+                    <mat-vertical-stepper [linear]="true" (selectionChange)="gotoPage($event)" #stepper>
                         <ng-template matStepperIcon="edit">
                             <mat-icon>done</mat-icon>
                         </ng-template>
@@ -13,19 +13,18 @@
                         </ng-template>
                         <ng-template matStepperIcon="number">
                         </ng-template>
-                        <!-- [hasError]="!isMyControlValid(form.get('introduction'))" -->
-                        <mat-step label="Overview" [hasError]="!isMyControlValid(form.get('overview'))"></mat-step>
-                        <mat-step label="Case Information" [hasError]="!isMyControlValid(form.get('caseInformation'))"></mat-step>
-                        <mat-step label="Applicant Information" [hasError]="!isMyControlValid(form.get('applicantInformation'))"></mat-step>
-                        <mat-step label="Notification Recipient & Details" [hasError]="!isMyControlValid(form.get('recipientDetails'))"></mat-step>
-                        <mat-step label="Declaration & Authorization" [hasError]="!isMyControlValid(form.get('authorizationInformation'))"></mat-step>
+                        <mat-step label="Overview" [stepControl]="fb.group({})" [hasError]="!isMyControlValid(form.get('overview'))"></mat-step>
+                        <mat-step label="Case Information" [stepControl]="fb.group({})" [hasError]="!isMyControlValid(form.get('caseInformation'))"></mat-step>
+                        <mat-step label="Applicant Information" [stepControl]="fb.group({})" [hasError]="!isMyControlValid(form.get('applicantInformation'))"></mat-step>
+                        <mat-step label="Notification Recipient & Details" [stepControl]="fb.group({})" [hasError]="!isMyControlValid(form.get('recipientDetails'))"></mat-step>
+                        <mat-step label="Declaration & Authorization" [stepControl]="fb.group({})" [hasError]="!isMyControlValid(form.get('authorizationInformation'))"></mat-step>
                     </mat-vertical-stepper>
 
 
                     <div class="additional-info-container learn-benefits">
                         <div class="additional-info">
                             <h3>More information about the Victim Safety Unit</h3>
-                            <p>If you have any questions or need help filling out this form, contact us:</p>
+                            <p>If you have any questions or need help filling out this form, please contact us:</p>
                             <p>
                                 Telephone: 604-660-0316<br>
                                 Toll Free: 1-877-315-8822<br>
@@ -39,7 +38,7 @@
                             </p>
                             <p>Victim Service Working (VSW) / VictimLinkBC Contact: 1-800-563-0808</p>
                             <p><button class="btn btn-secondary btn-wrappable" (click)="downloadPDF()">DOWNLOAD PDF OF FORM</button></p>
-                            <p><button class="btn btn-secondary btn-wrappable" (click)="exit()"><i class="fas fa-chevron-left"></i> GO BACK TO VSU HOME</button></p>
+                            <p><button class="btn btn-secondary btn-wrappable" (click)="location.href='https://www.bclaws.ca/civix/document/id/complete/statreg/96478_01';"><i class="fas fa-chevron-left"></i> GO BACK TO VSU HOME</button></p>
                         </div>
                     </div>
                 </div>
@@ -64,6 +63,9 @@
                 <div class="pagebreak"> </div>
                 <app-recipient-details [formGroup]="form" formGroupName="recipientDetails" [lookupData]="lookupData" *ngIf="this.currentFormStep == 3 || showPrintView"></app-recipient-details>
 
+                <div class="pagebreak"> </div>
+                <app-authorization [formGroup]="form" formGroupName="authorizationInformation" *ngIf="this.currentFormStep == 4 || showPrintView"></app-authorization>
+
                 <div *ngIf="showValidationMessage" class="error-summary">
                     <i class="fas fa-exclamation-triangle" style="margin-right: 10px;"></i>
                     <span>There are errors with some fields on this page. Please scroll up to review and fix the errors (marked in red) before continuing.</span>
@@ -71,10 +73,9 @@
 
                 <section class="button-container" *ngIf="!showPrintView">
                     <span class="right-buttons">
-                        <!-- [class.disabled]="!didLoad" -->
+                        <button (click)="submit();" class="btn btn-primary continue-btn" [class.disabled]="submitting" *ngIf="stepper.selectedIndex == 4">SUBMIT</button>
                         <button (click)="gotoNextStep(stepper);" class="btn btn-primary continue-btn" *ngIf="stepper.selectedIndex < 4">{{stepper.selectedIndex === 0 ? 'START APPLICATION' : 'CONTINUE'}} <i class="fas fa-chevron-right"></i></button>
                         <button (click)="gotoPreviousStep(stepper);" class="btn btn-primary continue-btn" *ngIf="stepper.selectedIndex > 0"><i class="fas fa-chevron-left"></i> BACK</button>
-                        <!-- <button (click)="markAsTouched(); producePDF();" class="btn btn-primary print-button" *ngIf="stepper.selectedIndex == 4">PRINT PDF</button> -->
                     </span>
                 </section>
             </form>

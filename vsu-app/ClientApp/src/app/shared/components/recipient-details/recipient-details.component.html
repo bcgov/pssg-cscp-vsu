@@ -62,6 +62,11 @@
 
             <div class="row">
                 <div class="col-md-4">
+                    <app-field label="City / Town">
+                        <input formControlName="city" typeaheadOptionField="vsd_name" [typeahead]="suggestions$" [typeaheadAsync]="true" class="form-control">
+                    </app-field>
+                </div>
+                <div class="col-md-4">
                     <app-field label="Telephone" [required]="false" [valid]="isMyControlValid(item.get('telephone'))" errorMessage="Please enter a phone number">
                         <input class="form-control" mask='000-000-0000' type="text" formControlName="telephone">
                     </app-field>
@@ -69,11 +74,6 @@
                 <div class="col-md-4">
                     <app-field label="Extension" [required]="false" [valid]="isMyControlValid(item.get('extension'))" errorMessage="Please enter an extension">
                         <input class="form-control" mask='0000' type="text" formControlName="extension">
-                    </app-field>
-                </div>
-                <div class="col-md-4">
-                    <app-field label="City / Town">
-                        <input formControlName="city" typeaheadOptionField="vsd_name" [typeahead]="suggestions$" [typeaheadAsync]="true" class="form-control">
                     </app-field>
                 </div>
             </div>
@@ -190,11 +190,11 @@
                         <div class="col-md-4">
                             <app-field label="May we leave a detailed message?" errorMessage="">
                                 <label class="inline-label">
-                                    <input type="radio" [value]="true" name="leaveMessage" formControlName="leaveMessage">
+                                    <input type="radio" [value]="true" formControlName="leaveMessage" (change)="checkAtLeastOneContactMethod()">
                                     <span>Yes</span>
                                 </label>
                                 <label class="inline-label">
-                                    <input type="radio" [value]="false" name="leaveMessage" formControlName="leaveMessage">
+                                    <input type="radio" [value]="false" formControlName="leaveMessage" (change)="checkAtLeastOneContactMethod()">
                                     <span>No</span>
                                 </label>
                             </app-field>

@@ -1,6 +1,6 @@
 <section class="container not-supported-browser" *ngIf="isIE10orLower()">
-  <p>Internet Explorer versions 10 and lower are not supported</p>
-  <p>Please use Google Chrome, Firefox, Edge or IE 11</p>
+    <p>Internet Explorer versions 10 and lower are not supported</p>
+    <p>Please use Google Chrome, Firefox, Edge or IE 11</p>
 </section>
 
 <div class="app-outer" *ngIf="!isIE10orLower()">
@@ -15,6 +15,8 @@
         </div>
     </header>
 
+    <app-notification-banner></app-notification-banner>
+
     <div>
         <main class="app-content">
             <div class="app-main">
@@ -22,7 +24,7 @@
                 <router-outlet></router-outlet>
             </div>
         </main>
-      <!-- <app-quick-exit></app-quick-exit> -->
+        <!-- <app-quick-exit></app-quick-exit> -->
     </div>
 
     <footer class="app-footer">

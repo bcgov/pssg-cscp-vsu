@@ -1,10 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatStepper, MatVerticalStepper } from '@angular/material';
 import { Router } from '@angular/router';
 import { iLookupData } from '../models/lookup-data.model';
 import { LookupService } from '../services/lookup.service';
+import { NotificationQueueService } from '../services/notification-queue.service';
 import { ApplicantInfoHelper } from '../shared/components/applicant-information/applicant-information.helper';
+import { AuthInfoHelper } from '../shared/components/authorization/authorization.helper';
 import { CaseInfoInfoHelper } from '../shared/components/case-information/case-information.helper';
 import { RecipientDetailsHelper } from '../shared/components/recipient-details/recipient-details.helper';
 import { FormBase } from '../shared/form-base';
@@ -35,10 +37,12 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
     caseInfoHelper = new CaseInfoInfoHelper();
     applicantInfoInfoHelper = new ApplicantInfoHelper();
     recipientDetailsHelper = new RecipientDetailsHelper();
+    authInfoHelper = new AuthInfoHelper();
 
-    constructor(private fb: FormBuilder,
+    constructor(public fb: FormBuilder,
         private router: Router,
-        private lookupService: LookupService,) {
+        private lookupService: LookupService,
+        private notificationQueueService: NotificationQueueService,) {
         super();
     }
 
@@ -80,15 +84,6 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
         });
     }
 
-
-    downloadPDF() {
-        console.log("download pdf");
-    }
-
-    exit() {
-        this.router.navigate(['']);
-    }
-
     buildApplicationForm(): FormGroup {
         let group = {
             overview: this.fb.group({
@@ -96,11 +91,33 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
             caseInformation: this.caseInfoHelper.setupFormGroup(this.fb),
             applicantInformation: this.applicantInfoInfoHelper.setupFormGroup(this.fb),
             recipientDetails: this.recipientDetailsHelper.setupFormGroup(this.fb),
-            authorizationInformation: this.fb.group({
-            }),
+            authorizationInformation: this.authInfoHelper.setupFormGroup(this.fb),
         };
 
         return this.fb.group(group);
+    }
+
+    submit() {
+        console.log("submit");
+        console.log(this.form);
+        // this.submitting = true;
+        if (this.form.valid) {
+            console.log("form is valid - submit");
+            // this.notificationQueueService.addNotification(`Pretending that submit just happened.`, 'success', 5000);
+        }
+        else {
+            console.log("form is NOT valid - NO submit");
+            this.validateAllFormFields(this.form);
+            // this.notificationQueueService.addNotification(`Form not valid`, 'danger', 50000);
+        }
+    }
+
+    exit() {
+        this.router.navigate(['']);
+    }
+
+    downloadPDF() {
+        console.log("download pdf");
     }
 
     gotoPage(selectPage: MatStepper): void {
@@ -111,34 +128,24 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
     }
 
     gotoNextStep(stepper: MatStepper, emptyPage?: boolean): void {
-        // when a user clicks the continue button we move them to the next part of the form
         if (stepper) {
-            // the stepper indexes match our form indexes
             const desiredFormIndex: number = stepper.selectedIndex;
-            // get the text value of the form index
             const formGroupName = this.elements[desiredFormIndex];
             console.log(`Form for validation is ${formGroupName}.`);
-            // be sure that the stepper is in range
             if (desiredFormIndex >= 0 && desiredFormIndex < this.elements.length) {
-                // collect the matching form group from the form
                 const formParts = this.form.get(formGroupName);
-                // TODO: how do we know this is true?
                 let formValid = true;
 
-                // if there is a form returned with the name
                 if (formParts != null) {
-                    // collect the validity of it
                     formValid = formParts.valid;
                     console.log(formParts);
                 } else {
                     alert('That was a null form. Nothing to validate')
                 }
 
-                // Ensure if the page is empty that the form is valid
                 if (emptyPage != null) {
                     if (emptyPage == true) {
                         formValid = true;
-                        //formParts.valid = true;
                     }
                 }
 

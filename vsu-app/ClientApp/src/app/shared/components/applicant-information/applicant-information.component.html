@@ -63,7 +63,7 @@
         </div>
 
         <div class="col flex-col">
-            <app-field label="Gender" [required]="true" [valid]="isFieldValid('gender')" errorMessage="Please select your gender">
+            <app-field label="Gender" [required]="false" [valid]="isFieldValid('gender')" errorMessage="Please select your gender">
                 <label class="inline-label">
                     <input type="radio" [value]="EnumHelper.Gender.Male.val" name="gender" formControlName="gender" (change)="showOtherGender(false)">
                     <span>M</span>
@@ -159,11 +159,11 @@
                 <div class="col-md-4">
                     <app-field label="May we leave a detailed message?" errorMessage="">
                         <label class="inline-label">
-                            <input type="radio" [value]="true" name="leaveMessage" formControlName="leaveMessage">
+                            <input type="radio" [value]="true" formControlName="leaveMessage" (change)="checkAtLeastOneContactMethod()">
                             <span>Yes</span>
                         </label>
                         <label class="inline-label">
-                            <input type="radio" [value]="false" name="leaveMessage" formControlName="leaveMessage">
+                            <input type="radio" [value]="false" formControlName="leaveMessage" (change)="checkAtLeastOneContactMethod()">
                             <span>No</span>
                         </label>
                     </app-field>

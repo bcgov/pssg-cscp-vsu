@@ -116,7 +116,7 @@
     </div>
     <div class="row">
         <div class="col-md-4">
-            <app-field label="Birth Date" [required]="true" [valid]="isFieldValid('accusedBirthDate')" errorMessage="Please enter birth date">
+            <app-field label="Birth Date" [required]="false" [valid]="isFieldValid('accusedBirthDate')" errorMessage="Please enter birth date">
                 <input class="form-control" type="text" formControlName="accusedBirthDate" placeholder="yyyy/mm/dd" mask="0000/00/00" [dropSpecialCharacters]="false" (change)="validateDate(form.get('accusedBirthDate'))">
                 <!-- <input type="text" class="form-control date-picker" formControlName="accusedBirthDate" placeholder="yyyy-mm-dd" [matDatepicker]="accusedBirthDatePicker" (focus)="accusedBirthDatePicker.open()" (click)="accusedBirthDatePicker.open()" [max]="todaysDate" [min]="oldestHuman" readonly>
                 <mat-datepicker #accusedBirthDatePicker></mat-datepicker> -->

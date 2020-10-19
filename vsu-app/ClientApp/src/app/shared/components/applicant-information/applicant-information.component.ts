@@ -30,6 +30,7 @@ export class ApplicantInformationComponent extends FormBase implements OnInit {
     }
     ngOnInit() {
         this.form = <FormGroup>this.controlContainer.control;
+        setTimeout(() => { this.form.markAsTouched(); }, 0);
         console.log("applicant info component");
         console.log(this.form);
 
@@ -89,7 +90,7 @@ export class ApplicantInformationComponent extends FormBase implements OnInit {
         let contactMethods = this.form.get('contactMethods') as FormArray;
         for (let i = 0; i < contactMethods.controls.length; ++i) {
             let thisMethod = contactMethods.controls[i];
-            if (thisMethod.get('val').value && thisMethod.get('val').valid) {
+            if (thisMethod.get('val').value && thisMethod.get('val').valid && thisMethod.get('leaveMessage').value == true) {
                 isValid = true;
             }
         }
