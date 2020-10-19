@@ -5,12 +5,12 @@ import { NotificationApplicationComponent } from './noticiation-application/noti
 
 const routes: Routes = [
   {
-    path: '',
-    component: HomeComponent
+    path: '', redirectTo: 'notification_applicaiton', pathMatch: 'full'
+    // component: NotificationApplicationComponent
   },
   {
-      path: 'notification_applicaiton',
-      component: NotificationApplicationComponent
+    path: 'notification_applicaiton',
+    component: NotificationApplicationComponent
   }
 ];
 
