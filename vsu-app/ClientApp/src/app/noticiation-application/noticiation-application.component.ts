@@ -39,6 +39,8 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
     recipientDetailsHelper = new RecipientDetailsHelper();
     authInfoHelper = new AuthInfoHelper();
 
+    window = window;
+
     constructor(public fb: FormBuilder,
         private router: Router,
         private lookupService: LookupService,
