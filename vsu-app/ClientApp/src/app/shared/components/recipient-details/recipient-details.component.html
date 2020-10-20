@@ -39,7 +39,7 @@
     <!-- Victim Service Worker -->
     <div class="victimServiceWorker" formArrayName="victimServiceWorker" *ngFor="let item of form.get('victimServiceWorker')['controls']; let i = index;">
         <div [formGroupName]="i">
-            <p>Victim Service Worker (VSW) Information</p>
+            <p><strong>Victim Service Worker (VSW) Information</strong></p>
             <p><em>If you have a VSW, you may choose to provide their contact information here.</em></p>
 
             <div class="row">
@@ -95,7 +95,7 @@
     <!-- Designate Information -->
     <div class="designate" formArrayName="designate" *ngFor="let item of form.get('designate')['controls']; let i = index;">
         <div [formGroupName]="i">
-            <p>Designate Information</p>
+            <p><strong>Designate Information</strong></p>
             <p><em>Fill our this section if you would like to designate a contact person (other than your VSW) to receive notifications on your behalf.</em></p>
 
             <div class="row">

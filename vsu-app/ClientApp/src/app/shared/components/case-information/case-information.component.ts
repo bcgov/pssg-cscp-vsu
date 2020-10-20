@@ -76,13 +76,13 @@ export class CaseInformationComponent extends FormBase implements OnInit {
   }
 
   showOtherGender(show: boolean) {
-    let genderOther = this.form.get('genderOther');
-    if (show) {
-      this.setControlValidators(genderOther, [Validators.required]);
-    }
-    else {
-      this.clearControlValidators(genderOther);
-      genderOther.patchValue('');
-    }
+    // let genderOther = this.form.get('genderOther');
+    // if (show) {
+    //   this.setControlValidators(genderOther, [Validators.required]);
+    // }
+    // else {
+    //   this.clearControlValidators(genderOther);
+    //   genderOther.patchValue('');
+    // }
   }
 }
