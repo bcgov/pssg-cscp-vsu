@@ -11,13 +11,13 @@ export GIT_REF="development"
 
 # The project components
 # - defaults to the support the Simple Project Structure
-export components="vsu"
+export components="vsu-app"
 
 # The builds to be triggered after buildconfigs created (not auto-triggered)
-export builds="vsu"
+export builds="vsu-app"
 
 # The images to be tagged after build
-export images="vsu"
+export images="vsu-app"
 
 # The routes for the project
 export routes=""
