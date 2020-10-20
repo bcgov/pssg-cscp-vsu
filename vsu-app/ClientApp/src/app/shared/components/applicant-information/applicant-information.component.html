@@ -135,7 +135,7 @@
                 <!-- contact type val options -->
                 <div class="col-md-4" *ngIf="item.get('type').value === 'telephone'">
                     <app-field label="Telephone Number" [required]="false" [valid]="isMyControlValid(item.get('val'))" errorMessage="Please enter your phone number">
-                        <input class="form-control" mask='000-000-0000' type="text" formControlName="val" *ngIf="form.get('address.country').value === 'Canada' || form.get('primaryAddress.country').value === 'United States of America'; else phone_no_mask" (change)="checkAtLeastOneContactMethod()">
+                        <input class="form-control" mask='000-000-0000' type="text" formControlName="val" *ngIf="form.get('address.country').value === 'Canada' || form.get('address.country').value === 'United States of America'; else phone_no_mask" (change)="checkAtLeastOneContactMethod()">
                         <ng-template #phone_no_mask>
                             <input class="form-control" type="text" formControlName="val" digitOnly (change)="checkAtLeastOneContactMethod()">
                         </ng-template>
@@ -143,7 +143,7 @@
                 </div>
                 <div class="col-md-4" *ngIf="item.get('type').value === 'mobile'">
                     <app-field label="Cellular Number" [required]="false" [valid]="isMyControlValid(item.get('val'))" errorMessage="Please enter your cell number">
-                        <input class="form-control" mask='000-000-0000' type="text" formControlName="val" *ngIf="form.get('address.country').value === 'Canada' || form.get('primaryAddress.country').value === 'United States of America'; else cell_no_mask" (change)="checkAtLeastOneContactMethod()">
+                        <input class="form-control" mask='000-000-0000' type="text" formControlName="val" *ngIf="form.get('address.country').value === 'Canada' || form.get('address.country').value === 'United States of America'; else cell_no_mask" (change)="checkAtLeastOneContactMethod()">
                         <ng-template #cell_no_mask>
                             <input class="form-control" type="text" formControlName="val" digitOnly (change)="checkAtLeastOneContactMethod()">
                         </ng-template>

@@ -16,10 +16,14 @@ export const config = {
         postalCodeName: 'Postal Code',
         postalCodeSample: 'V9A 0A9',
         areaType: 'Province',
+        name: 'Canada',
+        defaultProvince: 'British Columbia',
     },
     usa: {
         postalCodeName: 'ZIP Code',
         postalCodeSample: '10001',
         areaType: 'State',
+        name: 'United States of America',
+        defaultProvince: 'Washington',
     }
 }

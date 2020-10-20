@@ -5,6 +5,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/materia
 import { MomentDateAdapter } from "@angular/material-moment-adapter";
 import { noop, Observable, Observer, of, throwError } from 'rxjs';
 import { retry, catchError, map, switchMap, tap } from 'rxjs/operators';
+import { config } from "../../../../config";
 import { CitiesSearchResponse, iCity, iLookupData } from "../../../models/lookup-data.model";
 import { EnumHelper, MY_FORMATS, } from "../../enums-list";
 import { FormBase } from "../../form-base";
@@ -25,6 +26,9 @@ export class RecipientDetailsComponent extends FormBase implements OnInit {
 
     NOTIFICATION_METHODS: string[] = [];
 
+    //city search, let's default to B.C. Canada
+    countryVal: string = config.canada.name;
+    provinceVal: string = config.canada.defaultProvince;
     cityList: string[] = [];
     search: string;
     suggestions$: Observable<iCity[]>;
@@ -73,13 +77,16 @@ export class RecipientDetailsComponent extends FormBase implements OnInit {
 
         //city search
         this.suggestions$ = new Observable((observer: Observer<string>) => {
-            observer.next(this.form['controls']['victimServiceWorker']['controls']['city'].value.toString());
+            // let workers = this.form.get('victimServiceWorker')['controls'][0].get('city')
+            // let cityControl = workers.controls[0].get('city');
+            observer.next(this.form.get('victimServiceWorker')['controls'][0].get('city').value.toString());
         }).pipe(
             switchMap((query: string) => {
                 if (query) {
-                    let searchVal = this.form['controls']['victimServiceWorker']['controls']['city'].value.toString();
+                    let searchVal = this.form.get('victimServiceWorker')['controls'][0].get('city').value.toString();
                     let limit = 15;
-                    return this.http.get<any>(`${this.apiUrl}/cities/search?searchVal=${searchVal}&limit=${limit}`, { headers: this.headers }).pipe(
+                    // return this.http.get<any>(`${this.apiUrl}/cities/search?searchVal=${searchVal}&limit=${limit}`, { headers: this.headers }).pipe(
+                    return this.http.get<any>(`${this.apiUrl}/cities/search?country=${this.countryVal}&province=${this.provinceVal}&searchVal=${searchVal}&limit=${limit}`, { headers: this.headers }).pipe(
                         retry(3),
                         catchError(this.handleError)
                     ).pipe(

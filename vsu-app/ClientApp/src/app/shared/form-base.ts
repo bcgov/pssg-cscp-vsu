@@ -57,11 +57,6 @@ export class FormBase {
 
     validateDate(control: AbstractControl) {
         let date = moment(new Date(control.value));
-        console.log("validate date");
-        console.log(control.value);
-        console.log(date);
-        console.log(this.today);
-        console.log(this.oldestHuman);
         if (date.isAfter(moment(this.today))) {
             control.setErrors({ 'incorrect': true });
         }
