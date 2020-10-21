@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +8,6 @@ import { Component, OnInit } from '@angular/core';
 export class AppComponent {
   title = '';
   previousUrl: string;
-  public versionInfo: VersionInfo;
   public isNewUser: boolean;
   public isDevMode: boolean;
 
@@ -26,21 +25,4 @@ export class AppComponent {
     }
     return result;
   }
-
-  // showVersionInfo(): void {
-  //   this.dialog.open(VersionInfoDialog, {
-  //     data: this.versionInfo
-  //   });
-  // }
-}
-
-class VersionInfo {
-  baseUri: string;
-  basePath: string;
-  environment: string;
-  sourceCommit: string;
-  sourceRepository: string;
-  sourceReference: string;
-  fileCreationTime: string;
-  fileVersion: string;
 }

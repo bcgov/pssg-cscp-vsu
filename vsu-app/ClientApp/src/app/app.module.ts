@@ -6,6 +6,7 @@ import { AuthorizationComponent } from './shared/components/authorization/author
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { CaseInformationComponent } from './shared/components/case-information/case-information.component';
+import { DateFieldComponent } from './shared/date-field/date-field.component';
 import { FieldComponent } from './shared/field/field.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomeComponent } from './home/home.component';
@@ -15,14 +16,14 @@ import { MatDatepickerModule, MatDialogModule, MatIconModule, MatStepperModule }
 import { NgModule } from '@angular/core';
 import { NgxMaskModule } from 'ngx-mask';
 import { NotificationApplicationComponent } from './noticiation-application/noticiation-application.component';
+import { NotificationBannerComponent } from './shared/notification-banner/notification-banner.component';
 import { OverviewComponent } from './shared/components/overview/overview.component';
 import { RecipientDetailsComponent } from './shared/components/recipient-details/recipient-details.component';
+import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { SignPadDialog } from './shared/dialogs/sign-dialog/sign-dialog.component';
 import { SignaturePadModule } from 'angular2-signaturepad';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
-import { NotificationBannerComponent } from './shared/notification-banner/notification-banner.component';
-import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
     ApplicantInformationComponent,
     AuthorizationComponent,
     CaseInformationComponent,
+    DateFieldComponent,
     FieldComponent,
     HomeComponent,
     NotificationApplicationComponent,

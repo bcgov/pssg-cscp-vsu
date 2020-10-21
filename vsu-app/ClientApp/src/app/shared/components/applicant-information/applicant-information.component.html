@@ -56,9 +56,9 @@
     </div>
 
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-6 date-col">
             <app-field label="Birth Date" [required]="true" [valid]="isFieldValid('birthDate')" errorMessage="Please enter your birth date">
-                <input class="form-control" type="text" formControlName="birthDate" placeholder="yyyy/mm/dd" mask="0000/00/00" [dropSpecialCharacters]="false" (change)="validateDate(form.get('birthDate'))">
+                <app-date-field [control]="form.get('birthDate')" [max]="today"></app-date-field>
             </app-field>
         </div>
 

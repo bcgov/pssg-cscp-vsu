@@ -13,7 +13,7 @@ export class ApplicantInfoHelper {
             lastName: ['', Validators.required],
 
             birthDate: ['', [Validators.required]],
-            gender: [''], //, [Validators.required]],
+            gender: [''],
             genderOther: [''],
 
             preferredLanguage: ['English'],

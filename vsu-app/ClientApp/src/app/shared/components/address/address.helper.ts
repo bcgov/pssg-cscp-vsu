@@ -20,13 +20,11 @@ export class AddressHelper {
         for (let control of addressControls) {
             control.clearValidators();
             control.setErrors(null, options);
-            // control.markAsTouched();
             control.updateValueAndValidity(options);
         }
 
         postalControl.setValidators([Validators.pattern(this.postalRegex)]);
         postalControl.setErrors(null, options);
-        // postalControl.markAsTouched();
         postalControl.updateValueAndValidity(options);
     }
 
@@ -59,7 +57,6 @@ export class AddressHelper {
 
         for (let control of addressControls) {
             control.setValidators([Validators.required]);
-            // control.markAsTouched();
             control.updateValueAndValidity(options);
         }
         if (form.get(field + '.country').value === "Canada") {
@@ -71,7 +68,6 @@ export class AddressHelper {
         else {
             postalControl.setValidators([Validators.required]);
         }
-        // postalControl.markAsTouched();
         postalControl.updateValueAndValidity(options);
     }
 

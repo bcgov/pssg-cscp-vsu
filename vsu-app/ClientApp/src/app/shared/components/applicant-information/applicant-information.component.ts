@@ -21,6 +21,7 @@ export class ApplicantInformationComponent extends FormBase implements OnInit {
     public form: FormGroup;
 
     showOtherApplicantType: boolean = false;
+    today: Date = new Date();
 
     EnumHelper = new EnumHelper();
     applicantInfoHelper = new ApplicantInfoHelper();
