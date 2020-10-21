@@ -123,7 +123,6 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
     }
 
     gotoPage(selectPage: MatStepper): void {
-        // When a user clicks on the stepper this is triggered
         window.scroll(0, 0);
         this.showValidationMessage = false;
         this.currentFormStep = selectPage.selectedIndex;

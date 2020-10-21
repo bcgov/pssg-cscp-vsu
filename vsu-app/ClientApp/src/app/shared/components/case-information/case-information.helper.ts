@@ -11,8 +11,6 @@ export class CaseInfoInfoHelper {
             gender: ['', [Validators.required]],
             genderOther: [''],
             courtInfo: fb.array([this.createCourtInfo(fb)]),
-            // courtFileNumber: ['', [Validators.required]],
-            // courtLocation: ['', [Validators.required]],
 
             accusedFirstName: ['', Validators.required],
             accusedMiddleName: [''],

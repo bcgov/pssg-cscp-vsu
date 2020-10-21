@@ -51,11 +51,8 @@ export class RecipientDetailsComponent extends FormBase implements OnInit {
     protected handleError(err): Observable<never> {
         let errorMessage = '';
         if (err.error instanceof ErrorEvent) {
-            // A client-side or network error occurred. Handle it accordingly.
             errorMessage = err.error.message;
         } else {
-            // The backend returned an unsuccessful response code.
-            // The response body may contain clues as to what went wrong,
             errorMessage = `Backend returned code ${err.status}, body was: ${err.message}`;
         }
         return throwError(errorMessage);
@@ -77,8 +74,6 @@ export class RecipientDetailsComponent extends FormBase implements OnInit {
 
         //city search
         this.suggestions$ = new Observable((observer: Observer<string>) => {
-            // let workers = this.form.get('victimServiceWorker')['controls'][0].get('city')
-            // let cityControl = workers.controls[0].get('city');
             observer.next(this.form.get('victimServiceWorker')['controls'][0].get('city').value.toString());
         }).pipe(
             switchMap((query: string) => {
@@ -98,7 +93,6 @@ export class RecipientDetailsComponent extends FormBase implements OnInit {
                             else return [];
                         }),
                         tap(() => noop, err => {
-                            // in case of http error
                             this.errorMessage = err && err.message || 'Something goes wrong';
                         })
                     );

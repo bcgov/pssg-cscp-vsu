@@ -3,7 +3,7 @@ import * as moment from 'moment';
 
 export class FormBase {
     form: FormGroup;
-    today = new Date(); // for the birthdate validation
+    today = new Date();
     oldestHuman = new Date(this.today.getFullYear() - 120, this.today.getMonth(), this.today.getDay());
 
     isFieldValid(field: string, disabled: boolean = false) {
@@ -82,7 +82,6 @@ export class FormBase {
         return errors;
     }
 
-    // Requires you to use the [InnerHTML] property on an element rather than {{ }} interpolation
     public checkmarkOrEmpty(controlName: string): string {
         var control = this.form.get(controlName);
 

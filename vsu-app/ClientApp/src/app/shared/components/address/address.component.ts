@@ -48,11 +48,8 @@ export class AddressComponent implements OnInit {
   protected handleError(err): Observable<never> {
     let errorMessage = '';
     if (err.error instanceof ErrorEvent) {
-      // A client-side or network error occurred. Handle it accordingly.
       errorMessage = err.error.message;
     } else {
-      // The backend returned an unsuccessful response code.
-      // The response body may contain clues as to what went wrong,
       errorMessage = `Backend returned code ${err.status}, body was: ${err.message}`;
     }
     return throwError(errorMessage);
@@ -81,7 +78,6 @@ export class AddressComponent implements OnInit {
               else return [];
             }),
             tap(() => noop, err => {
-              // in case of http error
               this.errorMessage = err && err.message || 'Something goes wrong';
             })
           );
@@ -108,7 +104,6 @@ export class AddressComponent implements OnInit {
       }));
     }
 
-    // console.log(this.lookupData);
     if (!this.lookupData.provinces || this.lookupData.provinces.length == 0) {
       promise_array.push(new Promise((resolve, reject) => {
         this.lookupService.getProvinces().subscribe((res) => {
