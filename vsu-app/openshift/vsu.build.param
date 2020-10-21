@@ -5,7 +5,7 @@
 #=========================================================
 NAME=vsu.build
 GIT_REPO_URL=https://github.com/bcgov/pssg-cscp-vsu/
-GIT_REF=master
+GIT_REF=development
 SOURCE_CONTEXT_DIR=
 SOURCE_IMAGE_KIND=DockerImage
 SOURCE_IMAGE_NAME=registry.access.redhat.com/dotnet/dotnetcore-31-rhel7
