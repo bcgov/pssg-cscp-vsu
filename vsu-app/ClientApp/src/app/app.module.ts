@@ -24,6 +24,7 @@ import { SignPadDialog } from './shared/dialogs/sign-dialog/sign-dialog.componen
 import { SignaturePadModule } from 'angular2-signaturepad';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+import { NotificationApplicationService } from './services/notification-application.service';
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
   ],
   providers: [
     LookupService,
+    NotificationApplicationService,
     {
       provide: STEPPER_GLOBAL_OPTIONS,
       useValue: { showError: true }

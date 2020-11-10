@@ -6,7 +6,7 @@ import { MomentDateAdapter } from "@angular/material-moment-adapter";
 import { noop, Observable, Observer, of, throwError } from 'rxjs';
 import { retry, catchError, map, switchMap, tap } from 'rxjs/operators';
 import { config } from "../../../../config";
-import { CitiesSearchResponse, iCity, iLookupData } from "../../../models/lookup-data.model";
+import { CitiesSearchResponse, iCity, iLookupData } from "../../interfaces/lookup-data.interface";
 import { EnumHelper, MY_FORMATS, } from "../../enums-list";
 import { FormBase } from "../../form-base";
 import { RecipientDetailsHelper } from "./recipient-details.helper";
@@ -145,22 +145,18 @@ export class RecipientDetailsComponent extends FormBase implements OnInit {
     contactMethodChange(item: FormGroup) {
         let type = item.get('type').value;
         let current_validators = [];
-        switch (type) {
-            case 'telephone': {
-                current_validators = [Validators.minLength(10), Validators.maxLength(15)];
-                break;
-            }
-            case 'mobile': {
-                current_validators = [Validators.minLength(10), Validators.maxLength(15)];
-                break;
-            }
-            case 'email': {
-                current_validators = [Validators.email];
-                break;
-            }
-            default: {
-                break;
-            }
+
+        if (type == this.EnumHelper.ContactType.Telephone.val) {
+            current_validators = [Validators.minLength(10), Validators.maxLength(15)];
+        }
+        else if (type = this.EnumHelper.ContactType.Cellular.val) {
+            current_validators = [Validators.minLength(10), Validators.maxLength(15)];
+        }
+        else if (type = this.EnumHelper.ContactType.Email.val) {
+            current_validators = [Validators.email];
+        }
+        else {
+            console.log("didn't match...");
         }
 
         this.setControlValidators(item.get('val'), current_validators);
@@ -175,7 +171,7 @@ export class RecipientDetailsComponent extends FormBase implements OnInit {
         let contactMethods = designates.controls[0].get('contactMethods') as FormArray;
         for (let i = 0; i < contactMethods.controls.length; ++i) {
             let thisMethod = contactMethods.controls[i];
-            if (thisMethod.get('val').value && thisMethod.get('val').valid && thisMethod.get('leaveMessage').value == true) {
+            if (thisMethod.get('val').value && thisMethod.get('val').valid && thisMethod.get('leaveMessage').value == this.EnumHelper.Boolean.True.val) {
                 isValid = true;
             }
         }

@@ -156,15 +156,14 @@
                         <div class="col-md-4">
                             <app-field [label]="'Preferred Method of Contact ' + (j + 1)" [required]="false" [valid]="isMyControlValid(method.get('type'))" errorMessage="">
                                 <select class="form-control" formControlName="type" (change)="contactMethodChange(method)">
-                                    <option value="telephone">Telephone</option>
-                                    <option value="mobile">Cellular</option>
-                                    <option value="email">Email</option>
+                                    <option [value]="EnumHelper.ContactType.Telephone.val">Telephone</option>
+                                    <option [value]="EnumHelper.ContactType.Cellular.val">Cellular</option>
+                                    <option [value]="EnumHelper.ContactType.Email.val">Email</option>
                                 </select>
                             </app-field>
                         </div>
 
-                        <!-- contact type val options -->
-                        <div class="col-md-4" *ngIf="method.get('type').value === 'telephone'">
+                        <div class="col-md-4" *ngIf="method.get('type').value == EnumHelper.ContactType.Telephone.val">
                             <app-field label="Telephone Number" [required]="false" [valid]="isMyControlValid(method.get('val'))" errorMessage="Please enter your phone number">
                                 <input class="form-control" mask='000-000-0000' type="text" formControlName="val" *ngIf="item.get('address.country').value === 'Canada' || item.get('address.country').value === 'United States of America'; else phone_no_mask" (change)="checkAtLeastOneContactMethod()">
                                 <ng-template #phone_no_mask>
@@ -172,7 +171,7 @@
                                 </ng-template>
                             </app-field>
                         </div>
-                        <div class="col-md-4" *ngIf="method.get('type').value === 'mobile'">
+                        <div class="col-md-4" *ngIf="method.get('type').value == EnumHelper.ContactType.Cellular.val">
                             <app-field label="Cellular Number" [required]="false" [valid]="isMyControlValid(method.get('val'))" errorMessage="Please enter your cell number">
                                 <input class="form-control" mask='000-000-0000' type="text" formControlName="val" *ngIf="item.get('address.country').value === 'Canada' || item.get('address.country').value === 'United States of America'; else cell_no_mask" (change)="checkAtLeastOneContactMethod()">
                                 <ng-template #cell_no_mask>
@@ -180,21 +179,20 @@
                                 </ng-template>
                             </app-field>
                         </div>
-                        <div class="col-md-4" *ngIf="method.get('type').value === 'email'">
+                        <div class="col-md-4" *ngIf="method.get('type').value == EnumHelper.ContactType.Email.val">
                             <app-field label="Email Address" [required]="false" [valid]="isMyControlValid(method.get('val'))" errorMessage="Please enter your email address">
                                 <input class="form-control" type="text" formControlName="val" maxlength="100" (change)="checkAtLeastOneContactMethod()">
                             </app-field>
                         </div>
-                        <!--  -->
 
                         <div class="col-md-4">
                             <app-field label="May we leave a detailed message?" errorMessage="">
                                 <label class="inline-label">
-                                    <input type="radio" [value]="true" formControlName="leaveMessage" (change)="checkAtLeastOneContactMethod()">
+                                    <input type="radio" [value]="EnumHelper.Boolean.True.val" formControlName="leaveMessage" (change)="checkAtLeastOneContactMethod()">
                                     <span>Yes</span>
                                 </label>
                                 <label class="inline-label">
-                                    <input type="radio" [value]="false" formControlName="leaveMessage" (change)="checkAtLeastOneContactMethod()">
+                                    <input type="radio" [value]="EnumHelper.Boolean.False.val" formControlName="leaveMessage" (change)="checkAtLeastOneContactMethod()">
                                     <span>No</span>
                                 </label>
                             </app-field>

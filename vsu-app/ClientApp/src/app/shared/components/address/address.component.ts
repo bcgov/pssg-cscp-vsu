@@ -3,7 +3,7 @@ import { FormGroup, Validators, FormControl } from "@angular/forms";
 import { noop, Observable, Observer, of, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { retry, catchError, map, switchMap, tap } from 'rxjs/operators';
-import { CitiesSearchResponse, iCity, iCountry, iLookupData, iProvince } from '../../../models/lookup-data.model';
+import { CitiesSearchResponse, iCity, iCountry, iLookupData, iProvince } from '../../interfaces/lookup-data.interface';
 import { config } from '../../../../config';
 import { POSTAL_CODE, ZIP_CODE } from '../../regex.constants';
 import { LookupService } from '../../../services/lookup.service';

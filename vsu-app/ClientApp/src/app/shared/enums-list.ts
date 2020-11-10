@@ -32,4 +32,15 @@ export class EnumHelper {
         Female: { val: 100000001, name: "F" },
         X:      { val: 100000002, name: "X" },
       };
+
+    public Boolean = {
+        True:   { val: 100000001, name: "True"},
+        False:  { val: 100000000, name: "False"},
+    }
+
+    public ContactType = {
+        Telephone:  { val: 100000000, name: "Telephone"},
+        Cellular:   { val: 100000001, name: "Cellular"},
+        Email:      { val: 100000002, name: "Email"},
+    }
 }

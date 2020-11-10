@@ -1,7 +1,9 @@
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { EnumHelper } from "../../enums-list";
 import { POSTAL_CODE } from "../../regex.constants";
 
 export class RecipientDetailsHelper {
+    enum = new EnumHelper();
     postalRegex = POSTAL_CODE;
     public setupFormGroup(fb: FormBuilder): FormGroup {
         let group = {
@@ -22,21 +24,25 @@ export class RecipientDetailsHelper {
         return fb.group(group);
     }
 
-    public createContactMethod(fb: FormBuilder, type: string = '') {
+    public createContactMethod(fb: FormBuilder, typeString: string = '') {
         let current_validators = [];
         let label = '';
-        switch (type) {
+        let type: number;
+        switch (typeString) {
             case 'telephone': {
+                type = this.enum.ContactType.Telephone.val;
                 current_validators = [Validators.minLength(10), Validators.maxLength(15)];
                 label = 'Telephone Number';
                 break;
             }
             case 'mobile': {
+                type = this.enum.ContactType.Cellular.val;
                 current_validators = [Validators.minLength(10), Validators.maxLength(15)];
                 label = 'Cellular Number';
                 break;
             }
             case 'email': {
+                type = this.enum.ContactType.Email.val;
                 current_validators = [Validators.email];
                 label = 'Email Address';
                 break;

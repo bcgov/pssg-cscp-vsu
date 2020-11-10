@@ -276,23 +276,33 @@ export class FormBase {
             applicantInfo.get('firstName').patchValue(victimInfo.get('firstName').value);
             applicantInfo.get('middleName').patchValue(victimInfo.get('middleName').value);
             applicantInfo.get('lastName').patchValue(victimInfo.get('lastName').value);
+            applicantInfo.get('birthDate').patchValue(victimInfo.get('birthDate').value);
+            applicantInfo.get('gender').patchValue(victimInfo.get('gender').value);
 
             applicantInfo.get('firstName').setErrors(null, options);
             applicantInfo.get('middleName').setErrors(null, options);
             applicantInfo.get('lastName').setErrors(null, options);
+            applicantInfo.get('birthDate').setErrors(null, options);
+            applicantInfo.get('gender').setErrors(null, options);
 
             applicantInfo.get('firstName').disable(options);
             applicantInfo.get('middleName').disable(options);
             applicantInfo.get('lastName').disable(options);
+            applicantInfo.get('birthDate').disable(options);
+            applicantInfo.get('gender').disable(options);
         }
         else {
             applicantInfo.get('firstName').enable(options);
             applicantInfo.get('middleName').enable(options);
             applicantInfo.get('lastName').enable(options);
+            applicantInfo.get('birthDate').enable(options);
+            applicantInfo.get('gender').enable(options);
         }
 
         applicantInfo.get('firstName').updateValueAndValidity(options);
         applicantInfo.get('middleName').updateValueAndValidity(options);
         applicantInfo.get('lastName').updateValueAndValidity(options);
+        applicantInfo.get('birthDate').updateValueAndValidity(options);
+        applicantInfo.get('gender').updateValueAndValidity(options);
     }
 }

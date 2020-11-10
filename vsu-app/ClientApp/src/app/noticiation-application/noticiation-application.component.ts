@@ -2,7 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatStepper, MatVerticalStepper } from '@angular/material';
 import { Router } from '@angular/router';
-import { iLookupData } from '../models/lookup-data.model';
+import { iNotificationApplication, iCaseInformation, iApplicantInformation, iRecipientDetails, iAuthorizationInformation } from '../shared/interfaces/notification-application.interface';
+import { iLookupData } from '../shared/interfaces/lookup-data.interface';
 import { LookupService } from '../services/lookup.service';
 import { NotificationQueueService } from '../services/notification-queue.service';
 import { ApplicantInfoHelper } from '../shared/components/applicant-information/applicant-information.helper';
@@ -10,6 +11,8 @@ import { AuthInfoHelper } from '../shared/components/authorization/authorization
 import { CaseInfoInfoHelper } from '../shared/components/case-information/case-information.helper';
 import { RecipientDetailsHelper } from '../shared/components/recipient-details/recipient-details.helper';
 import { FormBase } from '../shared/form-base';
+import { NotificationApplicationService } from '../services/notification-application.service';
+import { convertNotificationApplicationToCRM } from '../shared/interfaces/converters/notification-application.web.to.crm';
 
 @Component({
     selector: 'app-notification-application',
@@ -44,7 +47,7 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
     constructor(public fb: FormBuilder,
         private router: Router,
         private lookupService: LookupService,
-        private notificationQueueService: NotificationQueueService,) {
+        private notificationApplicationService: NotificationApplicationService,) {
         super();
     }
 
@@ -99,13 +102,38 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
         return this.fb.group(group);
     }
 
+    harvestForm(): iNotificationApplication {
+        let data = {
+            CaseInformation: this.form.get('caseInformation').value as iCaseInformation,
+            ApplicantInformation: this.form.get('applicantInformation').value as iApplicantInformation,
+            RecipientDetails: this.form.get('caseInformation').value as iRecipientDetails,
+            AuthorizationInformation: this.form.get('authorizationInformation').value as iAuthorizationInformation,
+        } as iNotificationApplication;
+
+        //using this as a workaround to collect values from disabled fields
+        if (data.ApplicantInformation.applicantInfoSameAsVictim == true) {
+            data.ApplicantInformation.firstName = data.CaseInformation.firstName;
+            data.ApplicantInformation.middleName = data.CaseInformation.middleName;
+            data.ApplicantInformation.lastName = data.CaseInformation.lastName;
+            data.ApplicantInformation.birthDate = data.CaseInformation.birthDate;
+            data.ApplicantInformation.gender = data.CaseInformation.gender;
+        }
+
+        return data;
+    }
+
     submit() {
         console.log("submit");
         console.log(this.form);
-        // this.submitting = true;
         if (this.form.valid) {
+            this.submitting = true;
             console.log("form is valid - submit");
-            // this.notificationQueueService.addNotification(`Pretending that submit just happened.`, 'success', 5000);
+            let application = this.harvestForm();
+            let data = convertNotificationApplicationToCRM(application);
+            this.notificationApplicationService.submit(data).subscribe((res) => {
+                this.submitting = false;
+                console.log(res);
+            });
         }
         else {
             console.log("form is NOT valid - NO submit");

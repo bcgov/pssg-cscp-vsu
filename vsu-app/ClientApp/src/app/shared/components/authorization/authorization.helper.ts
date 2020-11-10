@@ -12,7 +12,6 @@ export class AuthInfoHelper {
             fullName: ['', Validators.required],
             date: [dateString, Validators.required],
             signature: ['', Validators.required],
-            additionalComments: ['']
         };
 
         return fb.group(group);
