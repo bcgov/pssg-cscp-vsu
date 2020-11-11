@@ -85,7 +85,7 @@
                 </div>
             </div>
 
-            <p>Note: Your VSW can obtain court updates through Court Services Online unless there is a publication ban on the court file.</p>
+            <p><strong>Note:</strong> Your VSW can obtain court updates through Court Services Online unless there is a publication ban on the court file.</p>
         </div>
     </div>
     <!-- END Victim Service Worker -->
@@ -137,11 +137,11 @@
                 <div class="col">
                     <app-field label="May we send correspondence and notification information to the above address? (if no, please provide your designate's email address below):" errorMessage="">
                         <label class="inline-label">
-                            <input type="radio" [value]="true" name="mayWeSendCorrespondence" formControlName="mayWeSendCorrespondence">
+                            <input type="radio" [value]="enumHelper.Boolean.True.val" name="mayWeSendCorrespondence" formControlName="mayWeSendCorrespondence">
                             <span>Yes</span>
                         </label>
                         <label class="inline-label">
-                            <input type="radio" [value]="false" name="mayWeSendCorrespondence" formControlName="mayWeSendCorrespondence">
+                            <input type="radio" [value]="enumHelper.Boolean.False.val" name="mayWeSendCorrespondence" formControlName="mayWeSendCorrespondence">
                             <span>No</span>
                         </label>
                     </app-field>
@@ -151,54 +151,7 @@
             <p>Please list one or more methods of contact (telephone / cellular / email) in order of preference and indicate if we may leave a detailed message (e.g. our organization name, phone number, case information, notification details):</p>
 
             <div class="contactMethods" formArrayName="contactMethods" *ngFor="let method of item.get('contactMethods')['controls']; let j = index;">
-                <div [formGroupName]="j" class="contact-methods">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <app-field [label]="'Preferred Method of Contact ' + (j + 1)" [required]="false" [valid]="isMyControlValid(method.get('type'))" errorMessage="">
-                                <select class="form-control" formControlName="type" (change)="contactMethodChange(method)">
-                                    <option [value]="EnumHelper.ContactType.Telephone.val">Telephone</option>
-                                    <option [value]="EnumHelper.ContactType.Cellular.val">Cellular</option>
-                                    <option [value]="EnumHelper.ContactType.Email.val">Email</option>
-                                </select>
-                            </app-field>
-                        </div>
-
-                        <div class="col-md-4" *ngIf="method.get('type').value == EnumHelper.ContactType.Telephone.val">
-                            <app-field label="Telephone Number" [required]="false" [valid]="isMyControlValid(method.get('val'))" errorMessage="Please enter your phone number">
-                                <input class="form-control" mask='000-000-0000' type="text" formControlName="val" *ngIf="item.get('address.country').value === 'Canada' || item.get('address.country').value === 'United States of America'; else phone_no_mask" (change)="checkAtLeastOneContactMethod()">
-                                <ng-template #phone_no_mask>
-                                    <input class="form-control" type="text" formControlName="val" digitOnly (change)="checkAtLeastOneContactMethod()">
-                                </ng-template>
-                            </app-field>
-                        </div>
-                        <div class="col-md-4" *ngIf="method.get('type').value == EnumHelper.ContactType.Cellular.val">
-                            <app-field label="Cellular Number" [required]="false" [valid]="isMyControlValid(method.get('val'))" errorMessage="Please enter your cell number">
-                                <input class="form-control" mask='000-000-0000' type="text" formControlName="val" *ngIf="item.get('address.country').value === 'Canada' || item.get('address.country').value === 'United States of America'; else cell_no_mask" (change)="checkAtLeastOneContactMethod()">
-                                <ng-template #cell_no_mask>
-                                    <input class="form-control" type="text" formControlName="val" digitOnly (change)="checkAtLeastOneContactMethod()">
-                                </ng-template>
-                            </app-field>
-                        </div>
-                        <div class="col-md-4" *ngIf="method.get('type').value == EnumHelper.ContactType.Email.val">
-                            <app-field label="Email Address" [required]="false" [valid]="isMyControlValid(method.get('val'))" errorMessage="Please enter your email address">
-                                <input class="form-control" type="text" formControlName="val" maxlength="100" (change)="checkAtLeastOneContactMethod()">
-                            </app-field>
-                        </div>
-
-                        <div class="col-md-4">
-                            <app-field label="May we leave a detailed message?" errorMessage="">
-                                <label class="inline-label">
-                                    <input type="radio" [value]="EnumHelper.Boolean.True.val" formControlName="leaveMessage" (change)="checkAtLeastOneContactMethod()">
-                                    <span>Yes</span>
-                                </label>
-                                <label class="inline-label">
-                                    <input type="radio" [value]="EnumHelper.Boolean.False.val" formControlName="leaveMessage" (change)="checkAtLeastOneContactMethod()">
-                                    <span>No</span>
-                                </label>
-                            </app-field>
-                        </div>
-                    </div>
-                </div>
+                <app-contact-method [formGroup]="method" [formGroupName]="j" [number]="j" [parent]="item"></app-contact-method>
             </div>
 
             <app-field [valid]="isMyControlValid(item.get('atLeastOneContactMethod'))" errorMessage="Please enter at least one contact method">
@@ -248,7 +201,7 @@
     </app-field>
 
     <app-field label="Additional Comments">
-        <textarea class="form-control bigger" formControlName="additionalComments" maxlength="750"></textarea>
+        <textarea class="form-control bigger" formControlName="additionalComments" maxlength="500"></textarea>
     </app-field>
     <!-- END Notification Details -->
 </div>

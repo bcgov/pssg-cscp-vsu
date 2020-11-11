@@ -55,9 +55,9 @@ export class CaseInformationComponent extends FormBase implements OnInit {
 
   addAdditionalCourtInfo() {
     let courtInfo = this.form.get('courtInfo') as FormArray;
-    let previousCourt = courtInfo.controls[courtInfo.controls.length - 1];
-    let location = previousCourt.get('courtLocation').value;
-    courtInfo.push(this.caseInfoHelper.createCourtInfo(this.fb, location));
+    // let previousCourt = courtInfo.controls[courtInfo.controls.length - 1];
+    // let location = previousCourt.get('courtLocation').value;
+    courtInfo.push(this.caseInfoHelper.createCourtInfo(this.fb));
   }
 
   removeAdditionalCourtInfo(index: number) {

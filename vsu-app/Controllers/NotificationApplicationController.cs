@@ -1,7 +1,8 @@
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Gov.Cscp.Victims.Public.Services;
 using Gov.Cscp.Victims.Public.Models;
+using Gov.Cscp.Victims.Public.Services;
+using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace Gov.Cscp.Victims.Public.Controllers
 {
@@ -20,8 +21,10 @@ namespace Gov.Cscp.Victims.Public.Controllers
         {
             try
             {
-                string endpointUrl = "vsu_SetApplication";
-                string modelString = System.Text.Json.JsonSerializer.Serialize(model);
+                string endpointUrl = "vsd_CreateVSUCase";
+                JsonSerializerOptions options = new JsonSerializerOptions();
+                options.IgnoreNullValues = true;
+                string modelString = System.Text.Json.JsonSerializer.Serialize(model, options);
                 DynamicsResult result = await _dynamicsResultService.Post(endpointUrl, modelString);
                 return StatusCode((int)result.statusCode, result.result.ToString());
             }

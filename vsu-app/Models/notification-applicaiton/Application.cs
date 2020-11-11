@@ -5,21 +5,22 @@ namespace Gov.Cscp.Victims.Public.Models
     public class Application
     {
         public string fortunecookietype { get { return "Microsoft.Dynamics.CRM.vsd_application"; } }
-
+        public int vsd_vsu_applicationtype { get; set; }
         public string vsd_cvap_victimfirstname { get; set; }
         public string vsd_cvap_victimmiddlename { get; set; }
         public string vsd_cvap_victimlastname { get; set; }
         public DateTime? vsd_cvap_victimbirthdate { get; set; }
         public int vsd_cvap_victimgendercode { get; set; }
 
-        public int vsd_applicanttype { get; set; }
+        public int vsd_vsu_applicanttype { get; set; }
+        public string vsd_vsuapplicanttypeother { get; set; }
         public string vsd_applicantsfirstname { get; set; }
         public string vsd_applicantsmiddlename { get; set; }
         public string vsd_applicantslastname { get; set; }
         public int vsd_applicantsgendercode { get; set; }
         public DateTime? vsd_applicantsbirthdate { get; set; }
 
-        public int? vsd_applicantsmaritalstatus { get; set; }
+        // public int? vsd_applicantsmaritalstatus { get; set; }
         public string vsd_applicantspreferredlanguage { get; set; }
         public int? vsd_applicantsinterpreterneeded { get; set; }
         public string vsd_applicantsprimaryaddressline1 { get; set; }
@@ -28,6 +29,7 @@ namespace Gov.Cscp.Victims.Public.Models
         public string vsd_applicantsprimaryprovince { get; set; }
         public string vsd_applicantsprimarycountry { get; set; }
         public string vsd_applicantsprimarypostalcode { get; set; }
+        public int? vsd_vsu_oktosendmail { get; set; }
         public int? vsd_vsu_methodofcontact1type { get; set; }
         public string vsd_vsu_methodofcontact1number { get; set; }
         public int? vsd_vsu_methodofcontact1leavedetailedmessage { get; set; }
@@ -44,6 +46,7 @@ namespace Gov.Cscp.Victims.Public.Models
         public int? vsd_vsu_updatesonallcriminalcourtappearances { get; set; }
         public int? vsd_vsu_criminalcourtordersissued { get; set; }
         public int? vsd_vsu_bccorrectionsinformation { get; set; }
+        public string vsd_vsu_notificationadditionalcomments { get; set; }
 
         public int? vsd_vsu_infosharecscpbc { get; set; }
         public int? vsd_vsu_infosharevsu { get; set; }

@@ -50,7 +50,9 @@
       </div>
       <div class="col-md-6">
         <app-field label="Date" [required]="true" [valid]="isFieldValid('date')" errorMessage="Please enter the date">
-          <input class="form-control" type="text" formControlName="date" placeholder="yyyy/mm/dd" mask="0000/00/00" [dropSpecialCharacters]="false" (change)="validateDate(form.get('date'))">
+          <!-- <input class="form-control" type="text" formControlName="date" placeholder="yyyy/mm/dd" mask="0000/00/00" [dropSpecialCharacters]="false" (change)="validateDate(form.get('date'))"> -->
+          <input type="text" [max]="today" class="form-control date-picker" formControlName="date" placeholder="yyyy/mm/dd" [matDatepicker]="datePicker" (focus)="datePicker.open()" (click)="datePicker.open()" readonly>
+          <mat-datepicker #datePicker></mat-datepicker>
         </app-field>
       </div>
     </div>

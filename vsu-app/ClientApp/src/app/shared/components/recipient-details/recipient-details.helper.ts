@@ -53,6 +53,7 @@ export class RecipientDetailsHelper {
         }
         return fb.group({
             type: [type],
+            previousType: [type],
             val: ['', current_validators],
             label: [label],
             leaveMessage: [''],
@@ -79,7 +80,7 @@ export class RecipientDetailsHelper {
 
             relationship: [''],
 
-            addressSameAsApplicant: [''],
+            addressSameAsApplicant: [false],
             address: fb.group({
                 line1: ['', [Validators.required]],
                 line2: [''],
@@ -89,8 +90,8 @@ export class RecipientDetailsHelper {
                 country: ['Canada', [Validators.required]],
             }),
 
-            mayWeSendCorrespondence: [true],
-            contactMethods: fb.array([this.createContactMethod(fb, 'telephone'), this.createContactMethod(fb, 'mobile'), this.createContactMethod(fb, 'email')]),
+            mayWeSendCorrespondence: [this.enum.Boolean.True.val],
+            contactMethods: fb.array([this.createContactMethod(fb), this.createContactMethod(fb), this.createContactMethod(fb)]),
             atLeastOneContactMethod: ['', Validators.required],
         });
     }

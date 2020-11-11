@@ -13,6 +13,8 @@ import { RecipientDetailsHelper } from '../shared/components/recipient-details/r
 import { FormBase } from '../shared/form-base';
 import { NotificationApplicationService } from '../services/notification-application.service';
 import { convertNotificationApplicationToCRM } from '../shared/interfaces/converters/notification-application.web.to.crm';
+import { Title } from '@angular/platform-browser';
+import { FORM_TITLES } from '../shared/enums-list';
 
 @Component({
     selector: 'app-notification-application',
@@ -37,6 +39,8 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
         courts: [],
     };
 
+    showConfirmation: boolean = false;
+
     caseInfoHelper = new CaseInfoInfoHelper();
     applicantInfoInfoHelper = new ApplicantInfoHelper();
     recipientDetailsHelper = new RecipientDetailsHelper();
@@ -47,11 +51,13 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
     constructor(public fb: FormBuilder,
         private router: Router,
         private lookupService: LookupService,
+        private titleService: Title,
         private notificationApplicationService: NotificationApplicationService,) {
         super();
     }
 
     ngOnInit() {
+        this.titleService.setTitle(FORM_TITLES.NOTIFICATION_APPLICATION);
         var ua = window.navigator.userAgent;
         this.isIE = /MSIE|Trident/.test(ua);
         this.form = this.buildApplicationForm();
@@ -106,7 +112,7 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
         let data = {
             CaseInformation: this.form.get('caseInformation').value as iCaseInformation,
             ApplicantInformation: this.form.get('applicantInformation').value as iApplicantInformation,
-            RecipientDetails: this.form.get('caseInformation').value as iRecipientDetails,
+            RecipientDetails: this.form.get('recipientDetails').value as iRecipientDetails,
             AuthorizationInformation: this.form.get('authorizationInformation').value as iAuthorizationInformation,
         } as iNotificationApplication;
 
@@ -117,6 +123,10 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
             data.ApplicantInformation.lastName = data.CaseInformation.lastName;
             data.ApplicantInformation.birthDate = data.CaseInformation.birthDate;
             data.ApplicantInformation.gender = data.CaseInformation.gender;
+        }
+
+        if (data.RecipientDetails.designate && data.RecipientDetails.designate.length > 0 && data.RecipientDetails.designate[0].addressSameAsApplicant == true) {
+            data.RecipientDetails.designate[0].address = data.ApplicantInformation.address;
         }
 
         return data;
@@ -133,12 +143,19 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
             this.notificationApplicationService.submit(data).subscribe((res) => {
                 this.submitting = false;
                 console.log(res);
+                if (res.IsSuccess) {
+                    this.showConfirmation = true;
+                    this.gotoNextStep(this.applicationStepper);
+                    console.log("TODO!! -- disable form");
+                }
+                else {
+                    console.log(res.Result);
+                }
             });
         }
         else {
             console.log("form is NOT valid - NO submit");
             this.validateAllFormFields(this.form);
-            // this.notificationQueueService.addNotification(`Form not valid`, 'danger', 50000);
         }
     }
 

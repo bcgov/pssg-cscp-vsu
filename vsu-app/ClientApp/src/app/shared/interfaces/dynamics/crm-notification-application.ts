@@ -7,13 +7,15 @@ export interface iNotificationApplicationCRM {
 }
 
 export interface iCRMApplication {
+    vsd_vsu_applicationtype: number;
     vsd_cvap_victimfirstname: string;
     vsd_cvap_victimmiddlename: string;
     vsd_cvap_victimlastname: string;
     vsd_cvap_victimbirthdate: Date;
     vsd_cvap_victimgendercode: number;
 
-    vsd_applicanttype: number;
+    vsd_vsu_applicanttype: number;
+    vsd_vsuapplicanttypeother: string;
     vsd_applicantsfirstname: string;
     vsd_applicantsmiddlename: string;
     vsd_applicantslastname: string;
@@ -31,6 +33,7 @@ export interface iCRMApplication {
     vsd_applicantsprimaryprovince: string;
     vsd_applicantsprimarycountry: string;
     vsd_applicantsprimarypostalcode: string;
+    vsd_vsu_oktosendmail: number;
     vsd_vsu_methodofcontact1type: number;
     vsd_vsu_methodofcontact1number: string;
     vsd_vsu_methodofcontact1leavedetailedmessage: number;
@@ -47,6 +50,7 @@ export interface iCRMApplication {
     vsd_vsu_updatesonallcriminalcourtappearances: number;
     vsd_vsu_criminalcourtordersissued: number;
     vsd_vsu_bccorrectionsinformation: number;
+    vsd_vsu_notificationadditionalcomments: string;
 
     vsd_vsu_infosharecscpbc: number;
     vsd_vsu_infosharevsu: number;
@@ -83,6 +87,10 @@ export interface iCRMParticipant {
     vsd_city?: string;
     vsd_province?: string;
     vsd_postalcode?: string;
+
+    //This field is in the design, but not in CRM - placeholder for if/when it gets added
+    // vsd_vsu_oktosendmail?: number;
+    
     vsd_email?: string;
     vsd_relationship1: string;
     vsd_relationship1other?: string;

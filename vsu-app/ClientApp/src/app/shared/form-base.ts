@@ -1,10 +1,12 @@
-import { ValidatorFn, AbstractControl, FormControl, FormGroup, FormArray } from '@angular/forms';
+import { ValidatorFn, AbstractControl, FormControl, FormGroup, FormArray, Validators } from '@angular/forms';
 import * as moment from 'moment';
+import { EnumHelper } from './enums-list';
 
 export class FormBase {
     form: FormGroup;
     today = new Date();
     oldestHuman = new Date(this.today.getFullYear() - 120, this.today.getMonth(), this.today.getDay());
+    enumHelper = new EnumHelper();
 
     isFieldValid(field: string, disabled: boolean = false) {
         if (disabled === true) return true;
@@ -218,6 +220,57 @@ export class FormBase {
         control.clearValidators();
         control.setErrors(null);
         control.updateValueAndValidity();
+    }
+
+    contactMethodChange(item: FormGroup) {
+        let type = item.get('type').value;
+        let current_validators = [];
+
+        if (type == this.enumHelper.ContactType.Telephone.val) {
+            if (item.get('previousType').value == this.enumHelper.ContactType.Email.val) {
+                item.get('val').patchValue('');
+            }
+            current_validators = [Validators.minLength(10), Validators.maxLength(15)];
+        }
+        else if (type == this.enumHelper.ContactType.Cellular.val) {
+            if (item.get('previousType').value == this.enumHelper.ContactType.Email.val) {
+                item.get('val').patchValue('');
+            }
+            current_validators = [Validators.minLength(10), Validators.maxLength(15)];
+        }
+        else if (type == this.enumHelper.ContactType.Email.val) {
+            if (item.get('previousType').value == this.enumHelper.ContactType.Telephone.val || item.get('previousType').value == this.enumHelper.ContactType.Cellular.val) {
+                item.get('val').patchValue('');
+            }
+            current_validators = [Validators.email];
+        }
+        else {
+            item.get('val').patchValue('');
+        }
+
+        item.get('previousType').patchValue(type);
+        this.setControlValidators(item.get('val'), current_validators);
+    }
+
+    checkAtLeastOneContactMethod(base_form: AbstractControl, isDeligate: boolean = false) {
+        let isValid = false;
+
+        if (isDeligate) {
+            let designates = base_form.get('designate') as FormArray;
+            if (designates.length == 0) return;
+            base_form = designates.controls[0];
+        }
+
+        let contactMethods = base_form.get('contactMethods') as FormArray;
+        for (let i = 0; i < contactMethods.controls.length; ++i) {
+            let thisMethod = contactMethods.controls[i];
+            if (thisMethod.get('val').value && thisMethod.get('val').valid && thisMethod.get('leaveMessage').value == this.enumHelper.Boolean.True.val) {
+                isValid = true;
+            }
+        }
+
+        let val = isValid ? 'valid' : '';
+        base_form.get('atLeastOneContactMethod').patchValue(val);
     }
 
     copyApplicantAddressToDeligate(form: FormGroup | FormArray) {

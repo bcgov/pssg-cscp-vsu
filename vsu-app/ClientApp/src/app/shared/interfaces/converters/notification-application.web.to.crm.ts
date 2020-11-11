@@ -2,6 +2,9 @@ import { EnumHelper } from "../../enums-list";
 import { iCRMApplication, iCRMCourtInfo, iCRMParticipant, iNotificationApplicationCRM } from "../dynamics/crm-notification-application";
 import { iNotificationApplication } from "../notification-application.interface";
 
+const NOTIFICATION_APPLICATION = 100000000;
+const VICTIM_TRAVEL_FUND = 100000001;
+
 export function convertNotificationApplicationToCRM(application: iNotificationApplication) {
     console.log("converting application");
     console.log(application);
@@ -20,13 +23,15 @@ export function convertNotificationApplicationToCRM(application: iNotificationAp
 function getCRMApplication(application: iNotificationApplication) {
     let enums = new EnumHelper();
     let crm_application: iCRMApplication = {
+        vsd_vsu_applicationtype: NOTIFICATION_APPLICATION,
         vsd_cvap_victimfirstname: application.CaseInformation.firstName,
         vsd_cvap_victimmiddlename: application.CaseInformation.middleName,
         vsd_cvap_victimlastname: application.CaseInformation.lastName,
         vsd_cvap_victimbirthdate: application.CaseInformation.birthDate,
         vsd_cvap_victimgendercode: application.CaseInformation.gender,
 
-        vsd_applicanttype: application.ApplicantInformation.applicantType,
+        vsd_vsu_applicanttype: application.ApplicantInformation.applicantType,
+        vsd_vsuapplicanttypeother: application.ApplicantInformation.applicantTypeOther,
         vsd_applicantsfirstname: application.ApplicantInformation.firstName,
         vsd_applicantsmiddlename: application.ApplicantInformation.middleName,
         vsd_applicantslastname: application.ApplicantInformation.lastName,
@@ -38,22 +43,25 @@ function getCRMApplication(application: iNotificationApplication) {
         vsd_applicantsmaritalstatus: 0,
 
         vsd_applicantspreferredlanguage: application.ApplicantInformation.preferredLanguage,
-        vsd_applicantsinterpreterneeded: application.ApplicantInformation.interpreterNeeded ? enums.Boolean.True.val : enums.Boolean.False.val,
+        vsd_applicantsinterpreterneeded: application.ApplicantInformation.interpreterNeeded,
         vsd_applicantsprimaryaddressline1: application.ApplicantInformation.address.line1,
         vsd_applicantsprimaryaddressline2: application.ApplicantInformation.address.line2,
         vsd_applicantsprimarycity: application.ApplicantInformation.address.city,
         vsd_applicantsprimaryprovince: application.ApplicantInformation.address.province,
         vsd_applicantsprimarycountry: application.ApplicantInformation.address.country,
         vsd_applicantsprimarypostalcode: application.ApplicantInformation.address.postalCode,
-        vsd_vsu_methodofcontact1type: application.ApplicantInformation.contactMethods[0].type,
-        vsd_vsu_methodofcontact1number: application.ApplicantInformation.contactMethods[0].val,
-        vsd_vsu_methodofcontact1leavedetailedmessage: application.ApplicantInformation.contactMethods[0].leaveMessage,
-        vsd_vsu_methodofcontact2type: application.ApplicantInformation.contactMethods[1].type,
-        vsd_vsu_methodofcontact2number: application.ApplicantInformation.contactMethods[1].val,
-        vsd_vsu_methodofcontact2leavedetailedmessage: application.ApplicantInformation.contactMethods[1].leaveMessage,
-        vsd_vsu_methodofcontact3type: application.ApplicantInformation.contactMethods[2].type,
-        vsd_vsu_methodofcontact3number: application.ApplicantInformation.contactMethods[2].val,
-        vsd_vsu_methodofcontact3leavedetailedmessage: application.ApplicantInformation.contactMethods[2].leaveMessage,
+        vsd_vsu_oktosendmail: application.ApplicantInformation.mayWeSendCorrespondence,
+
+        //check if we set these - don't send any info if val is blank
+        vsd_vsu_methodofcontact1type: application.ApplicantInformation.contactMethods[0].val ? application.ApplicantInformation.contactMethods[0].type : null,
+        vsd_vsu_methodofcontact1number: application.ApplicantInformation.contactMethods[0].val ? application.ApplicantInformation.contactMethods[0].val : null,
+        vsd_vsu_methodofcontact1leavedetailedmessage: application.ApplicantInformation.contactMethods[0].val ? application.ApplicantInformation.contactMethods[0].leaveMessage : null,
+        vsd_vsu_methodofcontact2type: application.ApplicantInformation.contactMethods[1].val ? application.ApplicantInformation.contactMethods[1].type : null,
+        vsd_vsu_methodofcontact2number: application.ApplicantInformation.contactMethods[1].val ? application.ApplicantInformation.contactMethods[1].val : null,
+        vsd_vsu_methodofcontact2leavedetailedmessage: application.ApplicantInformation.contactMethods[1].val ? application.ApplicantInformation.contactMethods[1].leaveMessage : null,
+        vsd_vsu_methodofcontact3type: application.ApplicantInformation.contactMethods[2].val ? application.ApplicantInformation.contactMethods[2].type : null,
+        vsd_vsu_methodofcontact3number: application.ApplicantInformation.contactMethods[2].val ? application.ApplicantInformation.contactMethods[2].val : null,
+        vsd_vsu_methodofcontact3leavedetailedmessage: application.ApplicantInformation.contactMethods[2].val ? application.ApplicantInformation.contactMethods[2].leaveMessage : null,
 
         vsd_vsu_notificationto: application.RecipientDetails.notificationRecipient,
         vsd_vsu_significantcourtupdates: application.RecipientDetails.courtUpdates ? enums.Boolean.True.val : enums.Boolean.False.val,
@@ -61,14 +69,15 @@ function getCRMApplication(application: iNotificationApplication) {
         vsd_vsu_updatesonallcriminalcourtappearances: application.RecipientDetails.courtAppearances ? enums.Boolean.True.val : enums.Boolean.False.val,
         vsd_vsu_criminalcourtordersissued: application.RecipientDetails.courtOrders ? enums.Boolean.True.val : enums.Boolean.False.val,
         vsd_vsu_bccorrectionsinformation: application.RecipientDetails.correctionsInformation ? enums.Boolean.True.val : enums.Boolean.False.val,
+        vsd_vsu_notificationadditionalcomments: application.RecipientDetails.additionalComments,
 
         vsd_vsu_infosharecscpbc: application.AuthorizationInformation.registerForVictimNotification ? enums.Boolean.True.val : enums.Boolean.False.val,
         vsd_vsu_infosharevsu: application.AuthorizationInformation.permissionToShareContactInfo ? enums.Boolean.True.val : enums.Boolean.False.val,
         vsd_vsu_infosharevsw: application.AuthorizationInformation.permissionToContactMyVSW ? enums.Boolean.True.val : enums.Boolean.False.val,
         vsd_declarationverified: application.AuthorizationInformation.declaration ? enums.Boolean.True.val : enums.Boolean.False.val,
+
         vsd_declarationfullname: application.AuthorizationInformation.fullName,
         vsd_declarationdate: application.AuthorizationInformation.date,
-
         vsd_applicantssignature: application.AuthorizationInformation.signature,
     };
     return crm_application;
@@ -107,6 +116,7 @@ function getCRMProviderCollection(application: iNotificationApplication) {
             provider_collection.push({
                 vsd_name: accused.name,
                 vsd_birthdate: accused.birthDate,
+                vsd_gender: accused.gender,
                 vsd_relationship1: "Subject",
             });
         }
@@ -126,15 +136,18 @@ function getCRMProviderCollection(application: iNotificationApplication) {
                 vsd_postalcode: designate.address.postalCode,
                 vsd_relationship1: "Designate",
                 vsd_relationship1other: "",
-                vsd_vsu_methodofcontact1type: designate.contactMethods[0].type,
-                vsd_vsu_methodofcontact1number: designate.contactMethods[0].val,
-                vsd_vsu_methodofcontact1leavedetailedmessage: designate.contactMethods[0].leaveMessage,
-                vsd_vsu_methodofcontact2type: designate.contactMethods[1].type,
-                vsd_vsu_methodofcontact2number: designate.contactMethods[1].val,
-                vsd_vsu_methodofcontact2leavedetailedmessage: designate.contactMethods[1].leaveMessage,
-                vsd_vsu_methodofcontact3type: designate.contactMethods[2].type,
-                vsd_vsu_methodofcontact3number: designate.contactMethods[2].val,
-                vsd_vsu_methodofcontact3leavedetailedmessage: designate.contactMethods[2].leaveMessage,
+                
+                // vsd_vsu_oktosendmail: designate.mayWeSendCorrespondence,
+
+                vsd_vsu_methodofcontact1type: designate.contactMethods[0].val ? designate.contactMethods[0].type : null,
+                vsd_vsu_methodofcontact1number: designate.contactMethods[0].val ? designate.contactMethods[0].val : null,
+                vsd_vsu_methodofcontact1leavedetailedmessage: designate.contactMethods[0].val ? designate.contactMethods[0].leaveMessage : null,
+                vsd_vsu_methodofcontact2type: designate.contactMethods[1].val ? designate.contactMethods[1].type : null,
+                vsd_vsu_methodofcontact2number: designate.contactMethods[1].val ? designate.contactMethods[1].val : null,
+                vsd_vsu_methodofcontact2leavedetailedmessage: designate.contactMethods[1].val ? designate.contactMethods[1].leaveMessage : null,
+                vsd_vsu_methodofcontact3type: designate.contactMethods[2].val ? designate.contactMethods[2].type : null,
+                vsd_vsu_methodofcontact3number: designate.contactMethods[2].val ? designate.contactMethods[2].val : null,
+                vsd_vsu_methodofcontact3leavedetailedmessage: designate.contactMethods[2].val ? designate.contactMethods[2].leaveMessage : null,
             });
         });
     }

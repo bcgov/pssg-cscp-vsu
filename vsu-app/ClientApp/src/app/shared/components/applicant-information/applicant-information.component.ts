@@ -56,30 +56,10 @@ export class ApplicantInformationComponent extends FormBase implements OnInit {
             this.setControlValidators(control, [Validators.required]);
         }
         else {
+            control.patchValue('');
             this.showOtherApplicantType = false;
             this.clearControlValidators(control);
         }
-    }
-
-    contactMethodChange(item: FormGroup) {
-        let type = item.get('type').value;
-        let current_validators = [];
-
-        if (type == this.EnumHelper.ContactType.Telephone.val) {
-            current_validators = [Validators.minLength(10), Validators.maxLength(15)];
-        }
-        else if (type = this.EnumHelper.ContactType.Cellular.val) {
-            current_validators = [Validators.minLength(10), Validators.maxLength(15)];
-        }
-        else if (type = this.EnumHelper.ContactType.Email.val) {
-            current_validators = [Validators.email];
-        }
-        else {
-            console.log("didn't match...");
-        }
-
-        this.setControlValidators(item.get('val'), current_validators);
-        item.get('val').patchValue('');
     }
 
     checkAtLeastOneContactMethod() {
@@ -93,7 +73,6 @@ export class ApplicantInformationComponent extends FormBase implements OnInit {
         }
 
         let val = isValid ? 'valid' : '';
-
         this.form.get('atLeastOneContactMethod').patchValue(val);
     }
 }

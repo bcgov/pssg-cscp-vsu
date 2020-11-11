@@ -9,7 +9,7 @@ export class ApplicantInfoHelper {
         let group = {
             applicantType: ['', Validators.required],
             applicantTypeOther: [''],
-            applicantInfoSameAsVictim: [''],
+            applicantInfoSameAsVictim: [false],
             firstName: ['', Validators.required],
             middleName: [''],
             lastName: ['', Validators.required],
@@ -19,7 +19,7 @@ export class ApplicantInfoHelper {
             genderOther: [''],
 
             preferredLanguage: ['English'],
-            interpreterNeeded: [false],
+            interpreterNeeded: [this.enum.Boolean.False.val],
             address: fb.group({
                 line1: ['', [Validators.required]],
                 line2: [''],
@@ -29,8 +29,8 @@ export class ApplicantInfoHelper {
                 country: ['Canada', [Validators.required]],
             }),
 
-            mayWeSendCorrespondence: [true],
-            contactMethods: fb.array([this.createContactMethod(fb, 'telephone'), this.createContactMethod(fb, 'mobile'), this.createContactMethod(fb, 'email')]),
+            mayWeSendCorrespondence: [this.enum.Boolean.True.val],
+            contactMethods: fb.array([this.createContactMethod(fb), this.createContactMethod(fb), this.createContactMethod(fb)]),
             atLeastOneContactMethod: ['', Validators.required],
         }
 
@@ -61,14 +61,16 @@ export class ApplicantInfoHelper {
                 break;
             }
             default: {
+                type = this.enum.ContactType.Unset.val;
                 break;
             }
         }
         return fb.group({
             type: [type],
+            previousType: [type],
             val: ['', current_validators],
             label: [label],
-            leaveMessage: [0],
+            leaveMessage: [''],
         });
     }
 }

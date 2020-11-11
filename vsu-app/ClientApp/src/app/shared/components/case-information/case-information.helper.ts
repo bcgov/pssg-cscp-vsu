@@ -28,6 +28,7 @@ export class CaseInfoInfoHelper {
         return fb.group({
             name: [''],
             birthDate: [''],
+            gender: [''],
         });
     }
 

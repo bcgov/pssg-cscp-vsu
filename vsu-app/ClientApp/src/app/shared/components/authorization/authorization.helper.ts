@@ -10,7 +10,7 @@ export class AuthInfoHelper {
             permissionToContactMyVSW: [''],
             declaration: ['', Validators.required],
             fullName: ['', Validators.required],
-            date: [dateString, Validators.required],
+            date: [today, Validators.required],
             signature: ['', Validators.required],
         };
 

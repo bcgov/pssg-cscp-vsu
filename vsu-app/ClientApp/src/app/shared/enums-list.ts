@@ -3,19 +3,26 @@ export const MY_FORMATS = {
         dateInput: 'LL',
     },
     display: {
-        dateInput: 'YYYY-MM-DD',
+        dateInput: 'YYYY/MM/DD',
         monthYearLabel: 'MMM YYYY',
         dateA11yLabel: 'YYYY-MM-DD',
         monthYearA11yLabel: 'MMMM YYYY',
     },
 };
 
+export const FORM_TITLES = {
+    NOTIFICATION_APPLICATION: "Victim Safety Unit - Notification Application Form",
+    TRAVEL_FUNDS_APPLICATION: "Victim Safety Unit - Notification Application Form",
+};
+
 export class EnumHelper {
     public ApplicantType = {
-        Victim:                 { val: 100000000, name: "Victim" },
-        Civil_Protected_Party:  { val: 100000001, name: "Civil Protected Party" },
-        Victim_Parent:          { val: 100000002, name: "Victim's Parent / Guardian" },
-        Other_Family_Member:    { val: 100000003, name: "Other Family Member" },
+        Victim:                     { val: 100000000, name: "Victim" },
+        Civil_Protected_Party:      { val: 100000001, name: "Civil Protected Party" },
+        Victim_Parent:              { val: 100000002, name: "Victim's Parent / Guardian" },
+        Other_Family_Member:        { val: 100000003, name: "Other Family Member" },
+        Support_Person:             { val: 100000004, name: "Support Person" },
+        Immediate_Family_Member:    { val: 100000005, name: "Immediate family member of the deceased victim" },
     };
 
     public NotificationRecipientEnum = {
@@ -42,5 +49,6 @@ export class EnumHelper {
         Telephone:  { val: 100000000, name: "Telephone"},
         Cellular:   { val: 100000001, name: "Cellular"},
         Email:      { val: 100000002, name: "Email"},
+        Unset:      { val: null, name: ""},
     }
 }

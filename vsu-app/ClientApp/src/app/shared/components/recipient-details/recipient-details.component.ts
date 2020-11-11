@@ -142,27 +142,6 @@ export class RecipientDetailsComponent extends FormBase implements OnInit {
         this.form.get('atLeastOneNotification').patchValue(val)
     }
 
-    contactMethodChange(item: FormGroup) {
-        let type = item.get('type').value;
-        let current_validators = [];
-
-        if (type == this.EnumHelper.ContactType.Telephone.val) {
-            current_validators = [Validators.minLength(10), Validators.maxLength(15)];
-        }
-        else if (type = this.EnumHelper.ContactType.Cellular.val) {
-            current_validators = [Validators.minLength(10), Validators.maxLength(15)];
-        }
-        else if (type = this.EnumHelper.ContactType.Email.val) {
-            current_validators = [Validators.email];
-        }
-        else {
-            console.log("didn't match...");
-        }
-
-        this.setControlValidators(item.get('val'), current_validators);
-        item.get('val').patchValue('');
-    }
-
     checkAtLeastOneContactMethod() {
         let isValid = false;
         let designates = this.form.get('designate') as FormArray;
@@ -177,7 +156,6 @@ export class RecipientDetailsComponent extends FormBase implements OnInit {
         }
 
         let val = isValid ? 'valid' : '';
-
         designates.controls[0].get('atLeastOneContactMethod').patchValue(val);
     }
 }

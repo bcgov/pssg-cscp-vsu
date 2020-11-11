@@ -24,27 +24,28 @@
     <div class="row">
         <div class="col-md-6 date-col">
             <app-field label="Birth Date" [required]="true" [valid]="isFieldValid('birthDate')" errorMessage="Please enter your birth date">
-                <app-date-field [control]="form.get('birthDate')" [max]="today"></app-date-field>
+                <app-date-field [control]="form.get('birthDate')" [max]="today" (change)="setApplicantInfoSameAsVictim(form.parent)"></app-date-field>
             </app-field>
         </div>
 
         <div class="col flex-col">
             <app-field label="Gender" [required]="true" [valid]="isFieldValid('gender')" errorMessage="Please select your gender">
                 <label class="inline-label">
-                    <input type="radio" [value]="EnumHelper.Gender.Male.val" name="gender" formControlName="gender">
+                    <input type="radio" [value]="EnumHelper.Gender.Male.val" name="gender" formControlName="gender" (change)="setApplicantInfoSameAsVictim(form.parent)">
                     <span>M</span>
                 </label>
                 <label class="inline-label">
-                    <input type="radio" [value]="EnumHelper.Gender.Female.val" name="gender" formControlName="gender">
+                    <input type="radio" [value]="EnumHelper.Gender.Female.val" name="gender" formControlName="gender" (change)="setApplicantInfoSameAsVictim(form.parent)">
                     <span>F</span>
                 </label>
                 <label class="inline-label">
-                    <input type="radio" [value]="EnumHelper.Gender.X.val" name="gender" formControlName="gender">
-                    <span>X</span>
+                    <input type="radio" [value]="EnumHelper.Gender.X.val" name="gender" formControlName="gender" (change)="setApplicantInfoSameAsVictim(form.parent)">
+                    <span>X <app-tool-tip [trigger]="genderXToolTip"></app-tool-tip></span>
                 </label>
             </app-field>
         </div>
     </div>
+    <ng-template #genderXToolTip>Use this category if you do not wish to report gender as exclusively male or female.</ng-template>
 
     <h2 class="blue-header">Court Information</h2>
 
@@ -107,10 +108,6 @@
                     <input type="radio" [value]="EnumHelper.Gender.Female.val" name="accusedGender" formControlName="accusedGender">
                     <span>F</span>
                 </label>
-                <label class="inline-label">
-                    <input type="radio" [value]="EnumHelper.Gender.X.val" name="accusedGender" formControlName="accusedGender">
-                    <span>X</span>
-                </label>
             </app-field>
         </div>
     </div>
@@ -123,9 +120,23 @@
                         <input class="form-control" type="text" formControlName="name" maxlength="100">
                     </app-field>
                 </div>
-                <div class="col-md-6 flex-col date-col">
+            </div>
+            <div class="row">
+                <div class="col-md-6 flex-col">
                     <app-field label="Birth Date" class="full-width">
                         <app-date-field [control]="item.get('birthDate')" [max]="today"></app-date-field>
+                    </app-field>
+                </div>
+                <div class="col-md-6 flex-col date-col">
+                    <app-field label="Gender">
+                        <label class="inline-label">
+                            <input type="radio" [value]="EnumHelper.Gender.Male.val" name="gender" formControlName="gender">
+                            <span>M</span>
+                        </label>
+                        <label class="inline-label">
+                            <input type="radio" [value]="EnumHelper.Gender.Female.val" name="gender" formControlName="gender">
+                            <span>F</span>
+                        </label>
                     </app-field>
 
                     <div class="remove-button" *ngIf="form.get('additionalAccused')['controls'].length > 1">

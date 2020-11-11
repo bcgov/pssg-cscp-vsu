@@ -308,3 +308,52 @@ hr {
 .date-col {
   min-width: 326px;
 }
+
+.is-disabled {
+  opacity: 0.7;
+  text-decoration: none;
+  pointer-events: none;
+}
+
+.disabled-cursor {
+  cursor: not-allowed;
+}
+
+.has-error {
+  border: 1px solid red;
+}
+
+.tooltip-icon .fa {
+  color: #21527e;
+  margin-left: 2px;
+}
+
+.tooltip-inner {
+  min-width: 300px;
+  max-width: 425px;
+  padding: 12px 20px;
+  color: #fff;
+  text-align: left;
+  font-size: 14px;
+  background-color: #21527e;
+  border-radius: 0;
+  border-bottom: 3px solid #fcba19;
+
+  h3 {
+    color: #fff;
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+  }
+
+  padding {
+    line-height: 1.2em;
+  }
+
+  ul {
+    padding-left: 14px;
+
+    li {
+      margin-bottom: 5px;
+    }
+  }
+}

@@ -1,14 +1,16 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import * as moment from 'moment';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-date-field',
     templateUrl: './date-field.component.html',
     styleUrls: ['./date-field.component.scss']
 })
-export class DateFieldComponent implements OnInit {
+export class DateFieldComponent implements OnInit, OnDestroy {
     @Input() control: AbstractControl;
+    @Input() disabled: boolean;
     @Input() max: Date;
     @Input() min: Date;
     dayList = [];
@@ -19,6 +21,9 @@ export class DateFieldComponent implements OnInit {
     year = 0;
 
     currentYear = new Date().getFullYear();
+    options = { onlySelf: true, emitEvent: false };
+
+    controlSub: Subscription;
 
     constructor() { }
 
@@ -37,6 +42,19 @@ export class DateFieldComponent implements OnInit {
         for (let i = 0; i < 120; ++i) {
             this.yearList.push(this.currentYear - i);
         }
+
+        this.controlSub = this.control.valueChanges.subscribe((val) => {
+            let updated_date: moment.Moment = val;
+            if (updated_date) {
+                this.year = updated_date.year();
+                this.month = updated_date.month();
+                this.day = updated_date.date();
+            }
+        });
+    }
+
+    ngOnDestroy() {
+        if (this.controlSub) this.controlSub.unsubscribe();
     }
 
     pad(num, size) {
@@ -47,7 +65,7 @@ export class DateFieldComponent implements OnInit {
 
     output() {
         if (this.day == 0 || this.month == -1 || this.year == 0) {
-            this.control.patchValue('');
+            this.control.patchValue('', this.options);
             return;
         }
 
@@ -75,7 +93,7 @@ export class DateFieldComponent implements OnInit {
             setTimeout(() => { this.control.setErrors(null); }, 0);
         }
 
-        this.control.patchValue(date);
+        this.control.patchValue(date, this.options);
     }
 
 }

@@ -25,6 +25,9 @@ import { SignaturePadModule } from 'angular2-signaturepad';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { NotificationApplicationService } from './services/notification-application.service';
+import { ToolTipTriggerComponent } from './shared/components/tool-tip/tool-tip.component';
+import { ContactMethodComponent } from './shared/components/contact-method/contact-method.component';
+import { ConfirmationComponent } from './shared/components/confirmation/confirmation.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +36,8 @@ import { NotificationApplicationService } from './services/notification-applicat
     ApplicantInformationComponent,
     AuthorizationComponent,
     CaseInformationComponent,
+    ConfirmationComponent,
+    ContactMethodComponent,
     DateFieldComponent,
     FieldComponent,
     HomeComponent,
@@ -41,6 +46,7 @@ import { NotificationApplicationService } from './services/notification-applicat
     OverviewComponent,
     RecipientDetailsComponent,
     SignPadDialog,
+    ToolTipTriggerComponent,
   ],
   imports: [
     AppRoutingModule,

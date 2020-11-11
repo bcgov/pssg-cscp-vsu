@@ -34,9 +34,9 @@ export interface iApplicantInformation {
     gender: number;
     genderOther: string;
     preferredLanguage: string;
-    interpreterNeeded: boolean;
+    interpreterNeeded: number;
     address: iAddress;
-    mayWeSendCorrespondence: boolean;
+    mayWeSendCorrespondence: number;
     contactMethods: iContactMethod[];
     atLeastOneContactMethod: string;
 }
@@ -67,6 +67,7 @@ export interface iAuthorizationInformation {
 export interface iAdditionalAccused {
     name: string;
     birthDate: Date;
+    gender: number;
 }
 
 export interface iCourtInfo {
@@ -96,9 +97,9 @@ export interface iDesignate {
     middleName: string;
     lastName: string;
     relationship: string;
-    addressSameAsApplicant: string;
+    addressSameAsApplicant: boolean;
     address: iAddress;
-    mayWeSendCorrespondence: boolean;
+    mayWeSendCorrespondence: number;
     contactMethods: iContactMethod[];
     atLeastOneContactMethod: string;
 }
