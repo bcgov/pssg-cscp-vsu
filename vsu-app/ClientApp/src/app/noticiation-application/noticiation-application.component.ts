@@ -145,7 +145,9 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
                 console.log(res);
                 if (res.IsSuccess) {
                     this.showConfirmation = true;
-                    this.gotoNextStep(this.applicationStepper);
+                    setTimeout(() => {
+                        this.gotoNextStep(this.applicationStepper);
+                    }, 0);
                     console.log("TODO!! -- disable form");
                 }
                 else {

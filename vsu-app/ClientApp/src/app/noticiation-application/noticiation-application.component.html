@@ -72,7 +72,7 @@
                     <span>There are errors with some fields on this page. Please scroll up to review and fix the errors (marked in red) before continuing.</span>
                 </div>
 
-                <app-confirmation *ngIf="showConfirmation" [formGroup]="form" formGroupName="authorizationInformation"></app-confirmation>
+                <app-confirmation *ngIf="stepper.selectedIndex == 5 " [formGroup]="form" formGroupName="authorizationInformation"></app-confirmation>
 
                 <section class="button-container" *ngIf="!showPrintView">
                     <span class="right-buttons">
