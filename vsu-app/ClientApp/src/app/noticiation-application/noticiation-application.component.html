@@ -46,7 +46,7 @@
             </section>
         </div>
 
-        <div id="pdfPrintGroup" class="col-lg-7 col-sm-12">
+        <div id="pdfPrintGroup" [class.col-12]="showPrintView" class="col-lg-7 col-sm-12">
             <form [formGroup]="form">
                 <div *ngIf="isIE" class="alert alert-danger warning-message">
                     <p>It looks like you are using an unsupported browser.</p>
@@ -56,29 +56,30 @@
                 <app-overview *ngIf="this.currentFormStep == 0 || showPrintView"></app-overview>
 
                 <div class="pagebreak"> </div>
-                <app-case-information [formGroup]="form" formGroupName="caseInformation" [lookupData]="lookupData" *ngIf="this.currentFormStep == 1 || showPrintView"></app-case-information>
+                <app-case-information [formGroup]="form" formGroupName="caseInformation" [lookupData]="lookupData" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == 1 || showPrintView"></app-case-information>
 
                 <div class="pagebreak"> </div>
-                <app-applicant-information [formGroup]="form" formGroupName="applicantInformation" [lookupData]="lookupData" *ngIf="this.currentFormStep == 2 || showPrintView"></app-applicant-information>
+                <app-applicant-information [formGroup]="form" formGroupName="applicantInformation" [lookupData]="lookupData" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == 2 || showPrintView"></app-applicant-information>
 
                 <div class="pagebreak"> </div>
-                <app-recipient-details [formGroup]="form" formGroupName="recipientDetails" [lookupData]="lookupData" *ngIf="this.currentFormStep == 3 || showPrintView"></app-recipient-details>
+                <app-recipient-details [formGroup]="form" formGroupName="recipientDetails" [lookupData]="lookupData" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == 3 || showPrintView"></app-recipient-details>
 
                 <div class="pagebreak"> </div>
-                <app-authorization [formGroup]="form" formGroupName="authorizationInformation" *ngIf="this.currentFormStep == 4 || showPrintView"></app-authorization>
+                <app-authorization [formGroup]="form" formGroupName="authorizationInformation" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == 4 || showPrintView"></app-authorization>
 
                 <div *ngIf="showValidationMessage" class="error-summary">
                     <i class="fas fa-exclamation-triangle" style="margin-right: 10px;"></i>
                     <span>There are errors with some fields on this page. Please scroll up to review and fix the errors (marked in red) before continuing.</span>
                 </div>
 
-                <app-confirmation *ngIf="stepper.selectedIndex == 5 " [formGroup]="form" formGroupName="authorizationInformation"></app-confirmation>
+                <div class="pagebreak"> </div>
+                <app-confirmation [formType]="formType" [confirmationNumber]="form.get('confirmation.confirmationNumber').value" (showPrintView)="showPrintView = $event" *ngIf="stepper.selectedIndex == 5"></app-confirmation>
 
                 <section class="button-container" *ngIf="!showPrintView">
                     <span class="right-buttons">
                         <button (click)="submit();" class="btn btn-primary continue-btn" [class.disabled]="submitting" *ngIf="stepper.selectedIndex == 4 && !showConfirmation">SUBMIT</button>
                         <button (click)="gotoNextStep(stepper);" class="btn btn-primary continue-btn" *ngIf="stepper.selectedIndex < 4 || (stepper.selectedIndex == 4 && showConfirmation)">{{stepper.selectedIndex === 0 ? 'START APPLICATION' : 'CONTINUE'}} <i class="fas fa-chevron-right"></i></button>
-                        <button (click)="gotoPreviousStep(stepper);" class="btn btn-primary continue-btn" *ngIf="stepper.selectedIndex > 0"><i class="fas fa-chevron-left"></i> BACK</button>
+                        <button (click)="gotoPreviousStep(stepper);" class="btn btn-primary continue-btn" *ngIf="stepper.selectedIndex > 0 && !showConfirmation"><i class="fas fa-chevron-left"></i> BACK</button>
                     </span>
                 </section>
             </form>

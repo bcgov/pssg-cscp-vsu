@@ -22,6 +22,7 @@ import { RecipientDetailsHelper } from "./recipient-details.helper";
 })
 export class RecipientDetailsComponent extends FormBase implements OnInit {
     @Input() lookupData: iLookupData;
+    @Input() isDisabled: boolean;
     public form: FormGroup;
 
     NOTIFICATION_METHODS: string[] = [];

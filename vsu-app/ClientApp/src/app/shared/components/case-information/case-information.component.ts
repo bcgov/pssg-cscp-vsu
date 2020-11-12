@@ -19,6 +19,7 @@ import { CaseInfoInfoHelper } from "./case-information.helper";
 })
 export class CaseInformationComponent extends FormBase implements OnInit {
   @Input() lookupData: iLookupData;
+  @Input() isDisabled: boolean;
   public form: FormGroup;
 
   courtList: string[] = [];
@@ -36,6 +37,7 @@ export class CaseInformationComponent extends FormBase implements OnInit {
     setTimeout(() => { this.form.markAsTouched(); }, 0);
     console.log("case info component");
     console.log(this.form);
+    console.log(this.isDisabled);
 
     if (this.lookupData.courts && this.lookupData.courts.length > 0) {
       this.courtList = this.lookupData.courts.map(c => c.vsd_name);

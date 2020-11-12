@@ -1,22 +1,33 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ControlContainer, FormGroup } from '@angular/forms';
+import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 
 @Component({
     selector: 'app-confirmation',
     templateUrl: './confirmation.component.html',
     styleUrls: ['./confirmation.component.scss']
 })
-export class ConfirmationComponent implements OnInit {
+export class ConfirmationComponent {
     @Input() formType: string;
-    public form: FormGroup;
+    @Input() confirmationNumber: string;
+    @Output() showPrintView: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-    confirmationNumber: string = "test";
+    constructor() { }
 
-    constructor(private controlContainer: ControlContainer) {
+    print() {
+        window.scroll(0, 0);
+        this.showPrintView.emit(true);
+        setTimeout(() => {
+            window.print();
+        }, 100);
     }
 
-    ngOnInit() {
-        this.form = <FormGroup>this.controlContainer.control;
+    @HostListener('window:afterprint')
+    onafterprint() {
+        window.scroll(0, 0);
+        this.showPrintView.emit(false);
     }
 
+    close() {
+        console.log("close");
+
+    }
 }

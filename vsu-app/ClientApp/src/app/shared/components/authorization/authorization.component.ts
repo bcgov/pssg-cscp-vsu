@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS, MatDialog, MatDialogConfig } from "@angular/material";
 import { MomentDateAdapter } from "@angular/material-moment-adapter";
 import { FormGroup, ControlContainer } from "@angular/forms";
@@ -17,6 +17,7 @@ import { AuthInfoHelper } from './authorization.helper';
     ],
 })
 export class AuthorizationComponent extends FormBase implements OnInit {
+    @Input() isDisabled: boolean;
     public form: FormGroup;
 
     authInfoHelper = new AuthInfoHelper();

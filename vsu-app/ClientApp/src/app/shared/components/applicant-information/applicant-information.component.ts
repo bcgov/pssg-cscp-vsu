@@ -18,6 +18,7 @@ import { ApplicantInfoHelper } from "./applicant-information.helper";
 })
 export class ApplicantInformationComponent extends FormBase implements OnInit {
     @Input() lookupData: iLookupData;
+    @Input() isDisabled: boolean;
     public form: FormGroup;
 
     showOtherApplicantType: boolean = false;

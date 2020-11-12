@@ -19,9 +19,12 @@ namespace Gov.Cscp.Victims.Public.Models
         public string vsd_city { get; set; }
         public string vsd_province { get; set; }
         public string vsd_postalcode { get; set; }
+        public int? vsd_vsu_oktosendmail { get; set; }
         public string vsd_email { get; set; }
         public string vsd_relationship1 { get; set; }
         public string vsd_relationship1other { get; set; }
+        public string vsd_relationship2 { get; set; }
+        public string vsd_relationship2other { get; set; }
 
         public int? vsd_vsu_methodofcontact1type { get; set; }
         public string vsd_vsu_methodofcontact1number { get; set; }

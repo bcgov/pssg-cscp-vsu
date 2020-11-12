@@ -32,7 +32,7 @@ export class AddressComponent implements OnInit {
 
   @Input() group = FormGroup;
   @Input() showChildrenAsRequired: boolean = true;
-  @Input() isDisabled: boolean = false;
+  @Input() disabled: boolean = false;
   @Input() lookupData: iLookupData;
 
   constructor(public lookupService: LookupService,

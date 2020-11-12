@@ -1,14 +1,16 @@
-<div [formGroup]="form">
-    <div class="page-header">
-        <h1>Case Information</h1>
-    </div>
+<div class="page-header">
+    <h1>Confirmation</h1>
+</div>
 
-    <p>Thank you for submitting a {{formType}} form. Please write down the following confirmation number for future reference</p>
+<p>Thank you for submitting a {{formType}} form. Please write down the following confirmation number for future reference</p>
 
-    <div class="confirmation-number-box">
-        {{confirmationNumber}}
-    </div>
+<div class="confirmation-number-box mt-2 mb-5 d-flex justify-content-center">
+    {{confirmationNumber}}
+</div>
 
-    <p>print button</p>
-    <p>close button</p>
+<div class="d-flex justify-content-center mb-3">
+    <button (click)="print();" class="btn btn-outline-primary">PRINT SUBMITTED FORM FOR YOUR RECORDS</button>
+</div>
+<div class="d-flex justify-content-center">
+    <button (click)="close();" class="btn btn-primary">CLOSE WINDOW</button>
 </div>

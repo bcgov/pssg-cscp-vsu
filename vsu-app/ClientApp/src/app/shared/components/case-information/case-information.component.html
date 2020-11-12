@@ -6,30 +6,30 @@
 
     <div class="row">
         <div class="col-md-4">
-            <app-field label="First Name" [required]="true" [valid]="isFieldValid('firstName')" errorMessage="Please enter your first name">
+            <app-field label="First Name" [required]="true" [valid]="isFieldValid('firstName')" errorMessage="Please enter your first name" [disabled]="isDisabled">
                 <input class="form-control" type="text" formControlName="firstName" maxlength="100" (change)="setApplicantInfoSameAsVictim(form.parent)">
             </app-field>
         </div>
         <div class="col-md-4">
-            <app-field label="Middle Name" [required]="false" [valid]="isFieldValid('middleName')" errorMessage="Please enter your middle name">
+            <app-field label="Middle Name" [required]="false" [valid]="isFieldValid('middleName')" errorMessage="Please enter your middle name" [disabled]="isDisabled">
                 <input class="form-control" type="text" formControlName="middleName" maxlength="100" (change)="setApplicantInfoSameAsVictim(form.parent)">
             </app-field>
         </div>
         <div class="col-md-4">
-            <app-field label="Last Name" [required]="true" [valid]="isFieldValid('lastName')" errorMessage="Please enter your last name">
+            <app-field label="Last Name" [required]="true" [valid]="isFieldValid('lastName')" errorMessage="Please enter your last name" [disabled]="isDisabled">
                 <input class="form-control" type="text" formControlName="lastName" maxlength="100" (change)="setApplicantInfoSameAsVictim(form.parent)">
             </app-field>
         </div>
     </div>
     <div class="row">
         <div class="col-md-6 date-col">
-            <app-field label="Birth Date" [required]="true" [valid]="isFieldValid('birthDate')" errorMessage="Please enter your birth date">
+            <app-field label="Birth Date" [required]="true" [valid]="isFieldValid('birthDate')" errorMessage="Please enter your birth date" [disabled]="isDisabled">
                 <app-date-field [control]="form.get('birthDate')" [max]="today" (change)="setApplicantInfoSameAsVictim(form.parent)"></app-date-field>
             </app-field>
         </div>
 
         <div class="col flex-col">
-            <app-field label="Gender" [required]="true" [valid]="isFieldValid('gender')" errorMessage="Please select your gender">
+            <app-field label="Gender" [required]="true" [valid]="isFieldValid('gender')" errorMessage="Please select your gender" [disabled]="isDisabled">
                 <label class="inline-label">
                     <input type="radio" [value]="EnumHelper.Gender.Male.val" name="gender" formControlName="gender" (change)="setApplicantInfoSameAsVictim(form.parent)">
                     <span>M</span>
@@ -53,16 +53,16 @@
         <div [formGroupName]="i" class="court-info">
             <div class="row">
                 <div class="col-md-4">
-                    <app-field label="Court File Number" [required]="true" [valid]="isMyControlValid(item.get('courtFileNumber'))" errorMessage="Please enter the court file number">
+                    <app-field label="Court File Number" [required]="true" [valid]="isMyControlValid(item.get('courtFileNumber'))" errorMessage="Please enter the court file number" [disabled]="isDisabled">
                         <input class="form-control" type="text" formControlName="courtFileNumber" maxlength="100">
                     </app-field>
                 </div>
                 <div class="col-md-4">
-                    <app-field label="Court Location" [required]="true" [valid]="isMyControlValid(item.get('courtLocation'))" errorMessage="Please enter a court location">
+                    <app-field label="Court Location" [required]="true" [valid]="isMyControlValid(item.get('courtLocation'))" errorMessage="Please enter a court location" [disabled]="isDisabled">
                         <input class="form-control" type="text" formControlName="courtLocation" [typeahead]="courtList">
                     </app-field>
                 </div>
-                <div class="col remove-button" *ngIf="form.get('courtInfo')['controls'].length > 1">
+                <div class="col remove-button" *ngIf="form.get('courtInfo')['controls'].length > 1 && !isDisabled">
                     <br>
                     <i class="fas fa-times-circle text-danger center-clear-btn" (click)="removeAdditionalCourtInfo(i)"></i>
                 </div>
@@ -71,35 +71,35 @@
     </div>
 
     <div>
-        <button class="btn btn-secondary" (click)="addAdditionalCourtInfo()">+ ADD ADDITIONAL COURT FILE</button>
+        <button *ngIf="!isDisabled" class="btn btn-secondary" (click)="addAdditionalCourtInfo()">+ ADD ADDITIONAL COURT FILE</button>
     </div>
 
     <h2 class="blue-header">Accused / Offender / Respondent Information</h2>
     <div class="row">
         <div class="col-md-4">
-            <app-field label="First Name" [required]="true" [valid]="isFieldValid('accusedFirstName')" errorMessage="Please enter first name">
+            <app-field label="First Name" [required]="true" [valid]="isFieldValid('accusedFirstName')" errorMessage="Please enter first name" [disabled]="isDisabled">
                 <input class="form-control" type="text" formControlName="accusedFirstName" maxlength="100">
             </app-field>
         </div>
         <div class="col-md-4">
-            <app-field label="Middle Name" [required]="false" [valid]="isFieldValid('accusedMiddleName')" errorMessage="Please enter middle name">
+            <app-field label="Middle Name" [required]="false" [valid]="isFieldValid('accusedMiddleName')" errorMessage="Please enter middle name" [disabled]="isDisabled">
                 <input class="form-control" type="text" formControlName="accusedMiddleName" maxlength="100">
             </app-field>
         </div>
         <div class="col-md-4">
-            <app-field label="Last Name" [required]="true" [valid]="isFieldValid('accusedLastName')" errorMessage="Please enter last name">
+            <app-field label="Last Name" [required]="true" [valid]="isFieldValid('accusedLastName')" errorMessage="Please enter last name" [disabled]="isDisabled">
                 <input class="form-control" type="text" formControlName="accusedLastName" maxlength="100">
             </app-field>
         </div>
     </div>
     <div class="row">
         <div class="col-md-6 date-col">
-            <app-field label="Birth Date" [required]="false" [valid]="isFieldValid('accusedBirthDate')" errorMessage="Please enter birth date">
-                <app-date-field [control]="form.get('accusedBirthDate')" [max]="today"></app-date-field>
+            <app-field label="Birth Date" [required]="false" [valid]="isFieldValid('accusedBirthDate')" errorMessage="Please enter birth date" [disabled]="isDisabled">
+                <app-date-field [control]="form.get('accusedBirthDate')" [max]="today" [disabled]="isDisabled"></app-date-field>
             </app-field>
         </div>
         <div class="col flex-col">
-            <app-field label="Gender" [valid]="isFieldValid('accusedGender')">
+            <app-field label="Gender" [valid]="isFieldValid('accusedGender')" [disabled]="isDisabled">
                 <label class="inline-label">
                     <input type="radio" [value]="EnumHelper.Gender.Male.val" name="accusedGender" formControlName="accusedGender">
                     <span>M</span>
@@ -116,19 +116,19 @@
         <div [formGroupName]="i" class="additional-accused">
             <div class="row">
                 <div class="col-md-6">
-                    <app-field label="Name of Additional Accused / Offender">
+                    <app-field label="Name of Additional Accused / Offender" [disabled]="isDisabled">
                         <input class="form-control" type="text" formControlName="name" maxlength="100">
                     </app-field>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6 flex-col">
-                    <app-field label="Birth Date" class="full-width">
-                        <app-date-field [control]="item.get('birthDate')" [max]="today"></app-date-field>
+                    <app-field label="Birth Date" class="full-width" [disabled]="isDisabled">
+                        <app-date-field [control]="item.get('birthDate')" [max]="today" [disabled]="isDisabled"></app-date-field>
                     </app-field>
                 </div>
                 <div class="col-md-6 flex-col date-col">
-                    <app-field label="Gender">
+                    <app-field label="Gender" [disabled]="isDisabled">
                         <label class="inline-label">
                             <input type="radio" [value]="EnumHelper.Gender.Male.val" name="gender" formControlName="gender">
                             <span>M</span>
@@ -149,6 +149,6 @@
     </div>
 
     <div class="add-additional-btn-container">
-        <button class="btn btn-secondary" (click)="addAdditionalAccused()">+ ADD ADDITIONAL ACCUSED / OFFENDER</button>
+        <button *ngIf="!isDisabled" class="btn btn-secondary" (click)="addAdditionalAccused()">+ ADD ADDITIONAL ACCUSED / OFFENDER</button>
     </div>
 </div>

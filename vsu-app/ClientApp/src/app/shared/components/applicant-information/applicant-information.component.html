@@ -4,7 +4,7 @@
     </div>
 
     <section class="radio-list per-line">
-        <app-field label="I am the:" [required]="true" [valid]="isMyControlValid(form.get('applicantType'))" errorMessage="Please select one">
+        <app-field label="I am the:" [required]="true" [valid]="isMyControlValid(form.get('applicantType'))" errorMessage="Please select one" [disabled]="isDisabled">
             <label>
                 <input type="radio" [value]="EnumHelper.ApplicantType.Victim.val" name="applicantType" formControlName="applicantType" (change)="setApplicantTypeOtherRequired(false)">
                 Victim
@@ -30,7 +30,7 @@
 
     <h2 class="blue-header mt-0">Applicant Information</h2>
 
-    <div>
+    <div [class.is-disabled]="isDisabled">
         <label class="inline-label inline-checkbox">
             <input type="checkbox" [value]="true" name="applicantInfoSameAsVictim" formControlName="applicantInfoSameAsVictim" (change)="setApplicantInfoSameAsVictim(form.parent)">
             <span>Select if the applicant's name is the same as Victim / Civil Protected Party in the Case Information section</span>
@@ -39,17 +39,17 @@
 
     <div class="row">
         <div class="col-md-4">
-            <app-field label="First Name" [required]="true" [valid]="isMyControlValid(form.get('firstName'))" errorMessage="Please enter your first name">
+            <app-field label="First Name" [required]="true" [valid]="isMyControlValid(form.get('firstName'))" errorMessage="Please enter your first name" [disabled]="isDisabled">
                 <input class="form-control" type="text" formControlName="firstName" maxlength="100">
             </app-field>
         </div>
         <div class="col-md-4">
-            <app-field label="Middle Name" [required]="false" [valid]="isMyControlValid(form.get('middleName'))" errorMessage="Please enter your middle name">
+            <app-field label="Middle Name" [required]="false" [valid]="isMyControlValid(form.get('middleName'))" errorMessage="Please enter your middle name" [disabled]="isDisabled">
                 <input class="form-control" type="text" formControlName="middleName" maxlength="100">
             </app-field>
         </div>
         <div class="col-md-4">
-            <app-field label="Last Name" [required]="true" [valid]="isMyControlValid(form.get('lastName'))" errorMessage="Please enter your last name">
+            <app-field label="Last Name" [required]="true" [valid]="isMyControlValid(form.get('lastName'))" errorMessage="Please enter your last name" [disabled]="isDisabled">
                 <input class="form-control" type="text" formControlName="lastName" maxlength="100">
             </app-field>
         </div>
@@ -57,13 +57,13 @@
 
     <div class="row">
         <div class="col-md-6 date-col">
-            <app-field label="Birth Date" [required]="true" [valid]="isMyControlValid(form.get('birthDate'))" errorMessage="Please enter your birth date">
+            <app-field label="Birth Date" [required]="true" [valid]="isMyControlValid(form.get('birthDate'))" errorMessage="Please enter your birth date" [disabled]="isDisabled">
                 <app-date-field [control]="form.get('birthDate')" [max]="today" [disabled]="form.get('applicantInfoSameAsVictim').value"></app-date-field>
             </app-field>
         </div>
 
         <div class="col flex-col">
-            <app-field label="Gender" [required]="false" [valid]="isMyControlValid(form.get('gender'))" errorMessage="Please select your gender">
+            <app-field label="Gender" [required]="false" [valid]="isMyControlValid(form.get('gender'))" errorMessage="Please select your gender" [disabled]="isDisabled">
                 <label class="inline-label">
                     <input type="radio" [value]="EnumHelper.Gender.Male.val" name="gender" formControlName="gender" (change)="showOtherGender(false)">
                     <span>M</span>
@@ -83,12 +83,12 @@
 
     <div class="row">
         <div class="col-md-4">
-            <app-field label="Preferred Language" [required]="false" [valid]="isFieldValid('preferredLanguage')" errorMessage="">
+            <app-field label="Preferred Language" [required]="false" [valid]="isFieldValid('preferredLanguage')" errorMessage="" [disabled]="isDisabled">
                 <input class="form-control" type="text" formControlName="preferredLanguage" maxlength="100">
             </app-field>
         </div>
         <div class="col-md-4">
-            <app-field label="Interpreter Needed" errorMessage="">
+            <app-field label="Interpreter Needed" errorMessage="" [disabled]="isDisabled">
                 <label class="inline-label">
                     <input type="radio" [value]="EnumHelper.Boolean.True.val" name="interpreterNeeded" formControlName="interpreterNeeded">
                     <span>Yes</span>
@@ -101,11 +101,11 @@
         </div>
     </div>
 
-    <app-address [group]="form.get('address')" [lookupData]="lookupData" [showChildrenAsRequired]="true" (change)="copyApplicantAddressToDeligate(form.parent)"></app-address>
+    <app-address [group]="form.get('address')" [lookupData]="lookupData" [showChildrenAsRequired]="true" (change)="copyApplicantAddressToDeligate(form.parent)" [disabled]="isDisabled"></app-address>
 
     <div class="row">
         <div class="col">
-            <app-field label="May we send correspondence and notification information to the above address? (if no, please provide your email address below):" errorMessage="">
+            <app-field label="May we send correspondence and notification information to the above address? (if no, please provide your email address below):" errorMessage="" [disabled]="isDisabled">
                 <label class="inline-label">
                     <input type="radio" [value]="enumHelper.Boolean.True.val" name="mayWeSendCorrespondence" formControlName="mayWeSendCorrespondence">
                     <span>Yes</span>
@@ -121,10 +121,10 @@
     <p>Please list one or more methods of contact (telephone / cellular / email) in order of preference and indicate if we may leave a detailed message (e.g. our organization name, phone number, case information, notification details):</p>
 
     <div class="contactMethods" formArrayName="contactMethods" *ngFor="let item of form.get('contactMethods')['controls']; let i = index;">
-        <app-contact-method [formGroup]="item" [formGroupName]="i" [number]="i" [parent]="form"></app-contact-method>
+        <app-contact-method [formGroup]="item" [formGroupName]="i" [number]="i" [parent]="form" [disabled]="isDisabled" ></app-contact-method>
     </div>
 
-    <app-field [valid]="isFieldValid('atLeastOneContactMethod')" errorMessage="Please enter at least one contact method">
+    <app-field [valid]="isFieldValid('atLeastOneContactMethod')" errorMessage="Please enter at least one contact method" [disabled]="isDisabled">
         <input type="hidden" name="atLeastOneContactMethod" formControlName="atLeastOneContactMethod">
     </app-field>
 

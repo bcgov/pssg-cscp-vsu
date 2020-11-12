@@ -15,6 +15,11 @@ export const FORM_TITLES = {
     TRAVEL_FUNDS_APPLICATION: "Victim Safety Unit - Notification Application Form",
 };
 
+export const FORM_TYPES = {
+    NOTIFICATION_APPLICATION: { name: "Victim Service Notification" },
+    TRAVEL_FUNDS_APPLICATION: { name: "-Travel Fund placeholder-" },
+};
+
 export class EnumHelper {
     public ApplicantType = {
         Victim:                     { val: 100000000, name: "Victim" },

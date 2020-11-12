@@ -89,11 +89,13 @@ export interface iCRMParticipant {
     vsd_postalcode?: string;
 
     //This field is in the design, but not in CRM - placeholder for if/when it gets added
-    // vsd_vsu_oktosendmail?: number;
+    vsd_vsu_oktosendmail?: number;
     
     vsd_email?: string;
     vsd_relationship1: string;
     vsd_relationship1other?: string;
+    vsd_relationship2?: string;
+    vsd_relationship2other?: string;
 
     vsd_vsu_methodofcontact1type?: number;
     vsd_vsu_methodofcontact1number?: string;

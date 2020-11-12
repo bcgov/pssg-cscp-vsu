@@ -12,6 +12,7 @@ export class ContactMethodComponent extends FormBase implements OnInit {
     @Input() number: number = 1;
     @Input() isDeligate: boolean = false;
     @Input() parent: FormGroup;
+    @Input() disabled: boolean;
 
     EnumHelper = new EnumHelper();
     constructor(private controlContainer: ControlContainer) {

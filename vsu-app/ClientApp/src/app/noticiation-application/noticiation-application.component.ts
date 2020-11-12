@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { iNotificationApplication, iCaseInformation, iApplicantInformation, iRecipientDetails, iAuthorizationInformation } from '../shared/interfaces/notification-application.interface';
 import { iLookupData } from '../shared/interfaces/lookup-data.interface';
 import { LookupService } from '../services/lookup.service';
-import { NotificationQueueService } from '../services/notification-queue.service';
 import { ApplicantInfoHelper } from '../shared/components/applicant-information/applicant-information.helper';
 import { AuthInfoHelper } from '../shared/components/authorization/authorization.helper';
 import { CaseInfoInfoHelper } from '../shared/components/case-information/case-information.helper';
@@ -14,7 +13,7 @@ import { FormBase } from '../shared/form-base';
 import { NotificationApplicationService } from '../services/notification-application.service';
 import { convertNotificationApplicationToCRM } from '../shared/interfaces/converters/notification-application.web.to.crm';
 import { Title } from '@angular/platform-browser';
-import { FORM_TITLES } from '../shared/enums-list';
+import { FORM_TITLES, FORM_TYPES } from '../shared/enums-list';
 
 @Component({
     selector: 'app-notification-application',
@@ -29,6 +28,7 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
     submitting: boolean = false;
     public currentFormStep: number = 0;
     public showPrintView: boolean = false;
+    formType = FORM_TYPES.NOTIFICATION_APPLICATION.name;
 
     elements: string[] = ['overview', 'caseInformation', 'applicantInformation', 'recipientDetails', 'authorizationInformation'];
 
@@ -97,12 +97,12 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
 
     buildApplicationForm(): FormGroup {
         let group = {
-            overview: this.fb.group({
-            }),
+            overview: this.fb.group({}),
             caseInformation: this.caseInfoHelper.setupFormGroup(this.fb),
             applicantInformation: this.applicantInfoInfoHelper.setupFormGroup(this.fb),
             recipientDetails: this.recipientDetailsHelper.setupFormGroup(this.fb),
             authorizationInformation: this.authInfoHelper.setupFormGroup(this.fb),
+            confirmation: this.fb.group({ confirmationNumber: "" }),
         };
 
         return this.fb.group(group);
@@ -144,6 +144,8 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
                 this.submitting = false;
                 console.log(res);
                 if (res.IsSuccess) {
+                    //this confirmation number should be included in the result from crm
+                    this.form.get('confirmation.confirmationNumber').patchValue('RXXXXXX');
                     this.showConfirmation = true;
                     setTimeout(() => {
                         this.gotoNextStep(this.applicationStepper);

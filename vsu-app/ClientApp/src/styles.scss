@@ -24,26 +24,20 @@ html {
   background: #f2f2f2;
 }
 
-.btn.btn-primary {
-  background-color: #38598a;
-  border: #38598a 1px solid;
-  color: #ffffff;
+.btn {
   min-width: 120px;
   font-size: 16px;
   border-radius: 5px;
-}
-
-.btn.btn-secondary {
-  background-color: #fff;
-  border: #ccc 1px solid;
-  color: #003366;
-  min-width: 120px;
-  font-size: 16px;
-  border-radius: 3px;
   display: inline-block;
   padding: 6px 12px;
   font-weight: 400;
   line-height: 1.42857143;
+}
+
+.btn.btn-primary {
+  background-color: #38598a;
+  border: #38598a 1px solid;
+  color: #ffffff;
 }
 
 .btn-primary:hover {
@@ -53,6 +47,12 @@ html {
   border-radius: 5px;
 }
 
+.btn.btn-secondary {
+  background-color: #fff;
+  border: #ccc 1px solid;
+  color: #003366;
+}
+
 .btn-secondary:hover {
   background-color: #f2f2f2;
 }
@@ -60,6 +60,28 @@ html {
 .btn-secondary:focus {
   border-color: #ccc;
   box-shadow: 0 0 0 0.2rem #ccc;
+}
+
+.btn-outline-primary {
+  color: #38598a;
+  border-color: #38598a;
+}
+
+.btn-outline-primary:hover {
+  color: #fff;
+  background-color: #38598a;
+  border-color: #38598a;
+}
+
+.btn-outline-primary:focus {
+  color: #38598a;
+  border-color: #38598a;
+}
+
+.btn-outline-primary:focus:hover {
+  color: #fff;
+  background-color: #38598a;
+  border-color: #38598a;
 }
 
 .btn.btn-primary.sv_prev_btn {
@@ -163,6 +185,13 @@ select.form-control:not([size]):not([multiple]) {
   }
 }
 
+@media (max-width: 575.98px) {
+  .form-wrapper {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+
 .round-icon-wrapper {
   height: 48px;
   line-height: 55px;
@@ -250,9 +279,11 @@ hr {
   .hide-for-print {
     display: none !important;
   }
-  div {
-    display: table;
-    page-break-inside: avoid;
+  .contact-method-col {
+    min-width: 250px;
+  }
+  .btn {
+    display: none !important;
   }
 }
 
@@ -356,4 +387,22 @@ hr {
       margin-bottom: 5px;
     }
   }
+}
+
+.field-disabled input {
+  opacity: 0.7;
+  text-decoration: none;
+  pointer-events: none;
+}
+
+.field-disabled select {
+  opacity: 0.7;
+  text-decoration: none;
+  pointer-events: none;
+}
+
+.field-disabled td {
+  opacity: 0.7;
+  text-decoration: none;
+  pointer-events: none;
 }
