@@ -27,7 +27,6 @@ export class ConfirmationComponent {
     }
 
     close() {
-        console.log("close");
-
+        window.close();
     }
 }
