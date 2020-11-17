@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { ControlContainer, FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { ControlContainer, FormArray, FormBuilder, FormGroup } from "@angular/forms";
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/material";
 import { MomentDateAdapter } from "@angular/material-moment-adapter";
 import { iLookupData } from "../../interfaces/lookup-data.interface";
 import { LookupService } from "../../../services/lookup.service";
-import { ApplicationType, EnumHelper, MY_FORMATS } from "../../enums-list";
+import { ApplicationType, MY_FORMATS } from "../../enums-list";
 import { FormBase } from "../../form-base";
 import { CaseInfoInfoHelper } from "./case-information.helper";
 
@@ -24,9 +24,10 @@ export class CaseInformationComponent extends FormBase implements OnInit {
   public form: FormGroup;
 
   courtList: string[] = [];
+  offenceList: string[] = ["Assault", "Torture", "Murder", "Get more from CRM"];
 
-  EnumHelper = new EnumHelper();
   caseInfoHelper = new CaseInfoInfoHelper();
+  ApplicationType = ApplicationType;
 
   constructor(private controlContainer: ControlContainer,
     private lookupService: LookupService,

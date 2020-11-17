@@ -96,11 +96,11 @@ export class VictimTravelFundApplicationComponent extends FormBase implements On
 
     buildApplicationForm(): FormGroup {
         let group = {
-            overview: this.overviewHelper.setupFormGroup(this.fb),
-            applicantInformation: this.applicantInfoInfoHelper.setupFormGroup(this.fb),
-            caseInformation: this.caseInfoHelper.setupFormGroup(this.fb),
+            overview: this.overviewHelper.setupFormGroup(this.fb, this.formType.val),
+            applicantInformation: this.applicantInfoInfoHelper.setupFormGroup(this.fb, this.formType.val),
+            caseInformation: this.caseInfoHelper.setupFormGroup(this.fb, this.formType.val),
             travelInformation: this.fb.group({}),
-            authorizationInformation: this.authInfoHelper.setupFormGroup(this.fb),
+            authorizationInformation: this.authInfoHelper.setupFormGroup(this.fb, this.formType.val),
             confirmation: this.fb.group({ confirmationNumber: "" }),
         };
 

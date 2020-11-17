@@ -19,22 +19,32 @@
             attend and participate in the justice proceedings, one support person may also be eligible to apply.</li>
         <li>Immediate family members of a deceased victim. Eligible immediate family members include parents, spouse, children and siblings as defined in
             the <a href="https://www.bclaws.ca/civix/document/id/complete/statreg/96478_01" target="_blank" title="Victims of Crime Act">Victims of Crime Act</a>.
-            Note: Immediate family members of a deceased victim should first apply for funding through the Crime Victim Assistance Program, except in cases where
-            the fatality was as a result of a <a href="https://www2.gov.bc.ca/gov/content/justice/criminal-justice/bcs-criminal-justice-system/if-you-are-a-victim-of-a-crime/victim-of-crime/financial-assistance-benefits" target="_blank">motor vehicle accident</a>.</li>
+            Note: Immediate family members of a deceased victim should first apply for
+            <a href="https://www2.gov.bc.ca/gov/content/justice/criminal-justice/bcs-criminal-justice-system/if-you-are-a-victim-of-a-crime/victim-of-crime/financial-assistance-benefits" target="_blank">funding</a>
+            through the Crime Victim Assistance Program, except in cases where
+            the fatality was as a result of a motor vehicle accident.</li>
     </ol>
 
     <p>Prior to completing your Victim Travel Fund application please answer the following questions to assist in determining your eligibility to receive funding:</p>
+    <ng-template #offencesTooltip>Offences:&nbsp;
+        <ng-container *ngFor="let offence of offenceList; let i = index">{{offence + (i < offenceList.length - 1 ? ', ' : '')}}</ng-container>
 
-    <p>todo - each of these needs a yes/no question</p>
+        <p class="mt-2">The Victim Safety Unit will also consider funding for travel under the Victim Travel Fund for:</p>
+        <ul>
+            <li>Cases involving fatal motor vehicle accidents, where an accused has been charged under the Motor Vehicle Act versus the Criminal Code</li>
+            <li>Travel to participate in BC Review Board hearings, in cases where the accused has been found notcriminally responsible on account of mental disorder (NCRMD)</li>
+        </ul>
+    </ng-template>
+
     <ol>
-        <li>Does the criminal charge fall under one of these offences?
+        <li>Does the criminal charge fall under one of these offences? <app-tool-tip [trigger]="offencesTooltip"></app-tool-tip>
             <app-field label="" errorMessage="Please select one" [valid]="isMyControlValid(form.get('criminalChargeOneOfOffences'))" [disabled]="isDisabled">
                 <label class="inline-label">
-                    <input type="radio" [value]="EnumHelper.Boolean.True.val" name="criminalChargeOneOfOffences" formControlName="criminalChargeOneOfOffences">
+                    <input type="radio" [value]="enum.Boolean.True.val" name="criminalChargeOneOfOffences" formControlName="criminalChargeOneOfOffences">
                     <span>Yes</span>
                 </label>
                 <label class="inline-label">
-                    <input type="radio" [value]="EnumHelper.Boolean.False.val" name="criminalChargeOneOfOffences" formControlName="criminalChargeOneOfOffences">
+                    <input type="radio" [value]="enum.Boolean.False.val" name="criminalChargeOneOfOffences" formControlName="criminalChargeOneOfOffences">
                     <span>No</span>
                 </label>
             </app-field>
@@ -43,11 +53,11 @@
         <li>Is the criminal justice proceeding expected to impact the outcome, disposition or results relating to the charges?
             <app-field label="" errorMessage="Please select one" [valid]="isMyControlValid(form.get('proceedingsImpactOutcome'))" [disabled]="isDisabled">
                 <label class="inline-label">
-                    <input type="radio" [value]="EnumHelper.Boolean.True.val" name="proceedingsImpactOutcome" formControlName="proceedingsImpactOutcome">
+                    <input type="radio" [value]="enum.Boolean.True.val" name="proceedingsImpactOutcome" formControlName="proceedingsImpactOutcome">
                     <span>Yes</span>
                 </label>
                 <label class="inline-label">
-                    <input type="radio" [value]="EnumHelper.Boolean.False.val" name="proceedingsImpactOutcome" formControlName="proceedingsImpactOutcome">
+                    <input type="radio" [value]="enum.Boolean.False.val" name="proceedingsImpactOutcome" formControlName="proceedingsImpactOutcome">
                     <span>No</span>
                 </label>
             </app-field>
@@ -58,11 +68,11 @@
             Please enter one way distance in the Comments, along with any additional comments.
             <app-field label="" errorMessage="Please select one" [valid]="isMyControlValid(form.get('travelMoreThan100KM'))" [disabled]="isDisabled">
                 <label class="inline-label">
-                    <input type="radio" [value]="EnumHelper.Boolean.True.val" name="travelMoreThan100KM" formControlName="travelMoreThan100KM">
+                    <input type="radio" [value]="enum.Boolean.True.val" name="travelMoreThan100KM" formControlName="travelMoreThan100KM">
                     <span>Yes</span>
                 </label>
                 <label class="inline-label">
-                    <input type="radio" [value]="EnumHelper.Boolean.False.val" name="travelMoreThan100KM" formControlName="travelMoreThan100KM">
+                    <input type="radio" [value]="enum.Boolean.False.val" name="travelMoreThan100KM" formControlName="travelMoreThan100KM">
                     <span>No</span>
                 </label>
             </app-field>
@@ -72,11 +82,11 @@
             (due to subpoena to attend court) and the Crime Victim Assistance Program?
             <app-field label="" errorMessage="Please select one" [valid]="isMyControlValid(form.get('notCoveredByOtherSources'))" [disabled]="isDisabled">
                 <label class="inline-label">
-                    <input type="radio" [value]="EnumHelper.Boolean.True.val" name="notCoveredByOtherSources" formControlName="notCoveredByOtherSources">
+                    <input type="radio" [value]="enum.Boolean.True.val" name="notCoveredByOtherSources" formControlName="notCoveredByOtherSources">
                     <span>Yes</span>
                 </label>
                 <label class="inline-label">
-                    <input type="radio" [value]="EnumHelper.Boolean.False.val" name="notCoveredByOtherSources" formControlName="notCoveredByOtherSources">
+                    <input type="radio" [value]="enum.Boolean.False.val" name="notCoveredByOtherSources" formControlName="notCoveredByOtherSources">
                     <span>No</span>
                 </label>
             </app-field>

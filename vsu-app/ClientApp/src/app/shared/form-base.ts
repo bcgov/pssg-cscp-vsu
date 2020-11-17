@@ -1,13 +1,13 @@
 import { ValidatorFn, AbstractControl, FormControl, FormGroup, FormArray, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material';
 import * as moment from 'moment';
-import { EnumHelper } from './enums-list';
+import { ApplicationType, EnumHelper } from './enums-list';
 
 export class FormBase {
     form: FormGroup;
     today = new Date();
     oldestHuman = new Date(this.today.getFullYear() - 120, this.today.getMonth(), this.today.getDay());
-    enumHelper = new EnumHelper();
+    enum = new EnumHelper();
     showValidationMessage: boolean = false;
     public currentFormStep: number = 0;
 
@@ -155,20 +155,20 @@ export class FormBase {
         let type = item.get('type').value;
         let current_validators = [];
 
-        if (type == this.enumHelper.ContactType.Telephone.val) {
-            if (item.get('previousType').value == this.enumHelper.ContactType.Email.val) {
+        if (type == this.enum.ContactType.Telephone.val) {
+            if (item.get('previousType').value == this.enum.ContactType.Email.val) {
                 item.get('val').patchValue('');
             }
             current_validators = [Validators.minLength(10), Validators.maxLength(15)];
         }
-        else if (type == this.enumHelper.ContactType.Cellular.val) {
-            if (item.get('previousType').value == this.enumHelper.ContactType.Email.val) {
+        else if (type == this.enum.ContactType.Cellular.val) {
+            if (item.get('previousType').value == this.enum.ContactType.Email.val) {
                 item.get('val').patchValue('');
             }
             current_validators = [Validators.minLength(10), Validators.maxLength(15)];
         }
-        else if (type == this.enumHelper.ContactType.Email.val) {
-            if (item.get('previousType').value == this.enumHelper.ContactType.Telephone.val || item.get('previousType').value == this.enumHelper.ContactType.Cellular.val) {
+        else if (type == this.enum.ContactType.Email.val) {
+            if (item.get('previousType').value == this.enum.ContactType.Telephone.val || item.get('previousType').value == this.enum.ContactType.Cellular.val) {
                 item.get('val').patchValue('');
             }
             current_validators = [Validators.email];
@@ -193,7 +193,7 @@ export class FormBase {
         let contactMethods = base_form.get('contactMethods') as FormArray;
         for (let i = 0; i < contactMethods.controls.length; ++i) {
             let thisMethod = contactMethods.controls[i];
-            if (thisMethod.get('val').value && thisMethod.get('val').valid && thisMethod.get('leaveMessage').value == this.enumHelper.Boolean.True.val) {
+            if (thisMethod.get('val').value && thisMethod.get('val').valid && thisMethod.get('leaveMessage').value == this.enum.Boolean.True.val) {
                 isValid = true;
             }
         }
@@ -202,51 +202,92 @@ export class FormBase {
         base_form.get('atLeastOneContactMethod').patchValue(val);
     }
 
-    copyApplicantAddressToDeligate(form: FormGroup | FormArray) {
-        let designates = form.get('recipientDetails.designate') as FormArray;
-        if (designates.length == 0) return;
-        let copyAddress = designates.controls[0].get('addressSameAsApplicant').value === true;
-        let target = designates.controls[0].get('address');
-        let source = form.get('applicantInformation.address');
+    copyApplicantAddressToDeligate(form: FormGroup | FormArray, formType: ApplicationType) {
+        if (formType === ApplicationType.NOTIFICATION) {
+            let designates = form.get('recipientDetails.designate') as FormArray;
+            if (designates.length == 0) return;
+            let copyAddress = designates.controls[0].get('addressSameAsApplicant').value === true;
+            let target = designates.controls[0].get('address');
+            let source = form.get('applicantInformation.address');
+            let options = { onlySelf: true, emitEvent: true };
+
+            if (copyAddress) {
+                target.get('line1').patchValue(source.get('line1').value, options);
+                target.get('line2').patchValue(source.get('line2').value, options);
+                target.get('city').patchValue(source.get('city').value, options);
+                target.get('postalCode').patchValue(source.get('postalCode').value, options);
+                target.get('province').patchValue(source.get('province').value, options);
+                target.get('country').patchValue(source.get('country').value, options);
+
+                target.get('line1').setErrors(null, options);
+                target.get('line2').setErrors(null, options);
+                target.get('city').setErrors(null, options);
+                target.get('postalCode').setErrors(null, options);
+                target.get('province').setErrors(null, options);
+                target.get('country').setErrors(null, options);
+
+                target.get('line1').disable(options);
+                target.get('line2').disable(options);
+                target.get('city').disable(options);
+                target.get('postalCode').disable(options);
+                target.get('province').disable(options);
+                target.get('country').disable(options);
+            }
+            else {
+                target.get('line1').enable(options);
+                target.get('line2').enable(options);
+                target.get('city').enable(options);
+                target.get('postalCode').enable(options);
+                target.get('province').enable(options);
+                target.get('country').enable(options);
+            }
+
+            target.get('line1').updateValueAndValidity(options);
+            target.get('line2').updateValueAndValidity(options);
+            target.get('city').updateValueAndValidity(options);
+            target.get('postalCode').updateValueAndValidity(options);
+            target.get('province').updateValueAndValidity(options);
+            target.get('country').updateValueAndValidity(options);
+        }
+    }
+
+    setVictimInfoSameAsApplicant(form: FormGroup | FormArray) {
+        let victimInfo = form.get('caseInformation');
+        let applicantInfo = form.get('applicantInformation');
+        let copy = victimInfo.get('victimInfoSameAsApplicant').value;
         let options = { onlySelf: true, emitEvent: true };
+        if (copy) {
+            victimInfo.get('firstName').patchValue(applicantInfo.get('firstName').value);
+            victimInfo.get('middleName').patchValue(applicantInfo.get('middleName').value);
+            victimInfo.get('lastName').patchValue(applicantInfo.get('lastName').value);
+            victimInfo.get('birthDate').patchValue(applicantInfo.get('birthDate').value);
+            victimInfo.get('gender').patchValue(applicantInfo.get('gender').value);
 
-        if (copyAddress) {
-            target.get('line1').patchValue(source.get('line1').value, options);
-            target.get('line2').patchValue(source.get('line2').value, options);
-            target.get('city').patchValue(source.get('city').value, options);
-            target.get('postalCode').patchValue(source.get('postalCode').value, options);
-            target.get('province').patchValue(source.get('province').value, options);
-            target.get('country').patchValue(source.get('country').value, options);
+            victimInfo.get('firstName').setErrors(null, options);
+            victimInfo.get('middleName').setErrors(null, options);
+            victimInfo.get('lastName').setErrors(null, options);
+            victimInfo.get('birthDate').setErrors(null, options);
+            victimInfo.get('gender').setErrors(null, options);
 
-            target.get('line1').setErrors(null, options);
-            target.get('line2').setErrors(null, options);
-            target.get('city').setErrors(null, options);
-            target.get('postalCode').setErrors(null, options);
-            target.get('province').setErrors(null, options);
-            target.get('country').setErrors(null, options);
-
-            target.get('line1').disable(options);
-            target.get('line2').disable(options);
-            target.get('city').disable(options);
-            target.get('postalCode').disable(options);
-            target.get('province').disable(options);
-            target.get('country').disable(options);
+            victimInfo.get('firstName').disable(options);
+            victimInfo.get('middleName').disable(options);
+            victimInfo.get('lastName').disable(options);
+            victimInfo.get('birthDate').disable(options);
+            victimInfo.get('gender').disable(options);
         }
         else {
-            target.get('line1').enable(options);
-            target.get('line2').enable(options);
-            target.get('city').enable(options);
-            target.get('postalCode').enable(options);
-            target.get('province').enable(options);
-            target.get('country').enable(options);
+            victimInfo.get('firstName').enable(options);
+            victimInfo.get('middleName').enable(options);
+            victimInfo.get('lastName').enable(options);
+            victimInfo.get('birthDate').enable(options);
+            victimInfo.get('gender').enable(options);
         }
 
-        target.get('line1').updateValueAndValidity(options);
-        target.get('line2').updateValueAndValidity(options);
-        target.get('city').updateValueAndValidity(options);
-        target.get('postalCode').updateValueAndValidity(options);
-        target.get('province').updateValueAndValidity(options);
-        target.get('country').updateValueAndValidity(options);
+        victimInfo.get('firstName').updateValueAndValidity(options);
+        victimInfo.get('middleName').updateValueAndValidity(options);
+        victimInfo.get('lastName').updateValueAndValidity(options);
+        victimInfo.get('birthDate').updateValueAndValidity(options);
+        victimInfo.get('gender').updateValueAndValidity(options);
     }
 
     setApplicantInfoSameAsVictim(form: FormGroup | FormArray) {

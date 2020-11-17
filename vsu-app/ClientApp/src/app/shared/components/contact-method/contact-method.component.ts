@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { ControlContainer, FormGroup } from "@angular/forms";
-import { EnumHelper } from "../../enums-list";
 import { FormBase } from "../../form-base";
 
 @Component({
@@ -14,7 +13,6 @@ export class ContactMethodComponent extends FormBase implements OnInit {
     @Input() parent: FormGroup;
     @Input() disabled: boolean;
 
-    EnumHelper = new EnumHelper();
     constructor(private controlContainer: ControlContainer) {
         super();
     }

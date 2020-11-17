@@ -1,11 +1,11 @@
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { EnumHelper } from "../../enums-list";
+import { ApplicationType, EnumHelper } from "../../enums-list";
 import { POSTAL_CODE } from "../../regex.constants";
 
 export class RecipientDetailsHelper {
     enum = new EnumHelper();
     postalRegex = POSTAL_CODE;
-    public setupFormGroup(fb: FormBuilder): FormGroup {
+    public setupFormGroup(fb: FormBuilder, form_type: ApplicationType): FormGroup {
         let group = {
             notificationRecipient: ['', Validators.required],
 

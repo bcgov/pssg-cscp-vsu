@@ -4,15 +4,15 @@
             <app-field [label]="'Preferred Method of Contact ' + (number + 1)" [required]="false" [valid]="isMyControlValid(form.get('type'))" errorMessage="" [disabled]="disabled">
                 <select class="form-control" formControlName="type" (change)="contactMethodChange(form)">
                     <option [ngValue]="null">Select One</option>
-                    <option [value]="EnumHelper.ContactType.Telephone.val">Telephone</option>
-                    <option [value]="EnumHelper.ContactType.Cellular.val">Cellular</option>
-                    <option [value]="EnumHelper.ContactType.Email.val">Email</option>
+                    <option [value]="enum.ContactType.Telephone.val">Telephone</option>
+                    <option [value]="enum.ContactType.Cellular.val">Cellular</option>
+                    <option [value]="enum.ContactType.Email.val">Email</option>
                 </select>
             </app-field>
         </div>
 
         <div class="col-md-4 contact-method-col">
-            <ng-container *ngIf="form.get('type').value == EnumHelper.ContactType.Telephone.val">
+            <ng-container *ngIf="form.get('type').value == enum.ContactType.Telephone.val">
                 <app-field label="Telephone Number" [required]="false" [valid]="isMyControlValid(form.get('val'))" errorMessage="Please enter your phone number" [disabled]="disabled">
                     <input class="form-control" mask='000-000-0000' type="text" formControlName="val" *ngIf="parent.get('address.country').value === 'Canada' || parent.get('address.country').value === 'United States of America'; else phone_no_mask" (change)="checkAtLeastOneContactMethod(parent, isDeligate)">
                     <ng-template #phone_no_mask>
@@ -21,7 +21,7 @@
                 </app-field>
             </ng-container>
 
-            <ng-container *ngIf="form.get('type').value == EnumHelper.ContactType.Cellular.val">
+            <ng-container *ngIf="form.get('type').value == enum.ContactType.Cellular.val">
                 <app-field label="Cellular Number" [required]="false" [valid]="isMyControlValid(form.get('val'))" errorMessage="Please enter your cell number" [disabled]="disabled">
                     <input class="form-control" mask='000-000-0000' type="text" formControlName="val" *ngIf="parent.get('address.country').value === 'Canada' || parent.get('address.country').value === 'United States of America'; else cell_no_mask" (change)="checkAtLeastOneContactMethod(parent, isDeligate)">
                     <ng-template #cell_no_mask>
@@ -30,21 +30,21 @@
                 </app-field>
             </ng-container>
 
-            <ng-container *ngIf="form.get('type').value == EnumHelper.ContactType.Email.val">
+            <ng-container *ngIf="form.get('type').value == enum.ContactType.Email.val">
                 <app-field label="Email Address" [required]="false" [valid]="isMyControlValid(form.get('val'))" errorMessage="Please enter your email address" [disabled]="disabled">
                     <input class="form-control" type="text" formControlName="val" maxlength="100" (change)="checkAtLeastOneContactMethod(parent, isDeligate)">
                 </app-field>
             </ng-container>
         </div>
 
-        <div class="col-md-4 contact-method-col" *ngIf="form.get('type').value != EnumHelper.ContactType.Unset.val">
+        <div class="col-md-4 contact-method-col" *ngIf="form.get('type').value != enum.ContactType.Unset.val">
             <app-field label="May we leave a detailed message?" errorMessage="" [disabled]="disabled">
                 <label class="inline-label">
-                    <input type="radio" [value]="EnumHelper.Boolean.True.val" formControlName="leaveMessage" (change)="checkAtLeastOneContactMethod(parent, isDeligate)">
+                    <input type="radio" [value]="enum.Boolean.True.val" formControlName="leaveMessage" (change)="checkAtLeastOneContactMethod(parent, isDeligate)">
                     <span>Yes</span>
                 </label>
                 <label class="inline-label">
-                    <input type="radio" [value]="EnumHelper.Boolean.False.val" formControlName="leaveMessage" (change)="checkAtLeastOneContactMethod(parent, isDeligate)">
+                    <input type="radio" [value]="enum.Boolean.False.val" formControlName="leaveMessage" (change)="checkAtLeastOneContactMethod(parent, isDeligate)">
                     <span>No</span>
                 </label>
             </app-field>

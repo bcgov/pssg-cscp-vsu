@@ -98,10 +98,10 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
     buildApplicationForm(): FormGroup {
         let group = {
             overview: this.fb.group({}),
-            caseInformation: this.caseInfoHelper.setupFormGroup(this.fb),
-            applicantInformation: this.applicantInfoInfoHelper.setupFormGroup(this.fb),
-            recipientDetails: this.recipientDetailsHelper.setupFormGroup(this.fb),
-            authorizationInformation: this.authInfoHelper.setupFormGroup(this.fb),
+            caseInformation: this.caseInfoHelper.setupFormGroup(this.fb, this.formType.val),
+            applicantInformation: this.applicantInfoInfoHelper.setupFormGroup(this.fb, this.formType.val),
+            recipientDetails: this.recipientDetailsHelper.setupFormGroup(this.fb, this.formType.val),
+            authorizationInformation: this.authInfoHelper.setupFormGroup(this.fb, this.formType.val),
             confirmation: this.fb.group({ confirmationNumber: "" }),
         };
 

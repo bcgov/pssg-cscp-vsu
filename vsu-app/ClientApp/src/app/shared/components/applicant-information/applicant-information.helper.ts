@@ -1,11 +1,11 @@
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { EnumHelper } from "../../enums-list";
+import { ApplicationType, EnumHelper } from "../../enums-list";
 import { POSTAL_CODE } from "../../regex.constants";
 
 export class ApplicantInfoHelper {
     postalRegex = POSTAL_CODE;
     enum = new EnumHelper();
-    public setupFormGroup(fb: FormBuilder): FormGroup {
+    public setupFormGroup(fb: FormBuilder, form_type: ApplicationType): FormGroup {
         let group = {
             applicantType: ['', Validators.required],
             applicantTypeOther: [''],
@@ -15,7 +15,6 @@ export class ApplicantInfoHelper {
             lastName: ['', Validators.required],
 
             birthDate: ['', [Validators.required]],
-            gender: [''],
             genderOther: [''],
 
             preferredLanguage: ['English'],
@@ -34,7 +33,16 @@ export class ApplicantInfoHelper {
             atLeastOneContactMethod: ['', Validators.required],
         }
 
-        //check if form type is travel and add additional fields
+        if (form_type === ApplicationType.TRAVEL_FUNDS) {
+            group['victimAlreadySubmitted'] = [''];
+            group['victimAlreadySubmittedComment'] = [''];
+            group['otherFamilyAlsoApplying'] = [''];
+            group['otherFamilyAlsoApplyingComment'] = [''];
+            group['gender'] = ['', Validators.required];
+        }
+        else if (form_type === ApplicationType.NOTIFICATION) {
+            group['gender'] = [''];
+        }
 
         return fb.group(group);
     }

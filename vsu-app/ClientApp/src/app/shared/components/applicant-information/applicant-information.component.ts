@@ -3,7 +3,7 @@ import { ControlContainer, FormArray, FormGroup, Validators } from "@angular/for
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/material";
 import { MomentDateAdapter } from "@angular/material-moment-adapter";
 import { iLookupData } from "../../interfaces/lookup-data.interface";
-import { ApplicationType, EnumHelper, MY_FORMATS } from "../../enums-list";
+import { ApplicationType, MY_FORMATS } from "../../enums-list";
 import { FormBase } from "../../form-base";
 import { ApplicantInfoHelper } from "./applicant-information.helper";
 
@@ -25,7 +25,6 @@ export class ApplicantInformationComponent extends FormBase implements OnInit {
     showOtherApplicantType: boolean = false;
     today: Date = new Date();
 
-    EnumHelper = new EnumHelper();
     applicantInfoHelper = new ApplicantInfoHelper();
 
     ApplicationType = ApplicationType;
@@ -53,16 +52,41 @@ export class ApplicantInformationComponent extends FormBase implements OnInit {
         }
     }
 
-    setApplicantTypeOtherRequired(required) {
-        let control = this.form.get("applicantTypeOther");
-        if (required) {
+    applicantTypeChange() {
+        let type = this.form.get('applicantType').value;
+        let otherControl = this.form.get("applicantTypeOther");
+        let otherRequired = type === this.enum.ApplicantType.Other_Family_Member.val;
+
+        if (otherRequired) {
             this.showOtherApplicantType = true;
-            this.setControlValidators(control, [Validators.required]);
+            this.setControlValidators(otherControl, [Validators.required]);
         }
         else {
-            control.patchValue('');
+            otherControl.patchValue('');
             this.showOtherApplicantType = false;
-            this.clearControlValidators(control);
+            this.clearControlValidators(otherControl);
+        }
+
+        if (type !== this.enum.ApplicantType.Support_Person.val) {
+            this.form.get("victimAlreadySubmitted").patchValue('');
+            this.form.get("victimAlreadySubmittedComment").patchValue('');
+        }
+
+        if (type !== this.enum.ApplicantType.Immediate_Family_Member.val) {
+            this.form.get("otherFamilyAlsoApplying").patchValue('');
+            this.form.get("otherFamilyAlsoApplyingComment").patchValue('');
+        }
+    }
+
+    victimAlreadySubmittedChange() {
+        if (this.form.get("victimAlreadySubmitted").value !== this.enum.MultiBoolean.Undecided.val) {
+            this.form.get("victimAlreadySubmittedComment").patchValue('');
+        }
+    }
+
+    otherFamilyAlsoApplyingChange() {
+        if (this.form.get("otherFamilyAlsoApplying").value !== this.enum.MultiBoolean.Undecided.val) {
+            this.form.get("otherFamilyAlsoApplyingComment").patchValue('');
         }
     }
 
@@ -71,7 +95,7 @@ export class ApplicantInformationComponent extends FormBase implements OnInit {
         let contactMethods = this.form.get('contactMethods') as FormArray;
         for (let i = 0; i < contactMethods.controls.length; ++i) {
             let thisMethod = contactMethods.controls[i];
-            if (thisMethod.get('val').value && thisMethod.get('val').valid && thisMethod.get('leaveMessage').value == this.EnumHelper.Boolean.True.val) {
+            if (thisMethod.get('val').value && thisMethod.get('val').valid && thisMethod.get('leaveMessage').value == this.enum.Boolean.True.val) {
                 isValid = true;
             }
         }

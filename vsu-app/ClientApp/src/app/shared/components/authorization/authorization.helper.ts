@@ -1,9 +1,9 @@
 import { FormBuilder, FormGroup, Validators, FormControl } from "@angular/forms";
+import { ApplicationType } from "../../enums-list";
 
 export class AuthInfoHelper {
-    public setupFormGroup(fb: FormBuilder): FormGroup {
+    public setupFormGroup(fb: FormBuilder, form_type: ApplicationType): FormGroup {
         let today = new Date();
-        let dateString = today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate();
         let group = {
             registerForVictimNotification: [''],
             permissionToShareContactInfo: [''],

@@ -10,33 +10,34 @@
     <section class="radio-list per-line">
         <app-field label="I would like notifications to be provided to:" [required]="true" [valid]="isMyControlValid(form.get('notificationRecipient'))" errorMessage="Please select one" [disabled]="isDisabled">
             <label>
-                <input type="radio" [value]="EnumHelper.NotificationRecipientEnum.Myself.val" name="notificationRecipient" formControlName="notificationRecipient" (change)="setupVictimAndDesignate(false, false)">
+                <input type="radio" [value]="enum.NotificationRecipientEnum.Myself.val" name="notificationRecipient" formControlName="notificationRecipient" (change)="setupVictimAndDesignate(false, false)">
                 Myself only
             </label>
             <label>
-                <input type="radio" [value]="EnumHelper.NotificationRecipientEnum.Designate.val" name="notificationRecipient" formControlName="notificationRecipient" (change)="setupVictimAndDesignate(false, true)">
+                <input type="radio" [value]="enum.NotificationRecipientEnum.Designate.val" name="notificationRecipient" formControlName="notificationRecipient" (change)="setupVictimAndDesignate(false, true)">
                 My designate only on my behalf
             </label>
             <label>
-                <input type="radio" [value]="EnumHelper.NotificationRecipientEnum.Victim_Service_Worker.val" name="notificationRecipient" formControlName="notificationRecipient" (change)="setupVictimAndDesignate(true, false)">
+                <input type="radio" [value]="enum.NotificationRecipientEnum.Victim_Service_Worker.val" name="notificationRecipient" formControlName="notificationRecipient" (change)="setupVictimAndDesignate(true, false)">
                 My victim service worker only on my behalf
             </label>
             <label>
-                <input type="radio" [value]="EnumHelper.NotificationRecipientEnum.Myself_And_Designate.val" name="notificationRecipient" formControlName="notificationRecipient" (change)="setupVictimAndDesignate(false, true)">
+                <input type="radio" [value]="enum.NotificationRecipientEnum.Myself_And_Designate.val" name="notificationRecipient" formControlName="notificationRecipient" (change)="setupVictimAndDesignate(false, true)">
                 Myself plus my designate
             </label>
             <label>
-                <input type="radio" [value]="EnumHelper.NotificationRecipientEnum.Myself_And_Victim_Service_Worker.val" name="notificationRecipient" formControlName="notificationRecipient" (change)="setupVictimAndDesignate(true, false)">
+                <input type="radio" [value]="enum.NotificationRecipientEnum.Myself_And_Victim_Service_Worker.val" name="notificationRecipient" formControlName="notificationRecipient" (change)="setupVictimAndDesignate(true, false)">
                 Myself plus my victim service worker
             </label>
             <label>
-                <input type="radio" [value]="EnumHelper.NotificationRecipientEnum.Designate_And_Victim_Service_Worker.val" name="notificationRecipient" formControlName="notificationRecipient" (change)="setupVictimAndDesignate(true, true)">
+                <input type="radio" [value]="enum.NotificationRecipientEnum.Designate_And_Victim_Service_Worker.val" name="notificationRecipient" formControlName="notificationRecipient" (change)="setupVictimAndDesignate(true, true)">
                 My designate plus my victim service worker
             </label>
         </app-field>
     </section>
 
     <!-- Victim Service Worker -->
+    <!-- todo - create it's own component -->
     <div class="victimServiceWorker" formArrayName="victimServiceWorker" *ngFor="let item of form.get('victimServiceWorker')['controls']; let i = index;">
         <div [formGroupName]="i">
             <p><strong>Victim Service Worker (VSW) Information</strong></p>
@@ -93,6 +94,7 @@
     <div *ngIf="form.get('victimServiceWorker')['length'] > 0 && form.get('designate')['length'] > 0" class="designate-separator"></div>
 
     <!-- Designate Information -->
+    <!-- todo - create it's own component -->
     <div class="designate" formArrayName="designate" *ngFor="let item of form.get('designate')['controls']; let i = index;">
         <div [formGroupName]="i">
             <p><strong>Designate Information</strong></p>
@@ -126,7 +128,7 @@
 
             <div>
                 <label class="inline-label inline-checkbox">
-                    <input type="checkbox" [value]="true" name="addressSameAsApplicant" formControlName="addressSameAsApplicant" (change)="copyApplicantAddressToDeligate(form.parent)">
+                    <input type="checkbox" [value]="true" name="addressSameAsApplicant" formControlName="addressSameAsApplicant" (change)="copyApplicantAddressToDeligate(form.parent, formType)">
                     <span>Contact information for my designate is the same as mine.</span>
                 </label>
             </div>
@@ -137,11 +139,11 @@
                 <div class="col">
                     <app-field label="May we send correspondence and notification information to the above address? (if no, please provide your designate's email address below):" errorMessage="" [disabled]="isDisabled">
                         <label class="inline-label">
-                            <input type="radio" [value]="enumHelper.Boolean.True.val" name="mayWeSendCorrespondence" formControlName="mayWeSendCorrespondence">
+                            <input type="radio" [value]="enum.Boolean.True.val" name="mayWeSendCorrespondence" formControlName="mayWeSendCorrespondence">
                             <span>Yes</span>
                         </label>
                         <label class="inline-label">
-                            <input type="radio" [value]="enumHelper.Boolean.False.val" name="mayWeSendCorrespondence" formControlName="mayWeSendCorrespondence">
+                            <input type="radio" [value]="enum.Boolean.False.val" name="mayWeSendCorrespondence" formControlName="mayWeSendCorrespondence">
                             <span>No</span>
                         </label>
                     </app-field>
