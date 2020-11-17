@@ -27,13 +27,60 @@
 
     <p>todo - each of these needs a yes/no question</p>
     <ol>
-        <li>Does the criminal charge fall under one of these offences?</li>
-        <li>Is the criminal justice proceeding expected to impact the outcome, disposition or results relating to the charges?</li>
+        <li>Does the criminal charge fall under one of these offences?
+            <app-field label="" errorMessage="Please select one" [valid]="isMyControlValid(form.get('criminalChargeOneOfOffences'))" [disabled]="isDisabled">
+                <label class="inline-label">
+                    <input type="radio" [value]="EnumHelper.Boolean.True.val" name="criminalChargeOneOfOffences" formControlName="criminalChargeOneOfOffences">
+                    <span>Yes</span>
+                </label>
+                <label class="inline-label">
+                    <input type="radio" [value]="EnumHelper.Boolean.False.val" name="criminalChargeOneOfOffences" formControlName="criminalChargeOneOfOffences">
+                    <span>No</span>
+                </label>
+            </app-field>
+        </li>
+
+        <li>Is the criminal justice proceeding expected to impact the outcome, disposition or results relating to the charges?
+            <app-field label="" errorMessage="Please select one" [valid]="isMyControlValid(form.get('proceedingsImpactOutcome'))" [disabled]="isDisabled">
+                <label class="inline-label">
+                    <input type="radio" [value]="EnumHelper.Boolean.True.val" name="proceedingsImpactOutcome" formControlName="proceedingsImpactOutcome">
+                    <span>Yes</span>
+                </label>
+                <label class="inline-label">
+                    <input type="radio" [value]="EnumHelper.Boolean.False.val" name="proceedingsImpactOutcome" formControlName="proceedingsImpactOutcome">
+                    <span>No</span>
+                </label>
+            </app-field>
+        </li>
+
         <li>Will you be required to travel more than 100 km from your home (one way) to attend the proceeding?
             <a href="https://drivebc.ca/directions.html" target="_blank">Drive BC Distance Calculator</a>
-            Please enter one way distance in the Comments, along with any additional comments.</li>
+            Please enter one way distance in the Comments, along with any additional comments.
+            <app-field label="" errorMessage="Please select one" [valid]="isMyControlValid(form.get('travelMoreThan100KM'))" [disabled]="isDisabled">
+                <label class="inline-label">
+                    <input type="radio" [value]="EnumHelper.Boolean.True.val" name="travelMoreThan100KM" formControlName="travelMoreThan100KM">
+                    <span>Yes</span>
+                </label>
+                <label class="inline-label">
+                    <input type="radio" [value]="EnumHelper.Boolean.False.val" name="travelMoreThan100KM" formControlName="travelMoreThan100KM">
+                    <span>No</span>
+                </label>
+            </app-field>
+        </li>
+
         <li>Have you confirmed that your travel expenses will not be covered by any other source(s), including Crown counsel
-            (due to subpoena to attend court) and the Crime Victim Assistance Program?</li>
+            (due to subpoena to attend court) and the Crime Victim Assistance Program?
+            <app-field label="" errorMessage="Please select one" [valid]="isMyControlValid(form.get('notCoveredByOtherSources'))" [disabled]="isDisabled">
+                <label class="inline-label">
+                    <input type="radio" [value]="EnumHelper.Boolean.True.val" name="notCoveredByOtherSources" formControlName="notCoveredByOtherSources">
+                    <span>Yes</span>
+                </label>
+                <label class="inline-label">
+                    <input type="radio" [value]="EnumHelper.Boolean.False.val" name="notCoveredByOtherSources" formControlName="notCoveredByOtherSources">
+                    <span>No</span>
+                </label>
+            </app-field>
+        </li>
     </ol>
 
     <p>Note: If you did not answer Yes to all the above questions, you may still submit a Victim Travel Fund application for consideration.
@@ -43,14 +90,10 @@
         <textarea class="form-control bigger" formControlName="additionalComments" maxlength="500"></textarea>
     </app-field>
 
-    <p>If you wish to submit an application form please complete it to the best of your ability. If you require assistance in completing 
-        the form, please contact us, your 
+    <p>If you wish to submit an application form please complete it to the best of your ability. If you require assistance in completing
+        the form, please contact us, your
         <a href="https://www2.gov.bc.ca/gov/content/justice/criminal-justice/bcs-criminal-justice-system/understanding-criminal-justice/key-parts/victim-services/victim-service-workers" target="_blank" title="Victim Service Worker">Victim Service Worker (VSW)</a>, or
         <a href="https://www2.gov.bc.ca/gov/content/justice/criminal-justice/victims-of-crime/victimlinkbc" target="_blank" title="VictimLinkBC">VictimLinkBC</a> at 1-800-563-0808. VSU staff
         will contact you once your application has been received to confirm your contact information and to discuss your eligibility to receive travel funding.
     </p>
-
-
-
-    <!-- <a href="" target="_blank"></a> -->
 </div>

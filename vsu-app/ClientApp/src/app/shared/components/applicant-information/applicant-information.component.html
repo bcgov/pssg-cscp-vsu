@@ -9,15 +9,23 @@
                 <input type="radio" [value]="EnumHelper.ApplicantType.Victim.val" name="applicantType" formControlName="applicantType" (change)="setApplicantTypeOtherRequired(false)">
                 Victim
             </label>
-            <label>
+            <label *ngIf="formType === ApplicationType.TRAVEL_FUNDS">
+                <input type="radio" [value]="EnumHelper.ApplicantType.Support_Person.val" name="applicantType" formControlName="applicantType" (change)="setApplicantTypeOtherRequired(false)">
+                Support Person
+            </label>
+            <label *ngIf="formType === ApplicationType.TRAVEL_FUNDS">
+                <input type="radio" [value]="EnumHelper.ApplicantType.Immediate_Family_Member.val" name="applicantType" formControlName="applicantType" (change)="setApplicantTypeOtherRequired(false)">
+                Immediate family member of the deceased victim
+            </label>
+            <label *ngIf="formType === ApplicationType.NOTIFICATION">
                 <input type="radio" [value]="EnumHelper.ApplicantType.Civil_Protected_Party.val" name="applicantType" formControlName="applicantType" (change)="setApplicantTypeOtherRequired(false)">
                 Civil Protected Party
             </label>
-            <label>
+            <label *ngIf="formType === ApplicationType.NOTIFICATION">
                 <input type="radio" [value]="EnumHelper.ApplicantType.Victim_Parent.val" name="applicantType" formControlName="applicantType" (change)="setApplicantTypeOtherRequired(false)">
                 Victim's Parent / Guardian
             </label>
-            <label>
+            <label *ngIf="formType === ApplicationType.NOTIFICATION">
                 <input type="radio" [value]="EnumHelper.ApplicantType.Other_Family_Member.val" name="applicantType" formControlName="applicantType" (change)="setApplicantTypeOtherRequired(true)">
                 Other Family Member
                 <span *ngIf="showOtherApplicantType" class="applicant-type-other-container">
@@ -26,6 +34,28 @@
             </label>
         </app-field>
     </section>
+
+    <!-- TODO update this field -->
+    <!-- <ng-container *ngIf="form.get('applicantType').value === EnumHelper.ApplicantType.Support_Person.val">
+        <app-field label="The victim has already submitted a Victim Travel Fund application:" errorMessage="" [disabled]="isDisabled">
+            <label class="inline-label">
+                <input type="radio" [value]="EnumHelper.MultiBoolean.True.val" name="interpreterNeeded" formControlName="interpreterNeeded">
+                <span>Yes</span>
+            </label>
+            <label class="inline-label">
+                <input type="radio" [value]="EnumHelper.MultiBoolean.False.val" name="interpreterNeeded" formControlName="interpreterNeeded">
+                <span>No</span>
+            </label>
+            <label class="inline-label">
+                <input type="radio" [value]="EnumHelper.MultiBoolean.Undecided.val" name="interpreterNeeded" formControlName="interpreterNeeded">
+                <span>I don't know</span>
+            </label>
+        </app-field>
+
+        <app-field *ngIf="form.get('').value === EnumHelper.MultiBoolean.Undecided.val" label="Comments" [required]="true" [valid]="isMyControlValid(form.get('firstName'))" errorMessage="Please enter your first name" [disabled]="isDisabled">
+            <input class="form-control" type="text" formControlName="firstName" maxlength="100">
+        </app-field>
+    </ng-container> -->
 
 
     <h2 class="blue-header mt-0">Applicant Information</h2>
@@ -121,7 +151,7 @@
     <p>Please list one or more methods of contact (telephone / cellular / email) in order of preference and indicate if we may leave a detailed message (e.g. our organization name, phone number, case information, notification details):</p>
 
     <div class="contactMethods" formArrayName="contactMethods" *ngFor="let item of form.get('contactMethods')['controls']; let i = index;">
-        <app-contact-method [formGroup]="item" [formGroupName]="i" [number]="i" [parent]="form" [disabled]="isDisabled" ></app-contact-method>
+        <app-contact-method [formGroup]="item" [formGroupName]="i" [number]="i" [parent]="form" [disabled]="isDisabled"></app-contact-method>
     </div>
 
     <app-field [valid]="isFieldValid('atLeastOneContactMethod')" errorMessage="Please enter at least one contact method" [disabled]="isDisabled">

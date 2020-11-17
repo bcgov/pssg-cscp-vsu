@@ -34,6 +34,8 @@ export class ApplicantInfoHelper {
             atLeastOneContactMethod: ['', Validators.required],
         }
 
+        //check if form type is travel and add additional fields
+
         return fb.group(group);
     }
 

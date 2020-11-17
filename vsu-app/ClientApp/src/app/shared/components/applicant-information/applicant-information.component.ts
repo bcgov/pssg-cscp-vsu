@@ -28,6 +28,8 @@ export class ApplicantInformationComponent extends FormBase implements OnInit {
     EnumHelper = new EnumHelper();
     applicantInfoHelper = new ApplicantInfoHelper();
 
+    ApplicationType = ApplicationType;
+
     constructor(private controlContainer: ControlContainer) {
         super();
     }

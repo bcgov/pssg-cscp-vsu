@@ -30,7 +30,7 @@ import { ContactMethodComponent } from './shared/components/contact-method/conta
 import { ConfirmationComponent } from './shared/components/confirmation/confirmation.component';
 import { AdditionalInfoBannerComponent } from './shared/components/additional-info-banner/additional-info-banner.component';
 import { VictimTravelFundApplicationComponent } from './victim-travel-fund-application/vtf-application.component';
-import { TravelOverviewComponent } from './shared/components/travel-overview/overview.component';
+import { TravelOverviewComponent } from './shared/components/travel-overview/travel-overview.component';
 
 @NgModule({
   declarations: [

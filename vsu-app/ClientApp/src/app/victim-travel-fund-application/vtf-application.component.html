@@ -34,20 +34,19 @@
                     <p>For best results, we recommend you use Chrome, Firefox, Edge, or Safari.</p>
                 </div>
 
-                <app-travel-overview [formGroup]="form" formGroupName="overview" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == 0 || showPrintView"></app-travel-overview>
+                <app-travel-overview [formType]="formType.val" [formGroup]="form" formGroupName="overview" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == 0 || showPrintView"></app-travel-overview>
 
                 <div class="pagebreak"> </div>
-                <app-applicant-information [formGroup]="form" formGroupName="applicantInformation" [lookupData]="lookupData" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == 1 || showPrintView"></app-applicant-information>
+                <app-applicant-information [formType]="formType.val" [formGroup]="form" formGroupName="applicantInformation" [lookupData]="lookupData" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == 1 || showPrintView"></app-applicant-information>
 
                 <div class="pagebreak"> </div>
-                <app-case-information [formGroup]="form" formGroupName="caseInformation" [lookupData]="lookupData" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == 2 || showPrintView"></app-case-information>
+                <app-case-information [formType]="formType.val" [formGroup]="form" formGroupName="caseInformation" [lookupData]="lookupData" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == 2 || showPrintView"></app-case-information>
 
                 <div class="pagebreak"> </div>
                 <div *ngIf="this.currentFormStep == 3 || showPrintView">add travel info...</div>
-                <!-- <app-recipient-details [formGroup]="form" formGroupName="recipientDetails" [lookupData]="lookupData" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == 3 || showPrintView"></app-recipient-details> -->
 
                 <div class="pagebreak"> </div>
-                <app-authorization [formGroup]="form" formGroupName="authorizationInformation" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == 4 || showPrintView"></app-authorization>
+                <app-authorization [formType]="formType.val" [formGroup]="form" formGroupName="authorizationInformation" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == 4 || showPrintView"></app-authorization>
 
                 <div *ngIf="showValidationMessage" class="error-summary">
                     <i class="fas fa-exclamation-triangle" style="margin-right: 10px;"></i>
@@ -55,7 +54,7 @@
                 </div>
 
                 <div class="pagebreak"> </div>
-                <app-confirmation [formType]="formType" [confirmationNumber]="form.get('confirmation.confirmationNumber').value" (showPrintView)="showPrintView = $event" *ngIf="stepper.selectedIndex == 5"></app-confirmation>
+                <app-confirmation [formType]="formType.val" [confirmationNumber]="form.get('confirmation.confirmationNumber').value" (showPrintView)="showPrintView = $event" *ngIf="stepper.selectedIndex == 5"></app-confirmation>
 
                 <section class="button-container" *ngIf="!showPrintView">
                     <span class="right-buttons">

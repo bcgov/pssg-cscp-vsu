@@ -1,15 +1,16 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
-import { MatVerticalStepper } from "@angular/material";
-import { Title } from "@angular/platform-browser";
-import { Router } from "@angular/router";
-import { LookupService } from "../services/lookup.service";
 import { ApplicantInfoHelper } from "../shared/components/applicant-information/applicant-information.helper";
 import { AuthInfoHelper } from "../shared/components/authorization/authorization.helper";
 import { CaseInfoInfoHelper } from "../shared/components/case-information/case-information.helper";
-import { RecipientDetailsHelper } from "../shared/components/recipient-details/recipient-details.helper";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { FORM_TITLES, FORM_TYPES } from "../shared/enums-list";
 import { FormBase } from "../shared/form-base";
+import { FormBuilder, FormGroup } from "@angular/forms";
+import { LookupService } from "../services/lookup.service";
+import { MatVerticalStepper } from "@angular/material";
+import { RecipientDetailsHelper } from "../shared/components/recipient-details/recipient-details.helper";
+import { Router } from "@angular/router";
+import { Title } from "@angular/platform-browser";
+import { TravelOverviewInfoHelper } from "../shared/components/travel-overview/travel-overview.helper";
 import { iLookupData } from "../shared/interfaces/lookup-data.interface";
 
 @Component({
@@ -38,6 +39,7 @@ export class VictimTravelFundApplicationComponent extends FormBase implements On
 
     showConfirmation: boolean = false;
 
+    overviewHelper = new TravelOverviewInfoHelper();
     caseInfoHelper = new CaseInfoInfoHelper();
     applicantInfoInfoHelper = new ApplicantInfoHelper();
     recipientDetailsHelper = new RecipientDetailsHelper();
@@ -94,7 +96,7 @@ export class VictimTravelFundApplicationComponent extends FormBase implements On
 
     buildApplicationForm(): FormGroup {
         let group = {
-            overview: this.fb.group({ additionalComments: [''] }),
+            overview: this.overviewHelper.setupFormGroup(this.fb),
             applicantInformation: this.applicantInfoInfoHelper.setupFormGroup(this.fb),
             caseInformation: this.caseInfoHelper.setupFormGroup(this.fb),
             travelInformation: this.fb.group({}),

@@ -15,7 +15,7 @@ export const FORM_TITLES = {
     TRAVEL_FUNDS_APPLICATION: "Victim Safety Unit - Victim Travel Fund Application Form",
 };
 
-export const FORM_TYPES = {
+export const FORM_TYPES: ICRMOptionSet = {
     NOTIFICATION_APPLICATION: { val: 100000000, name: "Victim Service Notification" },
     TRAVEL_FUNDS_APPLICATION: { val: 100000001, name: "Victim Travel Fund",  },
 };
@@ -26,7 +26,7 @@ export enum ApplicationType {
 }
 
 export class EnumHelper {
-    public ApplicantType = {
+    public ApplicantType: ICRMOptionSet = {
         Victim:                     { val: 100000000, name: "Victim" },
         Civil_Protected_Party:      { val: 100000001, name: "Civil Protected Party" },
         Victim_Parent:              { val: 100000002, name: "Victim's Parent / Guardian" },
@@ -35,7 +35,7 @@ export class EnumHelper {
         Immediate_Family_Member:    { val: 100000005, name: "Immediate family member of the deceased victim" },
     };
 
-    public NotificationRecipientEnum = {
+    public NotificationRecipientEnum: ICRMOptionSet = {
         Myself:                                 { val: 100000000, name: "Victim" },
         Designate:                              { val: 100000001, name: "Civil Protected Party" },
         Victim_Service_Worker:                  { val: 100000002, name: "Victim's Parent / Guardian" },
@@ -44,21 +44,31 @@ export class EnumHelper {
         Designate_And_Victim_Service_Worker:    { val: 100000005, name: "Other Family Member" },
     };
 
-    public Gender = {
+    public Gender: ICRMOptionSet = {
         Male:   { val: 100000000, name: "M" },
         Female: { val: 100000001, name: "F" },
         X:      { val: 100000002, name: "X" },
       };
 
-    public Boolean = {
+    public Boolean: ICRMOptionSet = {
         True:   { val: 100000001, name: "True"},
         False:  { val: 100000000, name: "False"},
     }
 
-    public ContactType = {
+    public MultiBoolean: ICRMOptionSet = {
+        True:       { val: 100000000, name: "True"},
+        False:      { val: 100000001, name: "False"},
+        Undecided:  { val: 100000002, name: "Undecided"},
+    }
+
+    public ContactType: ICRMOptionSet = {
         Telephone:  { val: 100000000, name: "Telephone"},
         Cellular:   { val: 100000001, name: "Cellular"},
         Email:      { val: 100000002, name: "Email"},
         Unset:      { val: null, name: ""},
     }
+}
+
+export interface ICRMOptionSet {
+   [key: string]: { name: string, val: number };
 }
