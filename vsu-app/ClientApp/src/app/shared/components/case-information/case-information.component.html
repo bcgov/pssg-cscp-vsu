@@ -6,30 +6,30 @@
 
     <div class="row">
         <div class="col-md-4">
-            <app-field label="First Name" [required]="true" [valid]="isFieldValid('firstName')" errorMessage="Please enter your first name" [disabled]="isDisabled">
+            <app-field label="First Name" [required]="true" [valid]="isMyControlValid(form.get('firstName'))" errorMessage="Please enter your first name" [disabled]="isDisabled">
                 <input class="form-control" type="text" formControlName="firstName" maxlength="100" (change)="setApplicantInfoSameAsVictim(form.parent)">
             </app-field>
         </div>
         <div class="col-md-4">
-            <app-field label="Middle Name" [required]="false" [valid]="isFieldValid('middleName')" errorMessage="Please enter your middle name" [disabled]="isDisabled">
+            <app-field label="Middle Name" [required]="false" [valid]="isMyControlValid(form.get('middleName'))" errorMessage="Please enter your middle name" [disabled]="isDisabled">
                 <input class="form-control" type="text" formControlName="middleName" maxlength="100" (change)="setApplicantInfoSameAsVictim(form.parent)">
             </app-field>
         </div>
         <div class="col-md-4">
-            <app-field label="Last Name" [required]="true" [valid]="isFieldValid('lastName')" errorMessage="Please enter your last name" [disabled]="isDisabled">
+            <app-field label="Last Name" [required]="true" [valid]="isMyControlValid(form.get('lastName'))" errorMessage="Please enter your last name" [disabled]="isDisabled">
                 <input class="form-control" type="text" formControlName="lastName" maxlength="100" (change)="setApplicantInfoSameAsVictim(form.parent)">
             </app-field>
         </div>
     </div>
     <div class="row">
         <div class="col-md-6 date-col">
-            <app-field label="Birth Date" [required]="true" [valid]="isFieldValid('birthDate')" errorMessage="Please enter your birth date" [disabled]="isDisabled">
+            <app-field label="Birth Date" [required]="true" [valid]="isMyControlValid(form.get('birthDate'))" errorMessage="Please enter your birth date" [disabled]="isDisabled">
                 <app-date-field [control]="form.get('birthDate')" [max]="today" (change)="setApplicantInfoSameAsVictim(form.parent)"></app-date-field>
             </app-field>
         </div>
 
         <div class="col flex-col">
-            <app-field label="Gender" [required]="true" [valid]="isFieldValid('gender')" errorMessage="Please select your gender" [disabled]="isDisabled">
+            <app-field label="Gender" [required]="true" [valid]="isMyControlValid(form.get('gender'))" errorMessage="Please select your gender" [disabled]="isDisabled">
                 <label class="inline-label">
                     <input type="radio" [value]="EnumHelper.Gender.Male.val" name="gender" formControlName="gender" (change)="setApplicantInfoSameAsVictim(form.parent)">
                     <span>M</span>
@@ -77,29 +77,29 @@
     <h2 class="blue-header">Accused / Offender / Respondent Information</h2>
     <div class="row">
         <div class="col-md-4">
-            <app-field label="First Name" [required]="true" [valid]="isFieldValid('accusedFirstName')" errorMessage="Please enter first name" [disabled]="isDisabled">
+            <app-field label="First Name" [required]="true" [valid]="isMyControlValid(form.get('accusedFirstName'))" errorMessage="Please enter first name" [disabled]="isDisabled">
                 <input class="form-control" type="text" formControlName="accusedFirstName" maxlength="100">
             </app-field>
         </div>
         <div class="col-md-4">
-            <app-field label="Middle Name" [required]="false" [valid]="isFieldValid('accusedMiddleName')" errorMessage="Please enter middle name" [disabled]="isDisabled">
+            <app-field label="Middle Name" [required]="false" [valid]="isMyControlValid(form.get('accusedMiddleName'))" errorMessage="Please enter middle name" [disabled]="isDisabled">
                 <input class="form-control" type="text" formControlName="accusedMiddleName" maxlength="100">
             </app-field>
         </div>
         <div class="col-md-4">
-            <app-field label="Last Name" [required]="true" [valid]="isFieldValid('accusedLastName')" errorMessage="Please enter last name" [disabled]="isDisabled">
+            <app-field label="Last Name" [required]="true" [valid]="isMyControlValid(form.get('accusedLastName'))" errorMessage="Please enter last name" [disabled]="isDisabled">
                 <input class="form-control" type="text" formControlName="accusedLastName" maxlength="100">
             </app-field>
         </div>
     </div>
     <div class="row">
         <div class="col-md-6 date-col">
-            <app-field label="Birth Date" [required]="false" [valid]="isFieldValid('accusedBirthDate')" errorMessage="Please enter birth date" [disabled]="isDisabled">
+            <app-field label="Birth Date" [required]="false" [valid]="isMyControlValid(form.get('accusedBirthDate'))" errorMessage="Please enter birth date" [disabled]="isDisabled">
                 <app-date-field [control]="form.get('accusedBirthDate')" [max]="today" [disabled]="isDisabled"></app-date-field>
             </app-field>
         </div>
         <div class="col flex-col">
-            <app-field label="Gender" [valid]="isFieldValid('accusedGender')" [disabled]="isDisabled">
+            <app-field label="Gender" [valid]="isMyControlValid(form.get('accusedGender'))" [disabled]="isDisabled">
                 <label class="inline-label">
                     <input type="radio" [value]="EnumHelper.Gender.Male.val" name="accusedGender" formControlName="accusedGender">
                     <span>M</span>

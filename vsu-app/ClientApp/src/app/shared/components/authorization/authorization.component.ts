@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from "@angular/core";
 import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS, MatDialog, MatDialogConfig } from "@angular/material";
 import { MomentDateAdapter } from "@angular/material-moment-adapter";
 import { FormGroup, ControlContainer } from "@angular/forms";
-import { MY_FORMATS } from "../../enums-list";
+import { ApplicationType, MY_FORMATS } from "../../enums-list";
 import { FormBase } from "../../form-base";
 import { SignPadDialog } from "../../dialogs/sign-dialog/sign-dialog.component";
 import { AuthInfoHelper } from './authorization.helper';
@@ -17,6 +17,7 @@ import { AuthInfoHelper } from './authorization.helper';
     ],
 })
 export class AuthorizationComponent extends FormBase implements OnInit {
+    @Input() formType: ApplicationType;
     @Input() isDisabled: boolean;
     public form: FormGroup;
 

@@ -3,7 +3,7 @@ import { ControlContainer, FormArray, FormGroup, Validators } from "@angular/for
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/material";
 import { MomentDateAdapter } from "@angular/material-moment-adapter";
 import { iLookupData } from "../../interfaces/lookup-data.interface";
-import { EnumHelper, MY_FORMATS } from "../../enums-list";
+import { ApplicationType, EnumHelper, MY_FORMATS } from "../../enums-list";
 import { FormBase } from "../../form-base";
 import { ApplicantInfoHelper } from "./applicant-information.helper";
 
@@ -18,6 +18,7 @@ import { ApplicantInfoHelper } from "./applicant-information.helper";
 })
 export class ApplicantInformationComponent extends FormBase implements OnInit {
     @Input() lookupData: iLookupData;
+    @Input() formType: ApplicationType;
     @Input() isDisabled: boolean;
     public form: FormGroup;
 

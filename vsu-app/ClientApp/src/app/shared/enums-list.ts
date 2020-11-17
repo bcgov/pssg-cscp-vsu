@@ -12,13 +12,18 @@ export const MY_FORMATS = {
 
 export const FORM_TITLES = {
     NOTIFICATION_APPLICATION: "Victim Safety Unit - Notification Application Form",
-    TRAVEL_FUNDS_APPLICATION: "Victim Safety Unit - Notification Application Form",
+    TRAVEL_FUNDS_APPLICATION: "Victim Safety Unit - Victim Travel Fund Application Form",
 };
 
 export const FORM_TYPES = {
-    NOTIFICATION_APPLICATION: { name: "Victim Service Notification" },
-    TRAVEL_FUNDS_APPLICATION: { name: "-Travel Fund placeholder-" },
+    NOTIFICATION_APPLICATION: { val: 100000000, name: "Victim Service Notification" },
+    TRAVEL_FUNDS_APPLICATION: { val: 100000001, name: "Victim Travel Fund",  },
 };
+
+export enum ApplicationType {
+    NOTIFICATION = 100000000,
+    TRAVEL_FUNDS = 100000001
+}
 
 export class EnumHelper {
     public ApplicantType = {

@@ -1,4 +1,5 @@
 import { ValidatorFn, AbstractControl, FormControl, FormGroup, FormArray, Validators } from '@angular/forms';
+import { MatStepper } from '@angular/material';
 import * as moment from 'moment';
 import { EnumHelper } from './enums-list';
 
@@ -7,6 +8,8 @@ export class FormBase {
     today = new Date();
     oldestHuman = new Date(this.today.getFullYear() - 120, this.today.getMonth(), this.today.getDay());
     enumHelper = new EnumHelper();
+    showValidationMessage: boolean = false;
+    public currentFormStep: number = 0;
 
     isFieldValid(field: string, disabled: boolean = false) {
         if (disabled === true) return true;
@@ -19,16 +22,6 @@ export class FormBase {
 
     isMyControlValid(control: AbstractControl) {
         return control.valid || !control.touched || control.disabled;
-    }
-
-    isArrayFieldValid(formArrayName: string, arrayControl: string, arrayIndex: number) {
-        let formArray = <FormArray>this.form.get(formArrayName);
-        let indexedControl = formArray.controls[arrayIndex];
-        let formField = indexedControl.get(arrayControl);
-        if (formField == null)
-            return true;
-
-        return formField.valid || !formField.touched;
     }
 
     validateAllFormFields(formGroup: any) {
@@ -126,71 +119,7 @@ export class FormBase {
         return control.value;
     }
 
-    public valueForEnum(controlName: any): number {
-        let control = null;
 
-        if (typeof (controlName) == 'string')
-            control = this.form.get(controlName);
-
-        if (controlName instanceof FormGroup)
-            control = controlName;
-
-        if (controlName instanceof FormControl)
-            control = controlName;
-
-        if (control == null || control === undefined || control.value == null || control.value === undefined)
-            return 0;
-
-        var value = control.value;
-        if (typeof (value) == 'string') {
-            if (!isNaN(parseFloat(value)) && isFinite(+value)) {
-                return parseInt(value);
-            }
-            else {
-                return 0
-            }
-        }
-
-        if (typeof (value) !== 'number') {
-            return 0;
-        }
-
-        return control.value;
-    }
-
-    public displayMailingAddress(addressControl: any): string {
-        let control = null;
-
-        if (typeof (addressControl) == 'string')
-            control = this.form.get(addressControl);
-
-        if (addressControl instanceof FormGroup)
-            control = addressControl;
-
-        if (control == null || control === undefined)
-            return "--";
-
-        let line1 = control.get('line1').value || '';
-        let line2 = control.get('line2').value || '';
-        let city = control.get('city').value || '';
-        let postalCode = control.get('postalCode').value || '';
-        let province = control.get('province').value || '';
-        let country = control.get('country').value || '';
-
-        let address = line1 + '<br />';
-        if (line2 != '')
-            address += line2 + '<br />';
-        if (city != '')
-            address += city + '<br />';
-        if (province != '')
-            address += province + '<br />';
-        if (country != '')
-            address += country + '<br />';
-        if (postalCode != '')
-            address += postalCode;
-
-        return address;
-    }
 
     public hasValueSet(controlName: string): boolean {
         var control = this.form.get(controlName);
@@ -357,5 +286,61 @@ export class FormBase {
         applicantInfo.get('lastName').updateValueAndValidity(options);
         applicantInfo.get('birthDate').updateValueAndValidity(options);
         applicantInfo.get('gender').updateValueAndValidity(options);
+    }
+
+    gotoPage(selectPage: MatStepper): void {
+        window.scroll(0, 0);
+        this.showValidationMessage = false;
+        this.currentFormStep = selectPage.selectedIndex;
+    }
+
+    gotoNextStep(stepper: MatStepper, emptyPage?: boolean): void {
+        if (stepper) {
+            const desiredFormIndex: number = stepper.selectedIndex;
+            const step_header = stepper._stepHeader.find(step => step.index == desiredFormIndex);
+            const step_label = step_header ? step_header.label : "";
+            const this_step = stepper._steps.find(step => step.label == step_label);
+            if (this_step) {
+                const formGroupName = this_step.stepControl.get("name").value;
+                console.log(`Form for validation is ${formGroupName}.`);
+                const formParts = this.form.get(formGroupName);
+                console.log(this.form);
+
+                let formValid = true;
+
+                if (formParts != null) {
+                    formValid = formParts.valid;
+                    console.log(formParts);
+                } else {
+                    alert('That was a null form. Nothing to validate');
+                }
+
+                if (emptyPage != null) {
+                    if (emptyPage == true) {
+                        formValid = true;
+                    }
+                }
+
+                if (formValid) {
+                    console.log('Form is valid so proceeding to next step.');
+                    this.showValidationMessage = false;
+                    window.scroll(0, 0);
+                    stepper.next();
+                } else {
+                    console.log('Form is not valid rerun the validation and show the validation message.');
+                    this.validateAllFormFields(formParts);
+                    this.showValidationMessage = true;
+                }
+            }
+        }
+    }
+
+    gotoPreviousStep(stepper: MatStepper): void {
+        if (stepper) {
+            console.log('Going back a step');
+            this.showValidationMessage = false;
+            window.scroll(0, 0);
+            stepper.previous();
+        }
     }
 }

@@ -7,7 +7,7 @@ import { noop, Observable, Observer, of, throwError } from 'rxjs';
 import { retry, catchError, map, switchMap, tap } from 'rxjs/operators';
 import { config } from "../../../../config";
 import { CitiesSearchResponse, iCity, iLookupData } from "../../interfaces/lookup-data.interface";
-import { EnumHelper, MY_FORMATS, } from "../../enums-list";
+import { ApplicationType, EnumHelper, MY_FORMATS, } from "../../enums-list";
 import { FormBase } from "../../form-base";
 import { RecipientDetailsHelper } from "./recipient-details.helper";
 
@@ -21,6 +21,7 @@ import { RecipientDetailsHelper } from "./recipient-details.helper";
     ],
 })
 export class RecipientDetailsComponent extends FormBase implements OnInit {
+    @Input() formType: ApplicationType;
     @Input() lookupData: iLookupData;
     @Input() isDisabled: boolean;
     public form: FormGroup;

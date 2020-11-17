@@ -28,7 +28,7 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
     submitting: boolean = false;
     public currentFormStep: number = 0;
     public showPrintView: boolean = false;
-    formType = FORM_TYPES.NOTIFICATION_APPLICATION.name;
+    formType = FORM_TYPES.NOTIFICATION_APPLICATION;
 
     elements: string[] = ['overview', 'caseInformation', 'applicantInformation', 'recipientDetails', 'authorizationInformation'];
 
@@ -144,13 +144,12 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
                 this.submitting = false;
                 console.log(res);
                 if (res.IsSuccess) {
-                    //this confirmation number should be included in the result from crm
+                    console.log("CONFIRMATION NUMBER SHOULD COME FROM CRM");
                     this.form.get('confirmation.confirmationNumber').patchValue('RXXXXXX');
                     this.showConfirmation = true;
                     setTimeout(() => {
                         this.gotoNextStep(this.applicationStepper);
                     }, 0);
-                    console.log("TODO!! -- disable form");
                 }
                 else {
                     console.log(res.Result);

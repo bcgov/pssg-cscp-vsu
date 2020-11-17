@@ -1,7 +1,7 @@
 <div class="form-wrapper" style="position: relative;">
     <div class="row" [formGroup]="form">
         <div class="col-lg-3 col-sm-12 application-gutter" [class.hidden]="showPrintView">
-            <h3>Notification Application Form</h3>
+            <h3>Victim Travel Fund Application Form</h3>
             <section class="application-nav sticky-top">
                 <div>
                     <mat-vertical-stepper [linear]="true" (selectionChange)="gotoPage($event)" #stepper>
@@ -13,13 +13,14 @@
                         </ng-template>
                         <ng-template matStepperIcon="number">
                         </ng-template>
-                        <mat-step label="Overview" [stepControl]="fb.group({})" [hasError]="!isMyControlValid(form.get('overview'))"></mat-step>
-                        <mat-step label="Case Information" [stepControl]="fb.group({})" [hasError]="!isMyControlValid(form.get('caseInformation'))"></mat-step>
-                        <mat-step label="Applicant Information" [stepControl]="fb.group({})" [hasError]="!isMyControlValid(form.get('applicantInformation'))"></mat-step>
-                        <mat-step label="Notification Recipient & Details" [stepControl]="fb.group({})" [hasError]="!isMyControlValid(form.get('recipientDetails'))"></mat-step>
-                        <mat-step label="Declaration & Authorization" [stepControl]="fb.group({})" [hasError]="!isMyControlValid(form.get('authorizationInformation'))"></mat-step>
-                        <mat-step label="Confirmation" *ngIf="showConfirmation" [stepControl]="fb.group({})"></mat-step>
+                        <mat-step label="Overview" [stepControl]="fb.group({name: ['overview']})" [hasError]="!isMyControlValid(form.get('overview'))"></mat-step>
+                        <mat-step label="Applicant Information" [stepControl]="fb.group({name: ['applicantInformation']})" [hasError]="!isMyControlValid(form.get('applicantInformation'))"></mat-step>
+                        <mat-step label="Case Information" [stepControl]="fb.group({name: ['caseInformation']})" [hasError]="!isMyControlValid(form.get('caseInformation'))"></mat-step>
+                        <mat-step label="Travel Information" [stepControl]="fb.group({name: ['travelInformation']})" [hasError]="!isMyControlValid(form.get('travelInformation'))"></mat-step>
+                        <mat-step label="Declaration & Authorization" [stepControl]="fb.group({name: ['authorizationInformation']})" [hasError]="!isMyControlValid(form.get('authorizationInformation'))"></mat-step>
+                        <mat-step label="Confirmation" *ngIf="showConfirmation" [stepControl]="fb.group({name: ['confirmation']})"></mat-step>
                     </mat-vertical-stepper>
+
 
                     <app-additional-info-banner (downloadPDFClick)="downloadPDF()"></app-additional-info-banner>
                 </div>
@@ -33,19 +34,20 @@
                     <p>For best results, we recommend you use Chrome, Firefox, Edge, or Safari.</p>
                 </div>
 
-                <app-notification-overview [formType]="formType.val" *ngIf="this.currentFormStep == 0 || showPrintView"></app-notification-overview>
+                <app-travel-overview [formGroup]="form" formGroupName="overview" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == 0 || showPrintView"></app-travel-overview>
 
                 <div class="pagebreak"> </div>
-                <app-case-information [formType]="formType.val" [formGroup]="form" formGroupName="caseInformation" [lookupData]="lookupData" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == 1 || showPrintView"></app-case-information>
+                <app-applicant-information [formGroup]="form" formGroupName="applicantInformation" [lookupData]="lookupData" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == 1 || showPrintView"></app-applicant-information>
 
                 <div class="pagebreak"> </div>
-                <app-applicant-information [formType]="formType.val" [formGroup]="form" formGroupName="applicantInformation" [lookupData]="lookupData" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == 2 || showPrintView"></app-applicant-information>
+                <app-case-information [formGroup]="form" formGroupName="caseInformation" [lookupData]="lookupData" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == 2 || showPrintView"></app-case-information>
 
                 <div class="pagebreak"> </div>
-                <app-recipient-details [formType]="formType.val" [formGroup]="form" formGroupName="recipientDetails" [lookupData]="lookupData" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == 3 || showPrintView"></app-recipient-details>
+                <div *ngIf="this.currentFormStep == 3 || showPrintView">add travel info...</div>
+                <!-- <app-recipient-details [formGroup]="form" formGroupName="recipientDetails" [lookupData]="lookupData" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == 3 || showPrintView"></app-recipient-details> -->
 
                 <div class="pagebreak"> </div>
-                <app-authorization [formType]="formType.val" [formGroup]="form" formGroupName="authorizationInformation" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == 4 || showPrintView"></app-authorization>
+                <app-authorization [formGroup]="form" formGroupName="authorizationInformation" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == 4 || showPrintView"></app-authorization>
 
                 <div *ngIf="showValidationMessage" class="error-summary">
                     <i class="fas fa-exclamation-triangle" style="margin-right: 10px;"></i>

@@ -6,10 +6,11 @@ import { Component, EventEmitter, HostListener, Input, Output } from '@angular/c
     styleUrls: ['./confirmation.component.scss']
 })
 export class ConfirmationComponent {
-    @Input() formType: string;
+    @Input() formType: any;
     @Input() confirmationNumber: string;
     @Output() showPrintView: EventEmitter<boolean> = new EventEmitter<boolean>();
 
+    formName: string;
     constructor() { }
 
     print() {
