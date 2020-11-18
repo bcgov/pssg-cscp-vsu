@@ -173,6 +173,33 @@
     </div>
 
     <section *ngIf="formType === ApplicationType.TRAVEL_FUNDS">
-        insert crown counsel and VSW info
+
+        <p><strong>Crown Counsel (if known)</strong></p>
+
+        <div class="crown-counsel-container" formArrayName="crownCounsel" *ngFor="let item of form.get('crownCounsel')['controls']; let i = index;">
+            <div [formGroupName]="i" class="crown-counsel">
+                <div class="row">
+                    <div class="col-md-4">
+                        <app-field label="First Name" [required]="false" [valid]="isMyControlValid(item.get('firstName'))" errorMessage="Please enter first name" [disabled]="isDisabled">
+                            <input class="form-control" type="text" formControlName="firstName" maxlength="100">
+                        </app-field>
+                    </div>
+                    <div class="col-md-4">
+                        <app-field label="Last Name" [required]="false" [valid]="isMyControlValid(item.get('lastName'))" errorMessage="Please enter last name" [disabled]="isDisabled">
+                            <input class="form-control" type="text" formControlName="lastName" maxlength="100">
+                        </app-field>
+                    </div>
+                    <div class="col-md-4">
+                        <app-field label="Telephone" [required]="false" [valid]="isMyControlValid(item.get('telephone'))" errorMessage="Please enter a phone number" [disabled]="isDisabled">
+                            <input class="form-control" mask='000-000-0000' type="text" formControlName="telephone">
+                        </app-field>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="victimServiceWorker" formArrayName="victimServiceWorker" *ngFor="let item of form.get('victimServiceWorker')['controls']; let i = index;">
+            <app-victim-service-worker [formGroupName]="i" [formGroup]="item" [isDisabled]="isDisabled" [formType]="formType"></app-victim-service-worker>
+        </div>
     </section>
 </div>

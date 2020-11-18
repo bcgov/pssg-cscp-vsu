@@ -25,8 +25,8 @@ export class CaseInfoInfoHelper {
 
         if (form_type === ApplicationType.TRAVEL_FUNDS) {
             group['offence'] = ['', Validators.required];
-
-            
+            group['crownCounsel'] = fb.array([this.createCrownCounsel(fb)]);
+            group['victimServiceWorker'] = fb.array([this.createVictimServiceWorker(fb)]);
         }
 
         return fb.group(group);
@@ -45,5 +45,30 @@ export class CaseInfoInfoHelper {
             courtFileNumber: ['', [Validators.required]],
             courtLocation: [location, [Validators.required]],
         });
+    }
+
+    public createCrownCounsel(fb: FormBuilder) {
+        return fb.group({
+            firstName: [''],
+            lastName: [''],
+            telephone: [''],
+        });
+    }
+
+    public createVictimServiceWorker(fb: FormBuilder) {
+        return fb.group({
+            firstName: [''],
+            lastName: [''],
+            organization: [''],
+            telephone: [''],
+            extension: [''],
+            email: [''],
+            city: [''],
+            okToDiscussTravel: ['', Validators.required]
+        });
+    }
+
+    checkFormGroupHasValue(form: FormGroup) {
+        return Object.values(form.controls).some(({ value }) => !!value);
     }
 }

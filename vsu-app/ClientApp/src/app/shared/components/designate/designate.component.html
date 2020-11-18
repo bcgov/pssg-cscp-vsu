@@ -1,0 +1,64 @@
+<div [formGroup]="form">
+    <p><strong>Designate Information</strong></p>
+    <p><em>Fill our this section if you would like to designate a contact person (other than your VSW) to receive notifications on your behalf.</em></p>
+
+    <div class="row">
+        <div class="col-md-4">
+            <app-field label="First Name" [required]="true" [valid]="isMyControlValid(form.get('firstName'))" errorMessage="Please enter a first name" [disabled]="isDisabled">
+                <input class="form-control" type="text" formControlName="firstName" maxlength="100">
+            </app-field>
+        </div>
+        <div class="col-md-4">
+            <app-field label="Middle Name" [required]="false" [valid]="isMyControlValid(form.get('middleName'))" errorMessage="Please enter admission middle name" [disabled]="isDisabled">
+                <input class="form-control" type="text" formControlName="middleName" maxlength="100">
+            </app-field>
+        </div>
+        <div class="col-md-4">
+            <app-field label="Last Name" [required]="true" [valid]="isMyControlValid(form.get('lastName'))" errorMessage="Please enter a last name" [disabled]="isDisabled">
+                <input class="form-control" type="text" formControlName="lastName" maxlength="100">
+            </app-field>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <app-field label="Relationship to me" [required]="false" [valid]="isMyControlValid(form.get('relationship'))" errorMessage="Please enter a relationship" [disabled]="isDisabled">
+                <input class="form-control" type="text" formControlName="relationship">
+            </app-field>
+        </div>
+    </div>
+
+    <div>
+        <label class="inline-label inline-checkbox">
+            <input type="checkbox" [value]="true" name="addressSameAsApplicant" formControlName="addressSameAsApplicant" (change)="copyApplicantAddressToDeligate(form.parent, formType)">
+            <span>Contact information for my designate is the same as mine.</span>
+        </label>
+    </div>
+
+    <app-address [group]="form.get('address')" [lookupData]="lookupData" [showChildrenAsRequired]="true" [disabled]="form.get('addressSameAsApplicant').value || isDisabled"></app-address>
+
+    <div class="row">
+        <div class="col">
+            <app-field label="May we send correspondence and notification information to the above address? (if no, please provide your designate's email address below):" errorMessage="" [disabled]="isDisabled">
+                <label class="inline-label">
+                    <input type="radio" [value]="enum.Boolean.True.val" name="mayWeSendCorrespondence" formControlName="mayWeSendCorrespondence">
+                    <span>Yes</span>
+                </label>
+                <label class="inline-label">
+                    <input type="radio" [value]="enum.Boolean.False.val" name="mayWeSendCorrespondence" formControlName="mayWeSendCorrespondence">
+                    <span>No</span>
+                </label>
+            </app-field>
+        </div>
+    </div>
+
+    <p>Please list one or more methods of contact (telephone / cellular / email) in order of preference and indicate if we may leave a detailed message (e.g. our organization name, phone number, case information, notification details):</p>
+
+    <div class="contactMethods" formArrayName="contactMethods" *ngFor="let method of form.get('contactMethods')['controls']; let j = index;">
+        <app-contact-method [formGroup]="method" [formGroupName]="j" [number]="j" [parent]="form" [disabled]="isDisabled"></app-contact-method>
+    </div>
+
+    <app-field [valid]="isMyControlValid(form.get('atLeastOneContactMethod'))" errorMessage="Please enter at least one contact method" [disabled]="isDisabled">
+        <input type="hidden" name="atLeastOneContactMethod" formControlName="atLeastOneContactMethod">
+    </app-field>
+</div>

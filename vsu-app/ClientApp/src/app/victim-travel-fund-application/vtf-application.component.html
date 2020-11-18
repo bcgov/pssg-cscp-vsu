@@ -43,7 +43,7 @@
                 <app-case-information [formType]="formType.val" [formGroup]="form" formGroupName="caseInformation" [lookupData]="lookupData" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == 2 || showPrintView"></app-case-information>
 
                 <div class="pagebreak"> </div>
-                <div *ngIf="this.currentFormStep == 3 || showPrintView">add travel info...</div>
+                <app-travel-information [formType]="formType.val" [formGroup]="form" formGroupName="travelInformation" [lookupData]="lookupData" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == 3 || showPrintView"></app-travel-information>
 
                 <div class="pagebreak"> </div>
                 <app-authorization [formType]="formType.val" [formGroup]="form" formGroupName="authorizationInformation" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == 4 || showPrintView"></app-authorization>

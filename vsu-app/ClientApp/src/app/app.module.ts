@@ -31,6 +31,9 @@ import { ConfirmationComponent } from './shared/components/confirmation/confirma
 import { AdditionalInfoBannerComponent } from './shared/components/additional-info-banner/additional-info-banner.component';
 import { VictimTravelFundApplicationComponent } from './victim-travel-fund-application/vtf-application.component';
 import { TravelOverviewComponent } from './shared/components/travel-overview/travel-overview.component';
+import { VSWComponent } from './shared/components/victim-service-worker/victim-service-worker.component';
+import { DesignateComponent } from './shared/components/designate/designate.component';
+import { TravelInformationComponent } from './shared/components/travel-information/travel-information.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +56,9 @@ import { TravelOverviewComponent } from './shared/components/travel-overview/tra
     RecipientDetailsComponent,
     SignPadDialog,
     ToolTipTriggerComponent,
+    VSWComponent,
+    DesignateComponent,
+    TravelInformationComponent,
   ],
   imports: [
     AppRoutingModule,

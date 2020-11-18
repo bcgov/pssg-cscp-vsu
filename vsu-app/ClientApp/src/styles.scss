@@ -10,6 +10,7 @@ $accent: mat-palette($mat-indigo, 500, A200, A400);
 $warn: mat-palette($mat-red, 500);
 $theme: mat-light-theme($primary, $accent, $warn);
 @include angular-material-theme($theme);
+
 body {
   color: #494949;
   background: #f2f2f2;
@@ -413,4 +414,14 @@ hr {
 
 .white-link:hover {
   color: #79bff7;
+}
+
+input.form-control {
+  &.standard {
+    width: 50%;
+  }
+}
+
+.flex-col {
+  display: flex;
 }

@@ -23,6 +23,8 @@ export class AuthorizationComponent extends FormBase implements OnInit {
 
     authInfoHelper = new AuthInfoHelper();
 
+    ApplicationType = ApplicationType;
+
     constructor(
         private controlContainer: ControlContainer,
         private matDialog: MatDialog,

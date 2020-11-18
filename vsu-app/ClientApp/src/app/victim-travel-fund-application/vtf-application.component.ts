@@ -7,11 +7,11 @@ import { FormBase } from "../shared/form-base";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { LookupService } from "../services/lookup.service";
 import { MatVerticalStepper } from "@angular/material";
-import { RecipientDetailsHelper } from "../shared/components/recipient-details/recipient-details.helper";
 import { Router } from "@angular/router";
 import { Title } from "@angular/platform-browser";
 import { TravelOverviewInfoHelper } from "../shared/components/travel-overview/travel-overview.helper";
 import { iLookupData } from "../shared/interfaces/lookup-data.interface";
+import { TravelInfoHelper } from "../shared/components/travel-information/travel-information.helper";
 
 @Component({
     selector: 'app-vtf-application',
@@ -42,7 +42,7 @@ export class VictimTravelFundApplicationComponent extends FormBase implements On
     overviewHelper = new TravelOverviewInfoHelper();
     caseInfoHelper = new CaseInfoInfoHelper();
     applicantInfoInfoHelper = new ApplicantInfoHelper();
-    recipientDetailsHelper = new RecipientDetailsHelper();
+    travelInfoHelper = new TravelInfoHelper();
     authInfoHelper = new AuthInfoHelper();
 
     window = window;
@@ -99,7 +99,7 @@ export class VictimTravelFundApplicationComponent extends FormBase implements On
             overview: this.overviewHelper.setupFormGroup(this.fb, this.formType.val),
             applicantInformation: this.applicantInfoInfoHelper.setupFormGroup(this.fb, this.formType.val),
             caseInformation: this.caseInfoHelper.setupFormGroup(this.fb, this.formType.val),
-            travelInformation: this.fb.group({}),
+            travelInformation: this.travelInfoHelper.setupFormGroup(this.fb, this.formType.val),
             authorizationInformation: this.authInfoHelper.setupFormGroup(this.fb, this.formType.val),
             confirmation: this.fb.group({ confirmationNumber: "" }),
         };
