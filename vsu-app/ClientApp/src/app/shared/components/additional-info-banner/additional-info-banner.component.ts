@@ -7,7 +7,7 @@ import { Component, EventEmitter, OnInit, Output } from "@angular/core";
 })
 export class AdditionalInfoBannerComponent {
     @Output() downloadPDFClick: EventEmitter<boolean> = new EventEmitter<boolean>();
-
+    window = window;
     constructor() {
     }
 

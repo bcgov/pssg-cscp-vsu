@@ -5,8 +5,11 @@ import { NotificationApplicationComponent } from './noticiation-application/noti
 import { VictimTravelFundApplicationComponent } from './victim-travel-fund-application/vtf-application.component';
 
 const routes: Routes = [
+  // {
+  //   path: '', component: HomeComponent, pathMatch: 'full'
+  // },
   {
-    path: '', component: HomeComponent, pathMatch: 'full'
+    path: '', redirectTo: 'notification_applicaiton', pathMatch: 'full'
   },
   {
     path: 'notification_applicaiton',
