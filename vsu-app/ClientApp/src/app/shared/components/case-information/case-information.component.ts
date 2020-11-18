@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { ControlContainer, FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { ControlContainer, FormArray, FormBuilder, FormGroup } from "@angular/forms";
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/material";
 import { MomentDateAdapter } from "@angular/material-moment-adapter";
-import { iLookupData } from "../../../models/lookup-data.model";
+import { iLookupData } from "../../interfaces/lookup-data.interface";
 import { LookupService } from "../../../services/lookup.service";
-import { EnumHelper, MY_FORMATS } from "../../enums-list";
+import { ApplicationType, MY_FORMATS } from "../../enums-list";
 import { FormBase } from "../../form-base";
 import { CaseInfoInfoHelper } from "./case-information.helper";
 
@@ -18,13 +18,16 @@ import { CaseInfoInfoHelper } from "./case-information.helper";
   ],
 })
 export class CaseInformationComponent extends FormBase implements OnInit {
+  @Input() formType: ApplicationType;
   @Input() lookupData: iLookupData;
+  @Input() isDisabled: boolean;
   public form: FormGroup;
 
   courtList: string[] = [];
+  offenceList: string[] = ["Assault", "Torture", "Murder", "Get more from CRM"];
 
-  EnumHelper = new EnumHelper();
   caseInfoHelper = new CaseInfoInfoHelper();
+  ApplicationType = ApplicationType;
 
   constructor(private controlContainer: ControlContainer,
     private lookupService: LookupService,
@@ -36,6 +39,7 @@ export class CaseInformationComponent extends FormBase implements OnInit {
     setTimeout(() => { this.form.markAsTouched(); }, 0);
     console.log("case info component");
     console.log(this.form);
+    console.log(this.isDisabled);
 
     if (this.lookupData.courts && this.lookupData.courts.length > 0) {
       this.courtList = this.lookupData.courts.map(c => c.vsd_name);
@@ -55,9 +59,9 @@ export class CaseInformationComponent extends FormBase implements OnInit {
 
   addAdditionalCourtInfo() {
     let courtInfo = this.form.get('courtInfo') as FormArray;
-    let previousCourt = courtInfo.controls[courtInfo.controls.length - 1];
-    let location = previousCourt.get('courtLocation').value;
-    courtInfo.push(this.caseInfoHelper.createCourtInfo(this.fb, location));
+    // let previousCourt = courtInfo.controls[courtInfo.controls.length - 1];
+    // let location = previousCourt.get('courtLocation').value;
+    courtInfo.push(this.caseInfoHelper.createCourtInfo(this.fb));
   }
 
   removeAdditionalCourtInfo(index: number) {

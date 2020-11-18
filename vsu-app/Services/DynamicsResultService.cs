@@ -47,15 +47,15 @@ namespace Gov.Cscp.Victims.Public.Services
             HttpRequestMessage _httpRequest = new HttpRequestMessage(method, endpointUrl);
             _httpRequest.Content = new StringContent(requestJson, System.Text.Encoding.UTF8, "application/json");
 
-            var _httpResponse = await _client.SendAsync(_httpRequest);
+            HttpResponseMessage _httpResponse = await _client.SendAsync(_httpRequest);
             HttpStatusCode _statusCode = _httpResponse.StatusCode;
 
-            var _responseContent = await _httpResponse.Content.ReadAsStringAsync();
+            string _responseContent = await _httpResponse.Content.ReadAsStringAsync();
 
-            var result = new DynamicsResult();
+            DynamicsResult result = new DynamicsResult();
             result.statusCode = _statusCode;
             result.responseMessage = _httpResponse;
-            var clean = _responseContent.Replace("@odata.", "fortunecookie");
+            string clean = _responseContent.Replace("@odata.", "fortunecookie");
             result.result = Newtonsoft.Json.Linq.JObject.Parse(clean);
 
             Console.WriteLine(result.result);

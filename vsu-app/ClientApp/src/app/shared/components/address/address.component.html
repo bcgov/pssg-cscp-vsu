@@ -1,7 +1,7 @@
 <div [formGroup]="group" class="address-info">
   <div class="row">
     <div class="col-md-6">
-      <app-field label="Country" [required]="showChildrenAsRequired && countryList.length > 0" [valid]="isSubFieldValid('country', isDisabled)" errorMessage="Please select your country">
+      <app-field label="Country" [required]="showChildrenAsRequired && countryList.length > 0" [valid]="isSubFieldValid('country', disabled)" errorMessage="Please select your country" [disabled]="disabled">
         <select class="form-control" formControlName="country" (change)="onCountryChange($event)">
           <option value="">Choose a country</option>
           <option *ngFor="let item of countryList" [value]="item.vsd_name">
@@ -11,7 +11,7 @@
       </app-field>
     </div>
     <div class="col-md-6">
-      <app-field label="{{ provinceType }}" [required]="showChildrenAsRequired && provinceList.length > 0" [valid]="isSubFieldValid('province', isDisabled)" errorMessage="Please select your {{provinceType.toLowerCase()}}">
+      <app-field label="{{ provinceType }}" [required]="showChildrenAsRequired && provinceList.length > 0" [valid]="isSubFieldValid('province', disabled)" errorMessage="Please select your {{provinceType.toLowerCase()}}" [disabled]="disabled">
         <select class="form-control" formControlName="province" (change)="onProvinceChange($event)">
           <option value="">Choose a {{ provinceType }}</option>
           <option *ngFor="let item of provinceList" [value]="item.vsd_name">
@@ -24,12 +24,12 @@
 
   <div class="row">
     <div class="col-md-6">
-      <app-field label="Mailing Address" [required]="showChildrenAsRequired" [valid]="isSubFieldValid('line1', isDisabled)" errorMessage="Please enter your mailing address">
+      <app-field label="Mailing Address" [required]="showChildrenAsRequired" [valid]="isSubFieldValid('line1', disabled)" errorMessage="Please enter your mailing address" [disabled]="disabled">
         <input class="form-control" type="text" formControlName="line1" placeholder="Street Number, Street Address, PO Box, C/O" />
       </app-field>
     </div>
     <div class="col-md-6">
-      <app-field label="Mailing Address Line 2">
+      <app-field label="Mailing Address Line 2" [disabled]="disabled">
         <input class="form-control" type="text" formControlName="line2" placeholder="Apartment, Suite, Building, Floor">
       </app-field>
     </div>
@@ -37,12 +37,12 @@
 
   <div class="row">
     <div class="col-md-6">
-      <app-field label="City" [required]="showChildrenAsRequired" [valid]="isSubFieldValid('city', isDisabled)" errorMessage="Please enter your city">
+      <app-field label="City" [required]="showChildrenAsRequired" [valid]="isSubFieldValid('city', disabled)" errorMessage="Please enter your city" [disabled]="disabled">
         <input formControlName="city" typeaheadOptionField="vsd_name" [typeahead]="suggestions$" [typeaheadAsync]="true" class="form-control">
       </app-field>
     </div>
     <div class="col-md-6">
-      <app-field label="{{ postalCodeType }}" [required]="showChildrenAsRequired" [valid]="isSubFieldValid('postalCode', isDisabled)" errorMessage="Please enter your {{postalCodeType.toLowerCase()}}">
+      <app-field label="{{ postalCodeType }}" [required]="showChildrenAsRequired" [valid]="isSubFieldValid('postalCode', disabled)" errorMessage="Please enter your {{postalCodeType.toLowerCase()}}" [disabled]="disabled">
         <input class="form-control" type="text" placeholder="{{ postalCodeSample }}" formControlName="postalCode">
       </app-field>
     </div>

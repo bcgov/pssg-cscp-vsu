@@ -17,29 +17,42 @@ import { NgModule } from '@angular/core';
 import { NgxMaskModule } from 'ngx-mask';
 import { NotificationApplicationComponent } from './noticiation-application/noticiation-application.component';
 import { NotificationBannerComponent } from './shared/notification-banner/notification-banner.component';
-import { OverviewComponent } from './shared/components/overview/overview.component';
+import { NotificationOverviewComponent } from './shared/components/notification-overview/overview.component';
 import { RecipientDetailsComponent } from './shared/components/recipient-details/recipient-details.component';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { SignPadDialog } from './shared/dialogs/sign-dialog/sign-dialog.component';
 import { SignaturePadModule } from 'angular2-signaturepad';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+import { NotificationApplicationService } from './services/notification-application.service';
+import { ToolTipTriggerComponent } from './shared/components/tool-tip/tool-tip.component';
+import { ContactMethodComponent } from './shared/components/contact-method/contact-method.component';
+import { ConfirmationComponent } from './shared/components/confirmation/confirmation.component';
+import { AdditionalInfoBannerComponent } from './shared/components/additional-info-banner/additional-info-banner.component';
+import { VictimTravelFundApplicationComponent } from './victim-travel-fund-application/vtf-application.component';
+import { TravelOverviewComponent } from './shared/components/travel-overview/travel-overview.component';
 
 @NgModule({
   declarations: [
     AddressComponent,
+    AdditionalInfoBannerComponent,
+    VictimTravelFundApplicationComponent,
     AppComponent,
     ApplicantInformationComponent,
     AuthorizationComponent,
     CaseInformationComponent,
+    ConfirmationComponent,
+    ContactMethodComponent,
     DateFieldComponent,
     FieldComponent,
     HomeComponent,
     NotificationApplicationComponent,
     NotificationBannerComponent,
-    OverviewComponent,
+    NotificationOverviewComponent,
+    TravelOverviewComponent,
     RecipientDetailsComponent,
     SignPadDialog,
+    ToolTipTriggerComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -64,6 +77,7 @@ import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
   ],
   providers: [
     LookupService,
+    NotificationApplicationService,
     {
       provide: STEPPER_GLOBAL_OPTIONS,
       useValue: { showError: true }

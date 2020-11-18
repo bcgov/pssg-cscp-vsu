@@ -1,23 +1,24 @@
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { ApplicationType, EnumHelper } from "../../enums-list";
 import { POSTAL_CODE } from "../../regex.constants";
 
 export class ApplicantInfoHelper {
     postalRegex = POSTAL_CODE;
-    public setupFormGroup(fb: FormBuilder): FormGroup {
+    enum = new EnumHelper();
+    public setupFormGroup(fb: FormBuilder, form_type: ApplicationType): FormGroup {
         let group = {
             applicantType: ['', Validators.required],
             applicantTypeOther: [''],
-            applicantInfoSameAsVictim: [''],
+            applicantInfoSameAsVictim: [false],
             firstName: ['', Validators.required],
             middleName: [''],
             lastName: ['', Validators.required],
 
             birthDate: ['', [Validators.required]],
-            gender: [''],
             genderOther: [''],
 
             preferredLanguage: ['English'],
-            interpreterNeeded: [false],
+            interpreterNeeded: [this.enum.Boolean.False.val],
             address: fb.group({
                 line1: ['', [Validators.required]],
                 line2: [''],
@@ -27,39 +28,56 @@ export class ApplicantInfoHelper {
                 country: ['Canada', [Validators.required]],
             }),
 
-            mayWeSendCorrespondence: [true],
-            contactMethods: fb.array([this.createContactMethod(fb, 'telephone'), this.createContactMethod(fb, 'mobile'), this.createContactMethod(fb, 'email')]),
+            mayWeSendCorrespondence: [this.enum.Boolean.True.val],
+            contactMethods: fb.array([this.createContactMethod(fb), this.createContactMethod(fb), this.createContactMethod(fb)]),
             atLeastOneContactMethod: ['', Validators.required],
+        }
+
+        if (form_type === ApplicationType.TRAVEL_FUNDS) {
+            group['victimAlreadySubmitted'] = [''];
+            group['victimAlreadySubmittedComment'] = [''];
+            group['otherFamilyAlsoApplying'] = [''];
+            group['otherFamilyAlsoApplyingComment'] = [''];
+            group['gender'] = ['', Validators.required];
+        }
+        else if (form_type === ApplicationType.NOTIFICATION) {
+            group['gender'] = [''];
         }
 
         return fb.group(group);
     }
 
-    public createContactMethod(fb: FormBuilder, type: string = '') {
+    public createContactMethod(fb: FormBuilder, typeString: string = '') {
         let current_validators = [];
         let label = '';
-        switch (type) {
+        let type: number = 0;
+        switch (typeString) {
             case 'telephone': {
+                type = this.enum.ContactType.Telephone.val;
                 current_validators = [Validators.minLength(10), Validators.maxLength(15)];
                 label = 'Telephone Number';
                 break;
             }
             case 'mobile': {
+                type = this.enum.ContactType.Cellular.val;
                 current_validators = [Validators.minLength(10), Validators.maxLength(15)];
                 label = 'Cellular Number';
                 break;
             }
             case 'email': {
+                type = this.enum.ContactType.Email.val;
                 current_validators = [Validators.email];
                 label = 'Email Address';
                 break;
             }
             default: {
+                type = this.enum.ContactType.Unset.val;
                 break;
             }
         }
         return fb.group({
             type: [type],
+            previousType: [type],
             val: ['', current_validators],
             label: [label],
             leaveMessage: [''],

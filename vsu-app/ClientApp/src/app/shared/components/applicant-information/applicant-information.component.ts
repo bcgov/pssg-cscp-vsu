@@ -2,8 +2,8 @@ import { Component, Input, OnInit } from "@angular/core";
 import { ControlContainer, FormArray, FormGroup, Validators } from "@angular/forms";
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/material";
 import { MomentDateAdapter } from "@angular/material-moment-adapter";
-import { iLookupData } from "../../../models/lookup-data.model";
-import { EnumHelper, MY_FORMATS } from "../../enums-list";
+import { iLookupData } from "../../interfaces/lookup-data.interface";
+import { ApplicationType, MY_FORMATS } from "../../enums-list";
 import { FormBase } from "../../form-base";
 import { ApplicantInfoHelper } from "./applicant-information.helper";
 
@@ -18,13 +18,16 @@ import { ApplicantInfoHelper } from "./applicant-information.helper";
 })
 export class ApplicantInformationComponent extends FormBase implements OnInit {
     @Input() lookupData: iLookupData;
+    @Input() formType: ApplicationType;
+    @Input() isDisabled: boolean;
     public form: FormGroup;
 
     showOtherApplicantType: boolean = false;
     today: Date = new Date();
 
-    EnumHelper = new EnumHelper();
     applicantInfoHelper = new ApplicantInfoHelper();
+
+    ApplicationType = ApplicationType;
 
     constructor(private controlContainer: ControlContainer) {
         super();
@@ -49,41 +52,44 @@ export class ApplicantInformationComponent extends FormBase implements OnInit {
         }
     }
 
-    setApplicantTypeOtherRequired(required) {
-        let control = this.form.get("applicantTypeOther");
-        if (required) {
+    applicantTypeChange() {
+        let type = this.form.get('applicantType').value;
+        let otherControl = this.form.get("applicantTypeOther");
+        let otherRequired = type === this.enum.ApplicantType.Other_Family_Member.val;
+
+        if (otherRequired) {
             this.showOtherApplicantType = true;
-            this.setControlValidators(control, [Validators.required]);
+            this.setControlValidators(otherControl, [Validators.required]);
         }
         else {
+            otherControl.patchValue('');
             this.showOtherApplicantType = false;
-            this.clearControlValidators(control);
+            this.clearControlValidators(otherControl);
+        }
+
+        if (this.formType === ApplicationType.TRAVEL_FUNDS) {
+            if (type !== this.enum.ApplicantType.Support_Person.val) {
+                this.form.get("victimAlreadySubmitted").patchValue('');
+                this.form.get("victimAlreadySubmittedComment").patchValue('');
+            }
+
+            if (type !== this.enum.ApplicantType.Immediate_Family_Member.val) {
+                this.form.get("otherFamilyAlsoApplying").patchValue('');
+                this.form.get("otherFamilyAlsoApplyingComment").patchValue('');
+            }
         }
     }
 
-    contactMethodChange(item: FormGroup) {
-        let type = item.get('type').value;
-        let current_validators = [];
-        switch (type) {
-            case 'telephone': {
-                current_validators = [Validators.minLength(10), Validators.maxLength(15)];
-                break;
-            }
-            case 'mobile': {
-                current_validators = [Validators.minLength(10), Validators.maxLength(15)];
-                break;
-            }
-            case 'email': {
-                current_validators = [Validators.email];
-                break;
-            }
-            default: {
-                break;
-            }
+    victimAlreadySubmittedChange() {
+        if (this.form.get("victimAlreadySubmitted").value !== this.enum.MultiBoolean.Undecided.val) {
+            this.form.get("victimAlreadySubmittedComment").patchValue('');
         }
+    }
 
-        this.setControlValidators(item.get('val'), current_validators);
-        item.get('val').patchValue('');
+    otherFamilyAlsoApplyingChange() {
+        if (this.form.get("otherFamilyAlsoApplying").value !== this.enum.MultiBoolean.Undecided.val) {
+            this.form.get("otherFamilyAlsoApplyingComment").patchValue('');
+        }
     }
 
     checkAtLeastOneContactMethod() {
@@ -91,13 +97,12 @@ export class ApplicantInformationComponent extends FormBase implements OnInit {
         let contactMethods = this.form.get('contactMethods') as FormArray;
         for (let i = 0; i < contactMethods.controls.length; ++i) {
             let thisMethod = contactMethods.controls[i];
-            if (thisMethod.get('val').value && thisMethod.get('val').valid && thisMethod.get('leaveMessage').value == true) {
+            if (thisMethod.get('val').value && thisMethod.get('val').valid && thisMethod.get('leaveMessage').value == this.enum.Boolean.True.val) {
                 isValid = true;
             }
         }
 
         let val = isValid ? 'valid' : '';
-
         this.form.get('atLeastOneContactMethod').patchValue(val);
     }
 }

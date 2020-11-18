@@ -1,0 +1,109 @@
+<div [formGroup]="form">
+    <div class="page-header">
+        <h1>Overview</h1>
+    </div>
+
+    <p>The Victim Travel Fund provides funding to facilitate victim or immediate family member attendance and participation in criminal
+        justice proceedings taking place in criminal court in BC. Funding may also be available to attend BC Review Board hearings. The maximum
+        amount of funding that can be provided in relation to a case is $3,000.00. This funding limit may be distributed over multiple
+        court/Review Board hearing dates and is distributed between eligible applicants on a case (see below).
+    </p>
+
+    <p>Eligible expenses may include accommodation and the most economical form of travel. Applications should be submitted at least 3 weeks
+        prior to travel when possible and a maximum of 3 months following travel.</p>
+
+
+    <p>Funding is available to:</p>
+    <ol>
+        <li>Victims who have suffered physical or emotional harm as a result of a serious criminal offence. If the victim requires a support person in order to
+            attend and participate in the justice proceedings, one support person may also be eligible to apply.</li>
+        <li>Immediate family members of a deceased victim. Eligible immediate family members include parents, spouse, children and siblings as defined in
+            the <a href="https://www.bclaws.ca/civix/document/id/complete/statreg/96478_01" target="_blank" title="Victims of Crime Act">Victims of Crime Act</a>.
+            Note: Immediate family members of a deceased victim should first apply for
+            <a href="https://www2.gov.bc.ca/gov/content/justice/criminal-justice/bcs-criminal-justice-system/if-you-are-a-victim-of-a-crime/victim-of-crime/financial-assistance-benefits" target="_blank">funding</a>
+            through the Crime Victim Assistance Program, except in cases where
+            the fatality was as a result of a motor vehicle accident.</li>
+    </ol>
+
+    <p>Prior to completing your Victim Travel Fund application please answer the following questions to assist in determining your eligibility to receive funding:</p>
+    <ng-template #offencesTooltip>Offences:&nbsp;
+        <ng-container *ngFor="let offence of offenceList; let i = index">{{offence + (i < offenceList.length - 1 ? ', ' : '')}}</ng-container>
+
+        <p class="mt-2">The Victim Safety Unit will also consider funding for travel under the Victim Travel Fund for:</p>
+        <ul>
+            <li>Cases involving fatal motor vehicle accidents, where an accused has been charged under the Motor Vehicle Act versus the Criminal Code</li>
+            <li>Travel to participate in BC Review Board hearings, in cases where the accused has been found notcriminally responsible on account of mental disorder (NCRMD)</li>
+        </ul>
+    </ng-template>
+
+    <ol>
+        <li>Does the criminal charge fall under one of these offences? <app-tool-tip [trigger]="offencesTooltip"></app-tool-tip>
+            <app-field label="" errorMessage="Please select one" [valid]="isMyControlValid(form.get('criminalChargeOneOfOffences'))" [disabled]="isDisabled">
+                <label class="inline-label">
+                    <input type="radio" [value]="enum.Boolean.True.val" name="criminalChargeOneOfOffences" formControlName="criminalChargeOneOfOffences">
+                    <span>Yes</span>
+                </label>
+                <label class="inline-label">
+                    <input type="radio" [value]="enum.Boolean.False.val" name="criminalChargeOneOfOffences" formControlName="criminalChargeOneOfOffences">
+                    <span>No</span>
+                </label>
+            </app-field>
+        </li>
+
+        <li>Is the criminal justice proceeding expected to impact the outcome, disposition or results relating to the charges?
+            <app-field label="" errorMessage="Please select one" [valid]="isMyControlValid(form.get('proceedingsImpactOutcome'))" [disabled]="isDisabled">
+                <label class="inline-label">
+                    <input type="radio" [value]="enum.Boolean.True.val" name="proceedingsImpactOutcome" formControlName="proceedingsImpactOutcome">
+                    <span>Yes</span>
+                </label>
+                <label class="inline-label">
+                    <input type="radio" [value]="enum.Boolean.False.val" name="proceedingsImpactOutcome" formControlName="proceedingsImpactOutcome">
+                    <span>No</span>
+                </label>
+            </app-field>
+        </li>
+
+        <li>Will you be required to travel more than 100 km from your home (one way) to attend the proceeding?
+            <a href="https://drivebc.ca/directions.html" target="_blank">Drive BC Distance Calculator</a>
+            Please enter one way distance in the Comments, along with any additional comments.
+            <app-field label="" errorMessage="Please select one" [valid]="isMyControlValid(form.get('travelMoreThan100KM'))" [disabled]="isDisabled">
+                <label class="inline-label">
+                    <input type="radio" [value]="enum.Boolean.True.val" name="travelMoreThan100KM" formControlName="travelMoreThan100KM">
+                    <span>Yes</span>
+                </label>
+                <label class="inline-label">
+                    <input type="radio" [value]="enum.Boolean.False.val" name="travelMoreThan100KM" formControlName="travelMoreThan100KM">
+                    <span>No</span>
+                </label>
+            </app-field>
+        </li>
+
+        <li>Have you confirmed that your travel expenses will not be covered by any other source(s), including Crown counsel
+            (due to subpoena to attend court) and the Crime Victim Assistance Program?
+            <app-field label="" errorMessage="Please select one" [valid]="isMyControlValid(form.get('notCoveredByOtherSources'))" [disabled]="isDisabled">
+                <label class="inline-label">
+                    <input type="radio" [value]="enum.Boolean.True.val" name="notCoveredByOtherSources" formControlName="notCoveredByOtherSources">
+                    <span>Yes</span>
+                </label>
+                <label class="inline-label">
+                    <input type="radio" [value]="enum.Boolean.False.val" name="notCoveredByOtherSources" formControlName="notCoveredByOtherSources">
+                    <span>No</span>
+                </label>
+            </app-field>
+        </li>
+    </ol>
+
+    <p>Note: If you did not answer Yes to all the above questions, you may still submit a Victim Travel Fund application for consideration.
+        Please enter any additional comments below.</p>
+
+    <app-field label="Additional Comments" [disabled]="isDisabled">
+        <textarea class="form-control bigger" formControlName="additionalComments" maxlength="500"></textarea>
+    </app-field>
+
+    <p>If you wish to submit an application form please complete it to the best of your ability. If you require assistance in completing
+        the form, please contact us, your
+        <a href="https://www2.gov.bc.ca/gov/content/justice/criminal-justice/bcs-criminal-justice-system/understanding-criminal-justice/key-parts/victim-services/victim-service-workers" target="_blank" title="Victim Service Worker">Victim Service Worker (VSW)</a>, or
+        <a href="https://www2.gov.bc.ca/gov/content/justice/criminal-justice/victims-of-crime/victimlinkbc" target="_blank" title="VictimLinkBC">VictimLinkBC</a> at 1-800-563-0808. VSU staff
+        will contact you once your application has been received to confirm your contact information and to discuss your eligibility to receive travel funding.
+    </p>
+</div>

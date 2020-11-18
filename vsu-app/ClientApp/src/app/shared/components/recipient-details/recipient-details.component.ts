@@ -1,13 +1,13 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Component, Input, OnInit } from "@angular/core";
-import { AbstractControl, ControlContainer, FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { AbstractControl, ControlContainer, FormArray, FormBuilder, FormControl, FormGroup } from "@angular/forms";
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/material";
 import { MomentDateAdapter } from "@angular/material-moment-adapter";
 import { noop, Observable, Observer, of, throwError } from 'rxjs';
 import { retry, catchError, map, switchMap, tap } from 'rxjs/operators';
 import { config } from "../../../../config";
-import { CitiesSearchResponse, iCity, iLookupData } from "../../../models/lookup-data.model";
-import { EnumHelper, MY_FORMATS, } from "../../enums-list";
+import { CitiesSearchResponse, iCity, iLookupData } from "../../interfaces/lookup-data.interface";
+import { ApplicationType, MY_FORMATS, } from "../../enums-list";
 import { FormBase } from "../../form-base";
 import { RecipientDetailsHelper } from "./recipient-details.helper";
 
@@ -21,7 +21,9 @@ import { RecipientDetailsHelper } from "./recipient-details.helper";
     ],
 })
 export class RecipientDetailsComponent extends FormBase implements OnInit {
+    @Input() formType: ApplicationType;
     @Input() lookupData: iLookupData;
+    @Input() isDisabled: boolean;
     public form: FormGroup;
 
     NOTIFICATION_METHODS: string[] = [];
@@ -34,7 +36,6 @@ export class RecipientDetailsComponent extends FormBase implements OnInit {
     suggestions$: Observable<iCity[]>;
     errorMessage: string;
 
-    EnumHelper = new EnumHelper();
     recipientDetailsHelper = new RecipientDetailsHelper();
 
     apiUrl = 'api/Lookup';
@@ -142,31 +143,6 @@ export class RecipientDetailsComponent extends FormBase implements OnInit {
         this.form.get('atLeastOneNotification').patchValue(val)
     }
 
-    contactMethodChange(item: FormGroup) {
-        let type = item.get('type').value;
-        let current_validators = [];
-        switch (type) {
-            case 'telephone': {
-                current_validators = [Validators.minLength(10), Validators.maxLength(15)];
-                break;
-            }
-            case 'mobile': {
-                current_validators = [Validators.minLength(10), Validators.maxLength(15)];
-                break;
-            }
-            case 'email': {
-                current_validators = [Validators.email];
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-
-        this.setControlValidators(item.get('val'), current_validators);
-        item.get('val').patchValue('');
-    }
-
     checkAtLeastOneContactMethod() {
         let isValid = false;
         let designates = this.form.get('designate') as FormArray;
@@ -175,13 +151,12 @@ export class RecipientDetailsComponent extends FormBase implements OnInit {
         let contactMethods = designates.controls[0].get('contactMethods') as FormArray;
         for (let i = 0; i < contactMethods.controls.length; ++i) {
             let thisMethod = contactMethods.controls[i];
-            if (thisMethod.get('val').value && thisMethod.get('val').valid && thisMethod.get('leaveMessage').value == true) {
+            if (thisMethod.get('val').value && thisMethod.get('val').valid && thisMethod.get('leaveMessage').value == this.enum.Boolean.True.val) {
                 isValid = true;
             }
         }
 
         let val = isValid ? 'valid' : '';
-
         designates.controls[0].get('atLeastOneContactMethod').patchValue(val);
     }
 }

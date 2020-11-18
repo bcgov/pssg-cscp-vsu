@@ -8,35 +8,36 @@
     <h2 class="blue-header mt-0">Notification Recipient</h2>
 
     <section class="radio-list per-line">
-        <app-field label="I would like notifications to be provided to:" [required]="true" [valid]="isMyControlValid(form.get('notificationRecipient'))" errorMessage="Please select one">
+        <app-field label="I would like notifications to be provided to:" [required]="true" [valid]="isMyControlValid(form.get('notificationRecipient'))" errorMessage="Please select one" [disabled]="isDisabled">
             <label>
-                <input type="radio" [value]="EnumHelper.NotificationRecipientEnum.Myself.val" name="notificationRecipient" formControlName="notificationRecipient" (change)="setupVictimAndDesignate(false, false)">
+                <input type="radio" [value]="enum.NotificationRecipientEnum.Myself.val" name="notificationRecipient" formControlName="notificationRecipient" (change)="setupVictimAndDesignate(false, false)">
                 Myself only
             </label>
             <label>
-                <input type="radio" [value]="EnumHelper.NotificationRecipientEnum.Designate.val" name="notificationRecipient" formControlName="notificationRecipient" (change)="setupVictimAndDesignate(false, true)">
+                <input type="radio" [value]="enum.NotificationRecipientEnum.Designate.val" name="notificationRecipient" formControlName="notificationRecipient" (change)="setupVictimAndDesignate(false, true)">
                 My designate only on my behalf
             </label>
             <label>
-                <input type="radio" [value]="EnumHelper.NotificationRecipientEnum.Victim_Service_Worker.val" name="notificationRecipient" formControlName="notificationRecipient" (change)="setupVictimAndDesignate(true, false)">
+                <input type="radio" [value]="enum.NotificationRecipientEnum.Victim_Service_Worker.val" name="notificationRecipient" formControlName="notificationRecipient" (change)="setupVictimAndDesignate(true, false)">
                 My victim service worker only on my behalf
             </label>
             <label>
-                <input type="radio" [value]="EnumHelper.NotificationRecipientEnum.Myself_And_Designate.val" name="notificationRecipient" formControlName="notificationRecipient" (change)="setupVictimAndDesignate(false, true)">
+                <input type="radio" [value]="enum.NotificationRecipientEnum.Myself_And_Designate.val" name="notificationRecipient" formControlName="notificationRecipient" (change)="setupVictimAndDesignate(false, true)">
                 Myself plus my designate
             </label>
             <label>
-                <input type="radio" [value]="EnumHelper.NotificationRecipientEnum.Myself_And_Victim_Service_Worker.val" name="notificationRecipient" formControlName="notificationRecipient" (change)="setupVictimAndDesignate(true, false)">
+                <input type="radio" [value]="enum.NotificationRecipientEnum.Myself_And_Victim_Service_Worker.val" name="notificationRecipient" formControlName="notificationRecipient" (change)="setupVictimAndDesignate(true, false)">
                 Myself plus my victim service worker
             </label>
             <label>
-                <input type="radio" [value]="EnumHelper.NotificationRecipientEnum.Designate_And_Victim_Service_Worker.val" name="notificationRecipient" formControlName="notificationRecipient" (change)="setupVictimAndDesignate(true, true)">
+                <input type="radio" [value]="enum.NotificationRecipientEnum.Designate_And_Victim_Service_Worker.val" name="notificationRecipient" formControlName="notificationRecipient" (change)="setupVictimAndDesignate(true, true)">
                 My designate plus my victim service worker
             </label>
         </app-field>
     </section>
 
     <!-- Victim Service Worker -->
+    <!-- todo - create it's own component -->
     <div class="victimServiceWorker" formArrayName="victimServiceWorker" *ngFor="let item of form.get('victimServiceWorker')['controls']; let i = index;">
         <div [formGroupName]="i">
             <p><strong>Victim Service Worker (VSW) Information</strong></p>
@@ -44,17 +45,17 @@
 
             <div class="row">
                 <div class="col-md-4">
-                    <app-field label="First Name">
+                    <app-field label="First Name" [disabled]="isDisabled">
                         <input class="form-control" type="text" formControlName="firstName" maxlength="100">
                     </app-field>
                 </div>
                 <div class="col-md-4">
-                    <app-field label="Last Name">
+                    <app-field label="Last Name" [disabled]="isDisabled">
                         <input class="form-control" type="text" formControlName="lastName" maxlength="100">
                     </app-field>
                 </div>
                 <div class="col-md-4">
-                    <app-field label="Organization / Agency">
+                    <app-field label="Organization / Agency" [disabled]="isDisabled">
                         <input class="form-control" type="text" formControlName="organization" maxlength="100">
                     </app-field>
                 </div>
@@ -62,30 +63,30 @@
 
             <div class="row">
                 <div class="col-md-4">
-                    <app-field label="City / Town">
+                    <app-field label="City / Town" [disabled]="isDisabled">
                         <input formControlName="city" typeaheadOptionField="vsd_name" [typeahead]="suggestions$" [typeaheadAsync]="true" class="form-control">
                     </app-field>
                 </div>
                 <div class="col-md-4">
-                    <app-field label="Telephone" [required]="false" [valid]="isMyControlValid(item.get('telephone'))" errorMessage="Please enter a phone number">
+                    <app-field label="Telephone" [required]="false" [valid]="isMyControlValid(item.get('telephone'))" errorMessage="Please enter a phone number" [disabled]="isDisabled">
                         <input class="form-control" mask='000-000-0000' type="text" formControlName="telephone">
                     </app-field>
                 </div>
                 <div class="col-md-4">
-                    <app-field label="Extension" [required]="false" [valid]="isMyControlValid(item.get('extension'))" errorMessage="Please enter an extension">
+                    <app-field label="Extension" [required]="false" [valid]="isMyControlValid(item.get('extension'))" errorMessage="Please enter an extension" [disabled]="isDisabled">
                         <input class="form-control" mask='0000' type="text" formControlName="extension">
                     </app-field>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-4">
-                    <app-field label="Email" [required]="false" [valid]="isMyControlValid(item.get('email'))" errorMessage="Please enter an email address">
+                    <app-field label="Email" [required]="false" [valid]="isMyControlValid(item.get('email'))" errorMessage="Please enter an email address" [disabled]="isDisabled">
                         <input class="form-control" type="text" formControlName="email" maxlength="100">
                     </app-field>
                 </div>
             </div>
 
-            <p>Note: Your VSW can obtain court updates through Court Services Online unless there is a publication ban on the court file.</p>
+            <p><strong>Note:</strong> Your VSW can obtain court updates through Court Services Online unless there is a publication ban on the court file.</p>
         </div>
     </div>
     <!-- END Victim Service Worker -->
@@ -93,6 +94,7 @@
     <div *ngIf="form.get('victimServiceWorker')['length'] > 0 && form.get('designate')['length'] > 0" class="designate-separator"></div>
 
     <!-- Designate Information -->
+    <!-- todo - create it's own component -->
     <div class="designate" formArrayName="designate" *ngFor="let item of form.get('designate')['controls']; let i = index;">
         <div [formGroupName]="i">
             <p><strong>Designate Information</strong></p>
@@ -100,17 +102,17 @@
 
             <div class="row">
                 <div class="col-md-4">
-                    <app-field label="First Name" [required]="true" [valid]="isMyControlValid(item.get('firstName'))" errorMessage="Please enter a first name">
+                    <app-field label="First Name" [required]="true" [valid]="isMyControlValid(item.get('firstName'))" errorMessage="Please enter a first name" [disabled]="isDisabled">
                         <input class="form-control" type="text" formControlName="firstName" maxlength="100">
                     </app-field>
                 </div>
                 <div class="col-md-4">
-                    <app-field label="Middle Name" [required]="false" [valid]="isMyControlValid(item.get('middleName'))" errorMessage="Please enter admission middle name">
+                    <app-field label="Middle Name" [required]="false" [valid]="isMyControlValid(item.get('middleName'))" errorMessage="Please enter admission middle name" [disabled]="isDisabled">
                         <input class="form-control" type="text" formControlName="middleName" maxlength="100">
                     </app-field>
                 </div>
                 <div class="col-md-4">
-                    <app-field label="Last Name" [required]="true" [valid]="isMyControlValid(item.get('lastName'))" errorMessage="Please enter a last name">
+                    <app-field label="Last Name" [required]="true" [valid]="isMyControlValid(item.get('lastName'))" errorMessage="Please enter a last name" [disabled]="isDisabled">
                         <input class="form-control" type="text" formControlName="lastName" maxlength="100">
                     </app-field>
                 </div>
@@ -118,7 +120,7 @@
 
             <div class="row">
                 <div class="col-md-8">
-                    <app-field label="Relationship to me" [required]="false" [valid]="isMyControlValid(item.get('relationship'))" errorMessage="Please enter a relationship">
+                    <app-field label="Relationship to me" [required]="false" [valid]="isMyControlValid(item.get('relationship'))" errorMessage="Please enter a relationship" [disabled]="isDisabled">
                         <input class="form-control" type="text" formControlName="relationship">
                     </app-field>
                 </div>
@@ -126,22 +128,22 @@
 
             <div>
                 <label class="inline-label inline-checkbox">
-                    <input type="checkbox" [value]="true" name="addressSameAsApplicant" formControlName="addressSameAsApplicant" (change)="copyApplicantAddressToDeligate(form.parent)">
+                    <input type="checkbox" [value]="true" name="addressSameAsApplicant" formControlName="addressSameAsApplicant" (change)="copyApplicantAddressToDeligate(form.parent, formType)">
                     <span>Contact information for my designate is the same as mine.</span>
                 </label>
             </div>
 
-            <app-address [group]="item.get('address')" [lookupData]="lookupData" [showChildrenAsRequired]="true" [isDisabled]="item.get('addressSameAsApplicant').value"></app-address>
+            <app-address [group]="item.get('address')" [lookupData]="lookupData" [showChildrenAsRequired]="true" [disabled]="item.get('addressSameAsApplicant').value || isDisabled"></app-address>
 
             <div class="row">
                 <div class="col">
-                    <app-field label="May we send correspondence and notification information to the above address? (if no, please provide your designate's email address below):" errorMessage="">
+                    <app-field label="May we send correspondence and notification information to the above address? (if no, please provide your designate's email address below):" errorMessage="" [disabled]="isDisabled">
                         <label class="inline-label">
-                            <input type="radio" [value]="true" name="mayWeSendCorrespondence" formControlName="mayWeSendCorrespondence">
+                            <input type="radio" [value]="enum.Boolean.True.val" name="mayWeSendCorrespondence" formControlName="mayWeSendCorrespondence">
                             <span>Yes</span>
                         </label>
                         <label class="inline-label">
-                            <input type="radio" [value]="false" name="mayWeSendCorrespondence" formControlName="mayWeSendCorrespondence">
+                            <input type="radio" [value]="enum.Boolean.False.val" name="mayWeSendCorrespondence" formControlName="mayWeSendCorrespondence">
                             <span>No</span>
                         </label>
                     </app-field>
@@ -151,59 +153,10 @@
             <p>Please list one or more methods of contact (telephone / cellular / email) in order of preference and indicate if we may leave a detailed message (e.g. our organization name, phone number, case information, notification details):</p>
 
             <div class="contactMethods" formArrayName="contactMethods" *ngFor="let method of item.get('contactMethods')['controls']; let j = index;">
-                <div [formGroupName]="j" class="contact-methods">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <app-field [label]="'Preferred Method of Contact ' + (j + 1)" [required]="false" [valid]="isMyControlValid(method.get('type'))" errorMessage="">
-                                <select class="form-control" formControlName="type" (change)="contactMethodChange(method)">
-                                    <option value="telephone">Telephone</option>
-                                    <option value="mobile">Cellular</option>
-                                    <option value="email">Email</option>
-                                </select>
-                            </app-field>
-                        </div>
-
-                        <!-- contact type val options -->
-                        <div class="col-md-4" *ngIf="method.get('type').value === 'telephone'">
-                            <app-field label="Telephone Number" [required]="false" [valid]="isMyControlValid(method.get('val'))" errorMessage="Please enter your phone number">
-                                <input class="form-control" mask='000-000-0000' type="text" formControlName="val" *ngIf="item.get('address.country').value === 'Canada' || item.get('address.country').value === 'United States of America'; else phone_no_mask" (change)="checkAtLeastOneContactMethod()">
-                                <ng-template #phone_no_mask>
-                                    <input class="form-control" type="text" formControlName="val" digitOnly (change)="checkAtLeastOneContactMethod()">
-                                </ng-template>
-                            </app-field>
-                        </div>
-                        <div class="col-md-4" *ngIf="method.get('type').value === 'mobile'">
-                            <app-field label="Cellular Number" [required]="false" [valid]="isMyControlValid(method.get('val'))" errorMessage="Please enter your cell number">
-                                <input class="form-control" mask='000-000-0000' type="text" formControlName="val" *ngIf="item.get('address.country').value === 'Canada' || item.get('address.country').value === 'United States of America'; else cell_no_mask" (change)="checkAtLeastOneContactMethod()">
-                                <ng-template #cell_no_mask>
-                                    <input class="form-control" type="text" formControlName="val" digitOnly (change)="checkAtLeastOneContactMethod()">
-                                </ng-template>
-                            </app-field>
-                        </div>
-                        <div class="col-md-4" *ngIf="method.get('type').value === 'email'">
-                            <app-field label="Email Address" [required]="false" [valid]="isMyControlValid(method.get('val'))" errorMessage="Please enter your email address">
-                                <input class="form-control" type="text" formControlName="val" maxlength="100" (change)="checkAtLeastOneContactMethod()">
-                            </app-field>
-                        </div>
-                        <!--  -->
-
-                        <div class="col-md-4">
-                            <app-field label="May we leave a detailed message?" errorMessage="">
-                                <label class="inline-label">
-                                    <input type="radio" [value]="true" formControlName="leaveMessage" (change)="checkAtLeastOneContactMethod()">
-                                    <span>Yes</span>
-                                </label>
-                                <label class="inline-label">
-                                    <input type="radio" [value]="false" formControlName="leaveMessage" (change)="checkAtLeastOneContactMethod()">
-                                    <span>No</span>
-                                </label>
-                            </app-field>
-                        </div>
-                    </div>
-                </div>
+                <app-contact-method [formGroup]="method" [formGroupName]="j" [number]="j" [parent]="item" [disabled]="isDisabled"></app-contact-method>
             </div>
 
-            <app-field [valid]="isMyControlValid(item.get('atLeastOneContactMethod'))" errorMessage="Please enter at least one contact method">
+            <app-field [valid]="isMyControlValid(item.get('atLeastOneContactMethod'))" errorMessage="Please enter at least one contact method" [disabled]="isDisabled">
                 <input type="hidden" name="atLeastOneContactMethod" formControlName="atLeastOneContactMethod">
             </app-field>
         </div>
@@ -214,43 +167,43 @@
     <h2 class="blue-header mt-0">Notification Details</h2>
     <p><em>I would like updates to be provided on the following (please check all that apply):</em></p>
 
-    <div class="checkbox-container">
+    <div class="checkbox-container" [class.is-disabled]="isDisabled">
         <label class="inline-label inline-checkbox">
             <input type="checkbox" [value]="true" name="courtUpdates" formControlName="courtUpdates" (change)="checkAtLeastOneNotification()">
             <span>Significant court updates (e.g. trial dates set, plea entered, sentencing date, etc.)</span>
         </label>
     </div>
-    <div class="checkbox-container">
+    <div class="checkbox-container" [class.is-disabled]="isDisabled">
         <label class="inline-label inline-checkbox">
             <input type="checkbox" [value]="true" name="courtResults" formControlName="courtResults" (change)="checkAtLeastOneNotification()">
             <span>Final court results (e.g. sentencing outcome, stay of proceedings, etc.)</span>
         </label>
     </div>
-    <div class="checkbox-container">
+    <div class="checkbox-container" [class.is-disabled]="isDisabled">
         <label class="inline-label inline-checkbox">
             <input type="checkbox" [value]="true" name="courtAppearances" formControlName="courtAppearances" (change)="checkAtLeastOneNotification()">
             <span>Updates on all criminal court appearances (e.g. above updates/results plus administrative court dates)</span>
         </label>
     </div>
-    <div class="checkbox-container">
+    <div class="checkbox-container" [class.is-disabled]="isDisabled">
         <label class="inline-label inline-checkbox">
             <input type="checkbox" [value]="true" name="courtOrders" formControlName="courtOrders" (change)="checkAtLeastOneNotification()">
             <span>Criminal court orders issued (e.g. bail, probation, etc.)</span>
         </label>
     </div>
-    <div class="checkbox-container">
+    <div class="checkbox-container" [class.is-disabled]="isDisabled">
         <label class="inline-label inline-checkbox">
             <input type="checkbox" [value]="true" name="correctionsInformation" formControlName="correctionsInformation" (change)="checkAtLeastOneNotification()">
             <span>BC Corrections information (e.g. if the accused / offender is reporting in the community; details of their reporting conditions; admission/transfer/release from provincial custody; changes to potential release dates, etc.)</span>
         </label>
     </div>
 
-    <app-field [valid]="isFieldValid('atLeastOneNotification')" errorMessage="Please select at least one">
+    <app-field [valid]="isFieldValid('atLeastOneNotification')" errorMessage="Please select at least one" [disabled]="isDisabled">
         <input type="hidden" name="atLeastOneNotification" formControlName="atLeastOneNotification">
     </app-field>
 
-    <app-field label="Additional Comments">
-        <textarea class="form-control bigger" formControlName="additionalComments" maxlength="750"></textarea>
+    <app-field label="Additional Comments" [disabled]="isDisabled">
+        <textarea class="form-control bigger" formControlName="additionalComments" maxlength="500"></textarea>
     </app-field>
     <!-- END Notification Details -->
 </div>
