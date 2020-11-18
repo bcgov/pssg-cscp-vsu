@@ -67,14 +67,16 @@ export class ApplicantInformationComponent extends FormBase implements OnInit {
             this.clearControlValidators(otherControl);
         }
 
-        if (type !== this.enum.ApplicantType.Support_Person.val) {
-            this.form.get("victimAlreadySubmitted").patchValue('');
-            this.form.get("victimAlreadySubmittedComment").patchValue('');
-        }
+        if (this.formType === ApplicationType.TRAVEL_FUNDS) {
+            if (type !== this.enum.ApplicantType.Support_Person.val) {
+                this.form.get("victimAlreadySubmitted").patchValue('');
+                this.form.get("victimAlreadySubmittedComment").patchValue('');
+            }
 
-        if (type !== this.enum.ApplicantType.Immediate_Family_Member.val) {
-            this.form.get("otherFamilyAlsoApplying").patchValue('');
-            this.form.get("otherFamilyAlsoApplyingComment").patchValue('');
+            if (type !== this.enum.ApplicantType.Immediate_Family_Member.val) {
+                this.form.get("otherFamilyAlsoApplying").patchValue('');
+                this.form.get("otherFamilyAlsoApplyingComment").patchValue('');
+            }
         }
     }
 

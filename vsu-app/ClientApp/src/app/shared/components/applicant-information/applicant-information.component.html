@@ -91,7 +91,6 @@
         </div>
     </ng-container>
 
-
     <h2 class="blue-header mt-0">Applicant Information</h2>
 
     <div [class.is-disabled]="isDisabled" *ngIf="formType === ApplicationType.NOTIFICATION">
@@ -196,5 +195,4 @@
     <app-field [valid]="isFieldValid('atLeastOneContactMethod')" errorMessage="Please enter at least one contact method" [disabled]="isDisabled">
         <input type="hidden" name="atLeastOneContactMethod" formControlName="atLeastOneContactMethod">
     </app-field>
-
 </div>
