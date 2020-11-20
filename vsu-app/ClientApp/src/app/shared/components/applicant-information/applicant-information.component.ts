@@ -22,7 +22,6 @@ export class ApplicantInformationComponent extends FormBase implements OnInit {
     @Input() isDisabled: boolean;
     public form: FormGroup;
 
-    showOtherApplicantType: boolean = false;
     today: Date = new Date();
 
     applicantInfoHelper = new ApplicantInfoHelper();
@@ -54,27 +53,48 @@ export class ApplicantInformationComponent extends FormBase implements OnInit {
 
     applicantTypeChange() {
         let type = this.form.get('applicantType').value;
-        let otherControl = this.form.get("applicantTypeOther");
-        let otherRequired = type === this.enum.ApplicantType.Other_Family_Member.val;
 
-        if (otherRequired) {
-            this.showOtherApplicantType = true;
-            this.setControlValidators(otherControl, [Validators.required]);
-        }
-        else {
-            otherControl.patchValue('');
-            this.showOtherApplicantType = false;
-            this.clearControlValidators(otherControl);
+        if (this.formType === ApplicationType.NOTIFICATION) {
+            let otherControl = this.form.get("applicantTypeOther");
+            let otherRequired = type === this.enum.ApplicantType.Other_Family_Member.val;
+
+            if (otherRequired) {
+                this.setControlValidators(otherControl, [Validators.required]);
+            }
+            else {
+                otherControl.patchValue('');
+                this.clearControlValidators(otherControl);
+            }
         }
 
         if (this.formType === ApplicationType.TRAVEL_FUNDS) {
+            let supportPersonRelationshipControl = this.form.get("supportPersonRelationship");
+            let IFMRelationshipControl = this.form.get("IFMRelationship");
+            let supportRelationshipRequired = type === this.enum.ApplicantType.Support_Person.val;
+            let IFMRelationshipRequired = type === this.enum.ApplicantType.Immediate_Family_Member.val;
+            if (supportRelationshipRequired) {
+                this.setControlValidators(supportPersonRelationshipControl, [Validators.required]);
+            }
+            else {
+                supportPersonRelationshipControl.patchValue('');
+                this.clearControlValidators(supportPersonRelationshipControl);
+            }
+
+            if (IFMRelationshipRequired) {
+                this.setControlValidators(IFMRelationshipControl, [Validators.required]);
+            }
+            else {
+                IFMRelationshipControl.patchValue('');
+                this.clearControlValidators(IFMRelationshipControl);
+            }
+
             if (type !== this.enum.ApplicantType.Support_Person.val) {
-                this.form.get("victimAlreadySubmitted").patchValue('');
+                this.form.get("victimAlreadySubmitted").patchValue(null);
                 this.form.get("victimAlreadySubmittedComment").patchValue('');
             }
 
             if (type !== this.enum.ApplicantType.Immediate_Family_Member.val) {
-                this.form.get("otherFamilyAlsoApplying").patchValue('');
+                this.form.get("otherFamilyAlsoApplying").patchValue(null);
                 this.form.get("otherFamilyAlsoApplyingComment").patchValue('');
             }
         }

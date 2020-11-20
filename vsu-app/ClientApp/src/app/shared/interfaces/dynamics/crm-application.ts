@@ -1,4 +1,4 @@
-export interface iNotificationApplicationCRM {
+export interface iApplicationFormCRM {
     Application: iCRMApplication;
     CourtInfoCollection: iCRMCourtInfo[];
     PoliceFileNumberCollection: iCRMPoliceFileNumber[];
@@ -15,7 +15,15 @@ export interface iCRMApplication {
     vsd_cvap_victimgendercode: number;
 
     vsd_vsu_applicanttype: number;
-    vsd_vsuapplicanttypeother: string;
+    vsd_vsuapplicanttypeother?: string;
+    vsd_cvap_relationshiptovictim?: string;
+
+    vsd_vsu_victimtravelfundapplicationsubmitted?: number;
+    vsd_vsu_vtfappsubmittedunknowncomments?: string;
+    
+    vsd_vsu_otherfamilymembersapplyingtovtf?: number;
+    vsd_vsu_otherfamilymembersvtfothercomments?: string;
+    
     vsd_applicantsfirstname: string;
     vsd_applicantsmiddlename: string;
     vsd_applicantslastname: string;
@@ -43,18 +51,26 @@ export interface iCRMApplication {
     vsd_vsu_methodofcontact3type: number;
     vsd_vsu_methodofcontact3number: string;
     vsd_vsu_methodofcontact3leavedetailedmessage: number;
-    vsd_vsu_notificationto: number;
+    vsd_vsu_notificationto?: number;
 
-    vsd_vsu_significantcourtupdates: number;
-    vsd_vsu_finalcourtresults: number;
-    vsd_vsu_updatesonallcriminalcourtappearances: number;
-    vsd_vsu_criminalcourtordersissued: number;
-    vsd_vsu_bccorrectionsinformation: number;
-    vsd_vsu_notificationadditionalcomments: string;
+    vsd_vsu_significantcourtupdates?: number;
+    vsd_vsu_finalcourtresults?: number;
+    vsd_vsu_updatesonallcriminalcourtappearances?: number;
+    vsd_vsu_criminalcourtordersissued?: number;
+    vsd_vsu_bccorrectionsinformation?: number;
+    vsd_vsu_notificationadditionalcomments?: string;
 
-    vsd_vsu_infosharecscpbc: number;
-    vsd_vsu_infosharevsu: number;
-    vsd_vsu_infosharevsw: number;
+    vsd_vsu_vsutravelexpenserequest?: string;
+    vsd_vsu_travelexpenserequesttransportother?: string;
+    vsd_vsu_travelexpenserequestother?: string;
+    vsd_vsu_purposeoftravel?: string;
+    vsd_vsu_travelperiodfrom?: Date;
+    vsd_vsu_travelperiodto?: Date;
+    vsd_vsu_additionaltravelcomments?: string;
+
+    vsd_vsu_infosharecscpbc?: number;
+    vsd_vsu_infosharevsu?: number;
+    vsd_vsu_infosharevsw?: number;
     vsd_declarationverified: number;
 
     vsd_declarationfullname: string;
@@ -88,7 +104,6 @@ export interface iCRMParticipant {
     vsd_province?: string;
     vsd_postalcode?: string;
 
-    //This field is in the design, but not in CRM - placeholder for if/when it gets added
     vsd_vsu_oktosendmail?: number;
     
     vsd_email?: string;

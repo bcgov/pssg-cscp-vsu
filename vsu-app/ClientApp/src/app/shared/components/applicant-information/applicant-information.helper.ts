@@ -34,11 +34,13 @@ export class ApplicantInfoHelper {
         }
 
         if (form_type === ApplicationType.TRAVEL_FUNDS) {
-            group['victimAlreadySubmitted'] = [''];
+            group['victimAlreadySubmitted'] = [null];
             group['victimAlreadySubmittedComment'] = [''];
-            group['otherFamilyAlsoApplying'] = [''];
+            group['otherFamilyAlsoApplying'] = [null];
             group['otherFamilyAlsoApplyingComment'] = [''];
             group['gender'] = ['', Validators.required];
+            group['supportPersonRelationship'] = [''];
+            group['IFMRelationship'] = [''];
         }
         else if (form_type === ApplicationType.NOTIFICATION) {
             group['gender'] = [''];

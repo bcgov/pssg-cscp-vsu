@@ -68,7 +68,5 @@ export class CaseInfoInfoHelper {
         });
     }
 
-    checkFormGroupHasValue(form: FormGroup) {
-        return Object.values(form.controls).some(({ value }) => !!value);
-    }
+    
 }

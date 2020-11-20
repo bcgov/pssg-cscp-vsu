@@ -7,17 +7,17 @@ using System.Threading.Tasks;
 namespace Gov.Cscp.Victims.Public.Controllers
 {
     [Route("api/[controller]")]
-    public class NotificationApplicationController : Controller
+    public class ApplicationController : Controller
     {
         private readonly IDynamicsResultService _dynamicsResultService;
 
-        public NotificationApplicationController(IDynamicsResultService dynamicsResultService)
+        public ApplicationController(IDynamicsResultService dynamicsResultService)
         {
             this._dynamicsResultService = dynamicsResultService;
         }
 
         [HttpPost]
-        public async Task<IActionResult> SubmitApplication([FromBody] NotificationApplication model)
+        public async Task<IActionResult> SubmitApplication([FromBody] ApplicationData model)
         {
             try
             {

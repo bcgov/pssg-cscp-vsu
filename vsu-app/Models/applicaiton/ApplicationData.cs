@@ -1,7 +1,7 @@
 
 namespace Gov.Cscp.Victims.Public.Models
 {
-    public class NotificationApplication
+    public class ApplicationData
     {
         public Application Application { get; set; }
         public CourtInfo[] CourtInfoCollection { get; set; }

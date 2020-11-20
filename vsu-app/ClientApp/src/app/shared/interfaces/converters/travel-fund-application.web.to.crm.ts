@@ -1,10 +1,14 @@
 import { ApplicationType, EnumHelper } from "../../enums-list";
 import { iCRMApplication, iCRMCourtInfo, iCRMParticipant, iApplicationFormCRM } from "../dynamics/crm-application";
-import { iNotificationApplication } from "../application.interface";
+import { iTravelFundApplication } from "../application.interface";
+import * as _ from 'lodash';
 
-export function convertNotificationApplicationToCRM(application: iNotificationApplication) {
-    console.log("converting notification application");
+export function convertTravelFundApplicationToCRM(application: iTravelFundApplication) {
+    console.log("converting travel application");
     console.log(application);
+
+    console.log("TODO - need to capture Case Info -> Offences")
+    console.log("TODO - need to capture Travel Info -> Court Dates")
 
     let crm_application: iApplicationFormCRM = {
         Application: getCRMApplication(application),
@@ -17,18 +21,26 @@ export function convertNotificationApplicationToCRM(application: iNotificationAp
     return crm_application;
 }
 
-function getCRMApplication(application: iNotificationApplication) {
+function getCRMApplication(application: iTravelFundApplication) {
     let enums = new EnumHelper();
+    let relationship_to_victim = "";
+    if (application.ApplicantInformation.applicantType === enums.ApplicantType.Support_Person.val) {
+        relationship_to_victim = application.ApplicantInformation.supportPersonRelationship;
+    }
+    else if (application.ApplicantInformation.applicantType === enums.ApplicantType.Immediate_Family_Member.val) {
+        relationship_to_victim = application.ApplicantInformation.IFMRelationship;
+    }
     let crm_application: iCRMApplication = {
-        vsd_vsu_applicationtype: ApplicationType.NOTIFICATION,
-        vsd_cvap_victimfirstname: application.CaseInformation.firstName,
-        vsd_cvap_victimmiddlename: application.CaseInformation.middleName,
-        vsd_cvap_victimlastname: application.CaseInformation.lastName,
-        vsd_cvap_victimbirthdate: application.CaseInformation.birthDate,
-        vsd_cvap_victimgendercode: application.CaseInformation.gender,
-
+        vsd_vsu_applicationtype: ApplicationType.TRAVEL_FUNDS,
         vsd_vsu_applicanttype: application.ApplicantInformation.applicantType,
-        vsd_vsuapplicanttypeother: application.ApplicantInformation.applicantTypeOther,
+        vsd_cvap_relationshiptovictim: relationship_to_victim,
+
+        vsd_vsu_victimtravelfundapplicationsubmitted: application.ApplicantInformation.victimAlreadySubmitted,
+        vsd_vsu_vtfappsubmittedunknowncomments: application.ApplicantInformation.victimAlreadySubmittedComment,
+
+        vsd_vsu_otherfamilymembersapplyingtovtf: application.ApplicantInformation.otherFamilyAlsoApplying,
+        vsd_vsu_otherfamilymembersvtfothercomments: application.ApplicantInformation.otherFamilyAlsoApplyingComment,
+
         vsd_applicantsfirstname: application.ApplicantInformation.firstName,
         vsd_applicantsmiddlename: application.ApplicantInformation.middleName,
         vsd_applicantslastname: application.ApplicantInformation.lastName,
@@ -60,26 +72,69 @@ function getCRMApplication(application: iNotificationApplication) {
         vsd_vsu_methodofcontact3number: application.ApplicantInformation.contactMethods[2].val ? application.ApplicantInformation.contactMethods[2].val : null,
         vsd_vsu_methodofcontact3leavedetailedmessage: application.ApplicantInformation.contactMethods[2].val ? application.ApplicantInformation.contactMethods[2].leaveMessage : null,
 
-        vsd_vsu_notificationto: application.RecipientDetails.notificationRecipient,
-        vsd_vsu_significantcourtupdates: application.RecipientDetails.courtUpdates ? enums.Boolean.True.val : enums.Boolean.False.val,
-        vsd_vsu_finalcourtresults: application.RecipientDetails.courtResults ? enums.Boolean.True.val : enums.Boolean.False.val,
-        vsd_vsu_updatesonallcriminalcourtappearances: application.RecipientDetails.courtAppearances ? enums.Boolean.True.val : enums.Boolean.False.val,
-        vsd_vsu_criminalcourtordersissued: application.RecipientDetails.courtOrders ? enums.Boolean.True.val : enums.Boolean.False.val,
-        vsd_vsu_bccorrectionsinformation: application.RecipientDetails.correctionsInformation ? enums.Boolean.True.val : enums.Boolean.False.val,
-        vsd_vsu_notificationadditionalcomments: application.RecipientDetails.additionalComments,
+        vsd_cvap_victimfirstname: application.CaseInformation.firstName,
+        vsd_cvap_victimmiddlename: application.CaseInformation.middleName,
+        vsd_cvap_victimlastname: application.CaseInformation.lastName,
+        vsd_cvap_victimbirthdate: application.CaseInformation.birthDate,
+        vsd_cvap_victimgendercode: application.CaseInformation.gender,
 
-        vsd_vsu_infosharecscpbc: application.AuthorizationInformation.registerForVictimNotification ? enums.Boolean.True.val : enums.Boolean.False.val,
-        vsd_vsu_infosharevsu: application.AuthorizationInformation.permissionToShareContactInfo ? enums.Boolean.True.val : enums.Boolean.False.val,
-        vsd_vsu_infosharevsw: application.AuthorizationInformation.permissionToContactMyVSW ? enums.Boolean.True.val : enums.Boolean.False.val,
+
+        vsd_vsu_vsutravelexpenserequest: "",
+        vsd_vsu_travelexpenserequesttransportother: "",
+        vsd_vsu_travelexpenserequestother: application.TravelInformation.applyForOtherText,
+        vsd_vsu_purposeoftravel: application.TravelInformation.purposeOfTravel,
+        vsd_vsu_travelperiodfrom: application.TravelInformation.travelPeriodStart,
+        vsd_vsu_travelperiodto: application.TravelInformation.travelPeriodEnd,
+        vsd_vsu_additionaltravelcomments: application.TravelInformation.additionalComments,
+
+
         vsd_declarationverified: application.AuthorizationInformation.declaration ? enums.Boolean.True.val : enums.Boolean.False.val,
-
         vsd_declarationfullname: application.AuthorizationInformation.fullName,
         vsd_declarationdate: application.AuthorizationInformation.date,
         vsd_applicantssignature: application.AuthorizationInformation.signature,
     };
+
+    let requested_expenses = [];
+
+    if (application.TravelInformation.applyForTransportationBus) {
+        requested_expenses.push("100000000");
+    }
+
+    if (application.TravelInformation.applyForTransportationFerry) {
+        requested_expenses.push("100000001");
+    }
+
+    if (application.TravelInformation.applyForTransportationFlights) {
+        requested_expenses.push("100000002");
+    }
+
+    if (application.TravelInformation.applyForTransportationMileage) {
+        requested_expenses.push("100000003");
+    }
+
+    if (application.TravelInformation.applyForTransportationOther) {
+        requested_expenses.push("100000004");
+        crm_application.vsd_vsu_travelexpenserequesttransportother = application.TravelInformation.applyForTransportationOtherText;
+    }
+
+    if (application.TravelInformation.applyForMeals) {
+        requested_expenses.push("100000005");
+    }
+
+    if (application.TravelInformation.applyForAccommodation) {
+        requested_expenses.push("100000006");
+    }
+
+    if (application.TravelInformation.applyForOther) {
+        requested_expenses.push("100000007");
+    }
+
+    crm_application.vsd_vsu_vsutravelexpenserequest = requested_expenses.join(',');
+
+
     return crm_application;
 }
-function getCRMCourtInfoCollection(application: iNotificationApplication) {
+function getCRMCourtInfoCollection(application: iTravelFundApplication) {
     let court_info_collection: iCRMCourtInfo[] = [];
 
     if (application.CaseInformation.courtInfo) {
@@ -94,7 +149,7 @@ function getCRMCourtInfoCollection(application: iNotificationApplication) {
     return court_info_collection;
 }
 
-function getCRMProviderCollection(application: iNotificationApplication) {
+function getCRMProviderCollection(application: iTravelFundApplication) {
     let provider_collection: iCRMParticipant[] = [];
 
     //CaseInformation Accused / Offender
@@ -119,55 +174,45 @@ function getCRMProviderCollection(application: iNotificationApplication) {
         }
     });
 
-    //Designate
-    if (application.RecipientDetails.designate) {
-        application.RecipientDetails.designate.forEach(designate => {
-            provider_collection.push({
-                vsd_firstname: designate.firstName,
-                vsd_middlename: designate.middleName,
-                vsd_lastname: designate.lastName,
-                vsd_addressline1: designate.address.line1,
-                vsd_addressline2: designate.address.line2,
-                vsd_city: designate.address.city,
-                vsd_province: designate.address.province,
-                vsd_postalcode: designate.address.postalCode,
-                vsd_relationship1: "Designate",
-                vsd_relationship1other: "",
-
-                vsd_relationship2: designate.relationship ? "Other" : "",
-                vsd_relationship2other: designate.relationship,
-
-                vsd_vsu_oktosendmail: designate.mayWeSendCorrespondence,
-
-                vsd_vsu_methodofcontact1type: designate.contactMethods[0].val ? designate.contactMethods[0].type : null,
-                vsd_vsu_methodofcontact1number: designate.contactMethods[0].val ? designate.contactMethods[0].val : null,
-                vsd_vsu_methodofcontact1leavedetailedmessage: designate.contactMethods[0].val ? designate.contactMethods[0].leaveMessage : null,
-                vsd_vsu_methodofcontact2type: designate.contactMethods[1].val ? designate.contactMethods[1].type : null,
-                vsd_vsu_methodofcontact2number: designate.contactMethods[1].val ? designate.contactMethods[1].val : null,
-                vsd_vsu_methodofcontact2leavedetailedmessage: designate.contactMethods[1].val ? designate.contactMethods[1].leaveMessage : null,
-                vsd_vsu_methodofcontact3type: designate.contactMethods[2].val ? designate.contactMethods[2].type : null,
-                vsd_vsu_methodofcontact3number: designate.contactMethods[2].val ? designate.contactMethods[2].val : null,
-                vsd_vsu_methodofcontact3leavedetailedmessage: designate.contactMethods[2].val ? designate.contactMethods[2].leaveMessage : null,
-            });
+    //Crown Counsel
+    if (application.CaseInformation.crownCounsel) {
+        application.CaseInformation.crownCounsel.forEach(cc => {
+            if (checkObjectHasValue(cc)) {
+                provider_collection.push({
+                    vsd_firstname: cc.firstName,
+                    vsd_lastname: cc.lastName,
+                    vsd_phonenumber: cc.telephone,
+                    vsd_relationship1: "Crown Counsel",
+                    vsd_relationship1other: "",
+                });
+            }
         });
     }
 
     //Victim Service Worker
-    if (application.RecipientDetails.victimServiceWorker) {
-        application.RecipientDetails.victimServiceWorker.forEach(vsw => {
-            provider_collection.push({
-                vsd_firstname: vsw.firstName,
-                vsd_lastname: vsw.lastName,
-                vsd_companyname: vsw.organization,
-                vsd_phonenumber: vsw.telephone,
-                vsd_mainphoneextension: vsw.extension,
-                vsd_city: vsw.city,
-                vsd_email: vsw.email,
-                vsd_relationship1: "Victim Services Worker",
-                vsd_relationship1other: "",
-            });
+    if (application.CaseInformation.victimServiceWorker) {
+        application.CaseInformation.victimServiceWorker.forEach(vsw => {
+            let testVSW = _.cloneDeep(vsw);
+            delete testVSW["okToDiscussTravel"];
+            if (checkObjectHasValue(testVSW)) {
+                provider_collection.push({
+                    vsd_firstname: vsw.firstName,
+                    vsd_lastname: vsw.lastName,
+                    vsd_companyname: vsw.organization,
+                    vsd_phonenumber: vsw.telephone,
+                    vsd_mainphoneextension: vsw.extension,
+                    vsd_city: vsw.city,
+                    vsd_email: vsw.email,
+                    vsd_relationship1: "Victim Services Worker",
+                    vsd_relationship1other: "",
+                });
+            }
         });
     }
 
     return provider_collection;
+}
+
+function checkObjectHasValue(obj: any) {
+    return Object.values(obj).some(value => !!value);
 }

@@ -43,9 +43,13 @@ export class TravelInformationComponent extends FormBase implements OnInit {
 
         if (this.formType === ApplicationType.TRAVEL_FUNDS) {
             this.EXPENSES = [
-                'applyForAccommodation',
-                'applyForTransportation',
+                'applyForTransportationBus',
+                'applyForTransportationFerry',
+                'applyForTransportationFlights',
+                'applyForTransportationMileage',
+                'applyForTransportationOther',
                 'applyForMeals',
+                'applyForAccommodation',
                 'applyForOther',
             ];
         }
@@ -76,6 +80,13 @@ export class TravelInformationComponent extends FormBase implements OnInit {
         this.form.patchValue({
             atLeastOneExpense: oneChecked
         });
+
+        if (this.form.get('applyForOther').value !== true) {
+            this.form.get('applyForOtherText').patchValue('')
+        }
+        if (this.form.get('applyForTransportationOther').value !== true) {
+            this.form.get('applyForTransportationOtherText').patchValue('')
+        }
     }
 
     travelPeriodStartChange() {

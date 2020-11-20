@@ -24,7 +24,7 @@ import { SignPadDialog } from './shared/dialogs/sign-dialog/sign-dialog.componen
 import { SignaturePadModule } from 'angular2-signaturepad';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
-import { NotificationApplicationService } from './services/notification-application.service';
+import { ApplicationService } from './services/application.service';
 import { ToolTipTriggerComponent } from './shared/components/tool-tip/tool-tip.component';
 import { ContactMethodComponent } from './shared/components/contact-method/contact-method.component';
 import { ConfirmationComponent } from './shared/components/confirmation/confirmation.component';
@@ -83,7 +83,7 @@ import { TravelInformationComponent } from './shared/components/travel-informati
   ],
   providers: [
     LookupService,
-    NotificationApplicationService,
+    ApplicationService,
     {
       provide: STEPPER_GLOBAL_OPTIONS,
       useValue: { showError: true }

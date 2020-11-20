@@ -8,7 +8,12 @@ export class TravelInfoHelper {
     public setupFormGroup(fb: FormBuilder, form_type: ApplicationType): FormGroup {
         let group = {
             applyForAccommodation: [''],
-            applyForTransportation: [''],
+            applyForTransportationBus: [''],
+            applyForTransportationFerry: [''],
+            applyForTransportationFlights: [''],
+            applyForTransportationMileage: [''],
+            applyForTransportationOther: [''],
+            applyForTransportationOtherText: [''],
             applyForMeals: [''],
             applyForOther: [''],
             applyForOtherText: [''],

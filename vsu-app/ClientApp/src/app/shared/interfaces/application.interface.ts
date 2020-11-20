@@ -7,6 +7,13 @@ export interface iNotificationApplication {
     AuthorizationInformation: iAuthorizationInformation;
 }
 
+export interface iTravelFundApplication {
+    CaseInformation: iCaseInformation;
+    ApplicantInformation: iApplicantInformation;
+    TravelInformation: iTravelInformation;
+    AuthorizationInformation: iAuthorizationInformation;
+}
+
 export interface iCaseInformation {
     firstName: string;
     middleName: string;
@@ -21,11 +28,22 @@ export interface iCaseInformation {
     accusedBirthDate: Date;
     accusedGender: number;
     additionalAccused: iAdditionalAccused[];
+    victimServiceWorker?: iVictimServiceWorker[];
+    crownCounsel?: iCrownCounsel[];
+    victimInfoSameAsApplicant: boolean;
 }
 
 export interface iApplicantInformation {
     applicantType: number;
     applicantTypeOther: string;
+    supportPersonRelationship: string;
+    IFMRelationship: string;
+
+    victimAlreadySubmitted: number;
+    victimAlreadySubmittedComment: string;
+    otherFamilyAlsoApplying: number;
+    otherFamilyAlsoApplyingComment: string;
+
     applicantInfoSameAsVictim: boolean;
     firstName: string;
     middleName: string;
@@ -51,6 +69,24 @@ export interface iRecipientDetails {
     courtOrders: number;
     correctionsInformation: number;
     atLeastOneNotification: string;
+    additionalComments: string;
+}
+
+export interface iTravelInformation {
+    applyForTransportationBus: boolean;
+    applyForTransportationFerry: boolean;
+    applyForTransportationFlights: boolean;
+    applyForTransportationMileage: boolean;
+    applyForTransportationOther: boolean;
+    applyForTransportationOtherText: string;
+    applyForMeals: boolean;
+    applyForAccommodation: boolean;
+    applyForOther: boolean;
+    applyForOtherText: string;
+    courtDates: Date[];
+    purposeOfTravel: string;
+    travelPeriodStart: Date;
+    travelPeriodEnd: Date;
     additionalComments: string;
 }
 
@@ -102,4 +138,10 @@ export interface iDesignate {
     mayWeSendCorrespondence: number;
     contactMethods: iContactMethod[];
     atLeastOneContactMethod: string;
+}
+
+export interface iCrownCounsel {
+    firstName: string;
+    lastName: string;
+    telephone: string;
 }

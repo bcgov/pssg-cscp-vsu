@@ -7,32 +7,67 @@
 
     <p>I would like to apply for the following expenses:</p>
 
-    <app-field>
+    <app-field [disabled]="isDisabled">
         <label>
-            <input type="checkbox" [value]="true" name="applyForAccommodation" formControlName="applyForAccommodation" (change)="changeGroupValidity()">
-            Accomodation
+            <input type="checkbox" [value]="true" name="applyForTransportationBus" formControlName="applyForTransportationBus" (change)="changeGroupValidity()">
+            Transportation - Bus
         </label>
     </app-field>
-    <app-field>
+
+    <app-field [disabled]="isDisabled">
         <label>
-            <input type="checkbox" [value]="true" name="applyForTransportation" formControlName="applyForTransportation" (change)="changeGroupValidity()">
-            Transportation <app-tool-tip [trigger]="transportationTemplate"></app-tool-tip>
+            <input type="checkbox" [value]="true" name="applyForTransportationFerry" formControlName="applyForTransportationFerry" (change)="changeGroupValidity()">
+            Transportation - Ferry
         </label>
     </app-field>
-    <ng-template #transportationTemplate>Bus, Ferry, Flights, Mileage</ng-template>
-    <app-field>
+
+    <app-field [disabled]="isDisabled">
+        <label>
+            <input type="checkbox" [value]="true" name="applyForTransportationFlights" formControlName="applyForTransportationFlights" (change)="changeGroupValidity()">
+            Transportation - Flights
+        </label>
+    </app-field>
+
+    <app-field [disabled]="isDisabled">
+        <label>
+            <input type="checkbox" [value]="true" name="applyForTransportationMileage" formControlName="applyForTransportationMileage" (change)="changeGroupValidity()">
+            Transportation - Mileage
+        </label>
+    </app-field>
+
+    <app-field [disabled]="isDisabled">
+        <label>
+            <input type="checkbox" [value]="true" name="applyForTransportationOther" formControlName="applyForTransportationOther" (change)="changeGroupValidity()">
+            Transportation - Other
+        </label>
+        <section *ngIf="form.get('applyForTransportationOther').value === true" class="pushed">
+            <app-field label="Please specify" [disabled]="isDisabled">
+                <input class="form-control standard" type="text" formControlName="applyForTransportationOtherText">
+            </app-field>
+        </section>
+    </app-field>
+
+    <app-field [disabled]="isDisabled">
         <label>
             <input type="checkbox" [value]="true" name="applyForMeals" formControlName="applyForMeals" (change)="changeGroupValidity()">
             Meals
         </label>
     </app-field>
-    <app-field>
+
+    <app-field [disabled]="isDisabled">
+        <label>
+            <input type="checkbox" [value]="true" name="applyForAccommodation" formControlName="applyForAccommodation" (change)="changeGroupValidity()">
+            Accomodation
+        </label>
+    </app-field>
+
+    <app-field [disabled]="isDisabled">
         <label>
             <input type="checkbox" [value]="true" name="applyForOther" formControlName="applyForOther" (change)="changeGroupValidity();">
             Other
         </label>
         <section *ngIf="form.get('applyForOther').value === true" class="pushed">
-            <app-field label="Please specify">
+            <app-field label="Please specify" [disabled]="isDisabled">
                 <input class="form-control standard" type="text" formControlName="applyForOtherText">
             </app-field>
         </section>

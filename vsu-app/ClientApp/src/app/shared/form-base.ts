@@ -329,6 +329,10 @@ export class FormBase {
         applicantInfo.get('gender').updateValueAndValidity(options);
     }
 
+    checkFormGroupHasValue(form: FormGroup) {
+        return Object.values(form.controls).some(({ value }) => !!value);
+    }
+
     gotoPage(selectPage: MatStepper): void {
         window.scroll(0, 0);
         this.showValidationMessage = false;

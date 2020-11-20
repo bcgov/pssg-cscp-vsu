@@ -12,10 +12,16 @@
             <label *ngIf="formType === ApplicationType.TRAVEL_FUNDS">
                 <input type="radio" [value]="enum.ApplicantType.Support_Person.val" name="applicantType" formControlName="applicantType" (change)="applicantTypeChange()">
                 Support Person
+                <!-- <span *ngIf="showSupportPersonRelationShip" class="applicant-type-info-container">
+                    My relationship to the victim is: <input class="form-control" type="text" formControlName="supportPersonRelationship" maxlength="100" [class.has-error]="!isMyControlValid(form.get('supportPersonRelationship'))">
+                </span> -->
             </label>
             <label *ngIf="formType === ApplicationType.TRAVEL_FUNDS">
                 <input type="radio" [value]="enum.ApplicantType.Immediate_Family_Member.val" name="applicantType" formControlName="applicantType" (change)="applicantTypeChange()">
                 Immediate family member of the deceased victim
+                <!-- <span *ngIf="showIFMRelationShip" class="applicant-type-info-container">
+                    My relationship to the victim is: <input class="form-control" type="text" formControlName="IFMRelationship" maxlength="100" [class.has-error]="!isMyControlValid(form.get('IFMRelationship'))">
+                </span> -->
             </label>
             <label *ngIf="formType === ApplicationType.NOTIFICATION">
                 <input type="radio" [value]="enum.ApplicantType.Civil_Protected_Party.val" name="applicantType" formControlName="applicantType" (change)="applicantTypeChange()">
@@ -28,14 +34,23 @@
             <label *ngIf="formType === ApplicationType.NOTIFICATION">
                 <input type="radio" [value]="enum.ApplicantType.Other_Family_Member.val" name="applicantType" formControlName="applicantType" (change)="applicantTypeChange()">
                 Other Family Member
-                <span *ngIf="showOtherApplicantType" class="applicant-type-other-container">
+                <span *ngIf="form.get('applicantType').value === enum.ApplicantType.Other_Family_Member.val" class="applicant-type-info-container">
                     : <input class="form-control" type="text" formControlName="applicantTypeOther" maxlength="100" [class.has-error]="!isMyControlValid(form.get('applicantTypeOther'))">
                 </span>
             </label>
         </app-field>
     </section>
 
+
+
     <ng-container *ngIf="form.get('applicantType').value === enum.ApplicantType.Support_Person.val">
+        <div class="row">
+            <div class="col-md-6">
+                <app-field label="My relationship to the victim is:" [disabled]="isDisabled" [valid]="isMyControlValid(form.get('supportPersonRelationship'))" errorMessage="Please enter a relationship">
+                    <input class="form-control" type="text" formControlName="supportPersonRelationship" maxlength="100">
+                </app-field>
+            </div>
+        </div>
         <div class="row">
             <div class="col">
                 <app-field label="The victim has already submitted a Victim Travel Fund application:" errorMessage="" [disabled]="isDisabled">
@@ -64,6 +79,13 @@
     </ng-container>
 
     <ng-container *ngIf="form.get('applicantType').value === enum.ApplicantType.Immediate_Family_Member.val">
+        <div class="row">
+            <div class="col-md-6">
+                <app-field label="My relationship to the victim is:" [disabled]="isDisabled" [valid]="isMyControlValid(form.get('IFMRelationship'))" errorMessage="Please enter a relationship">
+                    <input class="form-control" type="text" formControlName="IFMRelationship" maxlength="100">
+                </app-field>
+            </div>
+        </div>
         <div class="row">
             <div class="col">
                 <app-field label="There are other members of my family who are also applying to the Victim Travel Fund:" errorMessage="" [disabled]="isDisabled">

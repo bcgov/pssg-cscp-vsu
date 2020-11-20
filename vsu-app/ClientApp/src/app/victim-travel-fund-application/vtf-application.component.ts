@@ -12,6 +12,9 @@ import { Title } from "@angular/platform-browser";
 import { TravelOverviewInfoHelper } from "../shared/components/travel-overview/travel-overview.helper";
 import { iLookupData } from "../shared/interfaces/lookup-data.interface";
 import { TravelInfoHelper } from "../shared/components/travel-information/travel-information.helper";
+import { iApplicantInformation, iAuthorizationInformation, iCaseInformation, iTravelFundApplication, iTravelInformation } from "../shared/interfaces/application.interface";
+import { convertTravelFundApplicationToCRM } from "../shared/interfaces/converters/travel-fund-application.web.to.crm";
+import { ApplicationService } from "../services/application.service";
 
 @Component({
     selector: 'app-vtf-application',
@@ -51,6 +54,7 @@ export class VictimTravelFundApplicationComponent extends FormBase implements On
         private router: Router,
         private lookupService: LookupService,
         private titleService: Title,
+        private applicationService: ApplicationService,
     ) {
         super();
     }
@@ -111,11 +115,54 @@ export class VictimTravelFundApplicationComponent extends FormBase implements On
         console.log("download pdf");
     }
 
+    harvestForm(): iTravelFundApplication {
+        let data = {
+            ApplicantInformation: this.form.get('applicantInformation').value as iApplicantInformation,
+            CaseInformation: this.form.get('caseInformation').value as iCaseInformation,
+            TravelInformation: this.form.get('travelInformation').value as iTravelInformation,
+            AuthorizationInformation: this.form.get('authorizationInformation').value as iAuthorizationInformation,
+        } as iTravelFundApplication;
+
+        //using this as a workaround to collect values from disabled fields
+        if (data.CaseInformation.victimInfoSameAsApplicant == true) {
+            data.CaseInformation.firstName = data.ApplicantInformation.firstName;
+            data.CaseInformation.middleName = data.ApplicantInformation.middleName;
+            data.CaseInformation.lastName = data.ApplicantInformation.lastName;
+            data.CaseInformation.birthDate = data.ApplicantInformation.birthDate;
+            data.CaseInformation.gender = data.ApplicantInformation.gender;
+        }
+
+        return data;
+    }
+
     submit() {
-        this.showConfirmation = true;
-        setTimeout(() => {
-            this.gotoNextStep(this.applicationStepper);
-        }, 0);
-        console.log("TODO!! -- disable form");
+        console.log("submit");
+        console.log(this.form);
+        if (this.form.valid) {
+            // this.submitting = true;
+            console.log("form is valid - submit");
+            let application = this.harvestForm();
+            let data = convertTravelFundApplicationToCRM(application);
+            console.log(data);
+            this.applicationService.submit(data).subscribe((res) => {
+                this.submitting = false;
+                console.log(res);
+                if (res.IsSuccess) {
+                    console.log("CONFIRMATION NUMBER SHOULD COME FROM CRM");
+                    this.form.get('confirmation.confirmationNumber').patchValue('RXXXXXX');
+                    this.showConfirmation = true;
+                    setTimeout(() => {
+                        this.gotoNextStep(this.applicationStepper);
+                    }, 0);
+                }
+                else {
+                    console.log(res.Result);
+                }
+            });
+        }
+        else {
+            console.log("form is NOT valid - NO submit");
+            this.validateAllFormFields(this.form);
+        }
     }
 }
