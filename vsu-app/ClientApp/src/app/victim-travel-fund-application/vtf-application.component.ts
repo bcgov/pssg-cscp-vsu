@@ -38,6 +38,7 @@ export class VictimTravelFundApplicationComponent extends FormBase implements On
         provinces: [],
         cities: [],
         courts: [],
+        offences: [],
     };
 
     showConfirmation: boolean = false;
@@ -71,9 +72,7 @@ export class VictimTravelFundApplicationComponent extends FormBase implements On
             this.lookupService.getCountries().subscribe((res) => {
                 this.lookupData.countries = res.value;
                 if (this.lookupData.countries) {
-                    this.lookupData.countries.sort(function (a, b) {
-                        return a.vsd_name.localeCompare(b.vsd_name);
-                    });
+                    this.lookupData.countries.sort((a, b) => a.vsd_name.localeCompare(b.vsd_name));
                 }
                 resolve();
             });
@@ -83,9 +82,17 @@ export class VictimTravelFundApplicationComponent extends FormBase implements On
             this.lookupService.getProvinces().subscribe((res) => {
                 this.lookupData.provinces = res.value;
                 if (this.lookupData.provinces) {
-                    this.lookupData.provinces.sort(function (a, b) {
-                        return a.vsd_name.localeCompare(b.vsd_name);
-                    });
+                    this.lookupData.provinces.sort((a, b) => a.vsd_name.localeCompare(b.vsd_name));
+                }
+                resolve();
+            });
+        }));
+
+        promise_array.push(new Promise((resolve, reject) => {
+            this.lookupService.getOffences().subscribe((res) => {
+                this.lookupData.offences = res.value;
+                if (this.lookupData.offences) {
+                    this.lookupData.offences.sort((a, b) => a.vsd_name.localeCompare(b.vsd_name));
                 }
                 resolve();
             });

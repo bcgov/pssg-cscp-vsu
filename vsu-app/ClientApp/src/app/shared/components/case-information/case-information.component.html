@@ -80,10 +80,11 @@
     <div class="row" *ngIf="formType === ApplicationType.TRAVEL_FUNDS">
         <div class="col-md-6">
             <app-field label="Offence" [required]="true" [valid]="isMyControlValid(form.get('offence'))" errorMessage="Please select an offence" [disabled]="isDisabled">
+                <!-- <input formControlName="offence" typeaheadOptionField="vsd_name" [typeahead]="offenceList" class="form-control"> -->
                 <select class="form-control" formControlName="offence">
                     <option value="">Select one</option>
-                    <option *ngFor="let offence of offenceList" [value]="offence">
-                        {{ offence }}
+                    <option *ngFor="let offence of offenceList" [value]="offence.vsd_offenseid">
+                        {{ offence.vsd_name }}
                     </option>
                 </select>
             </app-field>

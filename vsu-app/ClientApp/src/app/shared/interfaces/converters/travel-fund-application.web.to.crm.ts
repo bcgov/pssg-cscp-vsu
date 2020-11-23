@@ -1,5 +1,5 @@
 import { ApplicationType, EnumHelper } from "../../enums-list";
-import { iCRMApplication, iCRMCourtInfo, iCRMParticipant, iApplicationFormCRM } from "../dynamics/crm-application";
+import { iCRMApplication, iCRMCourtInfo, iCRMParticipant, iApplicationFormCRM, iCRMOffence } from "../dynamics/crm-application";
 import { iTravelFundApplication } from "../application.interface";
 import * as _ from 'lodash';
 
@@ -7,15 +7,15 @@ export function convertTravelFundApplicationToCRM(application: iTravelFundApplic
     console.log("converting travel application");
     console.log(application);
 
-    console.log("TODO - need to capture Case Info -> Offences")
-    console.log("TODO - need to capture Travel Info -> Court Dates")
+    console.log("TODO - need to capture Travel Info -> Court Dates");
 
     let crm_application: iApplicationFormCRM = {
         Application: getCRMApplication(application),
         CourtInfoCollection: getCRMCourtInfoCollection(application),
+        DocumentCollection: [],
+        OffenceCollection: getOffenceInfo(application),
         PoliceFileNumberCollection: [],
         ProviderCollection: getCRMProviderCollection(application),
-        DocumentCollection: [],
     }
 
     return crm_application;
@@ -147,6 +147,18 @@ function getCRMCourtInfoCollection(application: iTravelFundApplication) {
     }
 
     return court_info_collection;
+}
+
+function getOffenceInfo(application: iTravelFundApplication) {
+    let offence_collection: iCRMOffence[] = [];
+
+    if (application.CaseInformation.offence) {
+        offence_collection.push({
+            vsd_offenseid: application.CaseInformation.offence
+        });
+    }
+
+    return offence_collection;
 }
 
 function getCRMProviderCollection(application: iTravelFundApplication) {

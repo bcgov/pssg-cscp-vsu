@@ -1,9 +1,10 @@
 export interface iApplicationFormCRM {
     Application: iCRMApplication;
     CourtInfoCollection: iCRMCourtInfo[];
+    DocumentCollection: iCRMDocument[];
+    OffenceCollection?: iCRMOffence[];
     PoliceFileNumberCollection: iCRMPoliceFileNumber[];
     ProviderCollection: iCRMParticipant[];
-    DocumentCollection: iCRMDocument[];
 }
 
 export interface iCRMApplication {
@@ -127,4 +128,9 @@ export interface iCRMDocument {
     filename: string;
     body: string;
     subject: string;
+}
+
+export interface iCRMOffence {
+    // fortunecookietype: string;
+    vsd_offenseid: string;
 }

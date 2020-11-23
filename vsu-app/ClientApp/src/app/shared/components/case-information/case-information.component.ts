@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from "@angular/core";
 import { ControlContainer, FormArray, FormBuilder, FormGroup } from "@angular/forms";
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/material";
 import { MomentDateAdapter } from "@angular/material-moment-adapter";
-import { iLookupData } from "../../interfaces/lookup-data.interface";
+import { iLookupData, iOffence } from "../../interfaces/lookup-data.interface";
 import { LookupService } from "../../../services/lookup.service";
 import { ApplicationType, MY_FORMATS } from "../../enums-list";
 import { FormBase } from "../../form-base";
@@ -24,7 +24,7 @@ export class CaseInformationComponent extends FormBase implements OnInit {
   public form: FormGroup;
 
   courtList: string[] = [];
-  offenceList: string[] = ["Assault", "Torture", "Murder", "Get more from CRM"];
+  offenceList: iOffence[] = [];
 
   caseInfoHelper = new CaseInfoInfoHelper();
   ApplicationType = ApplicationType;
@@ -48,11 +48,22 @@ export class CaseInformationComponent extends FormBase implements OnInit {
       this.lookupService.getCourts().subscribe((res) => {
         this.lookupData.courts = res.value;
         if (this.lookupData.courts) {
-          this.lookupData.courts.sort(function (a, b) {
-            return a.vsd_name.localeCompare(b.vsd_name);
-          });
+          this.lookupData.courts.sort((a, b) => a.vsd_name.localeCompare(b.vsd_name));
         }
         this.courtList = this.lookupData.courts.map(c => c.vsd_name);
+      });
+    }
+
+    if (this.lookupData.offences && this.lookupData.offences.length > 0) {
+      this.offenceList = this.lookupData.offences;
+    }
+    else {
+      this.lookupService.getOffences().subscribe((res) => {
+        this.lookupData.offences = res.value;
+        if (this.lookupData.offences) {
+          this.lookupData.offences.sort((a, b) => a.vsd_name.localeCompare(b.vsd_name));
+        }
+        this.offenceList = this.lookupData.offences;
       });
     }
   }

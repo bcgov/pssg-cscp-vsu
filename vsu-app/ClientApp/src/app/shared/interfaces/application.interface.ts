@@ -28,8 +28,9 @@ export interface iCaseInformation {
     accusedBirthDate: Date;
     accusedGender: number;
     additionalAccused: iAdditionalAccused[];
-    victimServiceWorker?: iVictimServiceWorker[];
+    offence?: string;
     crownCounsel?: iCrownCounsel[];
+    victimServiceWorker?: iVictimServiceWorker[];
     victimInfoSameAsApplicant: boolean;
 }
 
