@@ -10,6 +10,7 @@ export class FormBase {
     enum = new EnumHelper();
     showValidationMessage: boolean = false;
     public currentFormStep: number = 0;
+    max_selected_index: number = 0;
 
     isFieldValid(field: string, disabled: boolean = false) {
         if (disabled === true) return true;
@@ -334,9 +335,11 @@ export class FormBase {
     }
 
     gotoPage(selectPage: MatStepper): void {
+        console.log("goto page");
         window.scroll(0, 0);
         this.showValidationMessage = false;
         this.currentFormStep = selectPage.selectedIndex;
+        if (this.currentFormStep > this.max_selected_index) this.max_selected_index = this.currentFormStep;
     }
 
     gotoNextStep(stepper: MatStepper, emptyPage?: boolean): void {

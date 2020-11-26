@@ -15,7 +15,7 @@
                         </ng-template>
                         <mat-step label="Overview" [stepControl]="fb.group({name: ['overview']})" [hasError]="!isMyControlValid(form.get('overview'))"></mat-step>
                         <mat-step label="Applicant Information" [stepControl]="fb.group({name: ['applicantInformation']})" [hasError]="!isMyControlValid(form.get('applicantInformation'))"></mat-step>
-                        <mat-step label="Case Information" [stepControl]="fb.group({name: ['caseInformation']})" [hasError]="!isMyControlValid(form.get('caseInformation'))"></mat-step>
+                        <mat-step label="Case Information" [stepControl]="fb.group({name: ['caseInformation']})" [hasError]="max_selected_index >= 2 && !isMyControlValid(form.get('caseInformation'))"></mat-step>
                         <mat-step label="Travel Information" [stepControl]="fb.group({name: ['travelInformation']})" [hasError]="!isMyControlValid(form.get('travelInformation'))"></mat-step>
                         <mat-step label="Declaration & Authorization" [stepControl]="fb.group({name: ['authorizationInformation']})" [hasError]="!isMyControlValid(form.get('authorizationInformation'))"></mat-step>
                         <mat-step label="Confirmation" *ngIf="showConfirmation" [stepControl]="fb.group({name: ['confirmation']})"></mat-step>
@@ -34,7 +34,7 @@
                     <p>For best results, we recommend you use Chrome, Firefox, Edge, or Safari.</p>
                 </div>
 
-                <app-travel-overview [formType]="formType.val" [formGroup]="form" formGroupName="overview" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == 0 || showPrintView"></app-travel-overview>
+                <app-travel-overview [formType]="formType.val" [formGroup]="form" formGroupName="overview" [lookupData]="lookupData" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == 0 || showPrintView"></app-travel-overview>
 
                 <div class="pagebreak"> </div>
                 <app-applicant-information [formType]="formType.val" [formGroup]="form" formGroupName="applicantInformation" [lookupData]="lookupData" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == 1 || showPrintView"></app-applicant-information>

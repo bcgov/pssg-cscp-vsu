@@ -24,7 +24,9 @@ export class CaseInfoInfoHelper {
         }
 
         if (form_type === ApplicationType.TRAVEL_FUNDS) {
-            group['offence'] = ['', Validators.required];
+            // group['offence'] = ['', Validators.required];
+            group['offence'] = [''];
+            group['offences'] = fb.array([]);
             group['crownCounsel'] = fb.array([this.createCrownCounsel(fb)]);
             group['victimServiceWorker'] = fb.array([this.createVictimServiceWorker(fb)]);
         }
@@ -68,5 +70,5 @@ export class CaseInfoInfoHelper {
         });
     }
 
-    
+
 }

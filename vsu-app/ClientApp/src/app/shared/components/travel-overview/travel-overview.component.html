@@ -26,28 +26,21 @@
     </ol>
 
     <p>Prior to completing your Victim Travel Fund application please answer the following questions to assist in determining your eligibility to receive funding:</p>
-    <ng-template #offencesTooltip>Offences:&nbsp;
-        <ng-container *ngFor="let offence of offenceList; let i = index">{{offence + (i < offenceList.length - 1 ? ', ' : '')}}</ng-container>
-
-        <p class="mt-2">The Victim Safety Unit will also consider funding for travel under the Victim Travel Fund for:</p>
-        <ul>
-            <li>Cases involving fatal motor vehicle accidents, where an accused has been charged under the Motor Vehicle Act versus the Criminal Code</li>
-            <li>Travel to participate in BC Review Board hearings, in cases where the accused has been found notcriminally responsible on account of mental disorder (NCRMD)</li>
-        </ul>
-    </ng-template>
-
+    
     <ol>
-        <li>Does the criminal charge fall under one of these offences? <app-tool-tip [trigger]="offencesTooltip"></app-tool-tip>
-            <app-field label="" errorMessage="Please select one" [valid]="isMyControlValid(form.get('criminalChargeOneOfOffences'))" [disabled]="isDisabled">
-                <label class="inline-label">
-                    <input type="radio" [value]="enum.Boolean.True.val" name="criminalChargeOneOfOffences" formControlName="criminalChargeOneOfOffences">
-                    <span>Yes</span>
-                </label>
-                <label class="inline-label">
-                    <input type="radio" [value]="enum.Boolean.False.val" name="criminalChargeOneOfOffences" formControlName="criminalChargeOneOfOffences">
-                    <span>No</span>
-                </label>
-            </app-field>
+        <li><label>Does the criminal charge fall under one of these offences?</label>
+            <div class="form-group flex-container" *ngIf="offenceList">
+                <div formArrayName="offences" *ngFor="let offence of form.get('offences')['controls']; let i=index" class="col-md-6">
+                    <div [formGroupName]="i">
+                        <app-field [disabled]="isDisabled">
+                            <label>
+                                <input type="checkbox" [value]="true" name="" formControlName="checked" (change)="selectedOffenceChange()">
+                                {{offence.get('name').value}}
+                            </label>
+                        </app-field>
+                    </div>
+                </div>
+            </div>
         </li>
 
         <li>Is the criminal justice proceeding expected to impact the outcome, disposition or results relating to the charges?
@@ -60,6 +53,9 @@
                     <input type="radio" [value]="enum.Boolean.False.val" name="proceedingsImpactOutcome" formControlName="proceedingsImpactOutcome">
                     <span>No</span>
                 </label>
+            </app-field>
+            <app-field label="Comments" [disabled]="isDisabled">
+                <input class="form-control" type="text" formControlName="proceedingsImpactOutcomeComment" maxlength="100">
             </app-field>
         </li>
 
@@ -76,6 +72,9 @@
                     <span>No</span>
                 </label>
             </app-field>
+            <app-field label="Comments" [disabled]="isDisabled">
+                <input class="form-control" type="text" formControlName="travelMoreThan100KMComment" maxlength="100">
+            </app-field>
         </li>
 
         <li>Have you confirmed that your travel expenses will not be covered by any other source(s), including Crown counsel
@@ -89,6 +88,9 @@
                     <input type="radio" [value]="enum.Boolean.False.val" name="notCoveredByOtherSources" formControlName="notCoveredByOtherSources">
                     <span>No</span>
                 </label>
+            </app-field>
+            <app-field label="Comments" [disabled]="isDisabled">
+                <input class="form-control" type="text" formControlName="notCoveredByOtherSourcesComment" maxlength="100">
             </app-field>
         </li>
     </ol>
