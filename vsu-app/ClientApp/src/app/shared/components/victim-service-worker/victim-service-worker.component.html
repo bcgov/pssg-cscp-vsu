@@ -57,5 +57,5 @@
         </div>
     </div>
 
-    <p><strong>Note:</strong> Your VSW can obtain court updates through Court Services Online unless there is a publication ban on the court file.</p>
+    <p *ngIf="formType === ApplicationType.NOTIFICATION"><strong>Note:</strong> Your VSW can obtain court updates through Court Services Online unless there is a publication ban on the court file.</p>
 </div>

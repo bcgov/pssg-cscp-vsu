@@ -25,6 +25,7 @@ export class TravelInformationComponent extends FormBase implements OnInit {
 
     today = new Date();
     travelPeriodStartDate: Date = null;
+    travelPeriodStartDates: Date[] = [];
 
     EXPENSES: string[];
 
@@ -58,11 +59,13 @@ export class TravelInformationComponent extends FormBase implements OnInit {
     addAdditionalCourtDate() {
         let courtDates = this.form.get('courtDates') as FormArray;
         courtDates.push(this.travelInfoHelper.addCourtDate(this.fb));
+        this.travelPeriodStartDates.push(null);
     }
 
     removeCourtDate(index: number) {
         let courtDates = this.form.get('courtDates') as FormArray;
         courtDates.removeAt(index);
+        this.travelPeriodStartDates.splice(index, 1);
     }
 
     changeGroupValidity(): void {
@@ -89,14 +92,16 @@ export class TravelInformationComponent extends FormBase implements OnInit {
         }
     }
 
-    travelPeriodStartChange() {
-        this.travelPeriodStartDate = moment(this.form.get('travelPeriodStart').value).toDate();
-        console.log(this.travelPeriodStartDate);
-        let startDate = moment(this.form.get('travelPeriodStart').value);
+    travelPeriodStartChange(index: number) {
+        console.log(index);
+        let courtDate = this.form.get('courtDates')['controls'][index];
+        this.travelPeriodStartDates[index] = moment(courtDate.get('travelPeriodStart').value).toDate();
+        console.log(this.travelPeriodStartDates[index]);
+        let startDate = moment(courtDate.get('travelPeriodStart').value);
 
-        let endDate = this.form.get('travelPeriodEnd').value;
+        let endDate = courtDate.get('travelPeriodEnd').value;
         if (endDate && moment(endDate).isBefore(startDate)) {
-            this.form.get('travelPeriodEnd').patchValue(null);
+            courtDate.get('travelPeriodEnd').patchValue(null);
         }
     }
 }

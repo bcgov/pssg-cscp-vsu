@@ -55,21 +55,24 @@ export class CaseInformationComponent extends FormBase implements OnInit {
       });
     }
 
-    if (this.lookupData.offences && this.lookupData.offences.length > 0) {
-      this.offenceList = this.lookupData.offences;
-      this.offenceList = this.offenceList.filter(o => this.scheduleOffences.indexOf(o.vsd_criminalcode) >= 0);
-      this.populateOffences();
-    }
-    else {
-      this.lookupService.getOffences().subscribe((res) => {
-        this.lookupData.offences = res.value;
-        if (this.lookupData.offences) {
-          this.lookupData.offences.sort((a, b) => a.vsd_name.localeCompare(b.vsd_name));
-        }
+    if (this.formType === ApplicationType.TRAVEL_FUNDS) {
+
+      if (this.lookupData.offences && this.lookupData.offences.length > 0) {
         this.offenceList = this.lookupData.offences;
         this.offenceList = this.offenceList.filter(o => this.scheduleOffences.indexOf(o.vsd_criminalcode) >= 0);
         this.populateOffences();
-      });
+      }
+      else {
+        this.lookupService.getOffences().subscribe((res) => {
+          this.lookupData.offences = res.value;
+          if (this.lookupData.offences) {
+            this.lookupData.offences.sort((a, b) => a.vsd_name.localeCompare(b.vsd_name));
+          }
+          this.offenceList = this.lookupData.offences;
+          this.offenceList = this.offenceList.filter(o => this.scheduleOffences.indexOf(o.vsd_criminalcode) >= 0);
+          this.populateOffences();
+        });
+      }
     }
   }
 

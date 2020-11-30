@@ -16,6 +16,7 @@ export function convertTravelFundApplicationToCRM(application: iTravelFundApplic
         OffenceCollection: getOffenceInfo(application),
         PoliceFileNumberCollection: [],
         ProviderCollection: getCRMProviderCollection(application),
+        //TODO - travel info collection
     }
 
     return crm_application;
@@ -23,6 +24,20 @@ export function convertTravelFundApplicationToCRM(application: iTravelFundApplic
 
 function getCRMApplication(application: iTravelFundApplication) {
     let enums = new EnumHelper();
+
+    let temp: any = null;
+
+    //TODO - need fields in dynamics to capture these
+    temp = application.OverviewInformation.offencesComment;
+    temp = application.OverviewInformation.proceedingsImpactOutcome;
+    temp = application.OverviewInformation.proceedingsImpactOutcomeComment;
+    temp = application.OverviewInformation.travelMoreThan100KM;
+    temp = application.OverviewInformation.travelMoreThan100KMComment;
+    temp = application.OverviewInformation.notCoveredByOtherSources;
+    temp = application.OverviewInformation.notCoveredByOtherSourcesComment;
+    temp = application.OverviewInformation.additionalComments;
+
+
     let relationship_to_victim = "";
     if (application.ApplicantInformation.applicantType === enums.ApplicantType.Support_Person.val) {
         relationship_to_victim = application.ApplicantInformation.supportPersonRelationship;
@@ -30,6 +45,19 @@ function getCRMApplication(application: iTravelFundApplication) {
     else if (application.ApplicantInformation.applicantType === enums.ApplicantType.Immediate_Family_Member.val) {
         relationship_to_victim = application.ApplicantInformation.IFMRelationship;
     }
+    else if (application.ApplicantInformation.applicantType === enums.ApplicantType.Victim_Service_Worker.val && application.ApplicantInformation.victimServiceWorker.length > 0) {
+        //TODO - need fields in dynamics to capture vsw info
+        temp = application.ApplicantInformation.vswComment;
+        temp = application.ApplicantInformation.coveredByVictimServiceProgram;
+        temp = application.ApplicantInformation.coveredByVictimServiceProgramComment;
+
+        temp = application.ApplicantInformation.victimServiceWorker[0].firstName;
+        temp = application.ApplicantInformation.victimServiceWorker[0].lastName;
+        temp = application.ApplicantInformation.victimServiceWorker[0].organization;
+        temp = application.ApplicantInformation.victimServiceWorker[0].telephone;
+        temp = application.ApplicantInformation.victimServiceWorker[0].email;
+    }
+
     let crm_application: iCRMApplication = {
         vsd_vsu_applicationtype: ApplicationType.TRAVEL_FUNDS,
         vsd_vsu_applicanttype: application.ApplicantInformation.applicantType,
@@ -151,14 +179,14 @@ function getCRMCourtInfoCollection(application: iTravelFundApplication) {
 
 function getOffenceInfo(application: iTravelFundApplication) {
     let offence_collection: iCRMOffence[] = [];
-
-    if (application.CaseInformation.offence) {
-        offence_collection.push({
-            vsd_offenseid: application.CaseInformation.offence
-        });
-    }
-
+    offence_collection = application.CaseInformation.offences.filter(o => o.checked).map(o => { return { vsd_offenseid: o.id } });
     return offence_collection;
+}
+
+function getCRMTravelInfoCollection(application: iTravelFundApplication) {
+    //TODO - need fields and api update
+    let travel_collection: any[] = [];
+    return travel_collection;
 }
 
 function getCRMProviderCollection(application: iTravelFundApplication) {

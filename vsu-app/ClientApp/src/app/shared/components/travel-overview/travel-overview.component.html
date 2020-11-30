@@ -26,7 +26,7 @@
     </ol>
 
     <p>Prior to completing your Victim Travel Fund application please answer the following questions to assist in determining your eligibility to receive funding:</p>
-    
+
     <ol>
         <li><label>Does the criminal charge fall under one of these offences?</label>
             <div class="form-group flex-container" *ngIf="offenceList">
@@ -41,6 +41,9 @@
                     </div>
                 </div>
             </div>
+            <app-field label="Comments" [disabled]="isDisabled">
+                <input class="form-control standard" type="text" formControlName="offencesComment" maxlength="100">
+            </app-field>
         </li>
 
         <li>Is the criminal justice proceeding expected to impact the outcome, disposition or results relating to the charges?
@@ -55,7 +58,7 @@
                 </label>
             </app-field>
             <app-field label="Comments" [disabled]="isDisabled">
-                <input class="form-control" type="text" formControlName="proceedingsImpactOutcomeComment" maxlength="100">
+                <input class="form-control standard" type="text" formControlName="proceedingsImpactOutcomeComment" maxlength="100">
             </app-field>
         </li>
 
@@ -73,7 +76,7 @@
                 </label>
             </app-field>
             <app-field label="Comments" [disabled]="isDisabled">
-                <input class="form-control" type="text" formControlName="travelMoreThan100KMComment" maxlength="100">
+                <input class="form-control standard" type="text" formControlName="travelMoreThan100KMComment" maxlength="100">
             </app-field>
         </li>
 
@@ -90,7 +93,7 @@
                 </label>
             </app-field>
             <app-field label="Comments" [disabled]="isDisabled">
-                <input class="form-control" type="text" formControlName="notCoveredByOtherSourcesComment" maxlength="100">
+                <input class="form-control standard" type="text" formControlName="notCoveredByOtherSourcesComment" maxlength="100">
             </app-field>
         </li>
     </ol>

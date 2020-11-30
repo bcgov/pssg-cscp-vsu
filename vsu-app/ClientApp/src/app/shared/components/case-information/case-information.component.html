@@ -59,12 +59,12 @@
     <div formArrayName="courtInfo" *ngFor="let item of form.get('courtInfo')['controls']; let i = index;">
         <div [formGroupName]="i" class="court-info">
             <div class="row">
-                <div class="col-md-4">
+                <div [class.col-md-4]="formType === ApplicationType.NOTIFICATION" [class.col-md-6]="formType === ApplicationType.TRAVEL_FUNDS">
                     <app-field label="Court File Number" [required]="true" [valid]="isMyControlValid(item.get('courtFileNumber'))" errorMessage="Please enter the court file number" [disabled]="isDisabled">
                         <input class="form-control" type="text" formControlName="courtFileNumber" maxlength="100">
                     </app-field>
                 </div>
-                <div class="col-md-4">
+                <div [class.col-md-4]="formType === ApplicationType.NOTIFICATION" [class.col-md-6]="formType === ApplicationType.TRAVEL_FUNDS">
                     <app-field label="Court Location" [required]="true" [valid]="isMyControlValid(item.get('courtLocation'))" errorMessage="Please enter a court location" [disabled]="isDisabled">
                         <input class="form-control" type="text" formControlName="courtLocation" [typeahead]="courtList">
                     </app-field>
@@ -176,6 +176,8 @@
     </div>
 
     <section *ngIf="formType === ApplicationType.TRAVEL_FUNDS">
+
+        <h2 class="blue-header">Other Contacts</h2>
 
         <p><strong>Crown Counsel (if known)</strong></p>
 

@@ -7,33 +7,31 @@
         <app-field label="I am the:" [required]="true" [valid]="isMyControlValid(form.get('applicantType'))" errorMessage="Please select one" [disabled]="isDisabled">
             <label>
                 <input type="radio" [value]="enum.ApplicantType.Victim.val" name="applicantType" formControlName="applicantType" (change)="applicantTypeChange()">
-                Victim
+                {{enum.ApplicantType.Victim.name}}
+            </label>
+            <label *ngIf="formType === ApplicationType.TRAVEL_FUNDS">
+                <input type="radio" [value]="enum.ApplicantType.Victim_Service_Worker.val" name="applicantType" formControlName="applicantType" (change)="applicantTypeChange()">
+                {{enum.ApplicantType.Victim_Service_Worker.name}}
             </label>
             <label *ngIf="formType === ApplicationType.TRAVEL_FUNDS">
                 <input type="radio" [value]="enum.ApplicantType.Support_Person.val" name="applicantType" formControlName="applicantType" (change)="applicantTypeChange()">
-                Support Person
-                <!-- <span *ngIf="showSupportPersonRelationShip" class="applicant-type-info-container">
-                    My relationship to the victim is: <input class="form-control" type="text" formControlName="supportPersonRelationship" maxlength="100" [class.has-error]="!isMyControlValid(form.get('supportPersonRelationship'))">
-                </span> -->
+                {{enum.ApplicantType.Support_Person.name}}
             </label>
             <label *ngIf="formType === ApplicationType.TRAVEL_FUNDS">
                 <input type="radio" [value]="enum.ApplicantType.Immediate_Family_Member.val" name="applicantType" formControlName="applicantType" (change)="applicantTypeChange()">
-                Immediate family member of the deceased victim
-                <!-- <span *ngIf="showIFMRelationShip" class="applicant-type-info-container">
-                    My relationship to the victim is: <input class="form-control" type="text" formControlName="IFMRelationship" maxlength="100" [class.has-error]="!isMyControlValid(form.get('IFMRelationship'))">
-                </span> -->
+                {{enum.ApplicantType.Immediate_Family_Member.name}}
             </label>
             <label *ngIf="formType === ApplicationType.NOTIFICATION">
                 <input type="radio" [value]="enum.ApplicantType.Civil_Protected_Party.val" name="applicantType" formControlName="applicantType" (change)="applicantTypeChange()">
-                Civil Protected Party
+                {{enum.ApplicantType.Civil_Protected_Party.name}}
             </label>
             <label *ngIf="formType === ApplicationType.NOTIFICATION">
                 <input type="radio" [value]="enum.ApplicantType.Victim_Parent.val" name="applicantType" formControlName="applicantType" (change)="applicantTypeChange()">
-                Victim's Parent / Guardian
+                {{enum.ApplicantType.Victim_Parent.name}}
             </label>
             <label *ngIf="formType === ApplicationType.NOTIFICATION">
                 <input type="radio" [value]="enum.ApplicantType.Other_Family_Member.val" name="applicantType" formControlName="applicantType" (change)="applicantTypeChange()">
-                Other Family Member
+                {{enum.ApplicantType.Other_Family_Member.name}}
                 <span *ngIf="form.get('applicantType').value === enum.ApplicantType.Other_Family_Member.val" class="applicant-type-info-container">
                     : <input class="form-control" type="text" formControlName="applicantTypeOther" maxlength="100" [class.has-error]="!isMyControlValid(form.get('applicantTypeOther'))">
                 </span>
@@ -42,11 +40,79 @@
     </section>
 
 
+    <ng-container *ngIf="form.get('applicantType').value === enum.ApplicantType.Victim_Service_Worker.val">
+        <p>Please provide details about your request. Why is travel in this case required? Please list exceptional/unique circumstances (e.g., case characteristics, victimization dynamics, lack of victim support program in the court location):</p>
+        <div class="row">
+            <div class="col-md-12">
+                <app-field label="Comments" [disabled]="isDisabled">
+                    <textarea class="form-control bigger" formControlName="vswComment" maxlength="500"></textarea>
+                </app-field>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <app-field label="Are these travel costs able to be covered (in full or in part) by your Victim Service Program operating budgets?" errorMessage="Please select one" [valid]="isMyControlValid(form.get('coveredByVictimServiceProgram'))" [disabled]="isDisabled">
+                    <label class="inline-label">
+                        <input type="radio" [value]="enum.Boolean.True.val" name="coveredByVictimServiceProgram" formControlName="coveredByVictimServiceProgram">
+                        <span>Yes</span>
+                    </label>
+                    <label class="inline-label">
+                        <input type="radio" [value]="enum.Boolean.False.val" name="coveredByVictimServiceProgram" formControlName="coveredByVictimServiceProgram">
+                        <span>No</span>
+                    </label>
+                </app-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <app-field label="Comments" [disabled]="isDisabled">
+                    <input class="form-control" type="text" formControlName="coveredByVictimServiceProgramComment" maxlength="100">
+                </app-field>
+            </div>
+        </div>
+
+        <div formArrayName="victimServiceWorker" *ngFor="let item of form.get('victimServiceWorker')['controls']; let i = index;">
+            <div [formGroupName]="i" class="vsw-info">
+                <div class="row">
+                    <div class="col-md-6">
+                        <app-field label="Manager First Name" [required]="false" [valid]="isMyControlValid(item.get('firstName'))" errorMessage="Please enter your manager's first name" [disabled]="isDisabled">
+                            <input class="form-control" type="text" formControlName="firstName" maxlength="100">
+                        </app-field>
+                    </div>
+                    <div class="col-md-6">
+                        <app-field label="Manager Last Name" [required]="false" [valid]="isMyControlValid(item.get('lastName'))" errorMessage="Please enter your manager's last name" [disabled]="isDisabled">
+                            <input class="form-control" type="text" formControlName="lastName" maxlength="100">
+                        </app-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <app-field label="Organization / Agency Name" [required]="false" [valid]="isMyControlValid(item.get('organization'))" errorMessage="Please enter your manager's organization / agency" [disabled]="isDisabled">
+                            <input class="form-control" type="text" formControlName="organization" maxlength="100">
+                        </app-field>
+                    </div>
+                    <div class="col-md-6">
+                        <app-field label="Manager Phone" [required]="false" [valid]="isMyControlValid(item.get('telephone'))" errorMessage="Please enter your manager's phone number" [disabled]="isDisabled">
+                            <input class="form-control" mask='000-000-0000' type="text" formControlName="telephone" maxlength="100">
+                        </app-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <app-field label="Manager Email" [required]="false" [valid]="isMyControlValid(item.get('email'))" errorMessage="Please enter your manager's email address" [disabled]="isDisabled">
+                            <input class="form-control" type="text" formControlName="email" maxlength="100">
+                        </app-field>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
 
     <ng-container *ngIf="form.get('applicantType').value === enum.ApplicantType.Support_Person.val">
         <div class="row">
             <div class="col-md-6">
-                <app-field label="My relationship to the victim is:" [disabled]="isDisabled" [valid]="isMyControlValid(form.get('supportPersonRelationship'))" errorMessage="Please enter a relationship">
+                <app-field label="My relationship to the victim is:" [required]="true" [disabled]="isDisabled" [valid]="isMyControlValid(form.get('supportPersonRelationship'))" errorMessage="Please enter a relationship">
                     <input class="form-control" type="text" formControlName="supportPersonRelationship" maxlength="100">
                 </app-field>
             </div>
@@ -81,7 +147,7 @@
     <ng-container *ngIf="form.get('applicantType').value === enum.ApplicantType.Immediate_Family_Member.val">
         <div class="row">
             <div class="col-md-6">
-                <app-field label="My relationship to the victim is:" [disabled]="isDisabled" [valid]="isMyControlValid(form.get('IFMRelationship'))" errorMessage="Please enter a relationship">
+                <app-field label="My relationship to the victim is:" [required]="true" [disabled]="isDisabled" [valid]="isMyControlValid(form.get('IFMRelationship'))" errorMessage="Please enter a relationship">
                     <input class="form-control" type="text" formControlName="IFMRelationship" maxlength="100">
                 </app-field>
             </div>

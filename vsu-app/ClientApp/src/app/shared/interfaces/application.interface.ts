@@ -1,4 +1,5 @@
 import { iAddress } from "./address.interface";
+import { iOffence } from "./lookup-data.interface";
 
 export interface iNotificationApplication {
     CaseInformation: iCaseInformation;
@@ -8,10 +9,22 @@ export interface iNotificationApplication {
 }
 
 export interface iTravelFundApplication {
-    CaseInformation: iCaseInformation;
+    OverviewInformation: iOverviewInformation;
     ApplicantInformation: iApplicantInformation;
+    CaseInformation: iCaseInformation;
     TravelInformation: iTravelInformation;
     AuthorizationInformation: iAuthorizationInformation;
+}
+
+export interface iOverviewInformation {
+    offencesComment: string;
+    proceedingsImpactOutcome: number;
+    proceedingsImpactOutcomeComment: string;
+    travelMoreThan100KM: number;
+    travelMoreThan100KMComment: string;
+    notCoveredByOtherSources: number;
+    notCoveredByOtherSourcesComment: string;
+    additionalComments: string;
 }
 
 export interface iCaseInformation {
@@ -28,7 +41,7 @@ export interface iCaseInformation {
     accusedBirthDate: Date;
     accusedGender: number;
     additionalAccused: iAdditionalAccused[];
-    offence?: string;
+    offences?: iOffenceInformation[];
     crownCounsel?: iCrownCounsel[];
     victimServiceWorker?: iVictimServiceWorker[];
     victimInfoSameAsApplicant: boolean;
@@ -58,6 +71,11 @@ export interface iApplicantInformation {
     mayWeSendCorrespondence: number;
     contactMethods: iContactMethod[];
     atLeastOneContactMethod: string;
+
+    vswComment?: string
+    coveredByVictimServiceProgram?: number;
+    coveredByVictimServiceProgramComment?: string;
+    victimServiceWorker?: iVictimServiceWorker[];
 }
 
 export interface iRecipientDetails {
@@ -124,9 +142,16 @@ export interface iVictimServiceWorker {
     lastName: string;
     organization: string;
     telephone: string;
-    extension: string;
+    extension?: string;
     email: string;
-    city: string;
+    city?: string;
+}
+
+export interface iOffenceInformation {
+    id: string;
+    name: string;
+    criminal_code: string;
+    checked: boolean;
 }
 
 export interface iDesignate {

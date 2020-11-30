@@ -12,7 +12,7 @@ import { Title } from "@angular/platform-browser";
 import { TravelOverviewInfoHelper } from "../shared/components/travel-overview/travel-overview.helper";
 import { iLookupData } from "../shared/interfaces/lookup-data.interface";
 import { TravelInfoHelper } from "../shared/components/travel-information/travel-information.helper";
-import { iApplicantInformation, iAuthorizationInformation, iCaseInformation, iTravelFundApplication, iTravelInformation } from "../shared/interfaces/application.interface";
+import { iApplicantInformation, iAuthorizationInformation, iCaseInformation, iOverviewInformation, iTravelFundApplication, iTravelInformation } from "../shared/interfaces/application.interface";
 import { convertTravelFundApplicationToCRM } from "../shared/interfaces/converters/travel-fund-application.web.to.crm";
 import { ApplicationService } from "../services/application.service";
 
@@ -124,6 +124,7 @@ export class VictimTravelFundApplicationComponent extends FormBase implements On
 
     harvestForm(): iTravelFundApplication {
         let data = {
+            OverviewInformation: this.form.get('overview').value as iOverviewInformation,
             ApplicantInformation: this.form.get('applicantInformation').value as iApplicantInformation,
             CaseInformation: this.form.get('caseInformation').value as iCaseInformation,
             TravelInformation: this.form.get('travelInformation').value as iTravelInformation,

@@ -5,6 +5,7 @@ export class TravelOverviewInfoHelper {
     public setupFormGroup(fb: FormBuilder, form_type: ApplicationType): FormGroup {
         let group = {
             offences: fb.array([]),
+            offencesComment: [''],
             proceedingsImpactOutcome: ['', Validators.required],
             proceedingsImpactOutcomeComment: [''],
             travelMoreThan100KM: ['', Validators.required],

@@ -21,10 +21,6 @@ export class TravelInfoHelper {
 
             courtDates: fb.array([this.addCourtDate(fb)]),
 
-            purposeOfTravel: ['', Validators.required],
-            travelPeriodStart: ['', Validators.required],
-            travelPeriodEnd: ['', Validators.required],
-
             additionalComments: [''],
         }
         return fb.group(group);
@@ -32,7 +28,10 @@ export class TravelInfoHelper {
 
     addCourtDate(fb: FormBuilder) {
         return fb.group({
-            courtDate: ['', Validators.required]
+            courtDate: ['', Validators.required],
+            purposeOfTravel: ['', Validators.required],
+            travelPeriodStart: ['', Validators.required],
+            travelPeriodEnd: ['', Validators.required],
         });
     }
 }

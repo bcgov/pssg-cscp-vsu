@@ -7,71 +7,93 @@
 
     <p>I would like to apply for the following expenses:</p>
 
-    <app-field [disabled]="isDisabled">
-        <label>
-            <input type="checkbox" [value]="true" name="applyForTransportationBus" formControlName="applyForTransportationBus" (change)="changeGroupValidity()">
-            Transportation - Bus
-        </label>
-    </app-field>
-
-    <app-field [disabled]="isDisabled">
-        <label>
-            <input type="checkbox" [value]="true" name="applyForTransportationFerry" formControlName="applyForTransportationFerry" (change)="changeGroupValidity()">
-            Transportation - Ferry
-        </label>
-    </app-field>
-
-    <app-field [disabled]="isDisabled">
-        <label>
-            <input type="checkbox" [value]="true" name="applyForTransportationFlights" formControlName="applyForTransportationFlights" (change)="changeGroupValidity()">
-            Transportation - Flights
-        </label>
-    </app-field>
-
-    <app-field [disabled]="isDisabled">
-        <label>
-            <input type="checkbox" [value]="true" name="applyForTransportationMileage" formControlName="applyForTransportationMileage" (change)="changeGroupValidity()">
-            Transportation - Mileage
-        </label>
-    </app-field>
-
-    <app-field [disabled]="isDisabled">
-        <label>
-            <input type="checkbox" [value]="true" name="applyForTransportationOther" formControlName="applyForTransportationOther" (change)="changeGroupValidity()">
-            Transportation - Other
-        </label>
-        <section *ngIf="form.get('applyForTransportationOther').value === true" class="pushed">
-            <app-field label="Please specify" [disabled]="isDisabled">
-                <input class="form-control standard" type="text" formControlName="applyForTransportationOtherText">
+    <div class="row">
+        <div class="col-md-6">
+            <app-field [disabled]="isDisabled">
+                <label>
+                    <input type="checkbox" [value]="true" name="applyForAccommodation" formControlName="applyForAccommodation" (change)="changeGroupValidity()">
+                    Accomodation
+                </label>
             </app-field>
-        </section>
-    </app-field>
-
-    <app-field [disabled]="isDisabled">
-        <label>
-            <input type="checkbox" [value]="true" name="applyForMeals" formControlName="applyForMeals" (change)="changeGroupValidity()">
-            Meals
-        </label>
-    </app-field>
-
-    <app-field [disabled]="isDisabled">
-        <label>
-            <input type="checkbox" [value]="true" name="applyForAccommodation" formControlName="applyForAccommodation" (change)="changeGroupValidity()">
-            Accomodation
-        </label>
-    </app-field>
-
-    <app-field [disabled]="isDisabled">
-        <label>
-            <input type="checkbox" [value]="true" name="applyForOther" formControlName="applyForOther" (change)="changeGroupValidity();">
-            Other
-        </label>
-        <section *ngIf="form.get('applyForOther').value === true" class="pushed">
-            <app-field label="Please specify" [disabled]="isDisabled">
-                <input class="form-control standard" type="text" formControlName="applyForOtherText">
+        </div>
+        <div class="col-md-6">
+            <app-field [disabled]="isDisabled">
+                <label>
+                    <input type="checkbox" [value]="true" name="applyForMeals" formControlName="applyForMeals" (change)="changeGroupValidity()">
+                    Meals
+                </label>
             </app-field>
-        </section>
-    </app-field>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <app-field [disabled]="isDisabled">
+                <label>
+                    <input type="checkbox" [value]="true" name="applyForTransportationBus" formControlName="applyForTransportationBus" (change)="changeGroupValidity()">
+                    Transportation - Bus
+                </label>
+            </app-field>
+        </div>
+
+        <div class="col-md-6">
+            <app-field [disabled]="isDisabled">
+                <label>
+                    <input type="checkbox" [value]="true" name="applyForTransportationFerry" formControlName="applyForTransportationFerry" (change)="changeGroupValidity()">
+                    Transportation - Ferry
+                </label>
+            </app-field>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <app-field [disabled]="isDisabled">
+                <label>
+                    <input type="checkbox" [value]="true" name="applyForTransportationFlights" formControlName="applyForTransportationFlights" (change)="changeGroupValidity()">
+                    Transportation - Flights
+                </label>
+            </app-field>
+        </div>
+        <div class="col-md-6">
+            <app-field [disabled]="isDisabled">
+                <label>
+                    <input type="checkbox" [value]="true" name="applyForTransportationMileage" formControlName="applyForTransportationMileage" (change)="changeGroupValidity()">
+                    Transportation - Mileage
+                </label>
+            </app-field>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <app-field [disabled]="isDisabled">
+                <label>
+                    <input type="checkbox" [value]="true" name="applyForTransportationOther" formControlName="applyForTransportationOther" (change)="changeGroupValidity()">
+                    Transportation - Other
+                </label>
+                <section *ngIf="form.get('applyForTransportationOther').value === true" class="pushed">
+                    <app-field label="Please specify" [disabled]="isDisabled">
+                        <input class="form-control" type="text" formControlName="applyForTransportationOtherText">
+                    </app-field>
+                </section>
+            </app-field>
+        </div>
+
+        <div class="col-md-6">
+            <app-field [disabled]="isDisabled">
+                <label>
+                    <input type="checkbox" [value]="true" name="applyForOther" formControlName="applyForOther" (change)="changeGroupValidity();">
+                    Other
+                </label>
+                <section *ngIf="form.get('applyForOther').value === true" class="pushed">
+                    <app-field label="Please specify" [disabled]="isDisabled">
+                        <input class="form-control" type="text" formControlName="applyForOtherText">
+                    </app-field>
+                </section>
+            </app-field>
+        </div>
+    </div>
 
     <app-field [valid]="isFieldValid('atLeastOneExpense')" errorMessage="Please select at least one option">
         <input type="hidden" name="atLeastOneExpense" formControlName="atLeastOneExpense">
@@ -79,48 +101,51 @@
 
     <!-- <p>Court Dates</p> -->
     <div formArrayName="courtDates" *ngFor="let item of form.get('courtDates')['controls']; let i = index;">
-        <div [formGroupName]="i">
+        <div [formGroupName]="i" class="court-date-info">
             <div class="row">
-                <div class="col-md-4 flex-col">
+                <div class="col-md-6">
                     <app-field label="Court Date" [required]="true" [valid]="isMyControlValid(item.get('courtDate'))" errorMessage="Please enter the date" [disabled]="isDisabled">
-                        <input type="text" [max]="today" class="form-control date-picker" formControlName="courtDate" placeholder="yyyy/mm/dd" [matDatepicker]="courtDatePicker_1" (focus)="courtDatePicker_1.open()" (click)="courtDatePicker_1.open()" readonly>
-                        <mat-datepicker #courtDatePicker_1></mat-datepicker>
+                        <input type="text" [max]="today" class="form-control date-picker" formControlName="courtDate" placeholder="yyyy/mm/dd" [matDatepicker]="courtDatePicker_i" (focus)="courtDatePicker_i.open()" (click)="courtDatePicker_i.open()" readonly>
+                        <mat-datepicker #courtDatePicker_i></mat-datepicker>
                     </app-field>
                 </div>
-                <div class="col flex-col">
+                <div class="col">
                     <div class="remove-button" *ngIf="form.get('courtDates')['controls'].length > 1">
                         <br>
                         <i class="fas fa-times-circle text-danger center-clear-btn" (click)="removeCourtDate(i)"></i>
                     </div>
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <app-field label="Please indicate below the purpose of travel (e.g. attend trial, sentencing, etc.)" [required]="true" [valid]="isMyControlValid(item.get('purposeOfTravel'))" errorMessage="Please enter a purpose of travel" [disabled]="isDisabled" [tooltipReference]="purposeOfTravelTemplate">
+                        <textarea class="form-control bigger" formControlName="purposeOfTravel" maxlength="500"></textarea>
+                    </app-field>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <app-field label="Travel Period (from):" [required]="true" [valid]="isMyControlValid(item.get('travelPeriodStart'))" errorMessage="Please select a travel start date" [disabled]="isDisabled">
+                        <input type="text" [max]="today" class="form-control date-picker" formControlName="travelPeriodStart" placeholder="yyyy/mm/dd" [matDatepicker]="travelPeriodStartPicker_i" (focus)="travelPeriodStartPicker_i.open()" (click)="travelPeriodStartPicker_i.open()" readonly (dateChange)="travelPeriodStartChange(i)">
+                        <mat-datepicker #travelPeriodStartPicker_i></mat-datepicker>
+                    </app-field>
+                </div>
+                <div class="col-md-6">
+                    <app-field label="Travel Period (to):" [required]="true" [valid]="isMyControlValid(item.get('travelPeriodEnd'))" errorMessage="Please select a valid travel end date" [disabled]="isDisabled">
+                        <input type="text" [max]="today" [min]="travelPeriodStartDates[i]" class="form-control date-picker" formControlName="travelPeriodEnd" placeholder="yyyy/mm/dd" [matDatepicker]="travelPeriodEndPicker_i" (focus)="travelPeriodEndPicker_i.open()" (click)="travelPeriodEndPicker_i.open()" readonly>
+                        <mat-datepicker #travelPeriodEndPicker_i></mat-datepicker>
+                    </app-field>
+                </div>
+            </div>
         </div>
     </div>
-
-    <div class="add-additional-btn-container">
-        <button *ngIf="!isDisabled" class="btn btn-secondary" (click)="addAdditionalCourtDate()">+ ADD ADDITIONAL COURT DATE</button>
-    </div>
-
-    <app-field label="Please indicate below the purpose of travel (e.g. attend trial, sentencing, etc.)" [required]="true" [valid]="isMyControlValid(form.get('purposeOfTravel'))" errorMessage="Please enter a purpose of travel" [disabled]="isDisabled" [tooltipReference]="purposeOfTravelTemplate">
-        <textarea class="form-control bigger" formControlName="purposeOfTravel" maxlength="500"></textarea>
-    </app-field>
 
     <ng-template #purposeOfTravelTemplate>If needed, you may be approved for funding to cover travel expenses the day prior to court and one day after court, in addition to eligible court dates.</ng-template>
 
-
-    <div class="row">
-        <div class="col-md-6">
-            <app-field label="Travel Period (from):" [required]="true" [valid]="isMyControlValid(form.get('travelPeriodStart'))" errorMessage="Please select a travel start date" [disabled]="isDisabled">
-                <input type="text" [max]="today" class="form-control date-picker" formControlName="travelPeriodStart" placeholder="yyyy/mm/dd" [matDatepicker]="travelPeriodStartPicker" (focus)="travelPeriodStartPicker.open()" (click)="travelPeriodStartPicker.open()" readonly (dateChange)="travelPeriodStartChange()">
-                <mat-datepicker #travelPeriodStartPicker></mat-datepicker>
-            </app-field>
-        </div>
-        <div class="col-md-6">
-            <app-field label="Travel Period (to):" [required]="true" [valid]="isMyControlValid(form.get('travelPeriodEnd'))" errorMessage="Please select a valid travel end date" [disabled]="isDisabled">
-                <input type="text" [max]="today" [min]="travelPeriodStartDate" class="form-control date-picker" formControlName="travelPeriodEnd" placeholder="yyyy/mm/dd" [matDatepicker]="travelPeriodEndPicker" (focus)="travelPeriodEndPicker.open()" (click)="travelPeriodEndPicker.open()" readonly>
-                <mat-datepicker #travelPeriodEndPicker></mat-datepicker>
-            </app-field>
-        </div>
+    <div class="add-additional-btn-container">
+        <button *ngIf="!isDisabled" class="btn btn-secondary" (click)="addAdditionalCourtDate()">+ ADD ADDITIONAL COURT DATE</button>
     </div>
 
     <app-field label="Additional Comments" [disabled]="isDisabled">

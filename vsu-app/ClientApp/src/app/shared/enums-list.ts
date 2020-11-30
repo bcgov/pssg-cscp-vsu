@@ -33,6 +33,7 @@ export class EnumHelper {
         Other_Family_Member:        <IOptionSetVal> { val: 100000003, name: "Other Family Member" },
         Support_Person:             <IOptionSetVal> { val: 100000004, name: "Support Person" },
         Immediate_Family_Member:    <IOptionSetVal> { val: 100000005, name: "Immediate family member of the deceased victim" },
+        Victim_Service_Worker:      <IOptionSetVal> { val: 100000006, name: "Victim Services Worker" },
     };
 
     public NotificationRecipientEnum = {
