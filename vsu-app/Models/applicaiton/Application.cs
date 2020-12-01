@@ -55,8 +55,7 @@ namespace Gov.Cscp.Victims.Public.Models
         public int? vsd_vsu_bccorrectionsinformation { get; set; }
         public string vsd_vsu_notificationadditionalcomments { get; set; }
         
-        //ugh - this field was erroneously deleted in CRM and needs to be re-added before we uncomment this....
-        // public string vsd_vsu_vsutravelexpenserequest { get; set; }
+        public string vsd_vsu_vsutravelexpenserequest { get; set; }
         public string vsd_vsu_travelexpenserequesttransportother { get; set; }
         public string vsd_vsu_travelexpenserequestother { get; set; }
         public string vsd_vsu_purposeoftravel { get; set; }

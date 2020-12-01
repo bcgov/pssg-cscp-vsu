@@ -92,21 +92,25 @@ export interface iRecipientDetails {
 }
 
 export interface iTravelInformation {
-    applyForTransportationBus: boolean;
-    applyForTransportationFerry: boolean;
-    applyForTransportationFlights: boolean;
-    applyForTransportationMileage: boolean;
-    applyForTransportationOther: boolean;
-    applyForTransportationOtherText: string;
-    applyForMeals: boolean;
-    applyForAccommodation: boolean;
-    applyForOther: boolean;
-    applyForOtherText: string;
+    expenses: TravelExpenses;
     courtDates: Date[];
     purposeOfTravel: string;
     travelPeriodStart: Date;
     travelPeriodEnd: Date;
     additionalComments: string;
+}
+
+export interface TravelExpenses {
+    applyForAccommodation: boolean;
+    applyForTransportationBus: boolean;
+    applyForTransportationFerry: boolean;
+    applyForTransportationFlights: boolean;
+    applyForTransportationMileage: boolean;
+    applyForTransportationOther: boolean;
+    applyForMeals: boolean;
+    applyForOther: boolean;
+    applyForTransportationOtherText: string;
+    applyForOtherText: string;
 }
 
 export interface iAuthorizationInformation {

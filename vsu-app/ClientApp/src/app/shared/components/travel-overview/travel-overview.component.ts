@@ -18,7 +18,6 @@ export class TravelOverviewComponent extends FormBase implements OnInit {
     public form: FormGroup;
 
     offenceList: iOffence[] = [];
-    scheduleOffences: string[] = ["80", "81", "151", "152", "153", "155", "220", "221", "229", "236", "239", "244 (1)", "264", "266", "267", "268", "269", "269.1", "271", "272", "273", "279 and 279.1", "320.14 (2)", "320.14 (3)",];
 
     constructor(private controlContainer: ControlContainer,
         private lookupService: LookupService,
@@ -35,7 +34,6 @@ export class TravelOverviewComponent extends FormBase implements OnInit {
 
         if (this.lookupData.offences && this.lookupData.offences.length > 0) {
             this.offenceList = this.lookupData.offences;
-            this.offenceList = this.offenceList.filter(o => this.scheduleOffences.indexOf(o.vsd_criminalcode) >= 0);
             this.populateOffences();
         }
         else {
@@ -45,7 +43,6 @@ export class TravelOverviewComponent extends FormBase implements OnInit {
                     this.lookupData.offences.sort((a, b) => a.vsd_name.localeCompare(b.vsd_name));
                 }
                 this.offenceList = this.lookupData.offences;
-                this.offenceList = this.offenceList.filter(o => this.scheduleOffences.indexOf(o.vsd_criminalcode) >= 0);
                 this.populateOffences();
             });
         }

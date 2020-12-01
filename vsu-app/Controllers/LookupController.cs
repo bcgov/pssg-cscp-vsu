@@ -122,7 +122,7 @@ namespace Gov.Cscp.Victims.Public.Controllers
         {
             try
             {
-                string endpointUrl = "vsd_offenses?$select=vsd_name,vsd_offenseid,vsd_criminalcode&$filter=statecode eq 0";
+                string endpointUrl = "vsd_offenses?$select=vsd_name,vsd_offenseid,vsd_criminalcode&$filter=statecode eq 0 and vsd_vsu_travelfundoffences eq 100000001";
                 DynamicsResult result = await _dynamicsResultService.Get(endpointUrl);
                 return StatusCode((int)result.statusCode, result.result.ToString());
             }

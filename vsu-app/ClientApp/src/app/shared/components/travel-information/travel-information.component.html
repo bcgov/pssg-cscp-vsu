@@ -7,91 +7,93 @@
 
     <p>I would like to apply for the following expenses:</p>
 
-    <div class="row">
-        <div class="col-md-6">
-            <app-field [disabled]="isDisabled">
-                <label>
-                    <input type="checkbox" [value]="true" name="applyForAccommodation" formControlName="applyForAccommodation" (change)="changeGroupValidity()">
-                    Accomodation
-                </label>
-            </app-field>
-        </div>
-        <div class="col-md-6">
-            <app-field [disabled]="isDisabled">
-                <label>
-                    <input type="checkbox" [value]="true" name="applyForMeals" formControlName="applyForMeals" (change)="changeGroupValidity()">
-                    Meals
-                </label>
-            </app-field>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-6">
-            <app-field [disabled]="isDisabled">
-                <label>
-                    <input type="checkbox" [value]="true" name="applyForTransportationBus" formControlName="applyForTransportationBus" (change)="changeGroupValidity()">
-                    Transportation - Bus
-                </label>
-            </app-field>
+    <div [formGroup]="form.get('expenses')" class="address-info">
+        <div class="row">
+            <div class="col-md-6">
+                <app-field [disabled]="isDisabled">
+                    <label>
+                        <input type="checkbox" [value]="true" name="applyForAccommodation" formControlName="applyForAccommodation" (change)="changeGroupValidity()">
+                        Accomodation
+                    </label>
+                </app-field>
+            </div>
+            <div class="col-md-6">
+                <app-field [disabled]="isDisabled">
+                    <label>
+                        <input type="checkbox" [value]="true" name="applyForMeals" formControlName="applyForMeals" (change)="changeGroupValidity()">
+                        Meals
+                    </label>
+                </app-field>
+            </div>
         </div>
 
-        <div class="col-md-6">
-            <app-field [disabled]="isDisabled">
-                <label>
-                    <input type="checkbox" [value]="true" name="applyForTransportationFerry" formControlName="applyForTransportationFerry" (change)="changeGroupValidity()">
-                    Transportation - Ferry
-                </label>
-            </app-field>
-        </div>
-    </div>
+        <div class="row">
+            <div class="col-md-6">
+                <app-field [disabled]="isDisabled">
+                    <label>
+                        <input type="checkbox" [value]="true" name="applyForTransportationBus" formControlName="applyForTransportationBus" (change)="changeGroupValidity()">
+                        Transportation - Bus
+                    </label>
+                </app-field>
+            </div>
 
-    <div class="row">
-        <div class="col-md-6">
-            <app-field [disabled]="isDisabled">
-                <label>
-                    <input type="checkbox" [value]="true" name="applyForTransportationFlights" formControlName="applyForTransportationFlights" (change)="changeGroupValidity()">
-                    Transportation - Flights
-                </label>
-            </app-field>
-        </div>
-        <div class="col-md-6">
-            <app-field [disabled]="isDisabled">
-                <label>
-                    <input type="checkbox" [value]="true" name="applyForTransportationMileage" formControlName="applyForTransportationMileage" (change)="changeGroupValidity()">
-                    Transportation - Mileage
-                </label>
-            </app-field>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-6">
-            <app-field [disabled]="isDisabled">
-                <label>
-                    <input type="checkbox" [value]="true" name="applyForTransportationOther" formControlName="applyForTransportationOther" (change)="changeGroupValidity()">
-                    Transportation - Other
-                </label>
-                <section *ngIf="form.get('applyForTransportationOther').value === true" class="pushed">
-                    <app-field label="Please specify" [disabled]="isDisabled">
-                        <input class="form-control" type="text" formControlName="applyForTransportationOtherText">
-                    </app-field>
-                </section>
-            </app-field>
+            <div class="col-md-6">
+                <app-field [disabled]="isDisabled">
+                    <label>
+                        <input type="checkbox" [value]="true" name="applyForTransportationFerry" formControlName="applyForTransportationFerry" (change)="changeGroupValidity()">
+                        Transportation - Ferry
+                    </label>
+                </app-field>
+            </div>
         </div>
 
-        <div class="col-md-6">
-            <app-field [disabled]="isDisabled">
-                <label>
-                    <input type="checkbox" [value]="true" name="applyForOther" formControlName="applyForOther" (change)="changeGroupValidity();">
-                    Other
-                </label>
-                <section *ngIf="form.get('applyForOther').value === true" class="pushed">
-                    <app-field label="Please specify" [disabled]="isDisabled">
-                        <input class="form-control" type="text" formControlName="applyForOtherText">
-                    </app-field>
-                </section>
-            </app-field>
+        <div class="row">
+            <div class="col-md-6">
+                <app-field [disabled]="isDisabled">
+                    <label>
+                        <input type="checkbox" [value]="true" name="applyForTransportationFlights" formControlName="applyForTransportationFlights" (change)="changeGroupValidity()">
+                        Transportation - Flights
+                    </label>
+                </app-field>
+            </div>
+            <div class="col-md-6">
+                <app-field [disabled]="isDisabled">
+                    <label>
+                        <input type="checkbox" [value]="true" name="applyForTransportationMileage" formControlName="applyForTransportationMileage" (change)="changeGroupValidity()">
+                        Transportation - Mileage
+                    </label>
+                </app-field>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <app-field [disabled]="isDisabled">
+                    <label>
+                        <input type="checkbox" [value]="true" name="applyForTransportationOther" formControlName="applyForTransportationOther" (change)="changeGroupValidity()">
+                        Transportation - Other
+                    </label>
+                    <section *ngIf="form.get('expenses').get('applyForTransportationOther').value === true" class="pushed">
+                        <app-field label="Please specify" [disabled]="isDisabled">
+                            <input class="form-control" type="text" formControlName="applyForTransportationOtherText">
+                        </app-field>
+                    </section>
+                </app-field>
+            </div>
+
+            <div class="col-md-6">
+                <app-field [disabled]="isDisabled">
+                    <label>
+                        <input type="checkbox" [value]="true" name="applyForOther" formControlName="applyForOther" (change)="changeGroupValidity();">
+                        Other
+                    </label>
+                    <section *ngIf="form.get('expenses').get('applyForOther').value === true" class="pushed">
+                        <app-field label="Please specify" [disabled]="isDisabled">
+                            <input class="form-control" type="text" formControlName="applyForOtherText">
+                        </app-field>
+                    </section>
+                </app-field>
+            </div>
         </div>
     </div>
 
