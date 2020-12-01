@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { AbstractControl, ControlContainer, FormArray, FormBuilder, FormControl, FormGroup } from "@angular/forms";
+import { ControlContainer, FormArray, FormBuilder, FormGroup } from "@angular/forms";
 import { ApplicationType, MY_FORMATS } from "../../enums-list";
 import { FormBase } from "../../form-base";
 import { iLookupData } from "../../interfaces/lookup-data.interface";
@@ -27,8 +27,6 @@ export class TravelInformationComponent extends FormBase implements OnInit {
     travelPeriodStartDate: Date = null;
     travelPeriodStartDates: Date[] = [];
 
-    EXPENSES: string[];
-
     travelInfoHelper = new TravelInfoHelper();
 
     constructor(private controlContainer: ControlContainer,
@@ -41,19 +39,6 @@ export class TravelInformationComponent extends FormBase implements OnInit {
         setTimeout(() => { this.form.markAsTouched(); }, 0);
         console.log("travel info component");
         console.log(this.form);
-
-        if (this.formType === ApplicationType.TRAVEL_FUNDS) {
-            this.EXPENSES = [
-                'applyForTransportationBus',
-                'applyForTransportationFerry',
-                'applyForTransportationFlights',
-                'applyForTransportationMileage',
-                'applyForTransportationOther',
-                'applyForMeals',
-                'applyForAccommodation',
-                'applyForOther',
-            ];
-        }
     }
 
     addAdditionalCourtDate() {
@@ -69,26 +54,25 @@ export class TravelInformationComponent extends FormBase implements OnInit {
     }
 
     changeGroupValidity(): void {
-        let x: AbstractControl[] = [];
-        this.EXPENSES.forEach((benefit) => {
-            x.push(this.form.get(benefit));
-        });
+        let expenses = this.form.get('expenses') as FormGroup;
+
         let oneChecked = false;
-        x.forEach(c => {
-            if (c instanceof FormControl && c.value === true) {
+        for (let ex in expenses.controls) {
+            if (expenses.controls[ex].value === true) {
                 oneChecked = true;
-                return;
+                break;
             }
-        });
+        }
+
         this.form.patchValue({
             atLeastOneExpense: oneChecked
         });
 
-        if (this.form.get('applyForOther').value !== true) {
-            this.form.get('applyForOtherText').patchValue('')
+        if (expenses.get('applyForOther').value !== true) {
+            expenses.get('applyForOtherText').patchValue('')
         }
-        if (this.form.get('applyForTransportationOther').value !== true) {
-            this.form.get('applyForTransportationOtherText').patchValue('')
+        if (expenses.get('applyForTransportationOther').value !== true) {
+            expenses.get('applyForTransportationOtherText').patchValue('')
         }
     }
 

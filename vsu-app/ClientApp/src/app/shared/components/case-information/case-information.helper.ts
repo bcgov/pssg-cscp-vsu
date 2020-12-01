@@ -1,5 +1,6 @@
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApplicationType } from "../../enums-list";
+import { iOffence } from "../../interfaces/lookup-data.interface";
 
 export class CaseInfoInfoHelper {
     public setupFormGroup(fb: FormBuilder, form_type: ApplicationType): FormGroup {
@@ -70,5 +71,12 @@ export class CaseInfoInfoHelper {
         });
     }
 
-
+    public createOffence(fb: FormBuilder, offence: iOffence) {
+        return fb.group({
+          id: [offence.vsd_offenseid],
+          name: [offence.vsd_name],
+          criminal_code: [offence.vsd_criminalcode],
+          checked: [false]
+        });
+      }
 }

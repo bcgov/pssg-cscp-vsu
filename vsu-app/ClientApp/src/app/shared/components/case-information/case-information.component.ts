@@ -25,7 +25,6 @@ export class CaseInformationComponent extends FormBase implements OnInit {
 
   courtList: string[] = [];
   offenceList: iOffence[] = [];
-  scheduleOffences: string[] = ["80", "81", "151", "152", "153", "155", "220", "221", "229", "236", "239", "244 (1)", "264", "266", "267", "268", "269", "269.1", "271", "272", "273", "279 and 279.1", "320.14 (2)", "320.14 (3)",];
 
   caseInfoHelper = new CaseInfoInfoHelper();
   ApplicationType = ApplicationType;
@@ -59,7 +58,6 @@ export class CaseInformationComponent extends FormBase implements OnInit {
 
       if (this.lookupData.offences && this.lookupData.offences.length > 0) {
         this.offenceList = this.lookupData.offences;
-        this.offenceList = this.offenceList.filter(o => this.scheduleOffences.indexOf(o.vsd_criminalcode) >= 0);
         this.populateOffences();
       }
       else {
@@ -69,7 +67,6 @@ export class CaseInformationComponent extends FormBase implements OnInit {
             this.lookupData.offences.sort((a, b) => a.vsd_name.localeCompare(b.vsd_name));
           }
           this.offenceList = this.lookupData.offences;
-          this.offenceList = this.offenceList.filter(o => this.scheduleOffences.indexOf(o.vsd_criminalcode) >= 0);
           this.populateOffences();
         });
       }
@@ -80,16 +77,7 @@ export class CaseInformationComponent extends FormBase implements OnInit {
     let offences = this.form.get('offences') as FormArray;
     if (offences.length > 0) return;
     this.offenceList.forEach(offence => {
-      offences.push(this.createOffence(this.fb, offence));
-    });
-  }
-
-  createOffence(fb: FormBuilder, offence: iOffence) {
-    return fb.group({
-      id: [offence.vsd_offenseid],
-      name: [offence.vsd_name],
-      criminal_code: [offence.vsd_criminalcode],
-      checked: [false]
+      offences.push(this.caseInfoHelper.createOffence(this.fb, offence));
     });
   }
 
@@ -107,8 +95,6 @@ export class CaseInformationComponent extends FormBase implements OnInit {
 
   addAdditionalCourtInfo() {
     let courtInfo = this.form.get('courtInfo') as FormArray;
-    // let previousCourt = courtInfo.controls[courtInfo.controls.length - 1];
-    // let location = previousCourt.get('courtLocation').value;
     courtInfo.push(this.caseInfoHelper.createCourtInfo(this.fb));
   }
 

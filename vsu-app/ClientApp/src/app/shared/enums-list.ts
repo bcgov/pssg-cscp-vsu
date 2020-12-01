@@ -68,6 +68,17 @@ export class EnumHelper {
         Email:      <IOptionSetVal> { val: 100000002, name: "Email"},
         Unset:      <IOptionSetVal> { val: null, name: ""},
     }
+
+    public TravelExpenses = {
+        Accommodation:          <IOptionSetVal> { val: 100000000, name: "Accommodation"},
+        TransportationBus:      <IOptionSetVal> { val: 100000001, name: "Transportation - Bus"},
+        TransportationFerry:    <IOptionSetVal> { val: 100000002, name: "Transportation - Ferry"},
+        TransportationFlights:  <IOptionSetVal> { val: 100000003, name: "Transportation - Flights"},
+        TransportationMileage:  <IOptionSetVal> { val: 100000004, name: "Transportation - Mileage"},
+        TransportationOther:    <IOptionSetVal> { val: 100000005, name: "Transportation - Other"},
+        Meals:                  <IOptionSetVal> { val: 100000006, name: "Meals"},
+        Other:                  <IOptionSetVal> { val: 100000007, name: "Other"},
+    }
 }
 
 interface IOptionSetVal {

@@ -7,7 +7,7 @@ export function convertTravelFundApplicationToCRM(application: iTravelFundApplic
     console.log("converting travel application");
     console.log(application);
 
-    console.log("TODO - need to capture Travel Info -> Court Dates");
+    console.log("TODO - need fields add/updated in COAST to capture form. Check TODO comments for details");
 
     let crm_application: iApplicationFormCRM = {
         Application: getCRMApplication(application),
@@ -109,7 +109,7 @@ function getCRMApplication(application: iTravelFundApplication) {
 
         vsd_vsu_vsutravelexpenserequest: "",
         vsd_vsu_travelexpenserequesttransportother: "",
-        vsd_vsu_travelexpenserequestother: application.TravelInformation.applyForOtherText,
+        vsd_vsu_travelexpenserequestother: application.TravelInformation.expenses.applyForOtherText,
         vsd_vsu_purposeoftravel: application.TravelInformation.purposeOfTravel,
         vsd_vsu_travelperiodfrom: application.TravelInformation.travelPeriodStart,
         vsd_vsu_travelperiodto: application.TravelInformation.travelPeriodEnd,
@@ -124,41 +124,40 @@ function getCRMApplication(application: iTravelFundApplication) {
 
     let requested_expenses = [];
 
-    if (application.TravelInformation.applyForTransportationBus) {
-        requested_expenses.push("100000000");
+    if (application.TravelInformation.expenses.applyForAccommodation) {
+        requested_expenses.push(enums.TravelExpenses.Accommodation.val);
     }
 
-    if (application.TravelInformation.applyForTransportationFerry) {
-        requested_expenses.push("100000001");
+    if (application.TravelInformation.expenses.applyForTransportationBus) {
+        requested_expenses.push(enums.TravelExpenses.TransportationBus.val);
     }
 
-    if (application.TravelInformation.applyForTransportationFlights) {
-        requested_expenses.push("100000002");
+    if (application.TravelInformation.expenses.applyForTransportationFerry) {
+        requested_expenses.push(enums.TravelExpenses.TransportationFerry.val);
     }
 
-    if (application.TravelInformation.applyForTransportationMileage) {
-        requested_expenses.push("100000003");
+    if (application.TravelInformation.expenses.applyForTransportationFlights) {
+        requested_expenses.push(enums.TravelExpenses.TransportationFlights.val);
     }
 
-    if (application.TravelInformation.applyForTransportationOther) {
-        requested_expenses.push("100000004");
-        crm_application.vsd_vsu_travelexpenserequesttransportother = application.TravelInformation.applyForTransportationOtherText;
+    if (application.TravelInformation.expenses.applyForTransportationMileage) {
+        requested_expenses.push(enums.TravelExpenses.TransportationMileage.val);
     }
 
-    if (application.TravelInformation.applyForMeals) {
-        requested_expenses.push("100000005");
+    if (application.TravelInformation.expenses.applyForTransportationOther) {
+        requested_expenses.push(enums.TravelExpenses.TransportationOther.val);
+        crm_application.vsd_vsu_travelexpenserequesttransportother = application.TravelInformation.expenses.applyForTransportationOtherText;
     }
 
-    if (application.TravelInformation.applyForAccommodation) {
-        requested_expenses.push("100000006");
+    if (application.TravelInformation.expenses.applyForMeals) {
+        requested_expenses.push(enums.TravelExpenses.Meals.val);
     }
 
-    if (application.TravelInformation.applyForOther) {
-        requested_expenses.push("100000007");
+    if (application.TravelInformation.expenses.applyForOther) {
+        requested_expenses.push(enums.TravelExpenses.Other.val);
     }
 
     crm_application.vsd_vsu_vsutravelexpenserequest = requested_expenses.join(',');
-
 
     return crm_application;
 }
