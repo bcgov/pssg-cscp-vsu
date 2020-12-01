@@ -116,5 +116,17 @@ namespace Gov.Cscp.Victims.Public.Controllers
             }
             finally { }
         }
+
+        [HttpGet("offences")]
+        public async Task<IActionResult> GetOffences()
+        {
+            try
+            {
+                string endpointUrl = "vsd_offenses?$select=vsd_name,vsd_offenseid,vsd_criminalcode&$filter=statecode eq 0";
+                DynamicsResult result = await _dynamicsResultService.Get(endpointUrl);
+                return StatusCode((int)result.statusCode, result.result.ToString());
+            }
+            finally { }
+        }
     }
 }

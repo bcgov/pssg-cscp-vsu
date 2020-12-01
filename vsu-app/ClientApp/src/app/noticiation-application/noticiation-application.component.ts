@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatStepper, MatVerticalStepper } from '@angular/material';
 import { Router } from '@angular/router';
-import { iNotificationApplication, iCaseInformation, iApplicantInformation, iRecipientDetails, iAuthorizationInformation } from '../shared/interfaces/notification-application.interface';
+import { iNotificationApplication, iCaseInformation, iApplicantInformation, iRecipientDetails, iAuthorizationInformation } from '../shared/interfaces/application.interface';
 import { iLookupData } from '../shared/interfaces/lookup-data.interface';
 import { LookupService } from '../services/lookup.service';
 import { ApplicantInfoHelper } from '../shared/components/applicant-information/applicant-information.helper';
@@ -10,7 +10,7 @@ import { AuthInfoHelper } from '../shared/components/authorization/authorization
 import { CaseInfoInfoHelper } from '../shared/components/case-information/case-information.helper';
 import { RecipientDetailsHelper } from '../shared/components/recipient-details/recipient-details.helper';
 import { FormBase } from '../shared/form-base';
-import { NotificationApplicationService } from '../services/notification-application.service';
+import { ApplicationService } from '../services/application.service';
 import { convertNotificationApplicationToCRM } from '../shared/interfaces/converters/notification-application.web.to.crm';
 import { Title } from '@angular/platform-browser';
 import { FORM_TITLES, FORM_TYPES } from '../shared/enums-list';
@@ -52,7 +52,8 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
         private router: Router,
         private lookupService: LookupService,
         private titleService: Title,
-        private notificationApplicationService: NotificationApplicationService,) {
+        private applicationService: ApplicationService,
+    ) {
         super();
     }
 
@@ -68,9 +69,7 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
             this.lookupService.getCountries().subscribe((res) => {
                 this.lookupData.countries = res.value;
                 if (this.lookupData.countries) {
-                    this.lookupData.countries.sort(function (a, b) {
-                        return a.vsd_name.localeCompare(b.vsd_name);
-                    });
+                    this.lookupData.countries.sort((a, b) => a.vsd_name.localeCompare(b.vsd_name));
                 }
                 resolve();
             });
@@ -80,9 +79,7 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
             this.lookupService.getProvinces().subscribe((res) => {
                 this.lookupData.provinces = res.value;
                 if (this.lookupData.provinces) {
-                    this.lookupData.provinces.sort(function (a, b) {
-                        return a.vsd_name.localeCompare(b.vsd_name);
-                    });
+                    this.lookupData.provinces.sort((a, b) => a.vsd_name.localeCompare(b.vsd_name));
                 }
                 resolve();
             });
@@ -140,7 +137,7 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
             console.log("form is valid - submit");
             let application = this.harvestForm();
             let data = convertNotificationApplicationToCRM(application);
-            this.notificationApplicationService.submit(data).subscribe((res) => {
+            this.applicationService.submit(data).subscribe((res) => {
                 this.submitting = false;
                 console.log(res);
                 if (res.IsSuccess) {

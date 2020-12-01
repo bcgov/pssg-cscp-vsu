@@ -14,6 +14,13 @@ namespace Gov.Cscp.Victims.Public.Models
 
         public int vsd_vsu_applicanttype { get; set; }
         public string vsd_vsuapplicanttypeother { get; set; }
+        
+        public string vsd_cvap_relationshiptovictim { get; set; }
+        public int? vsd_vsu_victimtravelfundapplicationsubmitted { get; set; }
+        public string vsd_vsu_vtfappsubmittedunknowncomments { get; set; }
+        public int? vsd_vsu_otherfamilymembersapplyingtovtf { get; set; }
+        public string vsd_vsu_otherfamilymembersvtfothercomments { get; set; }
+        
         public string vsd_applicantsfirstname { get; set; }
         public string vsd_applicantsmiddlename { get; set; }
         public string vsd_applicantslastname { get; set; }
@@ -47,6 +54,15 @@ namespace Gov.Cscp.Victims.Public.Models
         public int? vsd_vsu_criminalcourtordersissued { get; set; }
         public int? vsd_vsu_bccorrectionsinformation { get; set; }
         public string vsd_vsu_notificationadditionalcomments { get; set; }
+        
+        //ugh - this field was erroneously deleted in CRM and needs to be re-added before we uncomment this....
+        // public string vsd_vsu_vsutravelexpenserequest { get; set; }
+        public string vsd_vsu_travelexpenserequesttransportother { get; set; }
+        public string vsd_vsu_travelexpenserequestother { get; set; }
+        public string vsd_vsu_purposeoftravel { get; set; }
+        public DateTime? vsd_vsu_travelperiodfrom { get; set; }
+        public DateTime? vsd_vsu_travelperiodto { get; set; }
+        public string vsd_vsu_additionaltravelcomments { get; set; }
 
         public int? vsd_vsu_infosharecscpbc { get; set; }
         public int? vsd_vsu_infosharevsu { get; set; }

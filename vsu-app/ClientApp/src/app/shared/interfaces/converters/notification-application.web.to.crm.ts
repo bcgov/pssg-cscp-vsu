@@ -1,15 +1,12 @@
-import { EnumHelper } from "../../enums-list";
-import { iCRMApplication, iCRMCourtInfo, iCRMParticipant, iNotificationApplicationCRM } from "../dynamics/crm-notification-application";
-import { iNotificationApplication } from "../notification-application.interface";
-
-const NOTIFICATION_APPLICATION = 100000000;
-const VICTIM_TRAVEL_FUND = 100000001;
+import { ApplicationType, EnumHelper } from "../../enums-list";
+import { iCRMApplication, iCRMCourtInfo, iCRMParticipant, iApplicationFormCRM } from "../dynamics/crm-application";
+import { iNotificationApplication } from "../application.interface";
 
 export function convertNotificationApplicationToCRM(application: iNotificationApplication) {
-    console.log("converting application");
+    console.log("converting notification application");
     console.log(application);
 
-    let crm_application: iNotificationApplicationCRM = {
+    let crm_application: iApplicationFormCRM = {
         Application: getCRMApplication(application),
         CourtInfoCollection: getCRMCourtInfoCollection(application),
         PoliceFileNumberCollection: [],
@@ -23,7 +20,7 @@ export function convertNotificationApplicationToCRM(application: iNotificationAp
 function getCRMApplication(application: iNotificationApplication) {
     let enums = new EnumHelper();
     let crm_application: iCRMApplication = {
-        vsd_vsu_applicationtype: NOTIFICATION_APPLICATION,
+        vsd_vsu_applicationtype: ApplicationType.NOTIFICATION,
         vsd_cvap_victimfirstname: application.CaseInformation.firstName,
         vsd_cvap_victimmiddlename: application.CaseInformation.middleName,
         vsd_cvap_victimlastname: application.CaseInformation.lastName,

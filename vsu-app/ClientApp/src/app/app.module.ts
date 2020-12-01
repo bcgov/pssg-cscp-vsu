@@ -24,13 +24,16 @@ import { SignPadDialog } from './shared/dialogs/sign-dialog/sign-dialog.componen
 import { SignaturePadModule } from 'angular2-signaturepad';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
-import { NotificationApplicationService } from './services/notification-application.service';
+import { ApplicationService } from './services/application.service';
 import { ToolTipTriggerComponent } from './shared/components/tool-tip/tool-tip.component';
 import { ContactMethodComponent } from './shared/components/contact-method/contact-method.component';
 import { ConfirmationComponent } from './shared/components/confirmation/confirmation.component';
 import { AdditionalInfoBannerComponent } from './shared/components/additional-info-banner/additional-info-banner.component';
 import { VictimTravelFundApplicationComponent } from './victim-travel-fund-application/vtf-application.component';
 import { TravelOverviewComponent } from './shared/components/travel-overview/travel-overview.component';
+import { VSWComponent } from './shared/components/victim-service-worker/victim-service-worker.component';
+import { DesignateComponent } from './shared/components/designate/designate.component';
+import { TravelInformationComponent } from './shared/components/travel-information/travel-information.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +56,9 @@ import { TravelOverviewComponent } from './shared/components/travel-overview/tra
     RecipientDetailsComponent,
     SignPadDialog,
     ToolTipTriggerComponent,
+    VSWComponent,
+    DesignateComponent,
+    TravelInformationComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -77,7 +83,7 @@ import { TravelOverviewComponent } from './shared/components/travel-overview/tra
   ],
   providers: [
     LookupService,
-    NotificationApplicationService,
+    ApplicationService,
     {
       provide: STEPPER_GLOBAL_OPTIONS,
       useValue: { showError: true }

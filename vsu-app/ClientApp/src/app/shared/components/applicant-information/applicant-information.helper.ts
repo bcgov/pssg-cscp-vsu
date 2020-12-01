@@ -34,17 +34,42 @@ export class ApplicantInfoHelper {
         }
 
         if (form_type === ApplicationType.TRAVEL_FUNDS) {
-            group['victimAlreadySubmitted'] = [''];
+            group['vswComment'] = [''];
+            group['coveredByVictimServiceProgram'] = [null];
+            group['coveredByVictimServiceProgramComment'] = [''];
+
+            group['victimServiceWorker'] = fb.array([]);
+            // group['managerFirstName'] = [''];
+            // group['managerLastName'] = [''];
+            // group['agencyName'] = [''];
+            // group['managerPhone'] = [''];
+            // group['managerEmail'] = ['', [Validators.email]];
+
+            group['victimAlreadySubmitted'] = [null];
             group['victimAlreadySubmittedComment'] = [''];
-            group['otherFamilyAlsoApplying'] = [''];
+            group['otherFamilyAlsoApplying'] = [null];
             group['otherFamilyAlsoApplyingComment'] = [''];
             group['gender'] = ['', Validators.required];
+            group['supportPersonRelationship'] = [''];
+            group['IFMRelationship'] = [''];
         }
         else if (form_type === ApplicationType.NOTIFICATION) {
             group['gender'] = [''];
         }
 
         return fb.group(group);
+    }
+
+    public createVSW(fb: FormBuilder) {
+        return fb.group({
+            firstName: [''],
+            lastName: [''],
+            organization: [''],
+            telephone: [''],
+            extension: [''],
+            email: ['', [Validators.email]],
+            city: [''],
+        });
     }
 
     public createContactMethod(fb: FormBuilder, typeString: string = '') {

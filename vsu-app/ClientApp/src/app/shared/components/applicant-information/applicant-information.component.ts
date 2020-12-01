@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { ControlContainer, FormArray, FormGroup, Validators } from "@angular/forms";
+import { ControlContainer, FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/material";
 import { MomentDateAdapter } from "@angular/material-moment-adapter";
 import { iLookupData } from "../../interfaces/lookup-data.interface";
@@ -22,14 +22,15 @@ export class ApplicantInformationComponent extends FormBase implements OnInit {
     @Input() isDisabled: boolean;
     public form: FormGroup;
 
-    showOtherApplicantType: boolean = false;
     today: Date = new Date();
 
     applicantInfoHelper = new ApplicantInfoHelper();
 
     ApplicationType = ApplicationType;
 
-    constructor(private controlContainer: ControlContainer) {
+    constructor(private controlContainer: ControlContainer,
+        private fb: FormBuilder,
+    ) {
         super();
     }
     ngOnInit() {
@@ -54,29 +55,69 @@ export class ApplicantInformationComponent extends FormBase implements OnInit {
 
     applicantTypeChange() {
         let type = this.form.get('applicantType').value;
-        let otherControl = this.form.get("applicantTypeOther");
-        let otherRequired = type === this.enum.ApplicantType.Other_Family_Member.val;
 
-        if (otherRequired) {
-            this.showOtherApplicantType = true;
-            this.setControlValidators(otherControl, [Validators.required]);
-        }
-        else {
-            otherControl.patchValue('');
-            this.showOtherApplicantType = false;
-            this.clearControlValidators(otherControl);
+        if (this.formType === ApplicationType.NOTIFICATION) {
+            let otherControl = this.form.get("applicantTypeOther");
+            let otherRequired = type === this.enum.ApplicantType.Other_Family_Member.val;
+
+            if (otherRequired) {
+                this.setControlValidators(otherControl, [Validators.required]);
+            }
+            else {
+                otherControl.patchValue('');
+                this.clearControlValidators(otherControl);
+            }
         }
 
         if (this.formType === ApplicationType.TRAVEL_FUNDS) {
-            if (type !== this.enum.ApplicantType.Support_Person.val) {
-                this.form.get("victimAlreadySubmitted").patchValue('');
+            let supportPersonRelationshipControl = this.form.get("supportPersonRelationship");
+            let IFMRelationshipControl = this.form.get("IFMRelationship");
+
+            if (type === this.enum.ApplicantType.Support_Person.val) {
+                this.setControlValidators(supportPersonRelationshipControl, [Validators.required]);
+            }
+            else {
+                supportPersonRelationshipControl.patchValue('');
+                this.clearControlValidators(supportPersonRelationshipControl);
+                this.form.get("victimAlreadySubmitted").patchValue(null);
                 this.form.get("victimAlreadySubmittedComment").patchValue('');
             }
 
-            if (type !== this.enum.ApplicantType.Immediate_Family_Member.val) {
-                this.form.get("otherFamilyAlsoApplying").patchValue('');
+            if (type === this.enum.ApplicantType.Immediate_Family_Member.val) {
+                this.setControlValidators(IFMRelationshipControl, [Validators.required]);
+            }
+            else {
+                IFMRelationshipControl.patchValue('');
+                this.clearControlValidators(IFMRelationshipControl);
+                this.form.get("otherFamilyAlsoApplying").patchValue(null);
                 this.form.get("otherFamilyAlsoApplyingComment").patchValue('');
             }
+
+            if (type === this.enum.ApplicantType.Victim_Service_Worker.val) {
+                this.addVSW();
+            }
+            else {
+                this.deleteVSW();
+                this.form.get("vswComment").patchValue('');
+                this.form.get("coveredByVictimServiceProgram").patchValue(null);
+                this.form.get("coveredByVictimServiceProgramComment").patchValue('');
+
+
+            }
+        }
+    }
+
+    addVSW() {
+        let vsw = this.form.get('victimServiceWorker') as FormArray;
+        if (vsw.length == 0) {
+            vsw.push(this.applicantInfoHelper.createVSW(this.fb));
+        }
+    }
+
+    deleteVSW() {
+        let vsw = this.form.get('victimServiceWorker') as FormArray;
+        while (vsw.length > 0) {
+            vsw.removeAt(0);
         }
     }
 

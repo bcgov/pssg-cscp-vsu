@@ -7,11 +7,14 @@ import { FormBase } from "../shared/form-base";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { LookupService } from "../services/lookup.service";
 import { MatVerticalStepper } from "@angular/material";
-import { RecipientDetailsHelper } from "../shared/components/recipient-details/recipient-details.helper";
 import { Router } from "@angular/router";
 import { Title } from "@angular/platform-browser";
 import { TravelOverviewInfoHelper } from "../shared/components/travel-overview/travel-overview.helper";
 import { iLookupData } from "../shared/interfaces/lookup-data.interface";
+import { TravelInfoHelper } from "../shared/components/travel-information/travel-information.helper";
+import { iApplicantInformation, iAuthorizationInformation, iCaseInformation, iOverviewInformation, iTravelFundApplication, iTravelInformation } from "../shared/interfaces/application.interface";
+import { convertTravelFundApplicationToCRM } from "../shared/interfaces/converters/travel-fund-application.web.to.crm";
+import { ApplicationService } from "../services/application.service";
 
 @Component({
     selector: 'app-vtf-application',
@@ -35,6 +38,7 @@ export class VictimTravelFundApplicationComponent extends FormBase implements On
         provinces: [],
         cities: [],
         courts: [],
+        offences: [],
     };
 
     showConfirmation: boolean = false;
@@ -42,7 +46,7 @@ export class VictimTravelFundApplicationComponent extends FormBase implements On
     overviewHelper = new TravelOverviewInfoHelper();
     caseInfoHelper = new CaseInfoInfoHelper();
     applicantInfoInfoHelper = new ApplicantInfoHelper();
-    recipientDetailsHelper = new RecipientDetailsHelper();
+    travelInfoHelper = new TravelInfoHelper();
     authInfoHelper = new AuthInfoHelper();
 
     window = window;
@@ -51,6 +55,7 @@ export class VictimTravelFundApplicationComponent extends FormBase implements On
         private router: Router,
         private lookupService: LookupService,
         private titleService: Title,
+        private applicationService: ApplicationService,
     ) {
         super();
     }
@@ -67,9 +72,7 @@ export class VictimTravelFundApplicationComponent extends FormBase implements On
             this.lookupService.getCountries().subscribe((res) => {
                 this.lookupData.countries = res.value;
                 if (this.lookupData.countries) {
-                    this.lookupData.countries.sort(function (a, b) {
-                        return a.vsd_name.localeCompare(b.vsd_name);
-                    });
+                    this.lookupData.countries.sort((a, b) => a.vsd_name.localeCompare(b.vsd_name));
                 }
                 resolve();
             });
@@ -79,9 +82,17 @@ export class VictimTravelFundApplicationComponent extends FormBase implements On
             this.lookupService.getProvinces().subscribe((res) => {
                 this.lookupData.provinces = res.value;
                 if (this.lookupData.provinces) {
-                    this.lookupData.provinces.sort(function (a, b) {
-                        return a.vsd_name.localeCompare(b.vsd_name);
-                    });
+                    this.lookupData.provinces.sort((a, b) => a.vsd_name.localeCompare(b.vsd_name));
+                }
+                resolve();
+            });
+        }));
+
+        promise_array.push(new Promise((resolve, reject) => {
+            this.lookupService.getOffences().subscribe((res) => {
+                this.lookupData.offences = res.value;
+                if (this.lookupData.offences) {
+                    this.lookupData.offences.sort((a, b) => a.vsd_name.localeCompare(b.vsd_name));
                 }
                 resolve();
             });
@@ -99,7 +110,7 @@ export class VictimTravelFundApplicationComponent extends FormBase implements On
             overview: this.overviewHelper.setupFormGroup(this.fb, this.formType.val),
             applicantInformation: this.applicantInfoInfoHelper.setupFormGroup(this.fb, this.formType.val),
             caseInformation: this.caseInfoHelper.setupFormGroup(this.fb, this.formType.val),
-            travelInformation: this.fb.group({}),
+            travelInformation: this.travelInfoHelper.setupFormGroup(this.fb, this.formType.val),
             authorizationInformation: this.authInfoHelper.setupFormGroup(this.fb, this.formType.val),
             confirmation: this.fb.group({ confirmationNumber: "" }),
         };
@@ -111,11 +122,55 @@ export class VictimTravelFundApplicationComponent extends FormBase implements On
         console.log("download pdf");
     }
 
+    harvestForm(): iTravelFundApplication {
+        let data = {
+            OverviewInformation: this.form.get('overview').value as iOverviewInformation,
+            ApplicantInformation: this.form.get('applicantInformation').value as iApplicantInformation,
+            CaseInformation: this.form.get('caseInformation').value as iCaseInformation,
+            TravelInformation: this.form.get('travelInformation').value as iTravelInformation,
+            AuthorizationInformation: this.form.get('authorizationInformation').value as iAuthorizationInformation,
+        } as iTravelFundApplication;
+
+        //using this as a workaround to collect values from disabled fields
+        if (data.CaseInformation.victimInfoSameAsApplicant == true) {
+            data.CaseInformation.firstName = data.ApplicantInformation.firstName;
+            data.CaseInformation.middleName = data.ApplicantInformation.middleName;
+            data.CaseInformation.lastName = data.ApplicantInformation.lastName;
+            data.CaseInformation.birthDate = data.ApplicantInformation.birthDate;
+            data.CaseInformation.gender = data.ApplicantInformation.gender;
+        }
+
+        return data;
+    }
+
     submit() {
-        this.showConfirmation = true;
-        setTimeout(() => {
-            this.gotoNextStep(this.applicationStepper);
-        }, 0);
-        console.log("TODO!! -- disable form");
+        console.log("submit");
+        console.log(this.form);
+        if (this.form.valid) {
+            // this.submitting = true;
+            console.log("form is valid - submit");
+            let application = this.harvestForm();
+            let data = convertTravelFundApplicationToCRM(application);
+            console.log(data);
+            this.applicationService.submit(data).subscribe((res) => {
+                this.submitting = false;
+                console.log(res);
+                if (res.IsSuccess) {
+                    console.log("CONFIRMATION NUMBER SHOULD COME FROM CRM");
+                    this.form.get('confirmation.confirmationNumber').patchValue('RXXXXXX');
+                    this.showConfirmation = true;
+                    setTimeout(() => {
+                        this.gotoNextStep(this.applicationStepper);
+                    }, 0);
+                }
+                else {
+                    console.log(res.Result);
+                }
+            });
+        }
+        else {
+            console.log("form is NOT valid - NO submit");
+            this.validateAllFormFields(this.form);
+        }
     }
 }

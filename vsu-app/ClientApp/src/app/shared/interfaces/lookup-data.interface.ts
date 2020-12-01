@@ -3,6 +3,7 @@ export interface iLookupData {
     provinces: iProvince[];
     cities: iCity[];
     courts: iCourt[];
+    offences?: iOffence[];
 }
 
 export interface iCountry {
@@ -35,4 +36,10 @@ export interface iCity {
 export interface iCourt {
     vsd_name: string;
     vsd_courtid: string;
+}
+
+export interface iOffence {
+    vsd_offenseid: string;
+    vsd_name: string;
+    vsd_criminalcode: string;
 }

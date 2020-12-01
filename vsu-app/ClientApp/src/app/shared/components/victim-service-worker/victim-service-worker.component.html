@@ -1,0 +1,61 @@
+<div [formGroup]="form">
+    <p><strong>Victim Service Worker (VSW) Information</strong></p>
+    <p><em>If you have a VSW, you may choose to provide their contact information here.</em></p>
+
+    <div class="row">
+        <div class="col-md-4">
+            <app-field label="First Name" [disabled]="isDisabled">
+                <input class="form-control" type="text" formControlName="firstName" maxlength="100">
+            </app-field>
+        </div>
+        <div class="col-md-4">
+            <app-field label="Last Name" [disabled]="isDisabled">
+                <input class="form-control" type="text" formControlName="lastName" maxlength="100">
+            </app-field>
+        </div>
+        <div class="col-md-4">
+            <app-field label="Organization / Agency" [disabled]="isDisabled">
+                <input class="form-control" type="text" formControlName="organization" maxlength="100">
+            </app-field>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <app-field label="City / Town" [disabled]="isDisabled">
+                <input formControlName="city" typeaheadOptionField="vsd_name" [typeahead]="suggestions$" [typeaheadAsync]="true" class="form-control">
+            </app-field>
+        </div>
+        <div class="col-md-4">
+            <app-field label="Telephone" [required]="false" [valid]="isMyControlValid(form.get('telephone'))" errorMessage="Please enter a phone number" [disabled]="isDisabled">
+                <input class="form-control" mask='000-000-0000' type="text" formControlName="telephone">
+            </app-field>
+        </div>
+        <div class="col-md-4">
+            <app-field label="Extension" [required]="false" [valid]="isMyControlValid(form.get('extension'))" errorMessage="Please enter an extension" [disabled]="isDisabled">
+                <input class="form-control" mask='0000' type="text" formControlName="extension">
+            </app-field>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <app-field label="Email" [required]="false" [valid]="isMyControlValid(form.get('email'))" errorMessage="Please enter an email address" [disabled]="isDisabled">
+                <input class="form-control" type="text" formControlName="email" maxlength="100">
+            </app-field>
+        </div>
+        <div class="col-md-8" *ngIf="formType === ApplicationType.TRAVEL_FUNDS">
+            <app-field label="Is it okay to discuss your travel fund application with this victim service program?" [required]="true" [valid]="isMyControlValid(form.get('okToDiscussTravel'))" errorMessage="Please select one" [disabled]="isDisabled">
+                <label class="inline-label">
+                    <input type="radio" [value]="enum.Boolean.True.val" name="okToDiscussTravel" formControlName="okToDiscussTravel">
+                    <span>Yes</span>
+                </label>
+                <label class="inline-label">
+                    <input type="radio" [value]="enum.Boolean.False.val" name="okToDiscussTravel" formControlName="okToDiscussTravel">
+                    <span>No</span>
+                </label>
+            </app-field>
+        </div>
+    </div>
+
+    <p *ngIf="formType === ApplicationType.NOTIFICATION"><strong>Note:</strong> Your VSW can obtain court updates through Court Services Online unless there is a publication ban on the court file.</p>
+</div>

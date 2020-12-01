@@ -24,9 +24,11 @@ export class CaseInfoInfoHelper {
         }
 
         if (form_type === ApplicationType.TRAVEL_FUNDS) {
-            group['offence'] = ['', Validators.required];
-
-            
+            // group['offence'] = ['', Validators.required];
+            group['offence'] = [''];
+            group['offences'] = fb.array([]);
+            group['crownCounsel'] = fb.array([this.createCrownCounsel(fb)]);
+            group['victimServiceWorker'] = fb.array([this.createVictimServiceWorker(fb)]);
         }
 
         return fb.group(group);
@@ -46,4 +48,27 @@ export class CaseInfoInfoHelper {
             courtLocation: [location, [Validators.required]],
         });
     }
+
+    public createCrownCounsel(fb: FormBuilder) {
+        return fb.group({
+            firstName: [''],
+            lastName: [''],
+            telephone: [''],
+        });
+    }
+
+    public createVictimServiceWorker(fb: FormBuilder) {
+        return fb.group({
+            firstName: [''],
+            lastName: [''],
+            organization: [''],
+            telephone: [''],
+            extension: [''],
+            email: [''],
+            city: [''],
+            okToDiscussTravel: ['', Validators.required]
+        });
+    }
+
+
 }

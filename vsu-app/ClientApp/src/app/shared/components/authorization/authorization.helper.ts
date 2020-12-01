@@ -5,14 +5,17 @@ export class AuthInfoHelper {
     public setupFormGroup(fb: FormBuilder, form_type: ApplicationType): FormGroup {
         let today = new Date();
         let group = {
-            registerForVictimNotification: [''],
-            permissionToShareContactInfo: [''],
-            permissionToContactMyVSW: [''],
             declaration: ['', Validators.required],
             fullName: ['', Validators.required],
             date: [today, Validators.required],
             signature: ['', Validators.required],
         };
+
+        if (form_type === ApplicationType.NOTIFICATION) {
+            group['registerForVictimNotification'] = [''];
+            group['permissionToShareContactInfo'] = [''];
+            group['permissionToContactMyVSW'] = [''];
+        }
 
         return fb.group(group);
     }

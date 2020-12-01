@@ -1,18 +1,18 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError, of } from 'rxjs';
-import { iNotificationApplicationCRM } from '../shared/interfaces/dynamics/crm-notification-application';
+import { iApplicationFormCRM } from '../shared/interfaces/dynamics/crm-application';
 import { retry, catchError } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
 })
-export class NotificationApplicationService {
-    apiUrl = 'api/NotificationApplication';
+export class ApplicationService {
+    apiUrl = 'api/Application';
 
     constructor(private http: HttpClient) { }
 
-    submit(application: iNotificationApplicationCRM): Observable<any> {
+    submit(application: iApplicationFormCRM): Observable<any> {
         return this.http.post<any>(`${this.apiUrl}`, application, { headers: this.headers }).pipe(
             retry(3),
             catchError(this.handleError)
