@@ -1,0 +1,448 @@
+{
+    "kind": "List",
+    "apiVersion": "v1",
+    "metadata": {},
+    "items": [
+        {
+            "apiVersion": "apps.openshift.io/v1",
+            "kind": "DeploymentConfig",
+            "metadata": {
+                "annotations": {
+                    "description": "Defines how to deploy vsu-cornet"
+                },
+                "labels": {
+                    "template": "vsu-cornet-deployment"
+                },
+                "name": "vsu-cornet"
+            },
+            "spec": {
+                "replicas": 1,
+                "selector": {
+                    "name": "vsu-cornet"
+                },
+                "strategy": {
+                    "type": "Rolling"
+                },
+                "template": {
+                    "metadata": {
+                        "labels": {
+                            "name": "vsu-cornet"
+                        },
+                        "name": "vsu-cornet"
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "env": [
+                                    {
+                                        "name": "ASPNETCORE_ENVIRONMENT",
+                                        "value": "Production"
+                                    },
+                                    {
+                                        "name": "DB_USER",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "database-user",
+                                                "name": "mssql"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "DB_PASSWORD",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "database-password",
+                                                "name": "mssql"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "DB_ADMIN_PASSWORD",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "database-admin-password",
+                                                "name": "mssql"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "DB_DATABASE",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "database-name",
+                                                "name": "mssql"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "DATABASE_SERVICE_NAME",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "database-service-name",
+                                                "name": "vsu-cornet"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "DYNAMICS_NATIVE_ODATA_URI",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "dynamics-native-odata-uri",
+                                                "name": "vsu-cornet"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "PathBase",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "base-path",
+                                                "name": "vsu-cornet"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "SMTP_HOST",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "smtp-host",
+                                                "name": "vsu-cornet"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "SSG_USERNAME",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "ssg-username",
+                                                "name": "vsu-cornet"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "SSG_PASSWORD",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "ssg-password",
+                                                "name": "vsu-cornet"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "ENCRYPTION_KEY",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "encryption-key",
+                                                "name": "vsu-cornet"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "BASE_URI",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "base-uri",
+                                                "name": "vsu-cornet"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "SHAREPOINT_SERVER_APPID_URI",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "sharepoint-server-appid-uri",
+                                                "name": "vsu-cornet"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "SHAREPOINT_WEBNAME",
+                                        "value": "vsu-cornet"
+                                    },
+                                    {
+                                        "name": "SHAREPOINT_AAD_TENANTID",
+                                        "value": "bcgovtrial.onmicrosoft.com"
+                                    },
+                                    {
+                                        "name": "SHAREPOINT_CLIENT_ID",
+                                        "value": ""
+                                    },
+                                    {
+                                        "name": "SHAREPOINT_CERTIFICATE_PASSWORD",
+                                        "value": ""
+                                    },
+                                    {
+                                        "name": "SHAREPOINT_CERTIFICATE_FILENAME",
+                                        "value": "/sharepointcert/BCGovTrial.pfx"
+                                    },
+                                    {
+                                        "name": "REDIS_SERVER",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "redis-server",
+                                                "name": "vsu-cornet"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "DYNAMICS_ODATA_URI",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "dynamics-odata-uri",
+                                                "name": "vsu-cornet"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "BCEID_SERVICE_SVCID",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "bceid-service-svcid",
+                                                "name": "vsu-cornet"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "BCEID_SERVICE_URL",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "bceid-service-url",
+                                                "name": "vsu-cornet"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "BCEID_SERVICE_USER",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "bceid-service-user",
+                                                "name": "vsu-cornet"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "BCEID_SERVICE_PASSWD",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "bceid-service-passwd",
+                                                "name": "vsu-cornet"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "BCEP_SERVICE_URL",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "bcep-service-url",
+                                                "name": "vsu-cornet"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "BCEP_MERCHANT_ID",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "bcep-merchant-id",
+                                                "name": "vsu-cornet"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "BCEP_HASH_KEY",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "bcep-hash-key",
+                                                "name": "vsu-cornet"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "BCEP_CONF_PATH",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "bcep-conf-path",
+                                                "name": "vsu-cornet"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "SHAREPOINT_ODATA_URI",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "sharepoint-odata-uri",
+                                                "name": "vsu-cornet"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "SHAREPOINT_NATIVE_BASE_URI",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "sharepoint-native-base-uri",
+                                                "name": "vsu-cornet"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "SITEMINDER_LOGOUT_URL",
+                                        "value": "https://logon.gov.bc.ca/clp-cgi/logoff.cgi"
+                                    },
+                                    {
+                                        "name": "BCEP_CONF_PATH_WORKER",
+                                        "value": "/worker-registration/payment-confirmation"
+                                    }
+                                ],
+                                "image": "",
+                                "name": "vsu-cornet",
+                                "ports": [
+                                    {
+                                        "containerPort": 8080,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "resources": {
+                                    "limits": {
+                                        "cpu": "1",
+                                        "memory": "4Gi"
+                                    },
+                                    "requests": {
+                                        "cpu": "100m",
+                                        "memory": "2Gi"
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                },
+                "triggers": [
+                    {
+                        "type": "ConfigChange"
+                    },
+                    {
+                        "imageChangeParams": {
+                            "automatic": true,
+                            "containerNames": [
+                                "vsu-cornet"
+                            ],
+                            "from": {
+                                "kind": "ImageStreamTag",
+                                "name": "vsu:dev",
+                                "namespace": "pssg-cscp-vsd-tools"
+                            }
+                        },
+                        "type": "ImageChange"
+                    }
+                ]
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Service",
+            "metadata": {
+                "annotations": {
+                    "description": "Exposes and load balances the application pods."
+                },
+                "labels": {
+                    "template": "vsu-cornet-deployment"
+                },
+                "name": "vsu-cornet"
+            },
+            "spec": {
+                "ports": [
+                    {
+                        "name": "8080-tcp",
+                        "port": 8080,
+                        "protocol": "TCP",
+                        "targetPort": 8080
+                    }
+                ],
+                "selector": {
+                    "name": "vsu-cornet"
+                },
+                "sessionAffinity": "None",
+                "type": "ClusterIP"
+            }
+        },
+        {
+            "apiVersion": "route.openshift.io/v1",
+            "kind": "Route",
+            "metadata": {
+                "labels": {
+                    "app": "vsu-cornet"
+                },
+                "name": "vsu-cornet"
+            },
+            "spec": {
+                "host": "vsu-cornetdev.pathfinder.gov.bc.ca",
+                "port": {
+                    "targetPort": "8080-tcp"
+                },
+                "tls": {
+                    "insecureEdgeTerminationPolicy": "Redirect",
+                    "termination": "edge"
+                },
+                "to": {
+                    "kind": "Service",
+                    "name": "vsu-cornet",
+                    "weight": 100
+                }
+            }
+        },
+        {
+            "apiVersion": "route.openshift.io/v1",
+            "kind": "Route",
+            "metadata": {
+                "labels": {
+                    "app": "vsu-cornet-siteminder-route"
+                },
+                "name": "vsu-cornet-siteminder-route"
+            },
+            "spec": {
+                "host": "vsu-cornetdev.pathfinder.bcgov",
+                "port": {
+                    "targetPort": "8080-tcp"
+                },
+                "to": {
+                    "kind": "Service",
+                    "name": "vsu-cornet",
+                    "weight": 100
+                }
+            }
+        },
+        {
+            "apiVersion": "autoscaling/v1",
+            "kind": "HorizontalPodAutoscaler",
+            "metadata": {
+                "labels": {
+                    "app": "vsu-cornet"
+                },
+                "name": "vsu-cornet"
+            },
+            "spec": {
+                "maxReplicas": 6,
+                "minReplicas": 2,
+                "scaleTargetRef": {
+                    "kind": "DeploymentConfig",
+                    "name": "vsu-cornet"
+                }
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "PersistentVolumeClaim",
+            "metadata": {
+                "name": "key-ring"
+            },
+            "spec": {
+                "accessModes": [
+                    "ReadWriteOnce"
+                ],
+                "resources": {
+                    "requests": {
+                        "storage": "5Gi"
+                    }
+                }
+            }
+        }
+    ]
+}

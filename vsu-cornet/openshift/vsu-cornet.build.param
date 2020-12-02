@@ -1,0 +1,20 @@
+#=========================================================
+# OpenShift template parameters for:
+# Component: .
+# Template File: templates/vsu/vsu.build.json
+#=========================================================
+NAME=vsu-cornet.build
+GIT_REPO_URL=https://github.com/bcgov/pssg-cscp-vsu/
+GIT_REF=development
+SOURCE_CONTEXT_DIR=
+SOURCE_IMAGE_KIND=DockerImage
+SOURCE_IMAGE_NAME=registry.access.redhat.com/dotnet/dotnet-22-rhel7
+SOURCE_IMAGE_TAG=latest
+DOTNET_STARTUP_PROJECT=vsu-cornet/vsu-cornet.csproj
+OUTPUT_IMAGE_TAG=latest
+CPU_LIMIT=1
+MEMORY_LIMIT=6Gi
+CPU_REQUEST=1
+MEMORY_REQUEST=4Gi
+UAT_BUILD=
+PROD_BUILD=
