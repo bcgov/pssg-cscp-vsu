@@ -14,5 +14,5 @@ class baseConfig {
   public static final String  SUFFIX = ''
 
   // Apps - Listed in the order they should be tagged
-  public static final String[] APPS = ['vsu']
+  public static final String[] APPS = ['vsu-cornet']
 }
