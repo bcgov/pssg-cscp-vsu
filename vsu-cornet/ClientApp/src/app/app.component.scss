@@ -1,0 +1,216 @@
+.app-main {
+  background: #fff;
+  flex: auto;
+  padding-bottom: 60px;
+}
+
+::ng-deep body {
+  font-size: 16px;
+}
+
+header {
+  border-bottom: 2px solid #fcba19;
+}
+
+.navbar-footer {
+  background-color: #003366;
+}
+
+a:link {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 400;
+}
+
+/* visited link */
+
+a:visited {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 400;
+}
+
+/* mouse over link */
+
+a:hover {
+  color: #fff;
+  text-decoration: underline;
+  font-weight: 400;
+}
+
+/* selected link */
+
+a:active {
+  color: #fff;
+  text-decoration: underline;
+  font-weight: 900;
+}
+
+::ng-deep label {
+  font-weight: 400;
+}
+
+::ng-deep .page-header h1 {
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+}
+
+.top-menu {
+  width: 100%;
+  justify-content: flex-start;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+::ng-deep .application-gutter {
+  min-width: 320px;
+  position: relative;
+  padding-right: 30px;
+  padding-left: 30px;
+}
+
+::ng-deep .application-nav {
+  .mat-step-label {
+      white-space: initial;
+  }
+
+  .mat-step-text-label {
+      text-overflow: initial;
+      overflow: auto;
+      color: #ccc;
+  }
+
+  .mat-step-header .mat-step-label.mat-step-label-active .mat-step-text-label {
+      color: #21527e;
+  }
+
+  .mat-step-header .mat-step-label-active.mat-step-label-selected .mat-step-text-label {
+      color: #21527e;
+      font-weight: 700;
+  }
+
+  .mat-step-header .mat-step-label-active.mat-step-label-selected .mat-step-icon {
+      background-color: #21527e;
+  }
+
+  .mat-vertical-content {
+      padding: 0 24px 0 24px;
+  }
+
+  .mat-vertical-stepper-header {
+      padding: 8px 0 !important;
+  }
+
+  .mat-vertical-content-container {
+      margin-left: 12px;
+  }
+
+  .mat-vertical-stepper-header .mat-step-icon {
+      border: 2px #4e719b solid;
+      background-color: #fff;
+  }
+
+  .mat-stepper-vertical-line::before {
+      top: -8px;
+      bottom: -16px;
+      left: -1px;
+      border-left: 2px solid #ccc;
+  }
+}
+
+::ng-deep .inline-label {
+  span {
+      display: inline-block;
+      padding-left: 5px;
+      margin-right: 15px;
+      font-weight: normal;
+  }
+}
+
+::ng-deep .inline-checkbox {
+  display: flex;
+}
+
+::ng-deep .with-error input,
+::ng-deep .with-error select,
+::ng-deep .with-error textarea {
+  border: 1px solid red;
+}
+
+::ng-deep .radio-list {
+  label {
+      font-weight: normal;
+      margin-bottom: 5px;
+  }
+
+  input[type="checkbox"],
+  input[type="radio"] {
+      margin-right: 5px;
+  }
+
+  &.per-line label {
+      display: block;
+  }
+
+  &.per-line label:first-child {
+      display: inline-block;
+  }
+}
+
+::ng-deep .radio-list .app-field {
+  margin-bottom: 5px;
+}
+
+::ng-deep .inline-label {
+  span {
+      display: inline-block;
+      padding-left: 5px;
+      margin-right: 15px;
+      font-weight: normal;
+  }
+}
+
+::ng-deep .signature-trigger {
+  width: 385px;
+  padding: 40px 0;
+  border: 1px solid #9fb6d9;
+  background-color: #f1f4fa;
+  color: #9fb6d9;
+  text-align: center;
+  border-radius: 4px;
+
+  p {
+      margin: 0;
+      font-size: 0.95em;
+  }
+}
+
+::ng-deep .signature-preview {
+  img {
+      width: 300px;
+      height: 100px;
+  }
+
+  a.redo {
+      display: block;
+      cursor: pointer;
+  }
+
+  a.redo:hover {
+      text-decoration: underline;
+  }
+}
+
+::ng-deep .mat-calendar-body-selected {
+  background-color: #337ab7;
+  color: #000 !important;
+}
+
+::ng-deep .mat-calendar-body-cell-content {
+  color: #54708b;
+}
+
+::ng-deep .mat-calendar-header {
+  background-color: #337ab7;
+  color: #fff;
+}
