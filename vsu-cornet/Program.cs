@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace vsu_cornet
+namespace Gov.Cscp.Victims.Public
 {
     public class Program
     {
