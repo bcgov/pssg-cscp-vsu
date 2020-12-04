@@ -1,0 +1,38 @@
+<div class="form-wrapper" style="position: relative;" [formGroup]="form">
+  <div class="row">
+    <div class="col">
+      CORNET search
+    </div>
+    <div class="col">
+      <app-field>
+        <label class="inline-label">
+          <input type="radio" value="Exact" formControlName="search_type" name="search_type">
+          <span>Exact Search</span>
+        </label>
+        <label class="inline-label">
+          <input type="radio" value="PARTIAL" formControlName="search_type" name="search_type">
+          <span>Partial Search</span>
+        </label>
+        <label class="inline-label">
+          <input type="radio" value="Soundex" formControlName="search_type" name="search_type">
+          <span>Soundex Search</span>
+        </label>
+      </app-field>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+      <app-field label="Surname" [required]="true" [valid]="isMyControlValid(form.get('surname'))" errorMessage="Please enter a surname.">
+        <input class="form-control" type="text" formControlName="surname" maxlength="100">
+      </app-field>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <button (click)="search()" class="btn btn-primary mr-2">SEARCH CORNET</button>
+    </div>
+  </div>
+
+</div>

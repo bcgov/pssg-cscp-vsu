@@ -21,9 +21,11 @@ namespace Gov.Cscp.Victims.Public
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<TokenHandler>();
+            services.AddTransient<CornetAuthHandler>();
 
             services.AddHttpClient<ICOASTAuthService, COASTAuthService>();
             services.AddHttpClient<IDynamicsResultService, DynamicsResultService>().AddHttpMessageHandler<TokenHandler>();
+            services.AddHttpClient<ICornetResultService, CornetResultService>().AddHttpMessageHandler<CornetAuthHandler>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 

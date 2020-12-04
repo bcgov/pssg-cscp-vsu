@@ -10,11 +10,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDatepickerModule, MatDialogModule, MatIconModule, MatStepperModule } from '@angular/material';
 import { NgxMaskModule } from 'ngx-mask';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { ClientSearchComponent } from './client-search/client-search.component';
+import { FieldComponent } from './shared/field/field.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
+    ClientSearchComponent,
+    FieldComponent,
   ],
   imports: [
     AppRoutingModule,
