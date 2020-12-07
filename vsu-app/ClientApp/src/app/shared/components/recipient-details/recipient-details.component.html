@@ -45,7 +45,7 @@
 
     <!-- Designate Information -->
     <div class="designate" formArrayName="designate" *ngFor="let item of form.get('designate')['controls']; let i = index;">
-        <app-designate [formGroupName]="i" [formGroup]="item" [isDisabled]="isDisabled" [formType]="formType" [lookupData]="lookupData"></app-designate>
+        <app-designate [formGroupName]="i" [formGroup]="item" [isDisabled]="isDisabled" [formType]="formType" [baseForm]="form.parent" [lookupData]="lookupData"></app-designate>
     </div>
 
     <!-- Notification Details -->

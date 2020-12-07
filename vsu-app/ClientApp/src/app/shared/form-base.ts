@@ -2,6 +2,7 @@ import { ValidatorFn, AbstractControl, FormControl, FormGroup, FormArray, Valida
 import { MatStepper } from '@angular/material';
 import * as moment from 'moment';
 import { ApplicationType, EnumHelper } from './enums-list';
+import * as _ from 'lodash';
 
 export class FormBase {
     form: FormGroup;
@@ -206,11 +207,11 @@ export class FormBase {
     copyApplicantAddressToDeligate(form: FormGroup | FormArray, formType: ApplicationType) {
         if (formType === ApplicationType.NOTIFICATION) {
             let designates = form.get('recipientDetails.designate') as FormArray;
-            if (designates.length == 0) return;
+            if (designates.controls.length == 0) return;
             let copyAddress = designates.controls[0].get('addressSameAsApplicant').value === true;
             let target = designates.controls[0].get('address');
             let source = form.get('applicantInformation.address');
-            let options = { onlySelf: true, emitEvent: true };
+            let options = { onlySelf: false, emitEvent: true };
 
             if (copyAddress) {
                 target.get('line1').patchValue(source.get('line1').value, options);
@@ -256,7 +257,7 @@ export class FormBase {
         let victimInfo = form.get('caseInformation');
         let applicantInfo = form.get('applicantInformation');
         let copy = victimInfo.get('victimInfoSameAsApplicant').value;
-        let options = { onlySelf: true, emitEvent: true };
+        let options = { onlySelf: false, emitEvent: true };
         if (copy) {
             victimInfo.get('firstName').patchValue(applicantInfo.get('firstName').value);
             victimInfo.get('middleName').patchValue(applicantInfo.get('middleName').value);
@@ -295,7 +296,7 @@ export class FormBase {
         let victimInfo = form.get('caseInformation');
         let applicantInfo = form.get('applicantInformation');
         let copy = applicantInfo.get('applicantInfoSameAsVictim').value;
-        let options = { onlySelf: true, emitEvent: true };
+        let options = { onlySelf: false, emitEvent: true };
         if (copy) {
             applicantInfo.get('firstName').patchValue(victimInfo.get('firstName').value);
             applicantInfo.get('middleName').patchValue(victimInfo.get('middleName').value);
@@ -358,7 +359,7 @@ export class FormBase {
 
                 if (formParts != null) {
                     formValid = formParts.valid;
-                    console.log(formParts);
+                    console.log(_.cloneDeep(formParts));
                 } else {
                     alert('That was a null form. Nothing to validate');
                 }

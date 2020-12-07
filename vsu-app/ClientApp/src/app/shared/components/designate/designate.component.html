@@ -30,7 +30,7 @@
 
     <div>
         <label class="inline-label inline-checkbox">
-            <input type="checkbox" [value]="true" name="addressSameAsApplicant" formControlName="addressSameAsApplicant" (change)="copyApplicantAddressToDeligate(form.parent, formType)">
+            <input type="checkbox" [value]="true" name="addressSameAsApplicant" formControlName="addressSameAsApplicant" (change)="copyApplicantAddressToDeligate(baseForm, formType)">
             <span>Contact information for my designate is the same as mine.</span>
         </label>
     </div>

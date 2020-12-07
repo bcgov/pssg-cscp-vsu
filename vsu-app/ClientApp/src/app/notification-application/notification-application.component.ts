@@ -17,8 +17,8 @@ import { FORM_TITLES, FORM_TYPES } from '../shared/enums-list';
 
 @Component({
     selector: 'app-notification-application',
-    templateUrl: './noticiation-application.component.html',
-    styleUrls: ['./noticiation-application.component.scss']
+    templateUrl: './notification-application.component.html',
+    styleUrls: ['./notification-application.component.scss']
 })
 export class NotificationApplicationComponent extends FormBase implements OnInit {
     @ViewChild('stepper', { static: true }) applicationStepper: MatVerticalStepper;
@@ -165,56 +165,5 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
 
     downloadPDF() {
         console.log("download pdf");
-    }
-
-    gotoPage(selectPage: MatStepper): void {
-        window.scroll(0, 0);
-        this.showValidationMessage = false;
-        this.currentFormStep = selectPage.selectedIndex;
-    }
-
-    gotoNextStep(stepper: MatStepper, emptyPage?: boolean): void {
-        if (stepper) {
-            const desiredFormIndex: number = stepper.selectedIndex;
-            const formGroupName = this.elements[desiredFormIndex];
-            console.log(`Form for validation is ${formGroupName}.`);
-            if (desiredFormIndex >= 0 && desiredFormIndex < this.elements.length) {
-                const formParts = this.form.get(formGroupName);
-                let formValid = true;
-
-                if (formParts != null) {
-                    formValid = formParts.valid;
-                    console.log(formParts);
-                } else {
-                    alert('That was a null form. Nothing to validate')
-                }
-
-                if (emptyPage != null) {
-                    if (emptyPage == true) {
-                        formValid = true;
-                    }
-                }
-
-                if (formValid) {
-                    console.log('Form is valid so proceeding to next step.')
-                    this.showValidationMessage = false;
-                    window.scroll(0, 0);
-                    stepper.next();
-                } else {
-                    console.log('Form is not valid rerun the validation and show the validation message.')
-                    this.validateAllFormFields(formParts);
-                    this.showValidationMessage = true;
-                }
-            }
-        }
-    }
-
-    gotoPreviousStep(stepper: MatStepper): void {
-        if (stepper) {
-            console.log('Going back a step');
-            this.showValidationMessage = false;
-            window.scroll(0, 0);
-            stepper.previous();
-        }
     }
 }

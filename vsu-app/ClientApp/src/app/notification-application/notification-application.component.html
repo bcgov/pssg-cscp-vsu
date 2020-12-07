@@ -13,15 +13,15 @@
                         </ng-template>
                         <ng-template matStepperIcon="number">
                         </ng-template>
-                        <mat-step label="Overview" [stepControl]="fb.group({})" [hasError]="!isMyControlValid(form.get('overview'))"></mat-step>
-                        <mat-step label="Case Information" [stepControl]="fb.group({})" [hasError]="!isMyControlValid(form.get('caseInformation'))"></mat-step>
-                        <mat-step label="Applicant Information" [stepControl]="fb.group({})" [hasError]="!isMyControlValid(form.get('applicantInformation'))"></mat-step>
-                        <mat-step label="Notification Recipient & Details" [stepControl]="fb.group({})" [hasError]="!isMyControlValid(form.get('recipientDetails'))"></mat-step>
-                        <mat-step label="Declaration & Authorization" [stepControl]="fb.group({})" [hasError]="!isMyControlValid(form.get('authorizationInformation'))"></mat-step>
-                        <mat-step label="Confirmation" *ngIf="showConfirmation" [stepControl]="fb.group({})"></mat-step>
+                        <mat-step label="Overview" [stepControl]="fb.group({name: ['overview']})" [hasError]="!isMyControlValid(form.get('overview'))"></mat-step>
+                        <mat-step label="Case Information" [stepControl]="fb.group({name: ['caseInformation']})" [hasError]="!isMyControlValid(form.get('caseInformation'))"></mat-step>
+                        <mat-step label="Applicant Information" [stepControl]="fb.group({name: ['applicantInformation']})" [hasError]="!isMyControlValid(form.get('applicantInformation'))"></mat-step>
+                        <mat-step label="Notification Recipient & Details" [stepControl]="fb.group({name: ['recipientDetails']})" [hasError]="!isMyControlValid(form.get('recipientDetails'))"></mat-step>
+                        <mat-step label="Declaration & Authorization" [stepControl]="fb.group({name: ['authorizationInformation']})" [hasError]="!isMyControlValid(form.get('authorizationInformation'))"></mat-step>
+                        <mat-step label="Confirmation" *ngIf="showConfirmation" [stepControl]="fb.group({name: ['confirmation']})"></mat-step>
                     </mat-vertical-stepper>
 
-                    <app-additional-info-banner (downloadPDFClick)="downloadPDF()"></app-additional-info-banner>
+                    <app-additional-info-banner [formType]="formType.val"></app-additional-info-banner>
                 </div>
             </section>
         </div>

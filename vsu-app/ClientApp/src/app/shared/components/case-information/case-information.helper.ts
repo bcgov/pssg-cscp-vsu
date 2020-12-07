@@ -21,7 +21,7 @@ export class CaseInfoInfoHelper {
             accusedBirthDate: [''],
             accusedGender: [''],
 
-            additionalAccused: fb.array([this.createAdditionalAccused(fb)]),
+            additionalAccused: fb.array([]),//fb.array([this.createAdditionalAccused(fb)]),
         }
 
         if (form_type === ApplicationType.TRAVEL_FUNDS) {
@@ -73,10 +73,10 @@ export class CaseInfoInfoHelper {
 
     public createOffence(fb: FormBuilder, offence: iOffence) {
         return fb.group({
-          id: [offence.vsd_offenseid],
-          name: [offence.vsd_name],
-          criminal_code: [offence.vsd_criminalcode],
-          checked: [false]
+            id: [offence.vsd_offenseid],
+            name: [offence.vsd_name],
+            criminal_code: [offence.vsd_criminalcode],
+            checked: [false]
         });
-      }
+    }
 }

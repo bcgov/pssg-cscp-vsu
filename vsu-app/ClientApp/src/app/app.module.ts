@@ -15,7 +15,7 @@ import { LookupService } from './services/lookup.service';
 import { MatDatepickerModule, MatDialogModule, MatIconModule, MatStepperModule } from '@angular/material';
 import { NgModule } from '@angular/core';
 import { NgxMaskModule } from 'ngx-mask';
-import { NotificationApplicationComponent } from './noticiation-application/noticiation-application.component';
+import { NotificationApplicationComponent } from './notification-application/notification-application.component';
 import { NotificationBannerComponent } from './shared/notification-banner/notification-banner.component';
 import { NotificationOverviewComponent } from './shared/components/notification-overview/overview.component';
 import { RecipientDetailsComponent } from './shared/components/recipient-details/recipient-details.component';
