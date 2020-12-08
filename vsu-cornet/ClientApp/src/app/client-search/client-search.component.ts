@@ -1,5 +1,6 @@
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ClientService } from '../services/client.service';
 import { CornetService } from '../services/cornet.service';
@@ -14,33 +15,48 @@ import { IClient, IClientParameters } from '../shared/interfaces/client-search.i
 })
 export class ClientSearchComponent extends FormBase implements OnInit {
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
-  // search_type: string = "Exact";
-  // surname: string = "";
-  // given_name: string = "";
-  // second_name: string = "";
-  // current_name: boolean = false;
-  // gender: string = "";
-  // birthdate: Date = null;
-  // show_date_range: boolean = false;
-  // year_range: number = 0;
-  // cs: string = "";
-  // fps: string = "";
   years: string[] = [];
 
   clients: IClient[] = [];
   clients$: Observable<IClient[]>;
   total$: Observable<number>;
 
+  username: string = "";
+  fullname: string = "";
+  client: string = "";
+
   constructor(private cornetService: CornetService,
     private fb: FormBuilder,
     public clientService: ClientService,
+    private route: ActivatedRoute,
   ) {
-    // this.clients = clientService.clients$;
     super();
     this.clients$ = clientService.clients$;
     this.total$ = clientService.total$;
   }
+
   ngOnInit() {
+    this.route.queryParams.subscribe(q => {
+      if (q && q.username) {
+        this.username = q.username;
+      }
+      else {
+        this.username = "test";
+      }
+      if (q && q.fullname) {
+        this.fullname = q.fullname;
+      }
+      else {
+        this.fullname = "test";
+      }
+      if (q && q.client) {
+        this.client = q.client;
+      }
+      else {
+        this.client = "test";
+      }
+    });
+
     this.form = this.fb.group({
       search_type: ["Exact"],
       surname: ["", Validators.required],
@@ -62,17 +78,34 @@ export class ClientSearchComponent extends FormBase implements OnInit {
     }
   }
 
+  surnameChange(val) {
+    if (val) {
+      this.form.get('fps').patchValue('');
+      this.form.get('cs').patchValue('');
+    }
+  }
+
+  csChange(val) {
+    if (val) {
+      this.clearControlValidators(this.form.get('surname'));
+      this.form.get('fps').patchValue('');
+    }
+    else {
+      this.setControlValidators(this.form.get('surname'), Validators.required);
+    }
+  }
+
+  fpsChange(val) {
+    if (val) {
+      this.clearControlValidators(this.form.get('surname'));
+      this.form.get('cs').patchValue('');
+    }
+    else {
+      this.setControlValidators(this.form.get('surname'), Validators.required);
+    }
+  }
+
   search() {
-    let type = "";
-    let text = ""
-    if (this.form.get('cs').value) {
-      type = "CSNO";
-      text = this.form.get('cs').value;
-    }
-    if (this.form.get('fps').value) {
-      type = "FPS";
-      text = this.form.get('fps').value;
-    }
     let parameters: IClientParameters = {
       search_type: this.form.get('search_type').value,
       surname: this.form.get('surname').value,
@@ -80,35 +113,33 @@ export class ClientSearchComponent extends FormBase implements OnInit {
       given2: this.form.get('second_name').value,
       gender: this.form.get('gender').value,
       birth_year: this.form.get('birth_year').value,
-      // // birth_year_range
-      // identifier_type: this.form.get('surname').value,
-      // identifier_text: this.form.get('surname').value,
+      birth_year_range: this.form.get('year_range').value,
+
+      username: this.username,
+      fullname: this.fullname,
+      client: this.client,
     };
 
-    // if (this.given_name) parameters.given1 = this.given_name;
-    // if (this.second_name) parameters.given2 = this.second_name;
-    // if (this.gender) parameters.gender = this.gender;
-    // if (this.birthdate) parameters.birth_year = this.birthdate.getFullYear().toString();
+    let type = "";
+    let text = ""
+    if (this.form.get('cs').value) {
+      type = "CSNO";
+      text = this.form.get('cs').value;
+      parameters.search_type = "ID";
+    }
+    if (this.form.get('fps').value) {
+      type = "FPS";
+      text = this.form.get('fps').value;
+      parameters.search_type = "ID";
+    }
+
     if (type) parameters.identifier_type = type;
     if (text) parameters.identifier_text = text;
 
     this.clientService.updateClients(parameters);
-
-    // this.cornetService.getClients(parameters).subscribe((res) => {
-    //   console.log(res);
-    //   if (res.clients) {
-
-    //     this.clients = res.clients;
-    //   }
-
-    // }, (err) => {
-    //   console.log("ERROR GETTING CLIENTS");
-    //   console.log(err);
-    // });
   }
 
   onSort({ column, direction }: SortEvent) {
-    console.log("sort");
     // resetting other headers
     this.headers.forEach(header => {
       if (header.sortable !== column) {
@@ -118,6 +149,20 @@ export class ClientSearchComponent extends FormBase implements OnInit {
 
     this.clientService.sortColumn = column;
     this.clientService.sortDirection = direction;
+  }
+
+  setPageSize(val) {
+    this.clientService.pageSize = parseInt(val);
+  }
+
+  currentNameChange(val) {
+    this.clientService.page = 1;
+    this.clientService.currentName = val;
+  }
+
+  showOffender(clientNumber: string) {
+    console.log(clientNumber);
+
   }
 
 }

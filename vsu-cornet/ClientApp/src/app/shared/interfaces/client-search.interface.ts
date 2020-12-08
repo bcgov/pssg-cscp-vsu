@@ -22,4 +22,8 @@ export interface IClientParameters {
     gender?: string;
     identifier_type?: string;
     identifier_text?: string;
+    
+    username?: string;
+    fullname?: string;
+    client?: string;
 }

@@ -7,10 +7,18 @@ using System;
 
 namespace Gov.Cscp.Victims.Public.Services
 {
+    public class CornetHeaderInfo
+    {
+        public string username { get; set; }
+        public string fullname { get; set; }
+        public string client { get; set; }
+    }
+
+
     public interface ICornetResultService
     {
-        Task<DynamicsResult> Get(string endpointUrl);
-        Task<DynamicsResult> Post(string endpointUrl, string requestJson);
+        Task<DynamicsResult> Get(string endpointUrl, CornetHeaderInfo headers);
+        Task<DynamicsResult> Post(string endpointUrl, string requestJson, CornetHeaderInfo headers);
     }
 
     public class CornetResultService : ICornetResultService
@@ -24,19 +32,19 @@ namespace Gov.Cscp.Victims.Public.Services
             _configuration = configuration;
         }
 
-        public async Task<DynamicsResult> Get(string endpointUrl)
+        public async Task<DynamicsResult> Get(string endpointUrl, CornetHeaderInfo headers)
         {
-            DynamicsResult blob = await DynamicsResultAsync(HttpMethod.Get, endpointUrl, "");
+            DynamicsResult blob = await DynamicsResultAsync(HttpMethod.Get, endpointUrl, "", headers);
             return blob;
         }
 
-        public async Task<DynamicsResult> Post(string endpointUrl, string modelJson)
+        public async Task<DynamicsResult> Post(string endpointUrl, string modelJson, CornetHeaderInfo headers)
         {
-            DynamicsResult blob = await DynamicsResultAsync(HttpMethod.Post, endpointUrl, modelJson);
+            DynamicsResult blob = await DynamicsResultAsync(HttpMethod.Post, endpointUrl, modelJson, headers);
             return blob;
         }
 
-        private async Task<DynamicsResult> DynamicsResultAsync(HttpMethod method, string endpointUrl, string requestJson)
+        private async Task<DynamicsResult> DynamicsResultAsync(HttpMethod method, string endpointUrl, string requestJson, CornetHeaderInfo headers)
         {
             endpointUrl = _configuration["CORNET_URI"] + endpointUrl;
             requestJson = requestJson.Replace("fortunecookie", "@odata.");
@@ -45,9 +53,9 @@ namespace Gov.Cscp.Victims.Public.Services
             Console.WriteLine(requestJson);
 
             HttpRequestMessage _httpRequest = new HttpRequestMessage(method, endpointUrl);
-            _httpRequest.Headers.Add("username", "test");
-            _httpRequest.Headers.Add("fullname", "test");
-            _httpRequest.Headers.Add("client", "test");
+            _httpRequest.Headers.Add("username", headers.username);
+            _httpRequest.Headers.Add("fullname", headers.fullname);
+            _httpRequest.Headers.Add("client", headers.client);
             _httpRequest.Content = new StringContent(requestJson, System.Text.Encoding.UTF8, "application/json");
 
             HttpResponseMessage _httpResponse = await _client.SendAsync(_httpRequest);
@@ -58,8 +66,12 @@ namespace Gov.Cscp.Victims.Public.Services
             DynamicsResult result = new DynamicsResult();
             result.statusCode = _statusCode;
             result.responseMessage = _httpResponse;
-            string clean = _responseContent.Replace("@odata.", "fortunecookie");
-            result.result = Newtonsoft.Json.Linq.JObject.Parse(clean);
+            result.result = new Newtonsoft.Json.Linq.JObject();
+            if (_statusCode == HttpStatusCode.OK)
+            {
+                string clean = _responseContent.Replace("@odata.", "fortunecookie");
+                result.result = Newtonsoft.Json.Linq.JObject.Parse(clean);
+            }
 
             Console.WriteLine(result.result);
 

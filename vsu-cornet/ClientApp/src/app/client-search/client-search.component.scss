@@ -28,3 +28,17 @@ p {
 .error-cell {
   width: 75%;
 }
+
+th[sortable] {
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.search-button {
+  margin: 0;
+  position: absolute;
+  top: 44px;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
