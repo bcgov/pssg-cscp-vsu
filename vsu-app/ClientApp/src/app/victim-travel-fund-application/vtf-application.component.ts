@@ -15,6 +15,7 @@ import { TravelInfoHelper } from "../shared/components/travel-information/travel
 import { iApplicantInformation, iAuthorizationInformation, iCaseInformation, iOverviewInformation, iTravelFundApplication, iTravelInformation } from "../shared/interfaces/application.interface";
 import { convertTravelFundApplicationToCRM } from "../shared/interfaces/converters/travel-fund-application.web.to.crm";
 import { ApplicationService } from "../services/application.service";
+import { NotificationQueueService } from "../services/notification-queue.service";
 
 @Component({
     selector: 'app-vtf-application',
@@ -56,6 +57,7 @@ export class VictimTravelFundApplicationComponent extends FormBase implements On
         private lookupService: LookupService,
         private titleService: Title,
         private applicationService: ApplicationService,
+        private notify: NotificationQueueService
     ) {
         super();
     }
@@ -75,6 +77,8 @@ export class VictimTravelFundApplicationComponent extends FormBase implements On
                     this.lookupData.countries.sort((a, b) => a.vsd_name.localeCompare(b.vsd_name));
                 }
                 resolve();
+            }, (err) => {
+                this.notify.addNotification("Encountered an error getting country information.", "warning", 3000);
             });
         }));
 
@@ -85,6 +89,8 @@ export class VictimTravelFundApplicationComponent extends FormBase implements On
                     this.lookupData.provinces.sort((a, b) => a.vsd_name.localeCompare(b.vsd_name));
                 }
                 resolve();
+            }, (err) => {
+                this.notify.addNotification("Encountered an error getting province information.", "warning", 3000);
             });
         }));
 
@@ -95,6 +101,8 @@ export class VictimTravelFundApplicationComponent extends FormBase implements On
                     this.lookupData.offences.sort((a, b) => a.vsd_name.localeCompare(b.vsd_name));
                 }
                 resolve();
+            }, (err) => {
+                this.notify.addNotification("Encountered an error getting offence information.", "warning", 3000);
             });
         }));
 
@@ -147,7 +155,7 @@ export class VictimTravelFundApplicationComponent extends FormBase implements On
         console.log("submit");
         console.log(this.form);
         if (this.form.valid) {
-            // this.submitting = true;
+            this.submitting = true;
             console.log("form is valid - submit");
             let application = this.harvestForm();
             let data = convertTravelFundApplicationToCRM(application);
@@ -166,6 +174,10 @@ export class VictimTravelFundApplicationComponent extends FormBase implements On
                 else {
                     console.log(res.Result);
                 }
+            }, (err) => {
+                this.notify.addNotification("There was an error submitting the application.", "danger", 4000);
+                console.log(err);
+                this.submitting = false;
             });
         }
         else {

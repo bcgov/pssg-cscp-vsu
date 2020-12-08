@@ -107,7 +107,7 @@ function getCRMApplication(application: iTravelFundApplication) {
         vsd_cvap_victimgendercode: application.CaseInformation.gender,
 
 
-        vsd_vsu_vsutravelexpenserequest: "",
+        vsd_vsu_travelexpenserequest_03: "",
         vsd_vsu_travelexpenserequesttransportother: "",
         vsd_vsu_travelexpenserequestother: application.TravelInformation.expenses.applyForOtherText,
         vsd_vsu_purposeoftravel: application.TravelInformation.purposeOfTravel,
@@ -157,7 +157,7 @@ function getCRMApplication(application: iTravelFundApplication) {
         requested_expenses.push(enums.TravelExpenses.Other.val);
     }
 
-    crm_application.vsd_vsu_vsutravelexpenserequest = requested_expenses.join(',');
+    crm_application.vsd_vsu_travelexpenserequest_03 = requested_expenses.join(',');
 
     return crm_application;
 }

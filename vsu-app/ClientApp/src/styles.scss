@@ -354,6 +354,10 @@ hr {
   pointer-events: none;
 }
 
+.disabled-wrapper {
+  cursor: not-allowed;
+}
+
 .disabled-cursor {
   cursor: not-allowed;
 }
@@ -440,4 +444,16 @@ input.form-control {
 
 .flex-container > div {
   padding-left: 0 !important;
+}
+
+.loading-indicator {
+  position: fixed;
+  z-index: 999;
+  height: 6em;
+  width: 6em;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
 }

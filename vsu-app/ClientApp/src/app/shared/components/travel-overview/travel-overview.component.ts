@@ -5,6 +5,7 @@ import { ApplicationType } from "../../enums-list";
 import { FormBase } from "../../form-base";
 import { iLookupData, iOffence } from "../../interfaces/lookup-data.interface";
 import * as _ from 'lodash';
+import { NotificationQueueService } from "../../../services/notification-queue.service";
 
 @Component({
     selector: 'app-travel-overview',
@@ -22,6 +23,7 @@ export class TravelOverviewComponent extends FormBase implements OnInit {
     constructor(private controlContainer: ControlContainer,
         private lookupService: LookupService,
         private fb: FormBuilder,
+        private notify: NotificationQueueService,
     ) {
         super();
     }
@@ -44,6 +46,8 @@ export class TravelOverviewComponent extends FormBase implements OnInit {
                 }
                 this.offenceList = this.lookupData.offences;
                 this.populateOffences();
+            }, (err) => {
+                this.notify.addNotification("Encountered an error getting court information.", "warning", 3000);
             });
         }
     }

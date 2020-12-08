@@ -12,7 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomeComponent } from './home/home.component';
 import { HttpClientModule } from '@angular/common/http';
 import { LookupService } from './services/lookup.service';
-import { MatDatepickerModule, MatDialogModule, MatIconModule, MatStepperModule } from '@angular/material';
+import { MatDatepickerModule, MatDialogModule, MatIconModule, MatProgressSpinnerModule, MatStepperModule } from '@angular/material';
 import { NgModule } from '@angular/core';
 import { NgxMaskModule } from 'ngx-mask';
 import { NotificationApplicationComponent } from './notification-application/notification-application.component';
@@ -68,6 +68,7 @@ import { TravelInformationComponent } from './shared/components/travel-informati
     HttpClientModule,
     MatDatepickerModule,
     MatDialogModule,
+    MatProgressSpinnerModule,
     MatIconModule,
     MatStepperModule,
     NgxMaskModule.forRoot(),
@@ -79,6 +80,7 @@ import { TravelInformationComponent } from './shared/components/travel-informati
   exports: [
     AppRoutingModule,
     MatDatepickerModule,
+    MatProgressSpinnerModule,
     NotificationBannerComponent,
   ],
   providers: [

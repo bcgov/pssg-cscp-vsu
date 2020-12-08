@@ -61,7 +61,7 @@ export interface iCRMApplication {
     vsd_vsu_bccorrectionsinformation?: number;
     vsd_vsu_notificationadditionalcomments?: string;
 
-    vsd_vsu_vsutravelexpenserequest?: string;
+    vsd_vsu_travelexpenserequest_03?: string;
     vsd_vsu_travelexpenserequesttransportother?: string;
     vsd_vsu_travelexpenserequestother?: string;
     vsd_vsu_purposeoftravel?: string;

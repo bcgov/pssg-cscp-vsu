@@ -7,6 +7,7 @@ import { LookupService } from "../../../services/lookup.service";
 import { ApplicationType, MY_FORMATS } from "../../enums-list";
 import { FormBase } from "../../form-base";
 import { CaseInfoInfoHelper } from "./case-information.helper";
+import { NotificationQueueService } from "../../../services/notification-queue.service";
 
 @Component({
   selector: 'app-case-information',
@@ -31,7 +32,9 @@ export class CaseInformationComponent extends FormBase implements OnInit {
 
   constructor(private controlContainer: ControlContainer,
     private lookupService: LookupService,
-    private fb: FormBuilder,) {
+    private fb: FormBuilder,
+    private notify: NotificationQueueService,
+    ) {
     super();
   }
   ngOnInit() {
@@ -51,6 +54,8 @@ export class CaseInformationComponent extends FormBase implements OnInit {
           this.lookupData.courts.sort((a, b) => a.vsd_name.localeCompare(b.vsd_name));
         }
         this.courtList = this.lookupData.courts.map(c => c.vsd_name);
+      }, (err) => {
+        this.notify.addNotification("Encountered an error getting court information.", "warning", 3000);
       });
     }
 
@@ -68,6 +73,8 @@ export class CaseInformationComponent extends FormBase implements OnInit {
           }
           this.offenceList = this.lookupData.offences;
           this.populateOffences();
+        }, (err) => {
+          this.notify.addNotification("Encountered an error getting offence information.", "warning", 3000);
         });
       }
     }

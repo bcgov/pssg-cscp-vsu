@@ -14,6 +14,7 @@ import { ApplicationService } from '../services/application.service';
 import { convertNotificationApplicationToCRM } from '../shared/interfaces/converters/notification-application.web.to.crm';
 import { Title } from '@angular/platform-browser';
 import { FORM_TITLES, FORM_TYPES } from '../shared/enums-list';
+import { NotificationQueueService } from '../services/notification-queue.service';
 
 @Component({
     selector: 'app-notification-application',
@@ -53,6 +54,7 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
         private lookupService: LookupService,
         private titleService: Title,
         private applicationService: ApplicationService,
+        private notify: NotificationQueueService
     ) {
         super();
     }
@@ -72,6 +74,8 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
                     this.lookupData.countries.sort((a, b) => a.vsd_name.localeCompare(b.vsd_name));
                 }
                 resolve();
+            }, (err) => {
+                this.notify.addNotification("Encountered an error getting country information.", "warning", 3000);
             });
         }));
 
@@ -82,6 +86,8 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
                     this.lookupData.provinces.sort((a, b) => a.vsd_name.localeCompare(b.vsd_name));
                 }
                 resolve();
+            }, (err) => {
+                this.notify.addNotification("Encountered an error getting province information.", "warning", 3000);
             });
         }));
 
@@ -151,6 +157,9 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
                 else {
                     console.log(res.Result);
                 }
+            }, (err) => {
+                this.notify.addNotification("There was an error submitting the application.", "danger", 4000);
+                this.submitting = false;
             });
         }
         else {
