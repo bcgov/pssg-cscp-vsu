@@ -345,6 +345,10 @@ hr {
   pointer-events: none;
 }
 
+.disabled-wrapper {
+  cursor: not-allowed;
+}
+
 .disabled-cursor {
   cursor: not-allowed;
 }

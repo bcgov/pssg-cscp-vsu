@@ -27,11 +27,112 @@
         <input class="form-control" type="text" formControlName="surname" maxlength="100">
       </app-field>
     </div>
+
+    <div class="col-md-3">
+      <app-field label="Given name" [required]="false" [valid]="isMyControlValid(form.get('given_name'))">
+        <input class="form-control" type="text" formControlName="given_name" maxlength="100">
+      </app-field>
+    </div>
+
+    <div class="col-md-3">
+      <app-field label="Second name" [required]="false" [valid]="isMyControlValid(form.get('second_name'))">
+        <input class="form-control" type="text" formControlName="second_name" maxlength="100">
+      </app-field>
+    </div>
+
+    <div class="col-md-3">
+      <app-field>
+        <label>
+          <input type="checkbox" [value]="true" formControlName="current_name">
+          Current Name
+        </label>
+      </app-field>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+      <app-field label="Gender" [required]="false" [valid]="isMyControlValid(form.get('gender'))">
+        <select class="form-control" formControlName="gender">
+          <option value=""></option>
+          <option value="M">Male</option>
+          <option value="F">Female</option>
+        </select>
+      </app-field>
+    </div>
+
+    <div class="col-md-3">
+      <app-field label="Birth year" [required]="false" [valid]="isMyControlValid(form.get('birth_year'))">
+        <select class="form-control" formControlName="birth_year">
+          <option value=""></option>
+          <option *ngFor="let year of years" [value]="year">
+            {{ year }}
+          </option>
+        </select>
+      </app-field>
+    </div>
+
+    <div class="col-md-3">
+      <app-field label="CS#" [required]="false" [valid]="isMyControlValid(form.get('cs'))">
+        <input class="form-control" type="text" formControlName="cs" maxlength="100">
+      </app-field>
+    </div>
+
+    <div class="col-md-3">
+      <app-field label="FPS#" [required]="false" [valid]="isMyControlValid(form.get('fps'))">
+        <input class="form-control" type="text" formControlName="fps" maxlength="100">
+      </app-field>
+    </div>
   </div>
 
   <div class="row">
     <div class="col">
-      <button (click)="search()" class="btn btn-primary mr-2">SEARCH CORNET</button>
+      <button (click)="search()" [class.is-disabled]="!form.valid" class="btn btn-primary mr-2">SEARCH CORNET</button>
+    </div>
+  </div>
+
+  <!-- *ngIf="clients.length > 0" -->
+  <div class="row mt-4">
+    <div class="col">
+      <table class="table table-striped">
+        <thead class="thead">
+          <th sortable="personName" (sort)="onSort($event)">Last Name</th>
+          <th>Given Names</th>
+          <th>Current Name</th>
+          <th>Gender</th>
+          <th sortable="personBirthDate" (sort)="onSort($event)">Birth date</th>
+          <th>CS#</th>
+          <th>FPS#</th>
+          <th>Custody status</th>
+          <th>Actions</th>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let client of clients$ | async">
+            <td>{{client.personName.split(',')[0]}}</td>
+            <td>{{client.personName.split(',').splice(1).join(',')}}</td>
+            <td>{{client.isCurrentName}}</td>
+            <td>{{client.personGenderIdentityCodeType}}</td>
+            <td>{{client.personBirthDate}}</td>
+            <td>{{client.clientNumber}}</td>
+            <td> </td>
+            <td>{{client.locationTypeCode.custody}}</td>
+            <td>TODO</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="d-flex justify-content-between p-2">
+        <ngb-pagination [collectionSize]="(total$ | async)!" [(page)]="clientService.page" [pageSize]="clientService.pageSize">
+        </ngb-pagination>
+
+        <!-- [(ngModel)]="clientService.pageSize" -->
+        <select class="custom-select" style="width: auto" name="pageSize" >
+          <option [ngValue]="2">2 items per page</option>
+          <option [ngValue]="4">4 items per page</option>
+          <option [ngValue]="6">6 items per page</option>
+        </select>
+      </div>
     </div>
   </div>
 

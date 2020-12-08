@@ -2,6 +2,7 @@ import { retry, catchError } from 'rxjs/operators';
 import { Observable, throwError, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { IClientParameters } from '../shared/interfaces/client-search.interface';
 
 
 @Injectable({
@@ -39,16 +40,4 @@ export class CornetService {
         }
         return throwError(errorMessage);
     }
-}
-
-export interface IClientParameters {
-    search_type?: string;
-    surname?: string;
-    given1?: string;
-    given2?: string;
-    birth_year?: string;
-    birth_year_range?: string;
-    gender?: string;
-    identifier_type?: string;
-    identifier_text?: string;
 }

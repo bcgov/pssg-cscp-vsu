@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { CornetService, IClientParameters } from '../services/cornet.service';
+import { Observable } from 'rxjs';
+import { ClientService } from '../services/client.service';
+import { CornetService } from '../services/cornet.service';
+import { NgbdSortableHeader, SortEvent } from '../shared/directives/sortable.directive';
 import { FormBase } from '../shared/form-base';
+import { IClient, IClientParameters } from '../shared/interfaces/client-search.interface';
 
 @Component({
   selector: 'app-client-search',
@@ -10,6 +13,7 @@ import { FormBase } from '../shared/form-base';
   styleUrls: ['./client-search.component.scss']
 })
 export class ClientSearchComponent extends FormBase implements OnInit {
+  @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
   // search_type: string = "Exact";
   // surname: string = "";
   // given_name: string = "";
@@ -21,10 +25,20 @@ export class ClientSearchComponent extends FormBase implements OnInit {
   // year_range: number = 0;
   // cs: string = "";
   // fps: string = "";
+  years: string[] = [];
+
+  clients: IClient[] = [];
+  clients$: Observable<IClient[]>;
+  total$: Observable<number>;
 
   constructor(private cornetService: CornetService,
-    private fb: FormBuilder) {
+    private fb: FormBuilder,
+    public clientService: ClientService,
+  ) {
+    // this.clients = clientService.clients$;
     super();
+    this.clients$ = clientService.clients$;
+    this.total$ = clientService.total$;
   }
   ngOnInit() {
     this.form = this.fb.group({
@@ -34,48 +48,76 @@ export class ClientSearchComponent extends FormBase implements OnInit {
       second_name: [""],
       current_name: [""],
       gender: [""],
-      birthdate: [""],
+      birth_year: [""],
       show_date_range: [""],
       year_range: [""],
       cs: [""],
       fps: [""],
-    })
+    });
+
+    let this_year = new Date().getFullYear();
+
+    for (let i = 1900; i < this_year; i++) {
+      this.years.push(i.toString());
+    }
   }
 
   search() {
-    // let type = "";
-    // let text = ""
-    // if (this.cs) {
-    //   type = "CSNO";
-    //   text = this.cs;
-    // }
-    // if (this.fps) {
-    //   type = "FPS";
-    //   text = this.fps;
-    // }
+    let type = "";
+    let text = ""
+    if (this.form.get('cs').value) {
+      type = "CSNO";
+      text = this.form.get('cs').value;
+    }
+    if (this.form.get('fps').value) {
+      type = "FPS";
+      text = this.form.get('fps').value;
+    }
     let parameters: IClientParameters = {
       search_type: this.form.get('search_type').value,
       surname: this.form.get('surname').value,
-      // given1: this.given_name,
-      // given2: this.second_name,
-      // gender: this.gender,
-      // birth_year: this.birthdate ? this.birthdate.getFullYear().toString() : "",
+      given1: this.form.get('given_name').value,
+      given2: this.form.get('second_name').value,
+      gender: this.form.get('gender').value,
+      birth_year: this.form.get('birth_year').value,
       // // birth_year_range
-      // identifier_type: type,
-      // identifier_text: text
+      // identifier_type: this.form.get('surname').value,
+      // identifier_text: this.form.get('surname').value,
     };
 
     // if (this.given_name) parameters.given1 = this.given_name;
     // if (this.second_name) parameters.given2 = this.second_name;
     // if (this.gender) parameters.gender = this.gender;
     // if (this.birthdate) parameters.birth_year = this.birthdate.getFullYear().toString();
-    // if (type) parameters.identifier_type = type;
-    // if (text) parameters.identifier_text = text;
+    if (type) parameters.identifier_type = type;
+    if (text) parameters.identifier_text = text;
 
-    this.cornetService.getClients(parameters).subscribe((res) => {
-      console.log(res);
+    this.clientService.updateClients(parameters);
 
+    // this.cornetService.getClients(parameters).subscribe((res) => {
+    //   console.log(res);
+    //   if (res.clients) {
+
+    //     this.clients = res.clients;
+    //   }
+
+    // }, (err) => {
+    //   console.log("ERROR GETTING CLIENTS");
+    //   console.log(err);
+    // });
+  }
+
+  onSort({ column, direction }: SortEvent) {
+    console.log("sort");
+    // resetting other headers
+    this.headers.forEach(header => {
+      if (header.sortable !== column) {
+        header.direction = '';
+      }
     });
+
+    this.clientService.sortColumn = column;
+    this.clientService.sortDirection = direction;
   }
 
 }

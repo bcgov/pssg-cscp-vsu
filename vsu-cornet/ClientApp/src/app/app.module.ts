@@ -12,6 +12,9 @@ import { NgxMaskModule } from 'ngx-mask';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClientSearchComponent } from './client-search/client-search.component';
 import { FieldComponent } from './shared/field/field.component';
+import { DecimalPipe } from '@angular/common';
+import { NgbdSortableHeader } from './shared/directives/sortable.directive';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -19,6 +22,7 @@ import { FieldComponent } from './shared/field/field.component';
     HomeComponent,
     ClientSearchComponent,
     FieldComponent,
+    NgbdSortableHeader
   ],
   imports: [
     AppRoutingModule,
@@ -28,6 +32,7 @@ import { FieldComponent } from './shared/field/field.component';
     HttpClientModule,
     MatDatepickerModule,
     MatDialogModule,
+    NgbModule,
     NgxMaskModule.forRoot(),
     ReactiveFormsModule,
     TooltipModule.forRoot(),
@@ -36,7 +41,7 @@ import { FieldComponent } from './shared/field/field.component';
     AppRoutingModule,
     MatDatepickerModule,
   ],
-  providers: [],
+  providers: [DecimalPipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
