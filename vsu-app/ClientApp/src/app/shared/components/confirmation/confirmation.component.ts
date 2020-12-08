@@ -39,7 +39,7 @@ export class ConfirmationComponent implements OnInit {
         this.showPrintView.emit(false);
     }
 
-    close() {
-        window.close();
+    returnToVSUHome() {
+        window.location.href = "https://www2.gov.bc.ca/gov/content/justice/criminal-justice/bcs-criminal-justice-system/if-you-are-a-victim-of-a-crime/victim-of-crime/victim-notification";
     }
 }
