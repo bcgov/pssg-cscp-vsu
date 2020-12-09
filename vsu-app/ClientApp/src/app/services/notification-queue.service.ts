@@ -15,6 +15,12 @@ export class NotificationQueueService {
 
   public notificationQueue: BehaviorSubject<Notification[]> = new BehaviorSubject<Notification[]>([]);
 
+  /**
+   * 
+   * @param message Notification message
+   * @param type 'success' || 'warning' || 'danger'
+   * @param timeoutMs How long to disaply the message
+   */
   addNotification(message: string, type: string = 'warning', timeoutMs: number = this.defaultTimeout) {
     const currentNotifications: Notification[] = this.notificationQueue.getValue();
     const notification: Notification = { message, identifier: new Date().toString(), type };

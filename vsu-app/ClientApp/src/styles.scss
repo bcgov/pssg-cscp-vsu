@@ -48,6 +48,13 @@ html {
   border-radius: 5px;
 }
 
+.btn-link-secondary {
+  width: 100% !important;
+  background-color: #fff !important;
+  border: #ccc 1px solid !important;
+  color: #003366 !important;
+}
+
 .btn.btn-secondary {
   background-color: #fff;
   border: #ccc 1px solid;
@@ -347,6 +354,10 @@ hr {
   pointer-events: none;
 }
 
+.disabled-wrapper {
+  cursor: not-allowed;
+}
+
 .disabled-cursor {
   cursor: not-allowed;
 }
@@ -433,4 +444,16 @@ input.form-control {
 
 .flex-container > div {
   padding-left: 0 !important;
+}
+
+.loading-indicator {
+  position: fixed;
+  z-index: 999;
+  height: 6em;
+  width: 6em;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
 }

@@ -14,11 +14,12 @@ import { ApplicationService } from '../services/application.service';
 import { convertNotificationApplicationToCRM } from '../shared/interfaces/converters/notification-application.web.to.crm';
 import { Title } from '@angular/platform-browser';
 import { FORM_TITLES, FORM_TYPES } from '../shared/enums-list';
+import { NotificationQueueService } from '../services/notification-queue.service';
 
 @Component({
     selector: 'app-notification-application',
-    templateUrl: './noticiation-application.component.html',
-    styleUrls: ['./noticiation-application.component.scss']
+    templateUrl: './notification-application.component.html',
+    styleUrls: ['./notification-application.component.scss']
 })
 export class NotificationApplicationComponent extends FormBase implements OnInit {
     @ViewChild('stepper', { static: true }) applicationStepper: MatVerticalStepper;
@@ -53,6 +54,7 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
         private lookupService: LookupService,
         private titleService: Title,
         private applicationService: ApplicationService,
+        private notify: NotificationQueueService
     ) {
         super();
     }
@@ -72,6 +74,8 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
                     this.lookupData.countries.sort((a, b) => a.vsd_name.localeCompare(b.vsd_name));
                 }
                 resolve();
+            }, (err) => {
+                this.notify.addNotification("Encountered an error getting country information.", "warning", 3000);
             });
         }));
 
@@ -82,6 +86,8 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
                     this.lookupData.provinces.sort((a, b) => a.vsd_name.localeCompare(b.vsd_name));
                 }
                 resolve();
+            }, (err) => {
+                this.notify.addNotification("Encountered an error getting province information.", "warning", 3000);
             });
         }));
 
@@ -151,6 +157,9 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
                 else {
                     console.log(res.Result);
                 }
+            }, (err) => {
+                this.notify.addNotification("There was an error submitting the application.", "danger", 4000);
+                this.submitting = false;
             });
         }
         else {
@@ -165,56 +174,5 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
 
     downloadPDF() {
         console.log("download pdf");
-    }
-
-    gotoPage(selectPage: MatStepper): void {
-        window.scroll(0, 0);
-        this.showValidationMessage = false;
-        this.currentFormStep = selectPage.selectedIndex;
-    }
-
-    gotoNextStep(stepper: MatStepper, emptyPage?: boolean): void {
-        if (stepper) {
-            const desiredFormIndex: number = stepper.selectedIndex;
-            const formGroupName = this.elements[desiredFormIndex];
-            console.log(`Form for validation is ${formGroupName}.`);
-            if (desiredFormIndex >= 0 && desiredFormIndex < this.elements.length) {
-                const formParts = this.form.get(formGroupName);
-                let formValid = true;
-
-                if (formParts != null) {
-                    formValid = formParts.valid;
-                    console.log(formParts);
-                } else {
-                    alert('That was a null form. Nothing to validate')
-                }
-
-                if (emptyPage != null) {
-                    if (emptyPage == true) {
-                        formValid = true;
-                    }
-                }
-
-                if (formValid) {
-                    console.log('Form is valid so proceeding to next step.')
-                    this.showValidationMessage = false;
-                    window.scroll(0, 0);
-                    stepper.next();
-                } else {
-                    console.log('Form is not valid rerun the validation and show the validation message.')
-                    this.validateAllFormFields(formParts);
-                    this.showValidationMessage = true;
-                }
-            }
-        }
-    }
-
-    gotoPreviousStep(stepper: MatStepper): void {
-        if (stepper) {
-            console.log('Going back a step');
-            this.showValidationMessage = false;
-            window.scroll(0, 0);
-            stepper.previous();
-        }
     }
 }

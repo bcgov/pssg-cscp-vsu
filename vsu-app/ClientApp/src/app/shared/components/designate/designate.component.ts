@@ -12,6 +12,7 @@ export class DesignateComponent extends FormBase implements OnInit {
     @Input() isDisabled: boolean;
     @Input() formType: ApplicationType;
     @Input() lookupData: iLookupData;
+    @Input() baseForm: FormGroup;
     public form: FormGroup;
 
     constructor(private controlContainer: ControlContainer) {

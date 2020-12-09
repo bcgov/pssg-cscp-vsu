@@ -1,0 +1,44 @@
+p {
+    font-size: 16px;
+    margin-bottom: 1.2em;
+}
+
+.was-in-bc-warning {
+  color: #cf5547;
+  font-style: italic;
+  font-size: 14px;
+}
+
+.out-of-line {
+  margin-left: -15px;
+  padding: 20px;
+  padding-left: 15px;
+}
+
+.danger-cell {
+  background-color: #f2f2f2;
+}
+
+.lead-cell {
+  width: 25%;
+  vertical-align: top;
+  padding-left: 15px;
+}
+
+.error-cell {
+  width: 75%;
+}
+
+th[sortable] {
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.search-button {
+  margin: 0;
+  position: absolute;
+  top: 44px;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}

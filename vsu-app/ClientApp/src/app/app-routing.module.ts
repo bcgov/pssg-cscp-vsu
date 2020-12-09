@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
-import { NotificationApplicationComponent } from './noticiation-application/noticiation-application.component';
+import { NotificationApplicationComponent } from './notification-application/notification-application.component';
 import { VictimTravelFundApplicationComponent } from './victim-travel-fund-application/vtf-application.component';
 
 const routes: Routes = [

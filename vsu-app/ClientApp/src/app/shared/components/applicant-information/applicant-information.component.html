@@ -32,12 +32,22 @@
             <label *ngIf="formType === ApplicationType.NOTIFICATION">
                 <input type="radio" [value]="enum.ApplicantType.Other_Family_Member.val" name="applicantType" formControlName="applicantType" (change)="applicantTypeChange()">
                 {{enum.ApplicantType.Other_Family_Member.name}}
-                <span *ngIf="form.get('applicantType').value === enum.ApplicantType.Other_Family_Member.val" class="applicant-type-info-container">
+                <!-- <span *ngIf="form.get('applicantType').value === enum.ApplicantType.Other_Family_Member.val" class="applicant-type-info-container">
                     : <input class="form-control" type="text" formControlName="applicantTypeOther" maxlength="100" [class.has-error]="!isMyControlValid(form.get('applicantTypeOther'))">
-                </span>
+                </span> -->
             </label>
         </app-field>
     </section>
+
+    <ng-container *ngIf="form.get('applicantType').value === enum.ApplicantType.Other_Family_Member.val">
+        <div class="row">
+            <div class="col-md-6">
+                <app-field label="Please indicate relationship" [required]="true" [disabled]="isDisabled" [valid]="isMyControlValid(form.get('applicantTypeOther'))" errorMessage="Please enter a relationship">
+                    <input class="form-control" type="text" formControlName="applicantTypeOther" maxlength="100">
+                </app-field>
+            </div>
+        </div>
+    </ng-container>
 
 
     <ng-container *ngIf="form.get('applicantType').value === enum.ApplicantType.Victim_Service_Worker.val">

@@ -136,7 +136,7 @@
     </div>
 
     <div class="additionalAccused" formArrayName="additionalAccused" *ngFor="let item of form.get('additionalAccused')['controls']; let i = index;">
-        <div [formGroupName]="i" class="additional-accused">
+        <div [formGroupName]="i" class="additional-offender-info">
             <div class="row">
                 <div class="col-md-6">
                     <app-field label="Name of Additional Accused / Offender" [disabled]="isDisabled">
@@ -145,24 +145,25 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6 flex-col">
+                <div class="col-md-6">
                     <app-field label="Birth Date" class="full-width" [disabled]="isDisabled">
                         <app-date-field [control]="item.get('birthDate')" [max]="today" [disabled]="isDisabled"></app-date-field>
                     </app-field>
                 </div>
-                <div class="col-md-6 flex-col date-col">
+                <div class="col-md-3">
                     <app-field label="Gender" [disabled]="isDisabled">
                         <label class="inline-label">
-                            <input type="radio" [value]="enum.Gender.Male.val" name="gender" formControlName="gender">
+                            <input type="radio" [value]="enum.Gender.Male.val" formControlName="gender">
                             <span>M</span>
                         </label>
                         <label class="inline-label">
-                            <input type="radio" [value]="enum.Gender.Female.val" name="gender" formControlName="gender">
+                            <input type="radio" [value]="enum.Gender.Female.val" formControlName="gender">
                             <span>F</span>
                         </label>
                     </app-field>
-
-                    <div class="remove-button" *ngIf="form.get('additionalAccused')['controls'].length > 1">
+                </div>
+                <div class="col">
+                    <div class="remove-button">
                         <br>
                         <i class="fas fa-times-circle text-danger center-clear-btn" (click)="removeAdditionalAccused(i)"></i>
                     </div>

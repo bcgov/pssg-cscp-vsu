@@ -98,6 +98,8 @@ export class AddressComponent implements OnInit {
             this.lookupData.countries.sort((a, b) => a.vsd_name.localeCompare(b.vsd_name));
           }
           resolve();
+        }, (err) => {
+                
         });
       }));
     }
@@ -110,6 +112,8 @@ export class AddressComponent implements OnInit {
             this.lookupData.provinces.sort((a, b) => a.vsd_name.localeCompare(b.vsd_name));
           }
           resolve();
+        }, (err) => {
+                
         });
       }));
     }

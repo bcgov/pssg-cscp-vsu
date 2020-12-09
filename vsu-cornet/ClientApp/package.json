@@ -25,6 +25,7 @@
     "@angular/platform-server": "8.2.12",
     "@angular/router": "8.2.12",
     "@nguniversal/module-map-ngfactory-loader": "8.1.1",
+    "@ng-bootstrap/ng-bootstrap": "5.0.0",
     "angular2-signaturepad": "^2.8.0",
     "aspnet-prerendering": "^3.0.1",
     "bootstrap": "^4.3.1",
