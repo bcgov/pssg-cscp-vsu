@@ -1,5 +1,4 @@
 import { ILocationType } from "./client-search.interface";
-import { IOptionSetVal } from "../enums-list"
 
 export interface IClientDetails {
     clientNumber?: string;
@@ -8,8 +7,14 @@ export interface IClientDetails {
     personBirthDate?: string;
     personGenderIdentityCodeType?: string;
     personName?: string;
-
     notifications?: INotification[];
+
+    authorityDocuments?: IAuthorityDocument[];
+    hearings?: IHearing[];
+    keyDates?: IKeyDate[];
+    movements?: IMovement[];
+    stateTransitions?: IStateTransition[];
+    victimContacts?: IVictimContact[];
 }
 
 export interface INotification {
@@ -19,4 +24,99 @@ export interface INotification {
     eventReferenceId: string;
     eventType: number;
     id: string;
+}
+
+export interface IAuthorityDocument {
+    authorityDocumentId: string;
+    authorityDocumentNumbers: string[];
+    clientNumber: string;
+}
+
+export interface IHearing {
+    activityDate: IActivityDate;
+    activityId: string;
+    activityType: IActivityDate;
+    clientNumber: string;
+    hearingCategory: IActivityDate;
+    hearingComment: string;
+    hearingDecision: IActivityDate;
+    hearingRequestType: IActivityDate;
+}
+
+export interface IKeyDate {
+    activityCategory: IActivityInfo;
+    activityDate: string;
+    activityDescription: string;
+    activityId: string;
+    clientNumber: string;
+}
+
+export interface IActivityInfo {
+    code: string;
+    description: string;
+}
+export interface IActivityDate {
+    actual: string;
+    scheduled: string;
+}
+export interface IDateRange {
+    from: string;
+    to: string;
+}
+export interface IMovement {
+    activityCategory: IActivityInfo;
+    activityDate: IActivityDate;
+    activityDescription: string;
+    activityId: string;
+    activityReason: IActivityInfo;
+    activitySubCategory: IActivityInfo;
+    clientNumber: string;
+    facilityType: string;
+    supervisionFacility: IDateRange;
+}
+
+export interface IStateTransition {
+    activityId: string;
+    activityReason: IActivityInfo;
+    activitySubType: IActivityInfo;
+    activityType: IActivityInfo;
+    clientNumber: string;
+    identificationId: string;
+}
+
+export interface IVictimContact {
+    businessAddressEffectiveDate: string;
+    businessAddressFull: string;
+    cellNumberType: ITelephoneInfo;
+    clientNumber: string;
+    emailType: IEmailType;
+    mailingAddressEffectiveDate: string;
+    mailingAddressFull: string;
+    personFullName: string;
+    personId: string;
+    primaryAddressEffectiveDate: string;
+    primaryAddressFull: string;
+    secondaryAddressEffectiveDate: string;
+    secondaryAddressFull: string;
+    telephoneNumberType: ITelephoneInfo;
+    victimContactComment: string;
+    victimContactDate: IContactDate;
+    victimToPersonRelationship: string;
+}
+
+export interface IContactDate {
+    effective: string;
+    expiry: string;
+}
+
+export interface ITelephoneInfo {
+    effectiveDate: string;
+    isPrimary: string;
+    number: string;
+}
+
+export interface IEmailType {
+    effectiveDate: string;
+    emailAddress: string;
+    isPrimary: string;
 }

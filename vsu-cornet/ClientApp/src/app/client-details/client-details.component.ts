@@ -4,9 +4,10 @@ import { ActivatedRoute } from '@angular/router';
 import { ClientService } from '../services/client.service';
 import { CornetService } from '../services/cornet.service';
 import { NotificationService } from '../services/notification.service';
+import { EnumHelper } from '../shared/enums-list';
 import { FormBase } from '../shared/form-base';
-import { IClientDetails, INotification } from '../shared/interfaces/client-details.interface';
-import { IClient, IClientParameters } from '../shared/interfaces/client-search.interface';
+import { IAuthorityDocument, IClientDetails, IHearing, IKeyDate, IMovement, IStateTransition, IVictimContact } from '../shared/interfaces/client-details.interface';
+import { IClientParameters, ICornetParameters } from '../shared/interfaces/cornet-api-parameters.interface';
 
 @Component({
   selector: 'app-client-details',
@@ -22,10 +23,11 @@ export class ClientDetailsComponent extends FormBase implements OnInit {
   fullname: string = "";
   client: string = "";
 
+  enums: EnumHelper = new EnumHelper();
+
   constructor(private fb: FormBuilder,
     private route: ActivatedRoute,
     private notificationService: NotificationService,
-    private clientService: ClientService,
     private cornetService: CornetService,
   ) {
     super();
@@ -35,6 +37,18 @@ export class ClientDetailsComponent extends FormBase implements OnInit {
     this.username = this.route.snapshot.paramMap.get('username') || "test";
     this.fullname = this.route.snapshot.paramMap.get('fullname') || "test";
     this.client = this.route.snapshot.paramMap.get('client') || "test";
+
+    this.client_details = {
+      clientNumber: "",
+      isCurrentName: "",
+      locationTypeCode: {
+        community: "",
+        custody: "",
+      },
+      personBirthDate: "",
+      personGenderIdentityCodeType: "",
+      personName: "",
+    }
 
     this.form = this.fb.group({
       lastName: [""],
@@ -62,7 +76,6 @@ export class ClientDetailsComponent extends FormBase implements OnInit {
     };
 
     this.cornetService.getClients(parameters).subscribe((res) => {
-      // console.log(res);
       if (res && res.clients) {
         Object.assign(this.client_details, res.clients[0]);
       }
@@ -71,9 +84,14 @@ export class ClientDetailsComponent extends FormBase implements OnInit {
     });
 
     this.notificationService.getNotificationsForClient(clientNumber).subscribe((res) => {
-      // console.log(res);
       if (res && res.value && res.value.length) {
         this.client_details.notifications = [];
+        this.client_details.authorityDocuments = [];
+        this.client_details.hearings = [];
+        this.client_details.keyDates = [];
+        this.client_details.movements = [];
+        this.client_details.stateTransitions = [];
+        this.client_details.victimContacts = [];
         res.value.forEach((n: any) => {
           this.client_details.notifications.push({
             notificationId: n.vsd_cornetnotificationid,
@@ -84,13 +102,100 @@ export class ClientDetailsComponent extends FormBase implements OnInit {
             id: n.vsd_guid,
           });
         });
-        // this.client_details.notifications = res.value;
+        this.getClientNotifications();
       }
-
-      console.log(this.client_details);
-
     }, (err) => {
       console.log(err);
     });
+  }
+
+  getClientNotifications() {
+    console.log(this.client_details);
+
+    for (let i = 0; i < this.client_details.notifications.length; i++) {
+      let notification = this.client_details.notifications[i];
+      let event_type = this.enums.getOptionsSetVal(this.enums.EventType, notification.eventType);
+
+      let parameters: ICornetParameters = {
+        event_id: notification.eventReferenceId,
+        guid: notification.id,
+
+        username: this.username,
+        fullname: this.fullname,
+        client: this.client,
+      };
+
+      switch (event_type) {
+        case this.enums.EventType.AUTH_DOCM: {
+          console.log("get auth doc");
+          this.cornetService.getAuthorityDocument(parameters).subscribe((res: IAuthorityDocument) => {
+            if (res) {
+              this.client_details.authorityDocuments.push(res);
+            }
+          }, (err) => {
+            console.log(err);
+          });
+          break;
+        }
+        case this.enums.EventType.HEARING: {
+          console.log("get hearing");
+          this.cornetService.getHearing(parameters).subscribe((res: IHearing) => {
+            if (res) {
+              this.client_details.hearings.push(res);
+            }
+          }, (err) => {
+            console.log(err);
+          });
+
+          break;
+        }
+        case this.enums.EventType.KEY_DATE: {
+          console.log("get key date");
+          this.cornetService.getKeyDate(parameters).subscribe((res: IKeyDate) => {
+            if (res) {
+              this.client_details.keyDates.push(res);
+            }
+          }, (err) => {
+            console.log(err);
+          });
+          break;
+        }
+        case this.enums.EventType.MOVEMENT: {
+          console.log("get movement");
+          this.cornetService.getMovement(parameters).subscribe((res: IMovement) => {
+            if (res) {
+              this.client_details.movements.push(res);
+            }
+          }, (err) => {
+            console.log(err);
+          });
+          break;
+        }
+        case this.enums.EventType.STATE_TRAN: {
+          console.log("get state transition");
+          this.cornetService.getStateTransition(parameters).subscribe((res: IStateTransition) => {
+            if (res) {
+              this.client_details.stateTransitions.push(res);
+            }
+          }, (err) => {
+            console.log(err);
+          });
+          break;
+        }
+        case this.enums.EventType.VICT_CNTCT: {
+          console.log("get victim contact");
+
+          this.cornetService.getVictimContact(parameters).subscribe((res: IVictimContact) => {
+            if (res) {
+              this.client_details.victimContacts.push(res);
+            }
+          }, (err) => {
+            console.log(err);
+          });
+          break;
+        }
+      }
+    }
+
   }
 }

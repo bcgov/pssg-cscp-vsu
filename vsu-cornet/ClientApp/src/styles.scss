@@ -350,6 +350,19 @@ hr {
   pointer-events: none;
 }
 
+.read-only {
+  background-color: #eee;
+  opacity: 1;
+  text-decoration: none;
+  pointer-events: none;
+}
+
+.read-only-checkbox {
+  opacity: 1;
+  text-decoration: none;
+  pointer-events: none;
+}
+
 .disabled-wrapper {
   cursor: not-allowed;
 }

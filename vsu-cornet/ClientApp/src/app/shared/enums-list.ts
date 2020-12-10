@@ -15,8 +15,8 @@ export class EnumHelper {
     /**
      * Helper to retrieve option set data from just the val number
      */
-    public getOptionsSetVal(optionSet: string, val: number): IOptionSetVal {
-        return Object.values(this[optionSet]).find((o: IOptionSetVal) => o.val == val) as IOptionSetVal;
+    public getOptionsSetVal(optionSet: any, val: number): IOptionSetVal {
+        return Object.values(optionSet).find((o: IOptionSetVal) => o.val == val) as IOptionSetVal;
     }
 
     public EventType = {

@@ -2,7 +2,6 @@ import { retry, catchError } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { IClientParameters } from '../shared/interfaces/client-search.interface';
 
 
 @Injectable({

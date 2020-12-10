@@ -1,10 +1,11 @@
 import { SortColumn, SortDirection } from "../shared/directives/sortable.directive";
-import { IClient, IClientParameters } from "../shared/interfaces/client-search.interface";
+import { IClient } from "../shared/interfaces/client-search.interface";
 import { Injectable, PipeTransform } from '@angular/core';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { DecimalPipe } from '@angular/common';
 import { debounceTime, delay, switchMap, tap } from 'rxjs/operators';
 import { CornetService } from "./cornet.service";
+import { IClientParameters } from "../shared/interfaces/cornet-api-parameters.interface";
 
 interface SearchResult {
     clients: IClient[];

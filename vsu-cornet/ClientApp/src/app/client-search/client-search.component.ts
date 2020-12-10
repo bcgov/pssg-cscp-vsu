@@ -7,7 +7,8 @@ import { CornetService } from '../services/cornet.service';
 import { NotificationService } from '../services/notification.service';
 import { NgbdSortableHeader, SortEvent } from '../shared/directives/sortable.directive';
 import { FormBase } from '../shared/form-base';
-import { IClient, IClientParameters } from '../shared/interfaces/client-search.interface';
+import { IClient } from '../shared/interfaces/client-search.interface';
+import { IClientParameters } from '../shared/interfaces/cornet-api-parameters.interface';
 
 @Component({
   selector: 'app-client-search',

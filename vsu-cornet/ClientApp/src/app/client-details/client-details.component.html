@@ -2,7 +2,7 @@
   <mat-spinner mode="indeterminate"></mat-spinner>
 </div>
 
-<div class="container" style="position: relative;" [formGroup]="form">
+<div class="container" style="position: relative;">
   <div class="subject-information-container">
     <div class="row mt-5">
       <div class="col">
@@ -12,32 +12,106 @@
 
     <div class="row">
       <div class="col-md-3">
-        <app-field label="Last name" [disabled]="true">
-          <input class="form-control" type="text" formControlName="lastName" maxlength="100">
+        <app-field label="Last name">
+          <input class="form-control" type="text" [(ngModel)]="client_details.personName" maxlength="100" [class.read-only]="true">
         </app-field>
       </div>
 
       <div class="col-md-3">
-        <app-field label="First name" [disabled]="true">
-          <input class="form-control" type="text" formControlName="lastName" maxlength="100">
+        <app-field label="First name">
+          <input class="form-control" type="text" maxlength="100" [class.read-only]="true">
         </app-field>
       </div>
 
       <div class="col-md-3">
-        <app-field label="Middle name" [disabled]="true">
-          <input class="form-control" type="text" formControlName="lastName" maxlength="100">
+        <app-field label="Middle name">
+          <input class="form-control" type="text" maxlength="100" [class.read-only]="true">
         </app-field>
       </div>
 
       <div class="col-md-3">
-        <app-field label=" " [disabled]="true">
-          <label>
-            <input type="checkbox" [value]="true" formControlName="isCurrentName">
+        <app-field label=" ">
+          <label [class.read-only-checkbox]="true">
+            <input type="checkbox" [value]="true" [checked]="client_details.isCurrentName == 'Y'" [class.read-only]="true">
             Current Name
           </label>
         </app-field>
       </div>
     </div>
+
+    <div class="row">
+      <div class="col-md-3">
+        <app-field label="Gender">
+          <input class="form-control" type="text" [(ngModel)]="client_details.personGenderIdentityCodeType" maxlength="100" [class.read-only]="true">
+        </app-field>
+      </div>
+
+      <div class="col-md-3">
+        <app-field label="Birthdate">
+          <input class="form-control" type="text" [(ngModel)]="client_details.personBirthDate" maxlength="100" [class.read-only]="true">
+        </app-field>
+      </div>
+
+      <div class="col-md-3">
+        <app-field label="Alias(es)">
+          <input class="form-control" type="text" [(ngModel)]="client_details.personName" maxlength="100" [class.read-only]="true">
+        </app-field>
+      </div>
+    </div>
+  </div>
+
+  <div class="bc-corrections-info-container">
+    <div class="row mt-5">
+      <div class="col">
+        <p><strong>BC Corrections</strong></p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-3">
+        <app-field label="CS#">
+          <input class="form-control" type="text" [(ngModel)]="client_details.clientNumber" maxlength="100" [class.read-only]="true">
+        </app-field>
+      </div>
+
+      <div class="col-md-3">
+        <app-field label="FPS#">
+          <input class="form-control" type="text" [(ngModel)]="client_details.clientNumber" maxlength="100" [class.read-only]="true">
+        </app-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <p>Institutional Information</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-3">
+        <app-field label="In custody?">
+          <input class="form-control" type="text" [(ngModel)]="client_details.locationTypeCode.custody" maxlength="100" [class.read-only]="true">
+        </app-field>
+      </div>
+
+      <div class="col-md-3">
+        <app-field label="In/Out?">
+          <input class="form-control" type="text" [(ngModel)]="client_details.locationTypeCode.community" maxlength="100" [class.read-only]="true">
+        </app-field>
+      </div>
+
+      <div class="col-md-3">
+        <app-field label="Intermitten Sentence?">
+          <input class="form-control" type="text" [(ngModel)]="client_details.clientNumber" maxlength="100" [class.read-only]="true">
+        </app-field>
+      </div>
+    </div>
+
+
+  </div>
+
+  <div class="community-info-container">
+
   </div>
 
 
