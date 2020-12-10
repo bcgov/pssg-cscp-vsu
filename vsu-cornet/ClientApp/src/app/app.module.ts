@@ -15,11 +15,13 @@ import { NgbdSortableHeader } from './shared/directives/sortable.directive';
 import { NgxMaskModule } from 'ngx-mask';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+import { ClientDetailsComponent } from './client-details/client-details.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ClientSearchComponent,
+    ClientDetailsComponent,
     FieldComponent,
     HomeComponent,
     NgbdSortableHeader,

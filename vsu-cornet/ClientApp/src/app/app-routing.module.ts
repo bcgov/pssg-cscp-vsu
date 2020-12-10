@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { ClientDetailsComponent } from './client-details/client-details.component';
 import { ClientSearchComponent } from './client-search/client-search.component';
-import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
   // {
@@ -12,6 +12,9 @@ const routes: Routes = [
   },
   {
     path: 'client-search', component: ClientSearchComponent, pathMatch: 'full'
+  },
+  {
+    path: 'client-details/:clientNumber', component: ClientDetailsComponent, pathMatch: 'full'
   },
 ];
 

@@ -1,0 +1,44 @@
+<div class="loading-indicator" *ngIf="isLoading">
+  <mat-spinner mode="indeterminate"></mat-spinner>
+</div>
+
+<div class="container" style="position: relative;" [formGroup]="form">
+  <div class="subject-information-container">
+    <div class="row mt-5">
+      <div class="col">
+        <p><strong>Subject Information</strong></p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-3">
+        <app-field label="Last name" [disabled]="true">
+          <input class="form-control" type="text" formControlName="lastName" maxlength="100">
+        </app-field>
+      </div>
+
+      <div class="col-md-3">
+        <app-field label="First name" [disabled]="true">
+          <input class="form-control" type="text" formControlName="lastName" maxlength="100">
+        </app-field>
+      </div>
+
+      <div class="col-md-3">
+        <app-field label="Middle name" [disabled]="true">
+          <input class="form-control" type="text" formControlName="lastName" maxlength="100">
+        </app-field>
+      </div>
+
+      <div class="col-md-3">
+        <app-field label=" " [disabled]="true">
+          <label>
+            <input type="checkbox" [value]="true" formControlName="isCurrentName">
+            Current Name
+          </label>
+        </app-field>
+      </div>
+    </div>
+  </div>
+
+
+</div>

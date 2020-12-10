@@ -55,8 +55,12 @@ namespace Gov.Cscp.Victims.Public.Services
             DynamicsResult result = new DynamicsResult();
             result.statusCode = _statusCode;
             result.responseMessage = _httpResponse;
-            string clean = _responseContent.Replace("@odata.", "fortunecookie");
-            result.result = Newtonsoft.Json.Linq.JObject.Parse(clean);
+            result.result = new Newtonsoft.Json.Linq.JObject();
+            if (_statusCode == HttpStatusCode.OK)
+            {
+                string clean = _responseContent.Replace("@odata.", "fortunecookie");
+                result.result = Newtonsoft.Json.Linq.JObject.Parse(clean);
+            }
 
             Console.WriteLine(result.result);
 

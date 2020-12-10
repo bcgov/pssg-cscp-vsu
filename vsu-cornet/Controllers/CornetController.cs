@@ -17,6 +17,25 @@ namespace Gov.Cscp.Victims.Public.Controllers
             this._cornetResultService = dynamicsResultService;
         }
 
+        [HttpGet("client/{clientNumber}")]
+        public async Task<IActionResult> GetClientById(string clientNumber, string username, string fullname, string client)
+        {
+            try
+            {
+                string endpointUrl = $"clients?search_type=ID&identifier_type=CSNO&identifier_text={clientNumber}";
+                CornetHeaderInfo headers = new CornetHeaderInfo
+                {
+                    username = username,
+                    fullname = fullname,
+                    client = client
+                };
+
+                DynamicsResult result = await _cornetResultService.Get(endpointUrl, headers);
+                return StatusCode((int)result.statusCode, result.result.ToString());
+            }
+            finally { }
+        }
+
         [HttpGet("clients")]
         public async Task<IActionResult> GetClients(string search_type, string surname, string given1, string given2,
         string birth_year, string birth_year_range, string gender, string identifier_type, string identifier_text,

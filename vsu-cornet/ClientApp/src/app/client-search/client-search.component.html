@@ -100,7 +100,7 @@
       <button (click)="search()" [class.is-disabled]="!form.valid" class="btn btn-primary search-button">SEARCH CORNET</button>
     </div>
   </div>
-  
+
 
   <div class="row mt-5" *ngIf="clientService.loaded_clients.length > 0">
     <div class="col">
@@ -129,7 +129,7 @@
             <td>{{client.clientNumber}}</td>
             <td> </td>
             <td>{{client.locationTypeCode.custody}}</td>
-            <td><button (click)="showOffender(client.clientNumber)" class="btn btn-secondary" [class.is-disabled]="true">View Offender</button></td>
+            <td><button (click)="showOffender(client.clientNumber)" class="btn btn-secondary">View Offender</button></td>
           </tr>
         </tbody>
       </table>

@@ -1,9 +1,10 @@
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ClientService } from '../services/client.service';
 import { CornetService } from '../services/cornet.service';
+import { NotificationService } from '../services/notification.service';
 import { NgbdSortableHeader, SortEvent } from '../shared/directives/sortable.directive';
 import { FormBase } from '../shared/form-base';
 import { IClient, IClientParameters } from '../shared/interfaces/client-search.interface';
@@ -25,10 +26,11 @@ export class ClientSearchComponent extends FormBase implements OnInit {
   fullname: string = "";
   client: string = "";
 
-  constructor(private cornetService: CornetService,
-    private fb: FormBuilder,
+  constructor(private fb: FormBuilder,
     public clientService: ClientService,
     private route: ActivatedRoute,
+    private router: Router,
+    private notificationService: NotificationService,
   ) {
     super();
     this.clients$ = clientService.clients$;
@@ -36,26 +38,31 @@ export class ClientSearchComponent extends FormBase implements OnInit {
   }
 
   ngOnInit() {
-    this.route.queryParams.subscribe(q => {
-      if (q && q.username) {
-        this.username = q.username;
-      }
-      else {
-        this.username = "test";
-      }
-      if (q && q.fullname) {
-        this.fullname = q.fullname;
-      }
-      else {
-        this.fullname = "test";
-      }
-      if (q && q.client) {
-        this.client = q.client;
-      }
-      else {
-        this.client = "test";
-      }
-    });
+    this.username = this.route.snapshot.paramMap.get('username') || "test";
+    this.fullname = this.route.snapshot.paramMap.get('fullname') || "test";
+    this.client = this.route.snapshot.paramMap.get('client') || "test";
+
+
+    // this.route.queryParams.subscribe(q => {
+    //   if (q && q.username) {
+    //     this.username = q.username;
+    //   }
+    //   else {
+    //     this.username = "test";
+    //   }
+    //   if (q && q.fullname) {
+    //     this.fullname = q.fullname;
+    //   }
+    //   else {
+    //     this.fullname = "test";
+    //   }
+    //   if (q && q.client) {
+    //     this.client = q.client;
+    //   }
+    //   else {
+    //     this.client = "test";
+    //   }
+    // });
 
     this.form = this.fb.group({
       search_type: ["Exact"],
@@ -161,7 +168,7 @@ export class ClientSearchComponent extends FormBase implements OnInit {
   }
 
   showOffender(clientNumber: string) {
-    console.log(clientNumber);
+    this.router.navigate([`client-details/${clientNumber}`]);
 
   }
 
