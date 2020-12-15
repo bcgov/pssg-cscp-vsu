@@ -29,7 +29,7 @@
     <div class="col-md-3">
       <!-- [valid]="isMyControlValid(form.get('surname'))" -->
       <app-field label="Surname" [required]="false" errorMessage="Please enter a surname.">
-        <input class="form-control" type="text" formControlName="surname" maxlength="100" (change)="surnameChange(form.get('surname').value)">
+        <input class="form-control" type="text" formControlName="surname" maxlength="100" (input)="surnameChange(form.get('surname').value)">
       </app-field>
     </div>
 
@@ -85,13 +85,13 @@
     <div class="col-md-3 d-flex">
       <div class="col-6 pl-0">
         <app-field label="CS#" [required]="false" [valid]="isMyControlValid(form.get('cs'))">
-          <input class="form-control" type="text" formControlName="cs" maxlength="100" (change)="csChange(form.get('cs').value)">
+          <input class="form-control" type="text" formControlName="cs" maxlength="100" (input)="csChange(form.get('cs').value)">
         </app-field>
       </div>
 
       <div class="col-6 pr-0">
         <app-field label="FPS#" [required]="false" [valid]="isMyControlValid(form.get('fps'))">
-          <input class="form-control" type="text" formControlName="fps" maxlength="100" (change)="fpsChange(form.get('fps').value)">
+          <input class="form-control" type="text" formControlName="fps" maxlength="100" (input)="fpsChange(form.get('fps').value)">
         </app-field>
       </div>
     </div>
@@ -114,7 +114,7 @@
           <!-- sortable="personBirthDate" (sort)="onSort($event)" -->
           <th>Birth date</th>
           <th>CS#</th>
-          <th>FPS#</th>
+          <!-- <th>FPS#</th> -->
           <th>Custody status</th>
           <th>Actions</th>
         </thead>
@@ -127,7 +127,7 @@
             <td>{{client.personGenderIdentityCodeType}}</td>
             <td>{{client.personBirthDate}}</td>
             <td>{{client.clientNumber}}</td>
-            <td> </td>
+            <!-- <td> </td> -->
             <td>{{client.locationTypeCode.custody}}</td>
             <td><button (click)="showOffender(client.clientNumber)" class="btn btn-secondary">View Offender</button></td>
           </tr>

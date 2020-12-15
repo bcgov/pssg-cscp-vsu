@@ -1,0 +1,157 @@
+<div class="subject-information-container">
+    <div class="row mt-5">
+        <div class="col">
+            <p><strong>Subject Information</strong></p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <app-field label="Last name">
+                <input class="form-control" type="text" [(ngModel)]="client_details.lastName" [class.read-only]="true">
+            </app-field>
+        </div>
+
+        <div class="col-md-4">
+            <app-field label="Given names">
+                <input class="form-control" type="text" [(ngModel)]="client_details.givenNames" [class.read-only]="true">
+            </app-field>
+        </div>
+
+        <div class="col-md-4">
+            <app-field label=" ">
+                <label [class.read-only-checkbox]="true">
+                    <input type="checkbox" [value]="true" [checked]="client_details.isCurrentName == 'Y'" [class.read-only]="true">
+                    Current Name
+                </label>
+            </app-field>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <app-field label="Gender">
+                <input class="form-control" type="text" [(ngModel)]="client_details.personGenderIdentityCodeType" [class.read-only]="true">
+            </app-field>
+        </div>
+
+        <div class="col-md-4">
+            <app-field label="Birthdate">
+                <input class="form-control" type="text" [(ngModel)]="client_details.personBirthDate" [class.read-only]="true">
+            </app-field>
+        </div>
+
+        <!-- *ngIf="client_details.coastInfo.vsd_aliasnames" -->
+        <div class="col-md-4" *ngIf="client_details.coastInfo">
+            <app-field label="Alias(es)">
+                <input class="form-control" type="text" [(ngModel)]="client_details.coastInfo.vsd_aliasnames" [class.read-only]="true">
+            </app-field>
+        </div>
+
+    </div>
+</div>
+
+<div class="bc-corrections-info-container">
+    <div class="row mt-5">
+        <div class="col">
+            <p><strong>BC Corrections</strong></p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <app-field label="CS#">
+                <input class="form-control" type="text" [(ngModel)]="client_details.clientNumber" [class.read-only]="true">
+            </app-field>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <p>Institutional Information</p>
+        </div>
+    </div>
+
+    <div class="row" *ngIf="client_details.coastInfo">
+        <div class="col-md-4">
+            <app-field label="">
+                <label [class.read-only-checkbox]="true">
+                    In custody?
+                    <input type="checkbox" class="ml-2" [value]="true" [checked]="client_details.coastInfo.vsd_incustody === CRMBoolean.True" [class.read-only]="true">
+                </label>
+            </app-field>
+        </div>
+
+        <div class="col-md-4">
+            <app-field label="">
+                <label [class.read-only-checkbox]="true">
+                    In/Out?
+                    <input type="checkbox" class="ml-2" [value]="true" [checked]="client_details.coastInfo.vsd_inout === CRMBoolean.True" [class.read-only]="true">
+                </label>
+            </app-field>
+        </div>
+
+        <div class="col-md-4">
+            <app-field label="">
+                <label [class.read-only-checkbox]="true">
+                    Intermittent sentence?
+                    <input type="checkbox" class="ml-2" [value]="true" [checked]="client_details.coastInfo.vsd_intermittentsentence === CRMBoolean.True" [class.read-only]="true">
+                </label>
+            </app-field>
+        </div>
+    </div>
+
+    <ng-container *ngIf="client_details.keyDates && client_details.keyDates.length > 0">
+        <div class="form-group flex-container" *ngIf="client_details.keyDates && client_details.keyDates.length > 0">
+            <div *ngIf="client_details.locationTypeCode.custody" class="col-md-4">
+                <label for="custody">Custody location</label>
+                <input class="form-control" type="text" [ngModel]="client_details.locationTypeCode.custody" id="custody" name="custody" [class.read-only]="true">
+            </div>
+
+            <div *ngFor="let keyDate of client_details.keyDates; let i=index" class="col-md-4">
+                <label for="keyDate{{i}}">{{keyDate.activityCategory.description}}</label>
+                <input class="form-control" type="text" [ngModel]="keyDate.activityDate" id="keyDate{{i}}" name="keyDate{{i}}" [class.read-only]="true">
+            </div>
+        </div>
+    </ng-container>
+
+
+    <!-- <ng-container *ngIf="client_details.hearings && client_details.hearings.length > 0">
+      <p>Hearings</p>
+      <div class="form-group flex-container" *ngIf="client_details.hearings && client_details.hearings.length > 0">
+        <div *ngFor="let hearing of client_details.hearings; let i=index" class="col-md-3">
+          <label for="hearing{{i}}">{{hearing.hearingCategory.description}}</label>
+          <input class="form-control" type="text" [ngModel]="hearing.activityDate.actual" id="hearing{{i}}" name="hearing{{i}}" [class.read-only]="true">
+        </div>
+      </div>
+    </ng-container> -->
+
+
+</div>
+
+<div class="community-info-container" *ngIf="client_details.coastInfo">
+    <div class="row mt-5">
+        <div class="col">
+            <p><strong>BC Corrections</strong></p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <app-field label="">
+                <label [class.read-only-checkbox]="true">
+                    AWOL?
+                    <input type="checkbox" class="ml-2" [value]="true" [checked]="client_details.coastInfo.vsd_awol === CRMBoolean.True" [class.read-only]="true">
+                </label>
+            </app-field>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <app-field label="Probation officer / bail supervisor">
+                <input class="form-control" type="text" [(ngModel)]="client_details.coastInfo.vsd_probationofficerbailsupervisor" [class.read-only]="true">
+            </app-field>
+        </div>
+    </div>
+</div>

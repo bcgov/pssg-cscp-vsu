@@ -7,7 +7,11 @@ export interface IClientDetails {
     personBirthDate?: string;
     personGenderIdentityCodeType?: string;
     personName?: string;
+    lastName?: string;
+    givenNames?: string;
     notifications?: INotification[];
+
+    coastInfo?: ICoastOffender;
 
     authorityDocuments?: IAuthorityDocument[];
     hearings?: IHearing[];
@@ -15,6 +19,20 @@ export interface IClientDetails {
     movements?: IMovement[];
     stateTransitions?: IStateTransition[];
     victimContacts?: IVictimContact[];
+}
+
+export interface ICoastOffender {
+    vsd_intermittentsentence: number;
+    vsd_csnumber: string;
+    vsd_offenderid: string;
+    _vsd_contactid_value: string;
+    vsd_reportingorder: number;
+    vsd_awol: number;
+    vsd_policefilenumber: string;
+    vsd_aliasnames: string;
+    vsd_inout: number;
+    vsd_incustody: number;
+    vsd_probationofficerbailsupervisor: string;
 }
 
 export interface INotification {
@@ -35,12 +53,12 @@ export interface IAuthorityDocument {
 export interface IHearing {
     activityDate: IActivityDate;
     activityId: string;
-    activityType: IActivityDate;
+    activityType: IActivityInfo;
     clientNumber: string;
-    hearingCategory: IActivityDate;
+    hearingCategory: IActivityInfo;
     hearingComment: string;
-    hearingDecision: IActivityDate;
-    hearingRequestType: IActivityDate;
+    hearingDecision: IActivityInfo;
+    hearingRequestType: IActivityInfo;
 }
 
 export interface IKeyDate {

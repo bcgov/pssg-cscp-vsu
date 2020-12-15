@@ -1,4 +1,5 @@
 import { ValidatorFn, AbstractControl, FormControl, FormGroup, FormArray } from '@angular/forms';
+import { MatStepper } from '@angular/material';
 import * as moment from 'moment';
 
 export class FormBase {
@@ -99,5 +100,13 @@ export class FormBase {
         control.clearValidators();
         control.setErrors(null);
         control.updateValueAndValidity();
+    }
+
+    gotoPage(selectPage: MatStepper): void {
+        console.log("goto page");
+        window.scroll(0, 0);
+        this.showValidationMessage = false;
+        this.currentFormStep = selectPage.selectedIndex;
+        if (this.currentFormStep > this.max_selected_index) this.max_selected_index = this.currentFormStep;
     }
 }

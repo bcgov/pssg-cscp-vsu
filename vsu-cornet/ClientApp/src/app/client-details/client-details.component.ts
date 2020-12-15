@@ -1,13 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { ClientService } from '../services/client.service';
 import { CornetService } from '../services/cornet.service';
 import { NotificationService } from '../services/notification.service';
+import { OffenderService } from '../services/offender.service';
 import { EnumHelper } from '../shared/enums-list';
 import { FormBase } from '../shared/form-base';
 import { IAuthorityDocument, IClientDetails, IHearing, IKeyDate, IMovement, IStateTransition, IVictimContact } from '../shared/interfaces/client-details.interface';
 import { IClientParameters, ICornetParameters } from '../shared/interfaces/cornet-api-parameters.interface';
+
+// const PAGES: string[] = ["subjectInformation", "movements", "offences", "hearings", "victimInformation", "stateTransitions"];
+
+enum PAGES {
+  SubjectInformation,
+  Movements,
+  Offences,
+  Hearings,
+  VictimInformation,
+  StateTransitions
+};
+
 
 @Component({
   selector: 'app-client-details',
@@ -25,10 +37,16 @@ export class ClientDetailsComponent extends FormBase implements OnInit {
 
   enums: EnumHelper = new EnumHelper();
 
-  constructor(private fb: FormBuilder,
+  currentPage: PAGES = PAGES.SubjectInformation;
+
+  PAGES = PAGES;
+
+
+  constructor(public fb: FormBuilder,
     private route: ActivatedRoute,
     private notificationService: NotificationService,
     private cornetService: CornetService,
+    private offenderService: OffenderService,
   ) {
     super();
   }
@@ -75,9 +93,20 @@ export class ClientDetailsComponent extends FormBase implements OnInit {
       client: this.client,
     };
 
+    this.isLoading = true;
+
+    this.offenderService.getOffenderByCSNumber(clientNumber).subscribe((res) => {
+      console.log("coast offender");
+      console.log(res);
+    }, (err) => {
+      console.log(err);
+    });
+
     this.cornetService.getClients(parameters).subscribe((res) => {
       if (res && res.clients) {
         Object.assign(this.client_details, res.clients[0]);
+        this.client_details.lastName = this.client_details.personName.split(',')[0];
+        this.client_details.givenNames = this.client_details.personName.split(',').splice(1).join(',');
       }
     }, (err) => {
       console.log(err);
@@ -102,7 +131,13 @@ export class ClientDetailsComponent extends FormBase implements OnInit {
             id: n.vsd_guid,
           });
         });
+
         this.getClientNotifications();
+      }
+      else {
+        this.isLoading = false;
+        console.log("no notifications to load");
+        console.log(this.client_details);
       }
     }, (err) => {
       console.log(err);
@@ -110,6 +145,7 @@ export class ClientDetailsComponent extends FormBase implements OnInit {
   }
 
   getClientNotifications() {
+    let promise_array = [];
     console.log(this.client_details);
 
     for (let i = 0; i < this.client_details.notifications.length; i++) {
@@ -127,75 +163,109 @@ export class ClientDetailsComponent extends FormBase implements OnInit {
 
       switch (event_type) {
         case this.enums.EventType.AUTH_DOCM: {
-          console.log("get auth doc");
-          this.cornetService.getAuthorityDocument(parameters).subscribe((res: IAuthorityDocument) => {
-            if (res) {
-              this.client_details.authorityDocuments.push(res);
-            }
-          }, (err) => {
-            console.log(err);
-          });
+          promise_array.push(new Promise<void>((resolve, reject) => {
+            this.cornetService.getAuthorityDocument(parameters).subscribe((res: IAuthorityDocument) => {
+              if (res) {
+                this.client_details.authorityDocuments.push(res);
+              }
+              resolve();
+            }, (err) => {
+              reject();
+              console.log(err);
+            });
+          }));
           break;
         }
         case this.enums.EventType.HEARING: {
-          console.log("get hearing");
-          this.cornetService.getHearing(parameters).subscribe((res: IHearing) => {
-            if (res) {
-              this.client_details.hearings.push(res);
-            }
-          }, (err) => {
-            console.log(err);
-          });
-
+          promise_array.push(new Promise<void>((resolve, reject) => {
+            this.cornetService.getHearing(parameters).subscribe((res: IHearing) => {
+              if (res) {
+                this.client_details.hearings.push(res);
+              }
+              resolve();
+            }, (err) => {
+              reject();
+              console.log(err);
+            });
+          }));
           break;
         }
         case this.enums.EventType.KEY_DATE: {
-          console.log("get key date");
-          this.cornetService.getKeyDate(parameters).subscribe((res: IKeyDate) => {
-            if (res) {
-              this.client_details.keyDates.push(res);
-            }
-          }, (err) => {
-            console.log(err);
-          });
+          promise_array.push(new Promise<void>((resolve, reject) => {
+            this.cornetService.getKeyDate(parameters).subscribe((res: IKeyDate) => {
+              if (res) {
+                this.client_details.keyDates.push(res);
+              }
+              resolve();
+            }, (err) => {
+              reject();
+              console.log(err);
+            });
+          }));
           break;
         }
         case this.enums.EventType.MOVEMENT: {
-          console.log("get movement");
-          this.cornetService.getMovement(parameters).subscribe((res: IMovement) => {
-            if (res) {
-              this.client_details.movements.push(res);
-            }
-          }, (err) => {
-            console.log(err);
-          });
+          promise_array.push(new Promise<void>((resolve, reject) => {
+            this.cornetService.getMovement(parameters).subscribe((res: IMovement) => {
+              if (res) {
+                this.client_details.movements.push(res);
+              }
+              resolve();
+            }, (err) => {
+              reject();
+              console.log(err);
+            });
+          }));
           break;
         }
         case this.enums.EventType.STATE_TRAN: {
-          console.log("get state transition");
-          this.cornetService.getStateTransition(parameters).subscribe((res: IStateTransition) => {
-            if (res) {
-              this.client_details.stateTransitions.push(res);
-            }
-          }, (err) => {
-            console.log(err);
-          });
+          promise_array.push(new Promise<void>((resolve, reject) => {
+            this.cornetService.getStateTransition(parameters).subscribe((res: IStateTransition) => {
+              if (res) {
+                this.client_details.stateTransitions.push(res);
+              }
+              resolve();
+            }, (err) => {
+              reject();
+              console.log(err);
+            });
+          }));
           break;
         }
         case this.enums.EventType.VICT_CNTCT: {
-          console.log("get victim contact");
-
-          this.cornetService.getVictimContact(parameters).subscribe((res: IVictimContact) => {
-            if (res) {
-              this.client_details.victimContacts.push(res);
-            }
-          }, (err) => {
-            console.log(err);
-          });
+          promise_array.push(new Promise<void>((resolve, reject) => {
+            this.cornetService.getVictimContact(parameters).subscribe((res: IVictimContact) => {
+              if (res) {
+                this.client_details.victimContacts.push(res);
+              }
+              resolve();
+            }, (err) => {
+              reject();
+              console.log(err);
+            });
+          }));
           break;
         }
       }
     }
 
+    Promise.all(promise_array).then(() => {
+      this.isLoading = false;
+
+      this.client_details.keyDates.sort((a, b) => {
+        return new Date(b.activityDate).getTime() - new Date(a.activityDate).getTime();
+      });
+
+      this.client_details.movements.sort((a, b) => {
+        return new Date(b.activityDate.actual).getTime() - new Date(a.activityDate.actual).getTime();
+      });
+
+      // console.log(this.client_details);
+    });
+
+  }
+
+  setPage(page: PAGES) {
+    this.currentPage = page;
   }
 }
