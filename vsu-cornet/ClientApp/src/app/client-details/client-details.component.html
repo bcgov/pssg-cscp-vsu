@@ -1,0 +1,65 @@
+<div class="loading-indicator" *ngIf="isLoading">
+  <mat-spinner mode="indeterminate"></mat-spinner>
+</div>
+
+<div class="container" style="position: relative;">
+  <div class="row">
+    <div class="col-9">
+
+      <app-subject-information *ngIf="currentPage === PAGES.SubjectInformation" [client_details]="this.client_details"></app-subject-information>
+      <app-movements *ngIf="currentPage === PAGES.Movements" [client_details]="this.client_details"></app-movements>
+      <app-hearings *ngIf="currentPage === PAGES.Hearings" [client_details]="this.client_details"></app-hearings>
+      <app-victim-contacts *ngIf="currentPage === PAGES.VictimInformation" [client_details]="this.client_details"></app-victim-contacts>
+      <app-state-transitions *ngIf="currentPage === PAGES.StateTransitions" [client_details]="this.client_details"></app-state-transitions>
+    </div>
+
+    <div class="col-3">
+      <div class="row mt-5">
+        <div class="col">
+          <p><strong>Cornet Data Navigation</strong></p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <section class="cornet-nav sticky-top">
+            <div class="list-group">
+              <a class="list-group-item list-group-item-action" [class.active-page]="currentPage === PAGES.SubjectInformation" (click)="setPage(PAGES.SubjectInformation)">Subject Information</a>
+              <a class="list-group-item list-group-item-action" [class.active-page]="currentPage === PAGES.Movements" (click)="setPage(PAGES.Movements)">Movements</a>
+              <a class="list-group-item list-group-item-action" [class.active-page]="currentPage === PAGES.Offences" (click)="setPage(PAGES.Offences)">Offences</a>
+              <a class="list-group-item list-group-item-action" [class.active-page]="currentPage === PAGES.Hearings" (click)="setPage(PAGES.Hearings)">Parole Hearings</a>
+              <a class="list-group-item list-group-item-action" [class.active-page]="currentPage === PAGES.VictimInformation" (click)="setPage(PAGES.VictimInformation)">Victim Information</a>
+              <a class="list-group-item list-group-item-action" [class.active-page]="currentPage === PAGES.StateTransitions" (click)="setPage(PAGES.StateTransitions)">State Transitions</a>
+            </div>
+
+
+            <!-- <div>
+              <mat-vertical-stepper [linear]="true" (selectionChange)="gotoPage($event)" #stepper>
+                <ng-template matStepperIcon="edit">
+                </ng-template>
+                <ng-template matStepperIcon="error">
+                </ng-template>
+                <ng-template matStepperIcon="number">
+                </ng-template>
+                <mat-step label="Subject Information" [stepControl]="fb.group({name: ['subjectInformation']})"></mat-step>
+                <mat-step label="Movements" [stepControl]="fb.group({name: ['movements']})"></mat-step>
+                <mat-step label="Offences" [stepControl]="fb.group({name: ['offences']})"></mat-step>
+                <mat-step label="Parole Hearings" [stepControl]="fb.group({name: ['hearings']})"></mat-step>
+                <mat-step label="Victim Information" [stepControl]="fb.group({name: ['victimInformation']})"></mat-step>
+                <mat-step label="State Transitions" [stepControl]="fb.group({name: ['stateTransitions']})"></mat-step>
+              </mat-vertical-stepper>
+
+            </div> -->
+          </section>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+
+
+
+
+</div>

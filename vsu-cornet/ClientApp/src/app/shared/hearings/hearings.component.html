@@ -1,0 +1,48 @@
+<div class="movements-container">
+  <div class="row mt-5">
+    <div class="col">
+      <p><strong>Parole Hearings / Events</strong></p>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="client_details.hearings.length > 0">
+    <div class="col">
+      <table class="table table-striped">
+        <thead class="thead">
+          <th>Possible Parole Date (Day)</th>
+          <th>Possible Parole Date (Full)</th>
+          <!-- <th>Hearing Application Entered Date</th> -->
+          <th>Hearing Purpose</th>
+          <th>Hearing Scheduled Date</th>
+          <th>Hearing Actual Date</th>
+          <th>Hearing Type Description</th>
+          <th>Hearing Purpose Type Description</th>
+          <th>Hearing Outcome Type Description</th>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let hearing of client_details.hearings">
+            <td>{{hearing.activityDate.actual | date}}</td>
+            <td>{{hearing.activityDate.actual | date}}</td>
+            <td>{{hearing.activityType.code}}</td>
+            <td>{{hearing.activityDate.scheduled}}</td>
+            <td>{{hearing.activityDate.actual}}</td>
+            <td>{{hearing.activityType.description}}</td>
+            <td>{{hearing.hearingRequestType.description}}</td>
+            <td>{{hearing.hearingDecision.description}}</td>
+          </tr>
+        </tbody>
+      </table>
+
+
+      <!-- <ng-container *ngIf="client_details.movements && client_details.movements.length > 0">
+    <div class="form-group flex-container" *ngIf="client_details.movements && client_details.movements.length > 0">
+      <div *ngFor="let movement of client_details.movements; let i=index" class="col-md-3">
+        <label for="movement{{i}}">{{movement.activityCategory.description}}</label>
+        <input class="form-control" type="text" [ngModel]="movement.activityDate.actual" id="movement{{i}}" name="movement{{i}}" [class.read-only]="true">
+      </div>
+    </div>
+  </ng-container> -->
+
+
+    </div>

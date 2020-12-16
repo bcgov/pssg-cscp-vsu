@@ -8,18 +8,30 @@ import { FieldComponent } from './shared/field/field.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomeComponent } from './home/home.component';
 import { HttpClientModule } from '@angular/common/http';
-import { MatDatepickerModule, MatDialogModule, MatProgressSpinnerModule } from '@angular/material';
+import { MatDatepickerModule, MatDialogModule, MatProgressSpinnerModule, MatStepperModule } from '@angular/material';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdSortableHeader } from './shared/directives/sortable.directive';
 import { NgxMaskModule } from 'ngx-mask';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+import { ClientDetailsComponent } from './client-details/client-details.component';
+import { SubjectInformationComponent } from './shared/subject-information/subject-information.component';
+import { MovementsComponent } from './shared/movements/movements.component';
+import { VictimContactsComponent } from './shared/victim-contacts/victim-contacts.component';
+import { HearingsComponent } from './shared/hearings/hearings.component';
+import { StateTransitionsComponent } from './shared/state-transitions/state-transitions.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ClientSearchComponent,
+    ClientDetailsComponent,
+    SubjectInformationComponent,
+    MovementsComponent,
+    VictimContactsComponent,
+    HearingsComponent,
+    StateTransitionsComponent,
     FieldComponent,
     HomeComponent,
     NgbdSortableHeader,
@@ -33,6 +45,7 @@ import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
     MatDatepickerModule,
     MatDialogModule,
     MatProgressSpinnerModule,
+    MatStepperModule,
     NgbModule,
     NgxMaskModule.forRoot(),
     ReactiveFormsModule,

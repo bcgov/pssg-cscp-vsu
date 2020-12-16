@@ -1,0 +1,33 @@
+<div class="movements-container">
+  <div class="row mt-5">
+    <div class="col">
+      <p><strong>State Transitions</strong></p>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="client_details.stateTransitions.length > 0">
+    <div class="col">
+      <table class="table table-striped">
+        <thead class="thead">
+          <th>Type</th>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let transition of client_details.stateTransitions">
+            <td>{{transition.activityType.description || transition.activityType.code}}</td>
+          </tr>
+        </tbody>
+      </table>
+
+
+      <!-- <ng-container *ngIf="client_details.movements && client_details.movements.length > 0">
+    <div class="form-group flex-container" *ngIf="client_details.movements && client_details.movements.length > 0">
+      <div *ngFor="let movement of client_details.movements; let i=index" class="col-md-3">
+        <label for="movement{{i}}">{{movement.activityCategory.description}}</label>
+        <input class="form-control" type="text" [ngModel]="movement.activityDate.actual" id="movement{{i}}" name="movement{{i}}" [class.read-only]="true">
+      </div>
+    </div>
+  </ng-container> -->
+
+
+    </div>

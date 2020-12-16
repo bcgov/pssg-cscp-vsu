@@ -21,6 +21,11 @@ namespace Gov.Cscp.Victims.Public.Controllers
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                
                 string endpointUrl = "vsd_CreateVSUCase";
                 JsonSerializerOptions options = new JsonSerializerOptions();
                 options.IgnoreNullValues = true;
