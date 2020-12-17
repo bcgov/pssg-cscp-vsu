@@ -41,7 +41,6 @@
             </app-field>
         </div>
 
-        <!-- *ngIf="client_details.coastInfo.vsd_aliasnames" -->
         <div class="col-md-4" *ngIf="client_details.coastInfo">
             <app-field label="Alias(es)">
                 <input class="form-control" type="text" [(ngModel)]="client_details.coastInfo.vsd_aliasnames" [class.read-only]="true">
@@ -52,7 +51,7 @@
 </div>
 
 <div class="bc-corrections-info-container">
-    <div class="row mt-5">
+    <div class="row">
         <div class="col">
             <p><strong>BC Corrections</strong></p>
         </div>
@@ -102,41 +101,39 @@
     </div>
 
     <ng-container *ngIf="client_details.keyDates && client_details.keyDates.length > 0">
-        <div class="form-group flex-container" *ngIf="client_details.keyDates && client_details.keyDates.length > 0">
+        <div class="flex-container" *ngIf="client_details.keyDates && client_details.keyDates.length > 0">
             <div *ngIf="client_details.locationTypeCode.custody" class="col-md-4">
-                <label for="custody">Custody location</label>
-                <input class="form-control" type="text" [ngModel]="client_details.locationTypeCode.custody" id="custody" name="custody" [class.read-only]="true">
+                <app-field label="Custody location">
+                    <input class="form-control" type="text" [(ngModel)]="client_details.locationTypeCode.custody" [class.read-only]="true">
+                </app-field>
             </div>
 
             <div *ngFor="let keyDate of client_details.keyDates; let i=index" class="col-md-4">
-                <label for="keyDate{{i}}">{{keyDate.activityCategory.description}}</label>
-                <input class="form-control" type="text" [ngModel]="keyDate.activityDate" id="keyDate{{i}}" name="keyDate{{i}}" [class.read-only]="true">
+                <app-field [label]="keyDate.activityCategory.description">
+                    <input class="form-control" type="text" [(ngModel)]="keyDate.activityDate" [class.read-only]="true">
+                </app-field>
             </div>
         </div>
     </ng-container>
-
-
-    <!-- <ng-container *ngIf="client_details.hearings && client_details.hearings.length > 0">
-      <p>Hearings</p>
-      <div class="form-group flex-container" *ngIf="client_details.hearings && client_details.hearings.length > 0">
-        <div *ngFor="let hearing of client_details.hearings; let i=index" class="col-md-3">
-          <label for="hearing{{i}}">{{hearing.hearingCategory.description}}</label>
-          <input class="form-control" type="text" [ngModel]="hearing.activityDate.actual" id="hearing{{i}}" name="hearing{{i}}" [class.read-only]="true">
-        </div>
-      </div>
-    </ng-container> -->
-
-
 </div>
 
 <div class="community-info-container" *ngIf="client_details.coastInfo">
-    <div class="row mt-5">
+    <div class="row">
         <div class="col">
             <p><strong>BC Corrections</strong></p>
         </div>
     </div>
 
     <div class="row">
+        <div class="col-md-4">
+            <app-field label="">
+                <label [class.read-only-checkbox]="true">
+                    Community Status
+                    <input type="checkbox" class="ml-2" [value]="true" [checked]="client_details.coastInfo.vsd_communitystatus === CommunityStatus.Active" [class.read-only]="true">
+                </label>
+            </app-field>
+        </div>
+
         <div class="col-md-4">
             <app-field label="">
                 <label [class.read-only-checkbox]="true">
@@ -151,6 +148,21 @@
         <div class="col-md-4">
             <app-field label="Probation officer / bail supervisor">
                 <input class="form-control" type="text" [(ngModel)]="client_details.coastInfo.vsd_probationofficerbailsupervisor" [class.read-only]="true">
+            </app-field>
+        </div>
+
+        <div class="col-md-4">
+            <app-field label=" ">
+                <label [class.read-only-checkbox]="true">
+                    Reporting Order?
+                    <input type="checkbox" class="ml-2" [value]="true" [checked]="client_details.coastInfo.vsd_reportingorder === CRMBoolean.True" [class.read-only]="true">
+                </label>
+            </app-field>
+        </div>
+
+        <div class="col-md-4">
+            <app-field label="Police File Number">
+                <input class="form-control" type="text" [(ngModel)]="client_details.coastInfo.vsd_policefilenumber" [class.read-only]="true">
             </app-field>
         </div>
     </div>
