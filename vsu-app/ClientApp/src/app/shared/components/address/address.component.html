@@ -12,12 +12,14 @@
     </div>
     <div class="col-md-6">
       <app-field label="{{ provinceType }}" [required]="showChildrenAsRequired && provinceList.length > 0" [valid]="isSubFieldValid('province', disabled)" errorMessage="Please select your {{provinceType.toLowerCase()}}" [disabled]="disabled">
-        <select class="form-control" formControlName="province" (change)="onProvinceChange($event)">
+        <select class="form-control" formControlName="province" (change)="onProvinceChange($event)" *ngIf="provinceList.length > 0">
           <option value="">Choose a {{ provinceType }}</option>
           <option *ngFor="let item of provinceList" [value]="item.vsd_name">
             {{ item.vsd_name }}
           </option>
         </select>
+
+        <input *ngIf="provinceList.length == 0" formControlName="province" class="form-control">
       </app-field>
     </div>
   </div>

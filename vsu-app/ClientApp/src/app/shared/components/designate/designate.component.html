@@ -1,6 +1,6 @@
 <div [formGroup]="form">
     <p><strong>Designate Information</strong></p>
-    <p><em>Fill our this section if you would like to designate a contact person (other than your VSW) to receive notifications on your behalf.</em></p>
+    <p><em>Fill out this section if you would like to designate a contact person (other than your VSW) to receive notifications on your behalf.</em></p>
 
     <div class="row">
         <div class="col-md-4">
@@ -31,7 +31,7 @@
     <div>
         <label class="inline-label inline-checkbox">
             <input type="checkbox" [value]="true" name="addressSameAsApplicant" formControlName="addressSameAsApplicant" (change)="copyApplicantAddressToDeligate(baseForm, formType)">
-            <span>Contact information for my designate is the same as mine.</span>
+            <span>Address for my designate is the same as mine.</span>
         </label>
     </div>
 
@@ -52,13 +52,13 @@
         </div>
     </div>
 
-    <p>Please list one or more methods of contact (telephone / cellular / email) in order of preference and indicate if we may leave a detailed message (e.g. our organization name, phone number, case information, notification details):</p>
+    <p>Please list one or more methods of contact for your designate (telephone / cellular / email) in order of preference and indicate if we may leave a detailed message (e.g. our organization name, phone number, case information, notification details):</p>
 
     <div class="contactMethods" formArrayName="contactMethods" *ngFor="let method of form.get('contactMethods')['controls']; let j = index;">
         <app-contact-method [formGroup]="method" [formGroupName]="j" [number]="j" [parent]="form" [disabled]="isDisabled"></app-contact-method>
     </div>
 
-    <app-field [valid]="isMyControlValid(form.get('atLeastOneContactMethod'))" errorMessage="Please enter at least one contact method" [disabled]="isDisabled">
+    <app-field [valid]="isMyControlValid(form.get('atLeastOneContactMethod'))" errorMessage="At least one method of contact must be allowed to leave a message" [disabled]="isDisabled">
         <input type="hidden" name="atLeastOneContactMethod" formControlName="atLeastOneContactMethod">
     </app-field>
 </div>

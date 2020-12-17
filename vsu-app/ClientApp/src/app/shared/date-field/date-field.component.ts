@@ -50,6 +50,11 @@ export class DateFieldComponent implements OnInit, OnDestroy {
                 this.month = updated_date.month();
                 this.day = updated_date.date();
             }
+            else if (val === "") {
+                this.year = 0;
+                this.month = -1;
+                this.day = 0;
+            }
         });
     }
 
