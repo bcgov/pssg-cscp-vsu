@@ -70,7 +70,7 @@ export class VictimTravelFundApplicationComponent extends FormBase implements On
 
         let promise_array = [];
 
-        promise_array.push(new Promise((resolve, reject) => {
+        promise_array.push(new Promise<void>((resolve, reject) => {
             this.lookupService.getCountries().subscribe((res) => {
                 this.lookupData.countries = res.value;
                 if (this.lookupData.countries) {
@@ -82,7 +82,7 @@ export class VictimTravelFundApplicationComponent extends FormBase implements On
             });
         }));
 
-        promise_array.push(new Promise((resolve, reject) => {
+        promise_array.push(new Promise<void>((resolve, reject) => {
             this.lookupService.getProvinces().subscribe((res) => {
                 this.lookupData.provinces = res.value;
                 if (this.lookupData.provinces) {
@@ -94,7 +94,7 @@ export class VictimTravelFundApplicationComponent extends FormBase implements On
             });
         }));
 
-        promise_array.push(new Promise((resolve, reject) => {
+        promise_array.push(new Promise<void>((resolve, reject) => {
             this.lookupService.getOffences().subscribe((res) => {
                 this.lookupData.offences = res.value;
                 if (this.lookupData.offences) {

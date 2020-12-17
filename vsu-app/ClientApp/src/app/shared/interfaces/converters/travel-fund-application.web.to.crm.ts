@@ -203,14 +203,14 @@ function getCRMProviderCollection(application: iTravelFundApplication) {
 
     //CaseInformation Additional Accused
     application.CaseInformation.additionalAccused.forEach(accused => {
-        if (accused.name) {
-            provider_collection.push({
-                vsd_name: accused.name,
-                vsd_birthdate: accused.birthDate,
-                vsd_gender: accused.gender,
-                vsd_relationship1: "Subject",
-            });
-        }
+        provider_collection.push({
+            vsd_firstname: accused.firstName,
+            vsd_middlename: accused.middleName,
+            vsd_lastname: accused.lastName,
+            vsd_birthdate: accused.birthDate,
+            vsd_gender: accused.gender,
+            vsd_relationship1: "Subject",
+        });
     });
 
     //Crown Counsel

@@ -317,6 +317,12 @@ export class FormBase {
             applicantInfo.get('gender').disable(options);
         }
         else {
+            applicantInfo.get('firstName').patchValue('');
+            applicantInfo.get('middleName').patchValue('');
+            applicantInfo.get('lastName').patchValue('');
+            applicantInfo.get('birthDate').patchValue('');
+            applicantInfo.get('gender').patchValue('');
+
             applicantInfo.get('firstName').enable(options);
             applicantInfo.get('middleName').enable(options);
             applicantInfo.get('lastName').enable(options);

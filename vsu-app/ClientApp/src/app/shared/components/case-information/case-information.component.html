@@ -138,11 +138,30 @@
     <div class="additionalAccused" formArrayName="additionalAccused" *ngFor="let item of form.get('additionalAccused')['controls']; let i = index;">
         <div [formGroupName]="i" class="additional-offender-info">
             <div class="row">
-                <div class="col-md-6">
+                <!-- <div class="col-md-6">
                     <app-field label="Name of Additional Accused / Offender" [disabled]="isDisabled">
                         <input class="form-control" type="text" formControlName="name" maxlength="100">
                     </app-field>
+                </div> -->
+
+
+                <div class="col-md-4">
+                    <app-field label="First Name" [required]="true" [valid]="isMyControlValid(item.get('firstName'))" errorMessage="Please enter first name" [disabled]="isDisabled">
+                        <input class="form-control" type="text" formControlName="firstName" maxlength="100">
+                    </app-field>
                 </div>
+                <div class="col-md-4">
+                    <app-field label="Middle Name" [required]="false" [valid]="isMyControlValid(item.get('middleName'))" errorMessage="Please enter middle name" [disabled]="isDisabled">
+                        <input class="form-control" type="text" formControlName="middleName" maxlength="100">
+                    </app-field>
+                </div>
+                <div class="col-md-4">
+                    <app-field label="Last Name" [required]="true" [valid]="isMyControlValid(item.get('lastName'))" errorMessage="Please enter last name" [disabled]="isDisabled">
+                        <input class="form-control" type="text" formControlName="lastName" maxlength="100">
+                    </app-field>
+                </div>
+
+
             </div>
             <div class="row">
                 <div class="col-md-6">

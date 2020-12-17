@@ -1,5 +1,5 @@
 import { Component, Input } from "@angular/core";
-import { CRMBoolean } from "../enums-list";
+import { CommunityStatus, CRMBoolean } from "../enums-list";
 import { IClientDetails } from "../interfaces/client-details.interface";
 
 @Component({
@@ -10,5 +10,6 @@ import { IClientDetails } from "../interfaces/client-details.interface";
 export class SubjectInformationComponent {
     @Input() client_details: IClientDetails;
     CRMBoolean = CRMBoolean
+    CommunityStatus = CommunityStatus
     constructor() { }
 }

@@ -28,6 +28,7 @@ export interface ICoastOffender {
     _vsd_contactid_value: string;
     vsd_reportingorder: number;
     vsd_awol: number;
+    vsd_communitystatus: number;
     vsd_policefilenumber: string;
     vsd_aliasnames: string;
     vsd_inout: number;

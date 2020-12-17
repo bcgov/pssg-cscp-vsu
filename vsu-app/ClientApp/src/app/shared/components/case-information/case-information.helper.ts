@@ -37,7 +37,9 @@ export class CaseInfoInfoHelper {
 
     public createAdditionalAccused(fb: FormBuilder) {
         return fb.group({
-            name: [''],
+            firstName: ['', [Validators.required]],
+            middleName: [''],
+            lastName: ['', [Validators.required]],
             birthDate: [''],
             gender: [''],
         });

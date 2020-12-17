@@ -43,28 +43,6 @@ export class ClientSearchComponent extends FormBase implements OnInit {
     this.fullname = this.route.snapshot.paramMap.get('fullname') || "test";
     this.client = this.route.snapshot.paramMap.get('client') || "test";
 
-
-    // this.route.queryParams.subscribe(q => {
-    //   if (q && q.username) {
-    //     this.username = q.username;
-    //   }
-    //   else {
-    //     this.username = "test";
-    //   }
-    //   if (q && q.fullname) {
-    //     this.fullname = q.fullname;
-    //   }
-    //   else {
-    //     this.fullname = "test";
-    //   }
-    //   if (q && q.client) {
-    //     this.client = q.client;
-    //   }
-    //   else {
-    //     this.client = "test";
-    //   }
-    // });
-
     this.form = this.fb.group({
       search_type: ["Exact"],
       surname: ["", Validators.required],

@@ -124,7 +124,9 @@ export interface iAuthorizationInformation {
 }
 
 export interface iAdditionalAccused {
-    name: string;
+    firstName: string;
+    middleName: string;
+    lastName: string;
     birthDate: Date;
     gender: number;
 }

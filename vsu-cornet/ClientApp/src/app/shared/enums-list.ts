@@ -20,6 +20,11 @@ export enum CRMMultiBoolean {
     Undecided = 100000002
 }
 
+export enum CommunityStatus {
+    Active = 100000000,
+    Inactive = 100000001,
+}
+
 export class EnumHelper {
 
     /**

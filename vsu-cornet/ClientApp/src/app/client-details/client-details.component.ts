@@ -98,6 +98,9 @@ export class ClientDetailsComponent extends FormBase implements OnInit {
     this.offenderService.getOffenderByCSNumber(clientNumber).subscribe((res) => {
       console.log("coast offender");
       console.log(res);
+      if (res && res.value && res.value.length == 1) {
+        this.client_details.coastInfo = res.value[0];
+      }
     }, (err) => {
       console.log(err);
     });
