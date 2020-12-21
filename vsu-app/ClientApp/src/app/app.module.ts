@@ -34,12 +34,15 @@ import { TravelOverviewComponent } from './shared/components/travel-overview/tra
 import { VSWComponent } from './shared/components/victim-service-worker/victim-service-worker.component';
 import { DesignateComponent } from './shared/components/designate/designate.component';
 import { TravelInformationComponent } from './shared/components/travel-information/travel-information.component';
+import { VictimTravelFundReimbursementComponent } from './victim-travel-fund-reimbursement/vtf-reimbursement.component';
+import { VTFCaseInformationComponent } from './shared/components/vtf-case-information/vtf-case-information.component';
+import { VTFReimbursementApplicantInformationComponent } from './shared/components/vtf-reimbursement-applicant-information/vtf-reimbursement-applicant-information.component';
+import { TravelExpensesComponent } from './shared/components/travel-expenses/travel-expenses.component';
 
 @NgModule({
   declarations: [
-    AddressComponent,
     AdditionalInfoBannerComponent,
-    VictimTravelFundApplicationComponent,
+    AddressComponent,
     AppComponent,
     ApplicantInformationComponent,
     AuthorizationComponent,
@@ -47,18 +50,23 @@ import { TravelInformationComponent } from './shared/components/travel-informati
     ConfirmationComponent,
     ContactMethodComponent,
     DateFieldComponent,
+    DesignateComponent,
     FieldComponent,
     HomeComponent,
     NotificationApplicationComponent,
     NotificationBannerComponent,
     NotificationOverviewComponent,
-    TravelOverviewComponent,
     RecipientDetailsComponent,
     SignPadDialog,
     ToolTipTriggerComponent,
-    VSWComponent,
-    DesignateComponent,
     TravelInformationComponent,
+    TravelOverviewComponent,
+    VTFCaseInformationComponent,
+    VTFReimbursementApplicantInformationComponent,
+    TravelExpensesComponent,
+    VSWComponent,
+    VictimTravelFundApplicationComponent,
+    VictimTravelFundReimbursementComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -68,8 +76,8 @@ import { TravelInformationComponent } from './shared/components/travel-informati
     HttpClientModule,
     MatDatepickerModule,
     MatDialogModule,
-    MatProgressSpinnerModule,
     MatIconModule,
+    MatProgressSpinnerModule,
     MatStepperModule,
     NgxMaskModule.forRoot(),
     ReactiveFormsModule,

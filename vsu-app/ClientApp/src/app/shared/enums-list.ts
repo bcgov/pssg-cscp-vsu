@@ -13,16 +13,19 @@ export const MY_FORMATS = {
 export const FORM_TITLES = {
     NOTIFICATION_APPLICATION: "Victim Safety Unit - Notification Application Form",
     TRAVEL_FUNDS_APPLICATION: "Victim Safety Unit - Victim Travel Fund Application Form",
+    TRAVEL_FUNDS_REIMBURSEMENT: "Victim Safety Unit - Victim Travel Fund Reimbursement Form",
 };
 
 export const FORM_TYPES = {
-    NOTIFICATION_APPLICATION: <IOptionSetVal> { val: 100000000, name: "Victim Service Notification" },
-    TRAVEL_FUNDS_APPLICATION: <IOptionSetVal> { val: 100000001, name: "Victim Travel Fund",  },
+    NOTIFICATION_APPLICATION:   <IOptionSetVal> { val: 100000000, name: "Victim Service Notification" },
+    TRAVEL_FUNDS_APPLICATION:   <IOptionSetVal> { val: 100000001, name: "Victim Travel Fund",  },
+    TRAVEL_FUNDS_REIMBURSEMENT: <IOptionSetVal> { val: 100000002, name: "Victim Travel Fund Reimbursement",  },
 };
 
 export enum ApplicationType {
-    NOTIFICATION = 100000000,
-    TRAVEL_FUNDS = 100000001
+    NOTIFICATION =          100000000,
+    TRAVEL_FUNDS =          100000001,
+    TRAVEL_REIMBURSEMENT =  100000002, //TODO - check if this is right
 }
 
 export class EnumHelper {

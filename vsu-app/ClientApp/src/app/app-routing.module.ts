@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { NotificationApplicationComponent } from './notification-application/notification-application.component';
 import { VictimTravelFundApplicationComponent } from './victim-travel-fund-application/vtf-application.component';
+import { VictimTravelFundReimbursementComponent } from './victim-travel-fund-reimbursement/vtf-reimbursement.component';
 
 const routes: Routes = [
   {
@@ -18,6 +19,10 @@ const routes: Routes = [
   {
     path: 'victim_travel_fund_applicaiton',
     component: VictimTravelFundApplicationComponent
+  },
+  {
+    path: 'victim_travel_fund_reimbursement',
+    component: VictimTravelFundReimbursementComponent
   },
 ];
 

@@ -1,0 +1,35 @@
+<div [formGroup]="form">
+    <div class="page-header mb-0">
+        <h1>Case Information</h1>
+    </div>
+
+    <p>Your application to the Victim Travel Fund (VTF) has been approved. The maximum amount of funding that can be provided in relation to
+        a case is $3,000.00. This funding limit may be distributed over multiple criminal court/Review Board hearing dates and is distributed
+        between eligible applicants on a case. It includes expenses pre-booked by VSU plus expenses you or other applicants may be eligible for
+        on a reimbursement basis.
+    </p>
+
+    <p>Reimbursement forms should be submitted within 90 days of your last travel dates. Where applicable, the Reimbursement form has been
+        updated with pre-approved expenses.</p>
+
+
+    <p>Please fill out the following form to your best ability. Required receipts, if any, can be uploaded at the Declaration & Authorization stage.</p>
+
+    <div class="collection-notice-container">
+        <h3>Collection Notice</h3>
+        <p>The personal information requested on this form is collected under the authority of section 26(c) and disclosed to the Ministry of Finance
+            under the authority of section 33.1(1)(i.1)(i) and (ii) of the Freedom of Information and Protection of Privacy Act for the purpose of
+            administering the Victim Travel Fund. If you have any questions about the collection of your personal information please contact Victim
+            Safety Unit Manager, (604) 660-0316 or 1-877-315-8822 (toll-free).
+        </p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <app-field label="VTF Case #" [required]="true" [valid]="isMyControlValid(form.get('vtfCaseNumber'))" errorMessage="Please enter your vtf case number" [disabled]="isDisabled">
+                <input class="form-control" type="text" formControlName="vtfCaseNumber" maxlength="100">
+            </app-field>
+        </div>
+    </div>
+
+</div>
