@@ -27,7 +27,7 @@
     <div class="row">
         <div class="col-md-4">
             <app-field label="VTF Case #" [required]="true" [valid]="isMyControlValid(form.get('vtfCaseNumber'))" errorMessage="Please enter your vtf case number" [disabled]="isDisabled">
-                <input class="form-control" type="text" formControlName="vtfCaseNumber" maxlength="100">
+                <input class="form-control" type="text" formControlName="vtfCaseNumber" maxlength="100" (change)="caseNumberChange()">
             </app-field>
         </div>
     </div>

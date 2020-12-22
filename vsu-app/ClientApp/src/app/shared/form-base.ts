@@ -3,6 +3,7 @@ import { MatStepper } from '@angular/material';
 import * as moment from 'moment';
 import { ApplicationType, EnumHelper } from './enums-list';
 import * as _ from 'lodash';
+import { IDynamicsContact } from './interfaces/dynamics/contact.interface';
 
 export class FormBase {
     form: FormGroup;
@@ -339,6 +340,74 @@ export class FormBase {
 
     checkFormGroupHasValue(form: FormGroup) {
         return Object.values(form.controls).some(({ value }) => !!value);
+    }
+
+    setVTFApplicant(contact: IDynamicsContact, form: FormGroup | FormArray) {
+        let applicantInfo = form.get('applicantInformation');
+        let options = { onlySelf: false, emitEvent: true };
+
+        applicantInfo.get('firstName').patchValue(contact.firstname);
+        applicantInfo.get('middleName').patchValue(contact.middlename);
+        applicantInfo.get('lastName').patchValue(contact.lastname);
+
+        applicantInfo.get('firstName').setErrors(null, options);
+        applicantInfo.get('middleName').setErrors(null, options);
+        applicantInfo.get('lastName').setErrors(null, options);
+
+        // applicantInfo.get('firstName').disable(options);
+        // applicantInfo.get('middleName').disable(options);
+        // applicantInfo.get('lastName').disable(options);
+
+        applicantInfo.get('address.line1').patchValue(contact.address1_line1);
+        applicantInfo.get('address.line2').patchValue(contact.address1_line2);
+        applicantInfo.get('address.city').patchValue(contact.address1_city);
+        applicantInfo.get('address.postalCode').patchValue(contact.address1_postalcode);
+        applicantInfo.get('address.province').patchValue(contact.address1_stateorprovince);
+        applicantInfo.get('address.country').patchValue(contact.address1_country);
+
+        applicantInfo.get('address.line1').setErrors(null, options);
+        applicantInfo.get('address.line2').setErrors(null, options);
+        applicantInfo.get('address.city').setErrors(null, options);
+        applicantInfo.get('address.postalCode').setErrors(null, options);
+        applicantInfo.get('address.province').setErrors(null, options);
+        applicantInfo.get('address.country').setErrors(null, options);
+
+        // applicantInfo.get('address.line1').disable(options);
+        // applicantInfo.get('address.line2').disable(options);
+        // applicantInfo.get('address.city').disable(options);
+        // applicantInfo.get('address.postalCode').disable(options);
+        // applicantInfo.get('address.province').disable(options);
+        // applicantInfo.get('address.country').disable(options);
+    }
+
+    clearVTFApplicant(form: FormGroup | FormArray) {
+        let applicantInfo = form.get('applicantInformation');
+        let options = { onlySelf: false, emitEvent: true };
+
+        applicantInfo.get('firstName').patchValue('');
+        applicantInfo.get('middleName').patchValue('');
+        applicantInfo.get('lastName').patchValue('');
+
+        // applicantInfo.get('firstName').setErrors(null, options);
+        // applicantInfo.get('middleName').setErrors(null, options);
+        // applicantInfo.get('lastName').setErrors(null, options);
+
+        applicantInfo.get('address.line1').patchValue('');
+        applicantInfo.get('address.line2').patchValue('');
+        applicantInfo.get('address.city').patchValue('');
+        applicantInfo.get('address.postalCode').patchValue('');
+        applicantInfo.get('address.province').patchValue('');
+        applicantInfo.get('address.country').patchValue('');
+
+        // applicantInfo.get('address.line1').setErrors(null, options);
+        // applicantInfo.get('address.line2').setErrors(null, options);
+        // applicantInfo.get('address.city').setErrors(null, options);
+        // applicantInfo.get('address.postalCode').setErrors(null, options);
+        // applicantInfo.get('address.province').setErrors(null, options);
+        // applicantInfo.get('address.country').setErrors(null, options);
+
+        applicantInfo.markAsPristine();
+        applicantInfo.updateValueAndValidity();
     }
 
     gotoPage(selectPage: MatStepper): void {

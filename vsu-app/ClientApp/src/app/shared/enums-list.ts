@@ -52,7 +52,13 @@ export class EnumHelper {
         Male:   <IOptionSetVal> { val: 100000000, name: "M" },
         Female: <IOptionSetVal> { val: 100000001, name: "F" },
         X:      <IOptionSetVal> { val: 100000002, name: "X" },
-      };
+    };
+
+    public GenderCode = {
+        Male:   <IOptionSetVal> { val: 1,         name: "M" },
+        Female: <IOptionSetVal> { val: 2,         name: "F" },
+        X:      <IOptionSetVal> { val: 100000000, name: "X" },
+    };
 
     public Boolean = {
         True:   <IOptionSetVal> { val: 100000001, name: "True"},

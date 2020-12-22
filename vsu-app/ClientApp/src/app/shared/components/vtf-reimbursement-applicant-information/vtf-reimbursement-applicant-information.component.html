@@ -24,4 +24,89 @@
     </div>
 
     <app-address [group]="form.get('address')" [lookupData]="lookupData" [showChildrenAsRequired]="true" [disabled]="isDisabled"></app-address>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div [class.is-disabled]="isDisabled">
+                <label class="inline-label inline-checkbox">
+                    <input type="checkbox" [value]="true" name="hasContactInfoChanged" formControlName="hasContactInfoChanged" (change)="hasContactInfoChangedChange($event.target.checked)">
+                    <span>Has your contact information above changed?</span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="showContactInfoComments" class="row">
+        <div class="col-md-12">
+            <app-field label="Contact information comments" [disabled]="isDisabled">
+                <textarea class="form-control bigger" formControlName="contactInfoComments" maxlength="500"></textarea>
+            </app-field>
+        </div>
+    </div>
+
+
+    <div formArrayName="travelDates" *ngFor="let item of form.get('travelDates')['controls']; let i = index;">
+        <div [formGroupName]="i" class="travel-date-info">
+            <div class="row remove-row">
+                <div [class.col-md-11]="form.get('travelDates')['controls'].length > 1" [class.col-md-12]="form.get('travelDates')['controls'].length == 1">
+                    <app-field label="Purpose of travel" [required]="true" [valid]="isMyControlValid(item.get('purposeOfTravel'))" errorMessage="Please enter a purpose of travel" [disabled]="isDisabled">
+                        <textarea class="form-control bigger" formControlName="purposeOfTravel" maxlength="500"></textarea>
+                    </app-field>
+                </div>
+
+                <div class="col">
+                    <div class="remove-button" *ngIf="form.get('travelDates')['controls'].length > 1">
+                        <br>
+                        <i class="fas fa-times-circle text-danger center-clear-btn" (click)="removeTravelDate(i)"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div>
+                        <app-field label="Travel Period (from):" [required]="true" [valid]="isMyControlValid(item.get('travelPeriodStart'))" errorMessage="Please select a travel start date" [disabled]="isDisabled">
+                            <input type="text" [max]="today" class="form-control date-picker" formControlName="travelPeriodStart" placeholder="yyyy/mm/dd" [matDatepicker]="travelPeriodStartPicker_i" (focus)="travelPeriodStartPicker_i.open()" (click)="travelPeriodStartPicker_i.open()" readonly (dateChange)="travelPeriodStartChange(i)">
+                            <mat-datepicker #travelPeriodStartPicker_i></mat-datepicker>
+                        </app-field>
+                    </div>
+                    <div class="time-div">
+                        <app-field [valid]="isMyControlValid(item.get('startTime'))" errorMessage="Please enter a vlaid time">
+                            <div class="time-app-field">
+                                <input formControlName="startTime" type="text" mask="00 : 00" class="form-control mr-2 time-input" placeholder="00 : 00" [pattern]="timeRegex">
+                                <select [disabled]="isDisabled" formControlName="startAMPM" class="form-control ml-2">
+                                    <option value="AM">AM</option>
+                                    <option value="PM">PM</option>
+                                </select>
+                            </div>
+                        </app-field>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div>
+                        <app-field label="Travel Period (to):" [required]="true" [valid]="isMyControlValid(item.get('travelPeriodEnd'))" errorMessage="Please select a valid travel end date" [disabled]="isDisabled">
+                            <input type="text" [max]="today" [min]="travelPeriodStartDates[i]" class="form-control date-picker" formControlName="travelPeriodEnd" placeholder="yyyy/mm/dd" [matDatepicker]="travelPeriodEndPicker_i" (focus)="travelPeriodEndPicker_i.open()" (click)="travelPeriodEndPicker_i.open()" readonly>
+                            <mat-datepicker #travelPeriodEndPicker_i></mat-datepicker>
+                        </app-field>
+                    </div>
+                    <div class="time-div">
+                        <app-field [valid]="isMyControlValid(item.get('endTime'))" errorMessage="Please enter a vlaid time">
+                            <div class="time-app-field">
+                                <input formControlName="endTime" type="text" mask="00 : 00" class="form-control mr-2 time-input" placeholder="00 : 00" [pattern]="timeRegex">
+                                <select [disabled]="isDisabled" formControlName="endAMPM" class="form-control ml-2">
+                                    <option value="AM">AM</option>
+                                    <option value="PM">PM</option>
+                                </select>
+                            </div>
+                        </app-field>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="add-additional-btn-container">
+        <button *ngIf="!isDisabled" class="btn btn-secondary" (click)="addAdditionalTravelDate()">+ ADD ADDITIONAL TRAVEL DATE</button>
+    </div>
 </div>

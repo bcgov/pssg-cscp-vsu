@@ -19,8 +19,24 @@ export class VTFReimbursementApplicantInfoHelper {
                 province: ['British Columbia', [Validators.required]],
                 country: ['Canada', [Validators.required]],
             }),
+
+            hasContactInfoChanged: [false],
+            contactInfoComments: [''],
+            travelDates: fb.array([this.addTravelDate(fb)]),
         }
 
         return fb.group(group);
+    }
+
+    addTravelDate(fb: FormBuilder) {
+        return fb.group({
+            purposeOfTravel: ['', Validators.required],
+            travelPeriodStart: ['', Validators.required],
+            startTime: [''],
+            startAMPM: ['AM'],
+            travelPeriodEnd: ['', Validators.required],
+            endTime: [''],
+            endAMPM: ['AM'],
+        });
     }
 }
