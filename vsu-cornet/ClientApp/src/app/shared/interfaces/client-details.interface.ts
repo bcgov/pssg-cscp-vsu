@@ -46,9 +46,29 @@ export interface INotification {
 }
 
 export interface IAuthorityDocument {
+    activeYn: string;
     authorityDocumentId: string;
     authorityDocumentNumbers: string[];
+    chargeCounts: IChargeCount[];
     clientNumber: string;
+    closeReasonCode: string;
+    closeReasonDescription: string;
+    courtLocationCode: string;
+    courtLocationDescription: string;
+    documentTypeCode: string;
+    documentTypeDescription: string;
+    effectiveDate: Date;
+    expiryDate: Date;
+    issueDate: Date;
+}
+
+export interface IChargeCount {
+    countSeqNo: string;
+    fileNumber: string;
+    statuteAct: string;
+    statuteDescription: string;
+    statuteSectionNo: string;
+    statuteSubsectionParagraph: string;
 }
 
 export interface IHearing {
@@ -77,6 +97,7 @@ export interface IActivityInfo {
 export interface IActivityDate {
     actual: string;
     scheduled: string;
+    val?: string;
 }
 export interface IDateRange {
     from: string;

@@ -211,6 +211,8 @@ export class ClientDetailsComponent extends FormBase implements OnInit {
           promise_array.push(new Promise<void>((resolve, reject) => {
             this.cornetService.getMovement(parameters).subscribe((res: IMovement) => {
               if (res) {
+                if (res.activityDate.actual != null) res.activityDate.val = res.activityDate.actual;
+                else if (res.activityDate.scheduled != null) res.activityDate.val = res.activityDate.scheduled;
                 this.client_details.movements.push(res);
               }
               resolve();

@@ -21,8 +21,8 @@
 
         <tbody>
           <tr *ngFor="let movement of client_details.movements">
-            <td>{{movement.activityDate.actual | date}}</td>
-            <td>{{movement.activityDate.actual.split(' ')[1]}}</td>
+            <td>{{movement.activityDate.val | date}}</td>
+            <td>{{movement.activityDate.val.split(' ')[1]}}</td>
             <td>{{movement.activityCategory.description}}</td>
             <!-- <td>{{movement.activityCategory.description}}</td> -->
             <td>{{movement.activitySubCategory.code}}</td>

@@ -129,6 +129,7 @@ export class ClientService {
                 this.loaded_clients = [];
             }
         }, (err) => {
+            alert("Error retrieving clients");
             // console.log("error getting clients info");
             this._loading$.next(false);
         });

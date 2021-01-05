@@ -25,5 +25,14 @@ export const config = {
         areaType: 'State',
         name: 'United States of America',
         defaultProvince: 'Washington',
+    },
+    accepted_file_extensions: {
+        "pdf": true,
+        "png": true,
+        "jpeg": true,
+        "jpg": true,
+        "doc": true,
+        "docx": true,
+        "ppt": true,
     }
 }
