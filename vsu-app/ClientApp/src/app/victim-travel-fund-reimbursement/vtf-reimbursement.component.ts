@@ -27,7 +27,7 @@ export class VictimTravelFundReimbursementComponent extends FormBase implements 
     submitting: boolean = false;
     public currentFormStep: number = 0;
     public showPrintView: boolean = false;
-    formType = FORM_TYPES.TRAVEL_FUNDS_APPLICATION;
+    formType = FORM_TYPES.TRAVEL_FUNDS_REIMBURSEMENT;
 
     elements: string[] = ['caseInformation', 'applicantInformation', 'travelExpenses', 'authorizationInformation'];
 

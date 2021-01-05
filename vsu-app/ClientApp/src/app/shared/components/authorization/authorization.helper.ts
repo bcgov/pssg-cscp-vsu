@@ -17,6 +17,10 @@ export class AuthInfoHelper {
             group['permissionToContactMyVSW'] = [''];
         }
 
+        if (form_type === ApplicationType.TRAVEL_REIMBURSEMENT) {
+            group['documents'] = fb.array([]);
+        }
+
         return fb.group(group);
     }
 }

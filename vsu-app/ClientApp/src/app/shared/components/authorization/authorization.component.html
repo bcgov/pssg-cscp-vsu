@@ -7,7 +7,7 @@
     <p>Please indicate your information sharing preferences in the following section:</p>
 
     <p><em>If the offender enters federal custody or applies for parole you will need to register with the Correctional Service of Canada
-        (<a href="https://www.csc-scc.gc.ca/victims/003006-0001-eng.shtml" target="_blank" title="Victims of Crime Act">CSC</a>) or the Parole Board of Canada 
+        (<a href="https://www.csc-scc.gc.ca/victims/003006-0001-eng.shtml" target="_blank" title="Victims of Crime Act">CSC</a>) or the Parole Board of Canada
         (<a href="https://www.canada.ca/en/parole-board/services/victims/how-to-register-as-a-victim.html" target="_blank" title="Victims of Crime Act">PBC</a>) if you would like to
         receive federal notifications. CSC/PBC will assess your eligibility to register for federal notification.
         Call 1-866-806-2275 (CSC) or 1-866-789-INFO/4636 (PBC) for more information.</em></p>
@@ -42,8 +42,14 @@
         <input type="checkbox" class="mr-2" [value]="true" name="declaration" formControlName="declaration">
         <span *ngIf="formType === ApplicationType.NOTIFICATION">I certify that I am the applicant named on this form. I am requesting notification information about the accused/offender/respondent. By signing this application form, I give permission (where applicable) to the Victim Safety Unit to release notification information to the designate(s) that I have named above. I understand that any information provided by the Victim Safety Unit is confidential and is intended only for the named recipient (i.e. myself plus my designate(s) if applicable). This information may not be distributed, copied, or otherwise used without the express permission of the Victim Safety Unit. <span class="error-states">*</span></span>
         <span *ngIf="formType === ApplicationType.TRAVEL_FUNDS">I certify that I am the applicant named on this form. I am requesting funding via the Victim Travel Fund and certify that all the information provided by me is accurate to the best of my ability. By signing this application form, I authorize the Victim Safety Unit to gather information from the Crime Victim Assistance Program, Crown counsel, my Victim Service Worker or other organizations to verify and process my application. <span class="error-states">*</span></span>
+        <span *ngIf="formType === ApplicationType.TRAVEL_REIMBURSEMENT">I certify that I am the applicant named on this form and that the expenses claimed were incurred in order to attend criminal justice proceedings. I am requesting funding via the Victim Travel Fund and certify that all the information provided by me is accurate to the best of my ability. By signing this application form, I authorize the Victim Safety Unit to gather information from the Crime Victim Assistance Program, Crown counsel, my Victim Service Worker or other organizations to verify and process my application. <span class="error-states">*</span></span>
       </label>
     </app-field>
+
+    <section *ngIf="formType === ApplicationType.TRAVEL_REIMBURSEMENT">
+      <label>Add receipts</label>
+      <app-file-uploader [formGroup]="form" [formType]="formType" [documents]="form.get('documents')"></app-file-uploader>
+    </section>
 
     <div class="row">
       <div class="col-md-6">
