@@ -19,9 +19,15 @@ export class CornetInfoLoadingHandler implements OnInit {
     ) { }
 
     ngOnInit() {
-        this.route.params.subscribe(q => {
-            if (q && q.vsd_offenderid) {
-                this.getClientDetails(q.vsd_offenderid);
+        this.route.queryParams.subscribe(params => {
+            console.log('params');
+            console.log(params);
+            if (params && params.id && params.typename && params.typename == "vsd_offender") {
+                this.getClientDetails(params.id);
+            }
+            else {
+                console.log("missing required query params, rerouting to client search page");
+                this.router.navigate([`client-search`]);
             }
         });
 
