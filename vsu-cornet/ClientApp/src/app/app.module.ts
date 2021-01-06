@@ -21,10 +21,12 @@ import { MovementsComponent } from './shared/movements/movements.component';
 import { VictimContactsComponent } from './shared/victim-contacts/victim-contacts.component';
 import { HearingsComponent } from './shared/hearings/hearings.component';
 import { StateTransitionsComponent } from './shared/state-transitions/state-transitions.component';
+import { CornetInfoLoadingHandler } from './cornet-info-loading-handler/cornet-info.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    CornetInfoLoadingHandler,
     ClientSearchComponent,
     ClientDetailsComponent,
     SubjectInformationComponent,

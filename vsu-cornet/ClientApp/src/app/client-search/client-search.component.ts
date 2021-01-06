@@ -6,6 +6,7 @@ import { ClientService } from '../services/client.service';
 import { CornetService } from '../services/cornet.service';
 import { NotificationService } from '../services/notification.service';
 import { NgbdSortableHeader, SortEvent } from '../shared/directives/sortable.directive';
+import { EnumHelper } from '../shared/enums-list';
 import { FormBase } from '../shared/form-base';
 import { IClient } from '../shared/interfaces/client-search.interface';
 import { IClientParameters } from '../shared/interfaces/cornet-api-parameters.interface';
@@ -27,6 +28,10 @@ export class ClientSearchComponent extends FormBase implements OnInit {
   fullname: string = "";
   client: string = "";
 
+  showSearchFields: boolean = true;
+
+  enumHelper = new EnumHelper();
+
   constructor(private fb: FormBuilder,
     public clientService: ClientService,
     private route: ActivatedRoute,
@@ -43,6 +48,8 @@ export class ClientSearchComponent extends FormBase implements OnInit {
     this.fullname = this.route.snapshot.paramMap.get('fullname') || "test";
     this.client = this.route.snapshot.paramMap.get('client') || "test";
 
+
+
     this.form = this.fb.group({
       search_type: ["Exact"],
       surname: ["", Validators.required],
@@ -56,6 +63,37 @@ export class ClientSearchComponent extends FormBase implements OnInit {
       cs: [""],
       fps: [""],
     });
+
+    this.route.queryParams.subscribe(params => {
+      console.log(params);
+      let dosearch = params.dosearch || false;
+
+      if (dosearch) {
+        let surname = params.surname || false;
+        let given = params.givenName || false;
+        let genderString = params.gender || "";
+        let birthyear = params.birthyear || false;
+
+        if (surname) {
+          this.form.get('surname').patchValue(surname);
+        }
+        if (given) {
+          this.form.get('given_name').patchValue(given);
+        }
+        if (genderString) {
+          this.form.get('gender').patchValue(this.enumHelper.getOptionsSetVal(this.enumHelper.Gender, parseInt(genderString)).name);
+        }
+        if (birthyear) {
+          this.form.get('birth_year').patchValue(birthyear);
+        }
+        this.search();
+        this.showSearchFields = false;
+
+      }
+
+    });
+
+
 
     let this_year = new Date().getFullYear();
 

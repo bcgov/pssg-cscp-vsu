@@ -21,6 +21,13 @@ export class OffenderService {
         );
     }
 
+    getOffenderById(offenderId: string): Observable<any> {
+        return this.http.get<any>(`${this.apiUrl}/${offenderId}`, { headers: this.headers }).pipe(
+            retry(3),
+            catchError(this.handleError)
+        );
+    }
+
     get headers(): HttpHeaders {
         return new HttpHeaders({ 'Content-Type': 'application/json' });
     }
