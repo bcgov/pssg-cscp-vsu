@@ -15,6 +15,19 @@ namespace Gov.Cscp.Victims.Public.Controllers
             this._dynamicsResultService = dynamicsResultService;
         }
 
+        [HttpGet("{offenderId}")]
+        public async Task<IActionResult> GetOffendyById(string offenderId)
+        {
+            try
+            {
+                string endpointUrl = $"vsd_offenders?$filter=vsd_offenderid eq {offenderId}";
+
+                DynamicsResult result = await _dynamicsResultService.Get(endpointUrl);
+                return StatusCode((int)result.statusCode, result.result.ToString());
+            }
+            finally { }
+        }
+
         [HttpGet("cs-number/{cs}")]
         public async Task<IActionResult> GetOffendyByCSNumber(string cs)
         {

@@ -22,18 +22,22 @@ export interface IClientDetails {
 }
 
 export interface ICoastOffender {
-    vsd_intermittentsentence: number;
-    vsd_csnumber: string;
-    vsd_offenderid: string;
     _vsd_contactid_value: string;
-    vsd_reportingorder: number;
-    vsd_awol: number;
-    vsd_communitystatus: number;
-    vsd_policefilenumber: string;
     vsd_aliasnames: string;
-    vsd_inout: number;
+    vsd_awol: number;
+    vsd_birthdate: string;
+    vsd_communitystatus: number;
+    vsd_csnumber: string;
+    vsd_firstname: string;
+    vsd_gender: number;
     vsd_incustody: number;
+    vsd_inout: number;
+    vsd_intermittentsentence: number;
+    vsd_lastname: string;
+    vsd_offenderid: string;
+    vsd_policefilenumber: string;
     vsd_probationofficerbailsupervisor: string;
+    vsd_reportingorder: number;
 }
 
 export interface INotification {

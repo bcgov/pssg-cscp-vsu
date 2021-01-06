@@ -3,103 +3,105 @@
 </div>
 
 <div class="container" style="position: relative;" [formGroup]="form">
-  <div class="row mt-5">
-    <div class="col">
-      <h2 class="m-0">CORNET Search</h2>
-    </div>
-    <div class="col">
-      <app-field>
-        <label class="inline-label">
-          <input type="radio" value="Exact" formControlName="search_type" name="search_type">
-          <span>Exact Search</span>
-        </label>
-        <label class="inline-label">
-          <input type="radio" value="PARTIAL" formControlName="search_type" name="search_type">
-          <span>Partial Search</span>
-        </label>
-        <label class="inline-label">
-          <input type="radio" value="Soundex" formControlName="search_type" name="search_type">
-          <span>Soundex Search</span>
-        </label>
-      </app-field>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-md-3">
-      <!-- [valid]="isMyControlValid(form.get('surname'))" -->
-      <app-field label="Surname" [required]="false" errorMessage="Please enter a surname.">
-        <input class="form-control" type="text" formControlName="surname" maxlength="100" (input)="surnameChange(form.get('surname').value)">
-      </app-field>
-    </div>
-
-    <div class="col-md-3">
-      <app-field label="Given name" [required]="false" [valid]="isMyControlValid(form.get('given_name'))">
-        <input class="form-control" type="text" formControlName="given_name" maxlength="100">
-      </app-field>
-    </div>
-
-    <div class="col-md-3">
-      <app-field label="Second name" [required]="false" [valid]="isMyControlValid(form.get('second_name'))">
-        <input class="form-control" type="text" formControlName="second_name" maxlength="100">
-      </app-field>
-    </div>
-
-    <div class="col-md-3">
-      <app-field label=" ">
-        <label>
-          <input type="checkbox" [value]="true" formControlName="current_name" (change)="currentNameChange($event.target.checked)">
-          Current Name
-        </label>
-      </app-field>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-md-3">
-      <app-field label="Gender" [required]="false" [valid]="isMyControlValid(form.get('gender'))">
-        <select class="form-control" formControlName="gender">
-          <option value=""></option>
-          <option value="M">Male</option>
-          <option value="F">Female</option>
-        </select>
-      </app-field>
-    </div>
-
-    <div class="col-md-3 d-flex">
-      <div class="col-6 pl-0">
-        <app-field label="Birth year" [required]="false" [valid]="isMyControlValid(form.get('birth_year'))">
-          <!-- [typeahead]="years" -->
-          <input class="form-control" type="text" formControlName="birth_year" maxlength="100" placeholder="yyyy">
-        </app-field>
+  <section *ngIf="showSearchFields">
+    <div class="row mt-5">
+      <div class="col">
+        <h2 class="m-0">CORNET Search</h2>
       </div>
-
-      <div class="col-6 pr-0">
-        <app-field label="Year Range" [required]="false" [valid]="isMyControlValid(form.get('year_range'))">
-          <input class="form-control" type="text" mask="separator.0" separatorLimit="10" formControlName="year_range" maxlength="100" placeholder="+/-">
-        </app-field>
-      </div>
-
-    </div>
-
-    <div class="col-md-3 d-flex">
-      <div class="col-6 pl-0">
-        <app-field label="CS#" [required]="false" [valid]="isMyControlValid(form.get('cs'))">
-          <input class="form-control" type="text" formControlName="cs" maxlength="100" (input)="csChange(form.get('cs').value)">
-        </app-field>
-      </div>
-
-      <div class="col-6 pr-0">
-        <app-field label="FPS#" [required]="false" [valid]="isMyControlValid(form.get('fps'))">
-          <input class="form-control" type="text" formControlName="fps" maxlength="100" (input)="fpsChange(form.get('fps').value)">
+      <div class="col">
+        <app-field>
+          <label class="inline-label">
+            <input type="radio" value="Exact" formControlName="search_type" name="search_type">
+            <span>Exact Search</span>
+          </label>
+          <label class="inline-label">
+            <input type="radio" value="PARTIAL" formControlName="search_type" name="search_type">
+            <span>Partial Search</span>
+          </label>
+          <label class="inline-label">
+            <input type="radio" value="Soundex" formControlName="search_type" name="search_type">
+            <span>Soundex Search</span>
+          </label>
         </app-field>
       </div>
     </div>
 
-    <div class="col-md-3">
-      <button (click)="search()" [class.is-disabled]="!form.valid" class="btn btn-primary search-button">SEARCH CORNET</button>
+    <div class="row">
+      <div class="col-md-3">
+        <!-- [valid]="isMyControlValid(form.get('surname'))" -->
+        <app-field label="Surname" [required]="false" errorMessage="Please enter a surname.">
+          <input class="form-control" type="text" formControlName="surname" maxlength="100" (input)="surnameChange(form.get('surname').value)">
+        </app-field>
+      </div>
+
+      <div class="col-md-3">
+        <app-field label="Given name" [required]="false" [valid]="isMyControlValid(form.get('given_name'))">
+          <input class="form-control" type="text" formControlName="given_name" maxlength="100">
+        </app-field>
+      </div>
+
+      <div class="col-md-3">
+        <app-field label="Second name" [required]="false" [valid]="isMyControlValid(form.get('second_name'))">
+          <input class="form-control" type="text" formControlName="second_name" maxlength="100">
+        </app-field>
+      </div>
+
+      <div class="col-md-3">
+        <app-field label=" ">
+          <label>
+            <input type="checkbox" [value]="true" formControlName="current_name" (change)="currentNameChange($event.target.checked)">
+            Current Name
+          </label>
+        </app-field>
+      </div>
     </div>
-  </div>
+
+    <div class="row">
+      <div class="col-md-3">
+        <app-field label="Gender" [required]="false" [valid]="isMyControlValid(form.get('gender'))">
+          <select class="form-control" formControlName="gender">
+            <option value=""></option>
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+          </select>
+        </app-field>
+      </div>
+
+      <div class="col-md-3 d-flex">
+        <div class="col-6 pl-0">
+          <app-field label="Birth year" [required]="false" [valid]="isMyControlValid(form.get('birth_year'))">
+            <!-- [typeahead]="years" -->
+            <input class="form-control" type="text" formControlName="birth_year" maxlength="100" placeholder="yyyy">
+          </app-field>
+        </div>
+
+        <div class="col-6 pr-0">
+          <app-field label="Year Range" [required]="false" [valid]="isMyControlValid(form.get('year_range'))">
+            <input class="form-control" type="text" mask="separator.0" separatorLimit="10" formControlName="year_range" maxlength="100" placeholder="+/-">
+          </app-field>
+        </div>
+
+      </div>
+
+      <div class="col-md-3 d-flex">
+        <div class="col-6 pl-0">
+          <app-field label="CS#" [required]="false" [valid]="isMyControlValid(form.get('cs'))">
+            <input class="form-control" type="text" formControlName="cs" maxlength="100" (input)="csChange(form.get('cs').value)">
+          </app-field>
+        </div>
+
+        <div class="col-6 pr-0">
+          <app-field label="FPS#" [required]="false" [valid]="isMyControlValid(form.get('fps'))">
+            <input class="form-control" type="text" formControlName="fps" maxlength="100" (input)="fpsChange(form.get('fps').value)">
+          </app-field>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <button (click)="search()" [class.is-disabled]="!form.valid" class="btn btn-primary search-button">SEARCH CORNET</button>
+      </div>
+    </div>
+  </section>
 
 
   <div class="row mt-5" *ngIf="clientService.loaded_clients.length > 0">
