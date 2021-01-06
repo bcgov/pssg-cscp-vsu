@@ -12,6 +12,9 @@ const routes: Routes = [
     path: '', redirectTo: 'client-search', pathMatch: 'full'
   },
   {
+    path: 'cornet-info', component: CornetInfoLoadingHandler, pathMatch: 'full'
+  },
+  {
     path: 'cornet-info/:vsd_offenderid', component: CornetInfoLoadingHandler, pathMatch: 'full'
   },
   {
