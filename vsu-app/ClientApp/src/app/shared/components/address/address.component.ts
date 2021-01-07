@@ -238,15 +238,6 @@ export class AddressComponent implements OnInit {
   }
 
   setProvinceValidators() {
-    let provinceControl = this.group['controls']['province'] as FormControl;
-
-    if (this.provinceList.length > 0 && this.showChildrenAsRequired) {
-      provinceControl.setValidators([Validators.required]);
-      provinceControl.updateValueAndValidity();
-    }
-    else {
-      provinceControl.clearValidators();
-      provinceControl.updateValueAndValidity();
-    }
+   //province is now always required
   }
 }

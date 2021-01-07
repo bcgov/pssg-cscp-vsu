@@ -58,7 +58,7 @@
         <app-contact-method [formGroup]="method" [formGroupName]="j" [number]="j" [parent]="form" [disabled]="isDisabled"></app-contact-method>
     </div>
 
-    <app-field [valid]="isMyControlValid(form.get('atLeastOneContactMethod'))" errorMessage="At least one method of contact must be allowed to leave a message" [disabled]="isDisabled">
+    <app-field [valid]="isMyControlValid(form.get('atLeastOneContactMethod'))" errorMessage="At least one method of contact is required" [disabled]="isDisabled">
         <input type="hidden" name="atLeastOneContactMethod" formControlName="atLeastOneContactMethod">
     </app-field>
 </div>

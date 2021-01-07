@@ -142,21 +142,4 @@ export class RecipientDetailsComponent extends FormBase implements OnInit {
         let val = oneChecked ? 'valid' : '';
         this.form.get('atLeastOneNotification').patchValue(val)
     }
-
-    checkAtLeastOneContactMethod() {
-        let isValid = false;
-        let designates = this.form.get('designate') as FormArray;
-        if (designates.length == 0) return;
-
-        let contactMethods = designates.controls[0].get('contactMethods') as FormArray;
-        for (let i = 0; i < contactMethods.controls.length; ++i) {
-            let thisMethod = contactMethods.controls[i];
-            if (thisMethod.get('val').value && thisMethod.get('val').valid && thisMethod.get('leaveMessage').value == this.enum.Boolean.True.val) {
-                isValid = true;
-            }
-        }
-
-        let val = isValid ? 'valid' : '';
-        designates.controls[0].get('atLeastOneContactMethod').patchValue(val);
-    }
 }

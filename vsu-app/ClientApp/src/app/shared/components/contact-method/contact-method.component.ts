@@ -20,6 +20,4 @@ export class ContactMethodComponent extends FormBase implements OnInit {
     ngOnInit() {
         this.form = <FormGroup>this.controlContainer.control;
     }
-
-
 }

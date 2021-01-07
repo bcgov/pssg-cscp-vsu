@@ -11,7 +11,7 @@
       </app-field>
     </div>
     <div class="col-md-6">
-      <app-field label="{{ provinceType }}" [required]="showChildrenAsRequired && provinceList.length > 0" [valid]="isSubFieldValid('province', disabled)" errorMessage="Please select your {{provinceType.toLowerCase()}}" [disabled]="disabled">
+      <app-field label="{{ provinceType }}" [required]="showChildrenAsRequired" [valid]="isSubFieldValid('province', disabled)" errorMessage="Please enter your {{provinceType.toLowerCase()}}" [disabled]="disabled">
         <select class="form-control" formControlName="province" (change)="onProvinceChange($event)" *ngIf="provinceList.length > 0">
           <option value="">Choose a {{ provinceType }}</option>
           <option *ngFor="let item of provinceList" [value]="item.vsd_name">
