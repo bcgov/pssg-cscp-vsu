@@ -36,7 +36,6 @@ export class CornetInfoLoadingHandler implements OnInit {
         }
         else {
             //add some redirect for default landing spot...
-            // this.router.navigate(['notification_applicaiton']);
         }
     }
 

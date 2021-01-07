@@ -3,10 +3,9 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ClientService } from '../services/client.service';
-import { CornetService } from '../services/cornet.service';
 import { NotificationService } from '../services/notification.service';
 import { NgbdSortableHeader, SortEvent } from '../shared/directives/sortable.directive';
-import { EnumHelper } from '../shared/enums-list';
+import { EnumHelper, IOptionSetVal } from '../shared/enums-list';
 import { FormBase } from '../shared/form-base';
 import { IClient } from '../shared/interfaces/client-search.interface';
 import { IClientParameters } from '../shared/interfaces/cornet-api-parameters.interface';
@@ -30,7 +29,7 @@ export class ClientSearchComponent extends FormBase implements OnInit {
 
   showSearchFields: boolean = true;
 
-  enumHelper = new EnumHelper();
+  enums = new EnumHelper();
 
   constructor(private fb: FormBuilder,
     public clientService: ClientService,
@@ -81,7 +80,7 @@ export class ClientSearchComponent extends FormBase implements OnInit {
           this.form.get('given_name').patchValue(given);
         }
         if (genderString) {
-          this.form.get('gender').patchValue(this.enumHelper.getOptionsSetVal(this.enumHelper.Gender, parseInt(genderString)).name);
+          this.form.get('gender').patchValue(this.enums.getOptionsSetVal(this.enums.Gender, parseInt(genderString)).name);
         }
         if (birthyear) {
           this.form.get('birth_year').patchValue(birthyear);
@@ -93,12 +92,38 @@ export class ClientSearchComponent extends FormBase implements OnInit {
 
     });
 
-
-
     let this_year = new Date().getFullYear();
 
     for (let i = 1900; i < this_year; i++) {
       this.years.push(i.toString());
+    }
+  }
+
+  searchTypeChange(type: IOptionSetVal) {
+    if (type === this.enums.SearchType.EXACT) {
+      this.form.get('given_name').enable();
+      this.form.get('second_name').enable();
+      this.form.get('current_name').enable();
+      this.form.get('gender').enable();
+      this.form.get('birth_year').enable();
+      this.form.get('year_range').enable();
+    }
+    else if (type === this.enums.SearchType.PARTIAL || type === this.enums.SearchType.SOUNDEX) {
+      this.form.get('given_name').patchValue('');
+      this.form.get('second_name').patchValue('');
+      this.form.get('current_name').patchValue('');
+      this.form.get('gender').patchValue('');
+      this.form.get('birth_year').patchValue('');
+      this.form.get('year_range').patchValue('');
+
+      this.form.get('given_name').disable();
+      this.form.get('second_name').disable();
+      this.form.get('current_name').disable();
+      this.form.get('gender').disable();
+      this.form.get('birth_year').disable();
+      this.form.get('year_range').disable();
+      // this.form.get('cs').patchValue('');
+      // this.form.get('fps').patchValue('');
     }
   }
 
@@ -109,9 +134,23 @@ export class ClientSearchComponent extends FormBase implements OnInit {
     }
   }
 
+  fieldChange(val) {
+    if (val) {
+      this.form.get('fps').patchValue('');
+      this.form.get('cs').patchValue('');
+    }
+  }
+
   csChange(val) {
     if (val) {
       this.clearControlValidators(this.form.get('surname'));
+      this.form.get('surname').patchValue('');
+      this.form.get('given_name').patchValue('');
+      this.form.get('second_name').patchValue('');
+      this.form.get('current_name').patchValue('');
+      this.form.get('gender').patchValue('');
+      this.form.get('birth_year').patchValue('');
+      this.form.get('year_range').patchValue('');
       this.form.get('fps').patchValue('');
     }
     else {
@@ -122,6 +161,13 @@ export class ClientSearchComponent extends FormBase implements OnInit {
   fpsChange(val) {
     if (val) {
       this.clearControlValidators(this.form.get('surname'));
+      this.form.get('surname').patchValue('');
+      this.form.get('given_name').patchValue('');
+      this.form.get('second_name').patchValue('');
+      this.form.get('current_name').patchValue('');
+      this.form.get('gender').patchValue('');
+      this.form.get('birth_year').patchValue('');
+      this.form.get('year_range').patchValue('');
       this.form.get('cs').patchValue('');
     }
     else {

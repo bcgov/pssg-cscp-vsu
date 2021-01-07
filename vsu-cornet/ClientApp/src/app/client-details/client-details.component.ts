@@ -66,6 +66,14 @@ export class ClientDetailsComponent extends FormBase implements OnInit {
       personBirthDate: "",
       personGenderIdentityCodeType: "",
       personName: "",
+      
+      authorityDocuments: [],
+      hearings: [],
+      keyDates: [],
+      movements: [],
+      notifications: [],
+      stateTransitions: [],
+      victimContacts: [],
     }
 
     this.form = this.fb.group({
@@ -117,13 +125,6 @@ export class ClientDetailsComponent extends FormBase implements OnInit {
 
     this.notificationService.getNotificationsForClient(clientNumber).subscribe((res) => {
       if (res && res.value && res.value.length) {
-        this.client_details.notifications = [];
-        this.client_details.authorityDocuments = [];
-        this.client_details.hearings = [];
-        this.client_details.keyDates = [];
-        this.client_details.movements = [];
-        this.client_details.stateTransitions = [];
-        this.client_details.victimContacts = [];
         res.value.forEach((n: any) => {
           this.client_details.notifications.push({
             notificationId: n.vsd_cornetnotificationid,
