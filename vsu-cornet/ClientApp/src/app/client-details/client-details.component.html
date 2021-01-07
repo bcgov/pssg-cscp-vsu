@@ -8,6 +8,7 @@
 
       <app-subject-information *ngIf="currentPage === PAGES.SubjectInformation" [client_details]="this.client_details"></app-subject-information>
       <app-movements *ngIf="currentPage === PAGES.Movements" [client_details]="this.client_details"></app-movements>
+      <app-offences *ngIf="currentPage === PAGES.Offences" [client_details]="this.client_details"></app-offences>
       <app-hearings *ngIf="currentPage === PAGES.Hearings" [client_details]="this.client_details"></app-hearings>
       <app-victim-contacts *ngIf="currentPage === PAGES.VictimInformation" [client_details]="this.client_details"></app-victim-contacts>
       <app-state-transitions *ngIf="currentPage === PAGES.StateTransitions" [client_details]="this.client_details"></app-state-transitions>

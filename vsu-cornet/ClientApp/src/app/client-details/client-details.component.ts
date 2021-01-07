@@ -265,6 +265,16 @@ export class ClientDetailsComponent extends FormBase implements OnInit {
         return new Date(b.activityDate.actual).getTime() - new Date(a.activityDate.actual).getTime();
       });
 
+      this.client_details.authorityDocuments.sort((a, b) => {
+        return new Date(b.issueDate).getTime() - new Date(a.issueDate).getTime();
+      });
+
+      this.client_details.authorityDocuments.forEach(auth => {
+        auth.chargeCounts.sort((a, b) => {
+          return (a.countSeqNo > b.countSeqNo) ? 1 : -1;
+        });
+      });
+
       // console.log(this.client_details);
     });
 

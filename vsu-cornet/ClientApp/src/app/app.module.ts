@@ -22,6 +22,7 @@ import { VictimContactsComponent } from './shared/victim-contacts/victim-contact
 import { HearingsComponent } from './shared/hearings/hearings.component';
 import { StateTransitionsComponent } from './shared/state-transitions/state-transitions.component';
 import { CornetInfoLoadingHandler } from './cornet-info-loading-handler/cornet-info.component';
+import { OffencesComponent } from './shared/offences/offences.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { CornetInfoLoadingHandler } from './cornet-info-loading-handler/cornet-i
     ClientDetailsComponent,
     SubjectInformationComponent,
     MovementsComponent,
+    OffencesComponent,
     VictimContactsComponent,
     HearingsComponent,
     StateTransitionsComponent,
