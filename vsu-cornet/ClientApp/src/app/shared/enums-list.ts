@@ -42,6 +42,12 @@ export class EnumHelper {
         VICT_CNTCT:     <IOptionSetVal> { val: 100000004, name: "VICT_CNTCT" },
         AUTH_DOCM:      <IOptionSetVal> { val: 100000005, name: "AUTH_DOCM" },
     };
+
+    public SearchType = {
+        EXACT:       <IOptionSetVal> { val: 100000000, name: "Exact Search" },
+        PARTIAL:     <IOptionSetVal> { val: 100000001, name: "Partial Search" },
+        SOUNDEX:     <IOptionSetVal> { val: 100000002, name: "Soundex Search" },
+    }
     
     public Gender = {
         Male:   <IOptionSetVal> { val: 100000000, name: "M" },

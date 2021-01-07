@@ -12,7 +12,6 @@
           <th>Date</th>
           <th>Time</th>
           <th>Type</th>
-          <!-- <th>Movement Type</th> -->
           <th>In/Out</th>
           <th>Movement Reason</th>
           <th>To</th>
@@ -24,7 +23,6 @@
             <td>{{movement.activityDate.val | date}}</td>
             <td>{{movement.activityDate.val.split(' ')[1]}}</td>
             <td>{{movement.activityCategory.description}}</td>
-            <!-- <td>{{movement.activityCategory.description}}</td> -->
             <td>{{movement.activitySubCategory.code}}</td>
             <td>{{movement.activityReason.description}}</td>
             <td>{{movement.supervisionFacility.to || ''}}</td>
@@ -32,16 +30,6 @@
           </tr>
         </tbody>
       </table>
-
-
-  <!-- <ng-container *ngIf="client_details.movements && client_details.movements.length > 0">
-    <div class="form-group flex-container" *ngIf="client_details.movements && client_details.movements.length > 0">
-      <div *ngFor="let movement of client_details.movements; let i=index" class="col-md-3">
-        <label for="movement{{i}}">{{movement.activityCategory.description}}</label>
-        <input class="form-control" type="text" [ngModel]="movement.activityDate.actual" id="movement{{i}}" name="movement{{i}}" [class.read-only]="true">
-      </div>
     </div>
-  </ng-container> -->
-
-
+  </div>
 </div>

@@ -26,7 +26,7 @@
         <div [formGroupName]="i" class="other-transportation-info">
             <div class="row">
                 <div class="col">
-                    <app-field label="Mileage (in km)" [required]="false" [valid]="isMyControlValid(item.get('type'))" errorMessage="Please select a value" [disabled]="isDisabled">
+                    <app-field label="Type" [required]="false" [valid]="isMyControlValid(item.get('type'))" errorMessage="Please select a value" [disabled]="isDisabled">
                         <select formControlName="type" class="form-control ml-2">
                             <option value="air">Air</option>
                             <option value="bus">Bus</option>

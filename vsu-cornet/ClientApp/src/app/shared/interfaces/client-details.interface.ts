@@ -52,7 +52,6 @@ export interface INotification {
 export interface IAuthorityDocument {
     activeYn: string;
     authorityDocumentId: string;
-    authorityDocumentNumbers: string[];
     chargeCounts: IChargeCount[];
     clientNumber: string;
     closeReasonCode: string;

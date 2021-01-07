@@ -196,7 +196,8 @@ export class FormBase {
         let contactMethods = base_form.get('contactMethods') as FormArray;
         for (let i = 0; i < contactMethods.controls.length; ++i) {
             let thisMethod = contactMethods.controls[i];
-            if (thisMethod.get('val').value && thisMethod.get('val').valid && thisMethod.get('leaveMessage').value == this.enum.Boolean.True.val) {
+            //&& thisMethod.get('leaveMessage').value == this.enum.Boolean.True.val
+            if (thisMethod.get('val').value && thisMethod.get('val').valid) {
                 isValid = true;
             }
         }
@@ -237,6 +238,13 @@ export class FormBase {
                 target.get('country').disable(options);
             }
             else {
+                target.get('line1').patchValue('');
+                target.get('line2').patchValue('');
+                target.get('city').patchValue('');
+                target.get('postalCode').patchValue('');
+                target.get('province').patchValue('');
+                target.get('country').patchValue('');
+
                 target.get('line1').enable(options);
                 target.get('line2').enable(options);
                 target.get('city').enable(options);
@@ -279,6 +287,12 @@ export class FormBase {
             victimInfo.get('gender').disable(options);
         }
         else {
+            victimInfo.get('firstName').patchValue('');
+            victimInfo.get('middleName').patchValue('');
+            victimInfo.get('lastName').patchValue('');
+            victimInfo.get('birthDate').patchValue('');
+            victimInfo.get('gender').patchValue('');
+
             victimInfo.get('firstName').enable(options);
             victimInfo.get('middleName').enable(options);
             victimInfo.get('lastName').enable(options);

@@ -1,0 +1,41 @@
+<div class="movements-container">
+  <div class="row mt-5">
+    <div class="col">
+      <p><strong>Offences</strong></p>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="client_details.authorityDocuments.length > 0">
+    <div class="col">
+      <table class="table table-striped">
+        <thead class="thead">
+          <th>File #</th>
+          <th>Seq #</th>
+          <th>Court</th>
+          <th>Doc Type</th>
+          <th>Act</th>
+          <th>Section</th>
+          <th>Sub.</th>
+          <th>Description</th>
+          <th>Expiry</th>
+        </thead>
+
+        <tbody>
+          <ng-container *ngFor="let authDoc of client_details.authorityDocuments">
+            <tr *ngFor="let charge of authDoc.chargeCounts">
+              <td>{{charge.fileNumber}}</td>
+              <td>{{charge.countSeqNo}}</td>
+              <td>{{authDoc.courtLocationCode}}</td>
+              <td>{{authDoc.documentTypeCode}}</td>
+              <td>{{charge.statuteAct}}</td>
+              <td>{{charge.statuteSectionNo}}</td>
+              <td>{{charge.statuteSubsectionParagraph}}</td>
+              <td>{{charge.statuteDescription}}</td>
+              <td>{{authDoc.expiryDate | date}}</td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

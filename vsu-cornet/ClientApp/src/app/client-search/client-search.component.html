@@ -11,15 +11,15 @@
       <div class="col">
         <app-field>
           <label class="inline-label">
-            <input type="radio" value="Exact" formControlName="search_type" name="search_type">
+            <input type="radio" value="Exact" formControlName="search_type" name="search_type" (change)="searchTypeChange(enums.SearchType.EXACT)">
             <span>Exact Search</span>
           </label>
           <label class="inline-label">
-            <input type="radio" value="PARTIAL" formControlName="search_type" name="search_type">
+            <input type="radio" value="PARTIAL" formControlName="search_type" name="search_type" (change)="searchTypeChange(enums.SearchType.PARTIAL)">
             <span>Partial Search</span>
           </label>
           <label class="inline-label">
-            <input type="radio" value="Soundex" formControlName="search_type" name="search_type">
+            <input type="radio" value="Soundex" formControlName="search_type" name="search_type" (change)="searchTypeChange(enums.SearchType.SOUNDEX)">
             <span>Soundex Search</span>
           </label>
         </app-field>
@@ -29,20 +29,20 @@
     <div class="row">
       <div class="col-md-3">
         <!-- [valid]="isMyControlValid(form.get('surname'))" -->
-        <app-field label="Surname" [required]="false" errorMessage="Please enter a surname.">
+        <app-field label="Surname" [required]="true" errorMessage="Please enter a surname.">
           <input class="form-control" type="text" formControlName="surname" maxlength="100" (input)="surnameChange(form.get('surname').value)">
         </app-field>
       </div>
 
       <div class="col-md-3">
         <app-field label="Given name" [required]="false" [valid]="isMyControlValid(form.get('given_name'))">
-          <input class="form-control" type="text" formControlName="given_name" maxlength="100">
+          <input class="form-control" type="text" formControlName="given_name" maxlength="100" (input)="fieldChange(form.get('given_name').value)">
         </app-field>
       </div>
 
       <div class="col-md-3">
         <app-field label="Second name" [required]="false" [valid]="isMyControlValid(form.get('second_name'))">
-          <input class="form-control" type="text" formControlName="second_name" maxlength="100">
+          <input class="form-control" type="text" formControlName="second_name" maxlength="100" (input)="fieldChange(form.get('second_name').value)">
         </app-field>
       </div>
 
@@ -59,7 +59,7 @@
     <div class="row">
       <div class="col-md-3">
         <app-field label="Gender" [required]="false" [valid]="isMyControlValid(form.get('gender'))">
-          <select class="form-control" formControlName="gender">
+          <select class="form-control" formControlName="gender" (change)="fieldChange(form.get('gender').value)">
             <option value=""></option>
             <option value="M">Male</option>
             <option value="F">Female</option>
@@ -71,13 +71,13 @@
         <div class="col-6 pl-0">
           <app-field label="Birth year" [required]="false" [valid]="isMyControlValid(form.get('birth_year'))">
             <!-- [typeahead]="years" -->
-            <input class="form-control" type="text" formControlName="birth_year" maxlength="100" placeholder="yyyy">
+            <input class="form-control" type="text" formControlName="birth_year" maxlength="100" placeholder="yyyy" (input)="fieldChange(form.get('birth_year').value)">
           </app-field>
         </div>
 
         <div class="col-6 pr-0">
           <app-field label="Year Range" [required]="false" [valid]="isMyControlValid(form.get('year_range'))">
-            <input class="form-control" type="text" mask="separator.0" separatorLimit="10" formControlName="year_range" maxlength="100" placeholder="+/-">
+            <input class="form-control" type="text" mask="separator.0" separatorLimit="10" formControlName="year_range" maxlength="100" placeholder="+/-" (input)="fieldChange(form.get('year_range').value)">
           </app-field>
         </div>
 
@@ -131,7 +131,7 @@
             <td>{{client.clientNumber}}</td>
             <!-- <td> </td> -->
             <td>{{client.locationTypeCode.custody}}</td>
-            <td><button (click)="showOffender(client.clientNumber)" class="btn btn-secondary">View Offender</button></td>
+            <td><button (click)="showOffender(client.clientNumber)" class="btn btn-secondary" *ngIf="client.clientNumber">View Offender</button></td>
           </tr>
         </tbody>
       </table>

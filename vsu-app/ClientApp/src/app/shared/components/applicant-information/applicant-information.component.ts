@@ -39,7 +39,7 @@ export class ApplicantInformationComponent extends FormBase implements OnInit {
         console.log("applicant info component");
         console.log(this.form);
 
-        this.checkAtLeastOneContactMethod();
+        this.checkAtLeastOneContactMethod(this.form);
     }
 
     showOtherGender(show: boolean) {
@@ -131,19 +131,5 @@ export class ApplicantInformationComponent extends FormBase implements OnInit {
         if (this.form.get("otherFamilyAlsoApplying").value !== this.enum.MultiBoolean.Undecided.val) {
             this.form.get("otherFamilyAlsoApplyingComment").patchValue('');
         }
-    }
-
-    checkAtLeastOneContactMethod() {
-        let isValid = false;
-        let contactMethods = this.form.get('contactMethods') as FormArray;
-        for (let i = 0; i < contactMethods.controls.length; ++i) {
-            let thisMethod = contactMethods.controls[i];
-            if (thisMethod.get('val').value && thisMethod.get('val').valid && thisMethod.get('leaveMessage').value == this.enum.Boolean.True.val) {
-                isValid = true;
-            }
-        }
-
-        let val = isValid ? 'valid' : '';
-        this.form.get('atLeastOneContactMethod').patchValue(val);
     }
 }

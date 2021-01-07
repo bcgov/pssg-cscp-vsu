@@ -18,10 +18,12 @@ export class ConfirmationComponent implements OnInit {
 
     ngOnInit() {
         if (this.formType.val === ApplicationType.NOTIFICATION) {
-            this.confirmationMessage = "Thank you for for submitting a Victim Safety Unit Notification Application. Please write down the following number for future reference:"
+            // Please write down the following number for future reference:
+            this.confirmationMessage = "Thank you for for submitting a Victim Safety Unit Notification Application."
         }
         else if (this.formType.val === ApplicationType.TRAVEL_FUNDS) {
-            this.confirmationMessage = "Thank you for for submitting a Victim Travel Fund Application to the Victim Safety Unit. Please write down the following number for future reference:"
+            //Please write down the following number for future reference:
+            this.confirmationMessage = "Thank you for for submitting a Victim Travel Fund Application to the Victim Safety Unit."
         }
     }
 
