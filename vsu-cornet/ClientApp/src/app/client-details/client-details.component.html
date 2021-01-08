@@ -12,6 +12,10 @@
       <app-hearings *ngIf="currentPage === PAGES.Hearings" [client_details]="this.client_details"></app-hearings>
       <app-victim-contacts *ngIf="currentPage === PAGES.VictimInformation" [client_details]="this.client_details"></app-victim-contacts>
       <app-state-transitions *ngIf="currentPage === PAGES.StateTransitions" [client_details]="this.client_details"></app-state-transitions>
+
+      <!-- <div class="button-container">
+        <button (click)="createOffender()" class="btn btn-secondary" *ngIf="coastOffenderDoesNotExist">Create COAST Offender</button>
+      </div> -->
     </div>
 
     <div class="col-3">
@@ -26,11 +30,11 @@
           <section class="cornet-nav sticky-top">
             <div class="list-group">
               <a class="list-group-item list-group-item-action" [class.active-page]="currentPage === PAGES.SubjectInformation" (click)="setPage(PAGES.SubjectInformation)">Subject Information</a>
-              <a class="list-group-item list-group-item-action" [class.active-page]="currentPage === PAGES.Movements" (click)="setPage(PAGES.Movements)">Movements</a>
-              <a class="list-group-item list-group-item-action" [class.active-page]="currentPage === PAGES.Offences" (click)="setPage(PAGES.Offences)">Offences</a>
-              <a class="list-group-item list-group-item-action" [class.active-page]="currentPage === PAGES.Hearings" (click)="setPage(PAGES.Hearings)">Parole Hearings</a>
-              <a class="list-group-item list-group-item-action" [class.active-page]="currentPage === PAGES.VictimInformation" (click)="setPage(PAGES.VictimInformation)">Victim Information</a>
-              <a class="list-group-item list-group-item-action" [class.active-page]="currentPage === PAGES.StateTransitions" (click)="setPage(PAGES.StateTransitions)">State Transitions</a>
+              <a class="list-group-item list-group-item-action" [class.active-page]="currentPage === PAGES.Movements" [class.is-disabled]="this.client_details.movements.length == 0" (click)="setPage(PAGES.Movements)">Movements</a>
+              <a class="list-group-item list-group-item-action" [class.active-page]="currentPage === PAGES.Offences" [class.is-disabled]="this.client_details.authorityDocuments.length == 0" (click)="setPage(PAGES.Offences)">Offences</a>
+              <a class="list-group-item list-group-item-action" [class.active-page]="currentPage === PAGES.Hearings" [class.is-disabled]="this.client_details.hearings.length == 0" (click)="setPage(PAGES.Hearings)">Parole Hearings</a>
+              <a class="list-group-item list-group-item-action" [class.active-page]="currentPage === PAGES.VictimInformation" [class.is-disabled]="this.client_details.victimContacts.length == 0" (click)="setPage(PAGES.VictimInformation)">Victim Information</a>
+              <a class="list-group-item list-group-item-action" [class.active-page]="currentPage === PAGES.StateTransitions" [class.is-disabled]="this.client_details.stateTransitions.length == 0" (click)="setPage(PAGES.StateTransitions)">State Transitions</a>
             </div>
           </section>
         </div>

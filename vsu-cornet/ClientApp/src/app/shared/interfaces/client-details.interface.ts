@@ -124,6 +124,7 @@ export interface IStateTransition {
     activitySubType: IActivityInfo;
     activityType: IActivityInfo;
     clientNumber: string;
+    eventDate?: Date;
     identificationId: string;
 }
 

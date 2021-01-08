@@ -9,8 +9,6 @@ import { FormBase } from '../shared/form-base';
 import { IAuthorityDocument, IClientDetails, IHearing, IKeyDate, IMovement, IStateTransition, IVictimContact } from '../shared/interfaces/client-details.interface';
 import { IClientParameters, ICornetParameters } from '../shared/interfaces/cornet-api-parameters.interface';
 
-// const PAGES: string[] = ["subjectInformation", "movements", "offences", "hearings", "victimInformation", "stateTransitions"];
-
 enum PAGES {
   SubjectInformation,
   Movements,
@@ -19,7 +17,6 @@ enum PAGES {
   VictimInformation,
   StateTransitions
 };
-
 
 @Component({
   selector: 'app-client-details',
@@ -30,6 +27,8 @@ export class ClientDetailsComponent extends FormBase implements OnInit {
   isLoading: boolean = false;
 
   client_details: IClientDetails = {};
+
+  coastOffenderDoesNotExist: boolean = false;
 
   username: string = "";
   fullname: string = "";
@@ -66,7 +65,7 @@ export class ClientDetailsComponent extends FormBase implements OnInit {
       personBirthDate: "",
       personGenderIdentityCodeType: "",
       personName: "",
-      
+
       authorityDocuments: [],
       hearings: [],
       keyDates: [],
@@ -108,6 +107,9 @@ export class ClientDetailsComponent extends FormBase implements OnInit {
       console.log(res);
       if (res && res.value && res.value.length == 1) {
         this.client_details.coastInfo = res.value[0];
+      }
+      else {
+        this.coastOffenderDoesNotExist = true;
       }
     }, (err) => {
       console.log(err);
@@ -228,6 +230,12 @@ export class ClientDetailsComponent extends FormBase implements OnInit {
           promise_array.push(new Promise<void>((resolve, reject) => {
             this.cornetService.getStateTransition(parameters).subscribe((res: IStateTransition) => {
               if (res) {
+                //cornet doesn't include the event date in it's results, but we can get that from the crm notification
+                //so we combine it up
+                let notification = this.client_details.notifications.find(n => n.eventReferenceId == res.activityId);
+                if (notification) {
+                  res.eventDate = notification.eventDate;
+                }
                 this.client_details.stateTransitions.push(res);
               }
               resolve();
@@ -279,6 +287,10 @@ export class ClientDetailsComponent extends FormBase implements OnInit {
       // console.log(this.client_details);
     });
 
+  }
+
+  createOffender() {
+    console.log("create offender in coast");
   }
 
   setPage(page: PAGES) {
