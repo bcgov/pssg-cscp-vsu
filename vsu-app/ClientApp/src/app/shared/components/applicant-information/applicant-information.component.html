@@ -190,7 +190,7 @@
 
     <div [class.is-disabled]="isDisabled" *ngIf="formType === ApplicationType.NOTIFICATION">
         <label class="inline-label inline-checkbox">
-            <input type="checkbox" [value]="true" name="applicantInfoSameAsVictim" formControlName="applicantInfoSameAsVictim" (change)="setApplicantInfoSameAsVictim(form.parent)">
+            <input type="checkbox" [value]="true" name="applicantInfoSameAsVictim" formControlName="applicantInfoSameAsVictim" (change)="applicantInfoSameAsVictimChange($event.target.checked)">
             <span>Select if the applicant's name is the same as Victim / Civil Protected Party in the Case Information section</span>
         </label>
     </div>
@@ -284,7 +284,7 @@
     <p *ngIf="formType === ApplicationType.TRAVEL_FUNDS"><strong>If we need to send travel confirmations and itineraries to you, please ensure that your email address is listed below as one of your preferred contact methods.</strong></p>
 
     <div class="contactMethods" formArrayName="contactMethods" *ngFor="let item of form.get('contactMethods')['controls']; let i = index;">
-        <app-contact-method [formGroup]="item" [formGroupName]="i" [number]="i" [parent]="form" [disabled]="isDisabled"></app-contact-method>
+        <app-contact-method [formGroup]="item" [formGroupName]="i" [number]="i" [parent]="form" [disabled]="isDisabled" [isRequired]="i == 0"></app-contact-method>
     </div>
 
     <app-field [valid]="isFieldValid('atLeastOneContactMethod')" errorMessage="At least one method of contact is required" [disabled]="isDisabled">

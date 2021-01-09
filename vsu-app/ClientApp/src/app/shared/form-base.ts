@@ -154,27 +154,28 @@ export class FormBase {
         control.updateValueAndValidity();
     }
 
-    contactMethodChange(item: FormGroup) {
+    contactMethodChange(item: FormGroup, isRequired: boolean = false) {
         let type = item.get('type').value;
         let current_validators = [];
+        if (isRequired) current_validators = [Validators.required];
 
         if (type == this.enum.ContactType.Telephone.val) {
             if (item.get('previousType').value == this.enum.ContactType.Email.val) {
                 item.get('val').patchValue('');
             }
-            current_validators = [Validators.minLength(10), Validators.maxLength(15)];
+            current_validators = current_validators.concat([Validators.minLength(10), Validators.maxLength(15)]);
         }
         else if (type == this.enum.ContactType.Cellular.val) {
             if (item.get('previousType').value == this.enum.ContactType.Email.val) {
                 item.get('val').patchValue('');
             }
-            current_validators = [Validators.minLength(10), Validators.maxLength(15)];
+            current_validators = current_validators.concat([Validators.minLength(10), Validators.maxLength(15)]);
         }
         else if (type == this.enum.ContactType.Email.val) {
             if (item.get('previousType').value == this.enum.ContactType.Telephone.val || item.get('previousType').value == this.enum.ContactType.Cellular.val) {
                 item.get('val').patchValue('');
             }
-            current_validators = [Validators.email];
+            current_validators = current_validators.concat([Validators.email]);
         }
         else {
             item.get('val').patchValue('');
@@ -242,8 +243,8 @@ export class FormBase {
                 target.get('line2').patchValue('');
                 target.get('city').patchValue('');
                 target.get('postalCode').patchValue('');
-                target.get('province').patchValue('');
-                target.get('country').patchValue('');
+                target.get('province').patchValue('British Columbia');
+                target.get('country').patchValue('Canada');
 
                 target.get('line1').enable(options);
                 target.get('line2').enable(options);
@@ -287,11 +288,11 @@ export class FormBase {
             victimInfo.get('gender').disable(options);
         }
         else {
-            victimInfo.get('firstName').patchValue('');
-            victimInfo.get('middleName').patchValue('');
-            victimInfo.get('lastName').patchValue('');
-            victimInfo.get('birthDate').patchValue('');
-            victimInfo.get('gender').patchValue('');
+            // victimInfo.get('firstName').patchValue('');
+            // victimInfo.get('middleName').patchValue('');
+            // victimInfo.get('lastName').patchValue('');
+            // victimInfo.get('birthDate').patchValue('');
+            // victimInfo.get('gender').patchValue('');
 
             victimInfo.get('firstName').enable(options);
             victimInfo.get('middleName').enable(options);
@@ -332,11 +333,11 @@ export class FormBase {
             applicantInfo.get('gender').disable(options);
         }
         else {
-            applicantInfo.get('firstName').patchValue('');
-            applicantInfo.get('middleName').patchValue('');
-            applicantInfo.get('lastName').patchValue('');
-            applicantInfo.get('birthDate').patchValue('');
-            applicantInfo.get('gender').patchValue('');
+            // applicantInfo.get('firstName').patchValue('');
+            // applicantInfo.get('middleName').patchValue('');
+            // applicantInfo.get('lastName').patchValue('');
+            // applicantInfo.get('birthDate').patchValue('');
+            // applicantInfo.get('gender').patchValue('');
 
             applicantInfo.get('firstName').enable(options);
             applicantInfo.get('middleName').enable(options);
