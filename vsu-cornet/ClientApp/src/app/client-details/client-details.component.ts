@@ -117,7 +117,12 @@ export class ClientDetailsComponent extends FormBase implements OnInit {
 
     this.cornetService.getClients(parameters).subscribe((res) => {
       if (res && res.clients) {
-        Object.assign(this.client_details, res.clients[0]);
+        if (res.clients.length > 0) {
+          let aliases = res.clients.filter(c => c.isCurrentName == "N");
+          console.log(aliases.map(a => a.personName));
+        }
+        let curr_client = res.clients.find(c => c.isCurrentName == "Y");
+        Object.assign(this.client_details, curr_client);
         this.client_details.lastName = this.client_details.personName.split(',')[0];
         this.client_details.givenNames = this.client_details.personName.split(',').splice(1).join(',');
       }

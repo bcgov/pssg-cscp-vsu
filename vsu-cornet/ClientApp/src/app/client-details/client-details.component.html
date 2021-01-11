@@ -4,11 +4,48 @@
 
 <div class="container" style="position: relative;">
   <div class="row">
-    <div class="col-9">
+    <div class="col">
+      <ul class="nav">
+        <li class="nav-item">
+          <a class="nav-link nav-tab-table" [class.active-page]="currentPage === PAGES.SubjectInformation" (click)="setPage(PAGES.SubjectInformation)">Subject Information</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav-tab-table" [class.active-page]="currentPage === PAGES.Offences" [class.is-disabled]="this.client_details.authorityDocuments.length == 0" (click)="setPage(PAGES.Offences)">Offences</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav-tab-table" [class.active-page]="currentPage === PAGES.Movements" [class.is-disabled]="this.client_details.movements.length == 0" (click)="setPage(PAGES.Movements)">Movements</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav-tab-table" [class.active-page]="currentPage === PAGES.Hearings" [class.is-disabled]="this.client_details.hearings.length == 0" (click)="setPage(PAGES.Hearings)">Parole Hearings</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav-tab-table" [class.active-page]="currentPage === PAGES.VictimInformation" [class.is-disabled]="this.client_details.victimContacts.length == 0" (click)="setPage(PAGES.VictimInformation)">Victim Information</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav-tab-table" [class.active-page]="currentPage === PAGES.StateTransitions" [class.is-disabled]="this.client_details.stateTransitions.length == 0" (click)="setPage(PAGES.StateTransitions)">State Transitions</a>
+        </li>
+      </ul>
+
+      <!-- <section class="cornet-nav sticky-top">
+        <div class="list-group">
+          <a class="list-group-item list-group-item-action" [class.active-page]="currentPage === PAGES.SubjectInformation" (click)="setPage(PAGES.SubjectInformation)">Subject Information</a>
+          <a class="list-group-item list-group-item-action" [class.active-page]="currentPage === PAGES.Movements" [class.is-disabled]="this.client_details.movements.length == 0" (click)="setPage(PAGES.Movements)">Movements</a>
+          <a class="list-group-item list-group-item-action" [class.active-page]="currentPage === PAGES.Offences" [class.is-disabled]="this.client_details.authorityDocuments.length == 0" (click)="setPage(PAGES.Offences)">Offences</a>
+          <a class="list-group-item list-group-item-action" [class.active-page]="currentPage === PAGES.Hearings" [class.is-disabled]="this.client_details.hearings.length == 0" (click)="setPage(PAGES.Hearings)">Parole Hearings</a>
+          <a class="list-group-item list-group-item-action" [class.active-page]="currentPage === PAGES.VictimInformation" [class.is-disabled]="this.client_details.victimContacts.length == 0" (click)="setPage(PAGES.VictimInformation)">Victim Information</a>
+          <a class="list-group-item list-group-item-action" [class.active-page]="currentPage === PAGES.StateTransitions" [class.is-disabled]="this.client_details.stateTransitions.length == 0" (click)="setPage(PAGES.StateTransitions)">State Transitions</a>
+        </div>
+      </section> -->
+    </div>
+
+
+  </div>
+  <div class="row">
+    <div class="col-12">
 
       <app-subject-information *ngIf="currentPage === PAGES.SubjectInformation" [client_details]="this.client_details"></app-subject-information>
-      <app-movements *ngIf="currentPage === PAGES.Movements" [client_details]="this.client_details"></app-movements>
       <app-offences *ngIf="currentPage === PAGES.Offences" [client_details]="this.client_details"></app-offences>
+      <app-movements *ngIf="currentPage === PAGES.Movements" [client_details]="this.client_details"></app-movements>
       <app-hearings *ngIf="currentPage === PAGES.Hearings" [client_details]="this.client_details"></app-hearings>
       <app-victim-contacts *ngIf="currentPage === PAGES.VictimInformation" [client_details]="this.client_details"></app-victim-contacts>
       <app-state-transitions *ngIf="currentPage === PAGES.StateTransitions" [client_details]="this.client_details"></app-state-transitions>
@@ -18,7 +55,7 @@
       </div> -->
     </div>
 
-    <div class="col-3">
+    <!-- <div class="col-3">
       <div class="row mt-5">
         <div class="col">
           <p><strong>Cornet Data Navigation</strong></p>
@@ -39,6 +76,6 @@
           </section>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </div>
