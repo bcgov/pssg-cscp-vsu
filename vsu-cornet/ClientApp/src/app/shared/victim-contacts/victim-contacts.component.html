@@ -18,10 +18,68 @@
           <tr *ngFor="let victim of client_details.victimContacts">
             <td>{{victim.personFullName}}</td>
             <td>{{victim.victimToPersonRelationship}}</td>
-            <td>[Not yet implemented]</td>
+            <td>
+              <button (click)="setVictim(victim)" class="btn btn-secondary">View Details</button>
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
+  </div>
+
+  <div *ngIf="selectedVictim">
+    <label>Victim Details</label>
+    <div class="row">
+      <div class="col-6">
+        <app-field label="Name">
+          <input class="form-control" type="text" [(ngModel)]="selectedVictim.personFullName" [class.read-only]="true">
+        </app-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-2">
+        <app-field label="Effective date">
+          <input class="form-control" type="text" [(ngModel)]="selectedVictim.victimContactDate.effective" [class.read-only]="true">
+        </app-field>
+      </div>
+      <div class="col-2">
+        <app-field label="Expiry date">
+          <input class="form-control" type="text" [(ngModel)]="selectedVictim.victimContactDate.expiry" [class.read-only]="true">
+        </app-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-6">
+        <app-field label="Primary Address">
+          <input class="form-control" type="text" [(ngModel)]="selectedVictim.primaryAddressFull" [class.read-only]="true">
+        </app-field>
+      </div>
+      <div class="col-6">
+        <app-field label="Mailing Address">
+          <input class="form-control" type="text" [(ngModel)]="selectedVictim.mailingAddressFull" [class.read-only]="true">
+        </app-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-4">
+        <app-field label="Tellephone">
+          <input class="form-control" type="text" [(ngModel)]="selectedVictim.telephoneNumberType.number" [class.read-only]="true">
+        </app-field>
+      </div>
+      <div class="col-4">
+        <app-field label="Mobile">
+          <input class="form-control" type="text" [(ngModel)]="selectedVictim.cellNumberType.number" [class.read-only]="true">
+        </app-field>
+      </div>
+      <div class="col-4">
+        <app-field label="Email">
+          <input class="form-control" type="text" [(ngModel)]="selectedVictim.emailType.emailAddress" [class.read-only]="true">
+        </app-field>
+      </div>
+    </div>
+
   </div>
 </div>

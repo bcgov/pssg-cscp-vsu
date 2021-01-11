@@ -107,6 +107,18 @@ export class ApplicantInformationComponent extends FormBase implements OnInit {
         }
     }
 
+    applicantInfoSameAsVictimChange(val) {
+        this.setApplicantInfoSameAsVictim(this.form.parent);
+        if (!val) {
+            console.log("clear");
+            this.form.get('firstName').patchValue('');
+            this.form.get('middleName').patchValue('');
+            this.form.get('lastName').patchValue('');
+            this.form.get('birthDate').patchValue('');
+            this.form.get('gender').patchValue('');
+        }
+    }
+
     addVSW() {
         let vsw = this.form.get('victimServiceWorker') as FormArray;
         if (vsw.length == 0) {

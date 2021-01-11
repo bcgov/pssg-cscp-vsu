@@ -6,7 +6,7 @@
 
     <div [class.is-disabled]="isDisabled" *ngIf="formType === ApplicationType.TRAVEL_FUNDS">
         <label class="inline-label inline-checkbox">
-            <input type="checkbox" [value]="true" name="victimInfoSameAsApplicant" formControlName="victimInfoSameAsApplicant" (change)="setVictimInfoSameAsApplicant(form.parent)">
+            <input type="checkbox" [value]="true" name="victimInfoSameAsApplicant" formControlName="victimInfoSameAsApplicant" (change)="victimInfoSameAsApplicantChange($event.target.checked)">
             <span>Select if the Victim's name is the same as Applicant in the previous section</span>
         </label>
     </div>

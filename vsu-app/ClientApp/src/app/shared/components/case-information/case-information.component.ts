@@ -34,7 +34,7 @@ export class CaseInformationComponent extends FormBase implements OnInit {
     private lookupService: LookupService,
     private fb: FormBuilder,
     private notify: NotificationQueueService,
-    ) {
+  ) {
     super();
   }
   ngOnInit() {
@@ -77,6 +77,18 @@ export class CaseInformationComponent extends FormBase implements OnInit {
           this.notify.addNotification("Encountered an error getting offence information.", "warning", 3000);
         });
       }
+    }
+  }
+
+  victimInfoSameAsApplicantChange(val) {
+    this.setVictimInfoSameAsApplicant(this.form.parent);
+    if (!val) {
+      console.log("clear");
+      this.form.get('firstName').patchValue('');
+      this.form.get('middleName').patchValue('');
+      this.form.get('lastName').patchValue('');
+      this.form.get('birthDate').patchValue('');
+      this.form.get('gender').patchValue('');
     }
   }
 

@@ -9,12 +9,18 @@
     <div class="col">
       <table class="table table-striped">
         <thead class="thead">
+          <th>Date</th>
           <th>Type</th>
+          <th>Sub-Type</th>
+          <th>Description</th>
         </thead>
 
         <tbody>
           <tr *ngFor="let transition of client_details.stateTransitions">
-            <td>{{transition.activityType.description || transition.activityType.code}}</td>
+            <td>{{transition.eventDate | date}}</td>
+            <td>{{transition.activityType.code}}</td>
+            <td>{{transition.activitySubType.code}}</td>
+            <td>{{transition.activityReason.description}}</td>
           </tr>
         </tbody>
       </table>

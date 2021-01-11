@@ -12,11 +12,11 @@
           <th class="file-number-col">File #</th>
           <th class="sequence-number-col">Seq #</th>
           <th class="court-col">Court</th>
-          <th class="document-type-col">Doc Type</th>
           <th class="act-col">Act</th>
           <th class="section-col">Section</th>
           <th class="sucsection-col">Sub.</th>
           <th class="description-col">Description</th>
+          <th class="document-type-col">Doc Type</th>
           <th class="exipry-col">Expiry</th>
         </thead>
 
@@ -25,12 +25,12 @@
             <tr *ngFor="let charge of authDoc.chargeCounts">
               <td>{{charge.fileNumber}}</td>
               <td>{{charge.countSeqNo}}</td>
-              <td>{{authDoc.courtLocationCode}}</td>
-              <td>{{authDoc.documentTypeCode}}</td>
+              <td>{{authDoc.courtLocationDescription}}</td>
               <td>{{charge.statuteAct}}</td>
               <td>{{charge.statuteSectionNo}}</td>
               <td>{{charge.statuteSubsectionParagraph}}</td>
               <td>{{charge.statuteDescription}}</td>
+              <td>{{authDoc.documentTypeCode}}</td>
               <td>{{authDoc.expiryDate | date}}</td>
             </tr>
           </ng-container>
