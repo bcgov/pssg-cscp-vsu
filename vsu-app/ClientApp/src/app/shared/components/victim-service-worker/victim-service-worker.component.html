@@ -1,10 +1,10 @@
 <div [formGroup]="form">
     <p><strong>Victim Service Worker (VSW) Information</strong></p>
-    <p><em>If you have a VSW, please provide their contact information.</em></p>
+    <p><em>Please provide your VSW contact information.</em></p>
 
     <div class="row">
         <div class="col-md-4">
-            <app-field label="First Name" [disabled]="isDisabled">
+            <app-field label="First Name" [disabled]="isDisabled" [required]="true" [valid]="isMyControlValid(form.get('firstName'))" errorMessage="Please enter a first name">
                 <input class="form-control" type="text" formControlName="firstName" maxlength="100">
             </app-field>
         </div>
@@ -14,7 +14,7 @@
             </app-field>
         </div>
         <div class="col-md-4">
-            <app-field label="Organization / Agency" [disabled]="isDisabled">
+            <app-field label="Organization / Agency" [disabled]="isDisabled" [required]="true" [valid]="isMyControlValid(form.get('organization'))" errorMessage="Please enter an organization">
                 <input class="form-control" type="text" formControlName="organization" maxlength="100">
             </app-field>
         </div>
@@ -27,7 +27,7 @@
             </app-field>
         </div>
         <div class="col-md-4">
-            <app-field label="Telephone" [required]="false" [valid]="isMyControlValid(form.get('telephone'))" errorMessage="Please enter a phone number" [disabled]="isDisabled">
+            <app-field label="Telephone" [required]="true" [valid]="isMyControlValid(form.get('telephone'))" errorMessage="Please enter a phone number" [disabled]="isDisabled">
                 <input class="form-control" mask='000-000-0000' type="text" formControlName="telephone">
             </app-field>
         </div>
