@@ -18,6 +18,7 @@ import { IClientParameters } from '../shared/interfaces/cornet-api-parameters.in
 export class ClientSearchComponent extends FormBase implements OnInit {
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
   years: string[] = [];
+  didLoad: boolean = false;
 
   clients: IClient[] = [];
   clients$: Observable<IClient[]>;
@@ -206,7 +207,9 @@ export class ClientSearchComponent extends FormBase implements OnInit {
     if (type) parameters.identifier_type = type;
     if (text) parameters.identifier_text = text;
 
-    this.clientService.updateClients(parameters);
+    this.clientService.updateClients(parameters).then((res) => {
+      this.didLoad = true;
+    });
   }
 
   onSort({ column, direction }: SortEvent) {

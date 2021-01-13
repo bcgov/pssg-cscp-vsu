@@ -116,22 +116,27 @@ export class ClientService {
     }
 
     updateClients(parameters: IClientParameters) {
-        this.page = 1;
-        this._loading$.next(true);
-        this.cornetService.getClients(parameters).subscribe((res) => {
-            if (res && res.clients) {
-                this.loaded_clients = res.clients;
-                this._search$.next();
-                console.log(this.loaded_clients);
-            }
-            else {
+        return new Promise<void>((resolve, reject) => {
+            this.page = 1;
+            this._loading$.next(true);
+            this.cornetService.getClients(parameters).subscribe((res) => {
+                if (res && res.clients) {
+                    this.loaded_clients = res.clients;
+                    this._search$.next();
+                    console.log(this.loaded_clients);
+                }
+                else {
+                    this._loading$.next(false);
+                    this.loaded_clients = [];
+                }
+                resolve();
+            }, (err) => {
+                alert("Error retrieving clients");
+                // console.log("error getting clients info");
                 this._loading$.next(false);
-                this.loaded_clients = [];
-            }
-        }, (err) => {
-            alert("Error retrieving clients");
-            // console.log("error getting clients info");
-            this._loading$.next(false);
+                resolve();
+            });
         });
+
     }
 }

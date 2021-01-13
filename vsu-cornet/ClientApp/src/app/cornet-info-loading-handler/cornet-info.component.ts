@@ -54,14 +54,14 @@ export class CornetInfoLoadingHandler implements OnInit {
                 }
                 else {
                     console.log("go to client search");
-                    this.router.navigate([`client-search`], { queryParams: { dosearch: true, surname: this.coastInfo.vsd_lastname, givenName: this.coastInfo.vsd_firstname, gender: this.coastInfo.vsd_gender, birthyear: this.coastInfo.vsd_birthdate ? this.coastInfo.vsd_birthdate.slice(0, 4) : null } });
-                    // this.router.navigate([`client-search?dosearch=true&surname=${this.coastInfo.vsd_lastname}&givenName=${this.coastInfo.vsd_firstname}&gender=${this.coastInfo.vsd_gender}&birthdate=${this.coastInfo.vsd_birthdate}`]);
+                    console.log(this.coastInfo.vsd_birthdate);
+                    this.coastInfo.vsd_birthdate = new Date(this.coastInfo.vsd_birthdate);
+                    this.router.navigate([`client-search`], { queryParams: { dosearch: true, surname: this.coastInfo.vsd_lastname, givenName: this.coastInfo.vsd_firstname, gender: this.coastInfo.vsd_gender, birthyear: this.coastInfo.vsd_birthdate ? this.coastInfo.vsd_birthdate.getFullYear() : null } });
                 }
             }
             else {
                 this.showError = true;
             }
-
         }, (err) => {
             console.log(err);
         });

@@ -103,6 +103,10 @@
     </div>
   </section>
 
+  <div *ngIf="clientService.loaded_clients.length == 0 && didLoad">
+    <p>No Matching Clients</p>
+  </div>
+
 
   <div class="row mt-5" *ngIf="clientService.loaded_clients.length > 0">
     <div class="col">
