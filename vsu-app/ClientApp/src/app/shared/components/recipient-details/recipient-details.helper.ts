@@ -1,10 +1,12 @@
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApplicationType, EnumHelper } from "../../enums-list";
 import { POSTAL_CODE } from "../../regex.constants";
+import { ContactMethodHelper } from "../contact-method/contact-method.helper";
 
 export class RecipientDetailsHelper {
-    enum = new EnumHelper();
     postalRegex = POSTAL_CODE;
+    enum = new EnumHelper();
+    contactMethodHelper = new ContactMethodHelper();
     public setupFormGroup(fb: FormBuilder, form_type: ApplicationType): FormGroup {
         let group = {
             notificationRecipient: ['', Validators.required],
@@ -24,46 +26,41 @@ export class RecipientDetailsHelper {
         return fb.group(group);
     }
 
-    public createContactMethod(fb: FormBuilder, typeString: string = '', required: boolean = false) {
-        let current_validators = [];
-        let typeAndMessageValidators = [];
-        if (required) {
-            current_validators = [Validators.required];
-            typeAndMessageValidators = [Validators.required];
-        }
-        let label = '';
-        let type: number;
-        switch (typeString) {
-            case 'telephone': {
-                type = this.enum.ContactType.Telephone.val;
-                current_validators = current_validators.concat([Validators.minLength(10), Validators.maxLength(15)]);
-                label = 'Telephone Number';
-                break;
-            }
-            case 'mobile': {
-                type = this.enum.ContactType.Cellular.val;
-                current_validators = current_validators.concat([Validators.minLength(10), Validators.maxLength(15)]);
-                label = 'Cellular Number';
-                break;
-            }
-            case 'email': {
-                type = this.enum.ContactType.Email.val;
-                current_validators = current_validators.concat([Validators.email]);
-                label = 'Email Address';
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-        return fb.group({
-            type: [type, typeAndMessageValidators],
-            previousType: [type],
-            val: ['', current_validators],
-            label: [label],
-            leaveMessage: ['', typeAndMessageValidators],
-        });
-    }
+    // public createContactMethod(fb: FormBuilder, typeString: string = '') {
+    //     let current_validators = [];
+    //     let label = '';
+    //     let type: number;
+    //     switch (typeString) {
+    //         case 'telephone': {
+    //             type = this.enum.ContactType.Telephone.val;
+    //             current_validators = current_validators.concat([Validators.minLength(10), Validators.maxLength(15)]);
+    //             label = 'Telephone Number';
+    //             break;
+    //         }
+    //         case 'mobile': {
+    //             type = this.enum.ContactType.Cellular.val;
+    //             current_validators = current_validators.concat([Validators.minLength(10), Validators.maxLength(15)]);
+    //             label = 'Cellular Number';
+    //             break;
+    //         }
+    //         case 'email': {
+    //             type = this.enum.ContactType.Email.val;
+    //             current_validators = current_validators.concat([Validators.email]);
+    //             label = 'Email Address';
+    //             break;
+    //         }
+    //         default: {
+    //             break;
+    //         }
+    //     }
+    //     return fb.group({
+    //         type: [type],
+    //         previousType: [type],
+    //         val: ['', current_validators],
+    //         label: [label],
+    //         leaveMessage: [''],
+    //     });
+    // }
 
     public createVictimServiceWorker(fb: FormBuilder) {
         return fb.group({
@@ -96,7 +93,7 @@ export class RecipientDetailsHelper {
             }),
 
             mayWeSendCorrespondence: [this.enum.Boolean.True.val],
-            contactMethods: fb.array([this.createContactMethod(fb, '', true), this.createContactMethod(fb), this.createContactMethod(fb)]),
+            contactMethods: fb.array([this.contactMethodHelper.createContactMethod(fb), this.contactMethodHelper.createContactMethod(fb), this.contactMethodHelper.createContactMethod(fb)]),
             atLeastOneContactMethod: ['', Validators.required],
         });
     }

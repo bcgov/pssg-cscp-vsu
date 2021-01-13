@@ -222,7 +222,7 @@
         </div>
 
         <div class="col flex-col">
-            <app-field label="Gender" [required]="formType === ApplicationType.TRAVEL_FUNDS" [valid]="isMyControlValid(form.get('gender'))" errorMessage="Please select your gender" [disabled]="isDisabled">
+            <app-field label="Gender" [required]="true" [valid]="isMyControlValid(form.get('gender'))" errorMessage="Please select your gender" [disabled]="isDisabled">
                 <label class="inline-label">
                     <input type="radio" [value]="enum.Gender.Male.val" name="gender" formControlName="gender" (change)="setVictimInfoSameAsApplicant(form.parent)">
                     <span>M</span>
@@ -284,7 +284,7 @@
     <p *ngIf="formType === ApplicationType.TRAVEL_FUNDS"><strong>If we need to send travel confirmations and itineraries to you, please ensure that your email address is listed below as one of your preferred contact methods.</strong></p>
 
     <div class="contactMethods" formArrayName="contactMethods" *ngFor="let item of form.get('contactMethods')['controls']; let i = index;">
-        <app-contact-method [formGroup]="item" [formGroupName]="i" [number]="i" [parent]="form" [disabled]="isDisabled" [isRequired]="i == 0"></app-contact-method>
+        <app-contact-method [formGroup]="item" [formGroupName]="i" [number]="i" [parent]="form" [disabled]="isDisabled"></app-contact-method>
     </div>
 
     <app-field [valid]="isFieldValid('atLeastOneContactMethod')" errorMessage="At least one method of contact is required" [disabled]="isDisabled">
