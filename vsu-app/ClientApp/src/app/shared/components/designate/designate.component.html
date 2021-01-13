@@ -55,7 +55,7 @@
     <p>Please list one or more methods of contact for your designate (telephone / cellular / email) in order of preference and indicate if we may leave a detailed message (e.g. our organization name, phone number, case information, notification details):</p>
 
     <div class="contactMethods" formArrayName="contactMethods" *ngFor="let method of form.get('contactMethods')['controls']; let j = index;">
-        <app-contact-method [formGroup]="method" [formGroupName]="j" [number]="j" [parent]="form" [disabled]="isDisabled" [isRequired]="j == 0"></app-contact-method>
+        <app-contact-method [formGroup]="method" [formGroupName]="j" [number]="j" [parent]="form" [disabled]="isDisabled"></app-contact-method>
     </div>
 
     <app-field [valid]="isMyControlValid(form.get('atLeastOneContactMethod'))" errorMessage="At least one method of contact is required" [disabled]="isDisabled">

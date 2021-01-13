@@ -154,35 +154,40 @@ export class FormBase {
         control.updateValueAndValidity();
     }
 
-    contactMethodChange(item: FormGroup, isRequired: boolean = false) {
+    contactMethodChange(item: FormGroup) {
         let type = item.get('type').value;
-        let current_validators = [];
-        if (isRequired) current_validators = [Validators.required];
+        let leaveMessage = item.get('leaveMessage');
+        let current_validators = [Validators.required];
+        let val_validators = [];
 
         if (type == this.enum.ContactType.Telephone.val) {
             if (item.get('previousType').value == this.enum.ContactType.Email.val) {
                 item.get('val').patchValue('');
             }
-            current_validators = current_validators.concat([Validators.minLength(10), Validators.maxLength(15)]);
+            val_validators = [Validators.minLength(10), Validators.maxLength(15)];
         }
         else if (type == this.enum.ContactType.Cellular.val) {
             if (item.get('previousType').value == this.enum.ContactType.Email.val) {
                 item.get('val').patchValue('');
             }
-            current_validators = current_validators.concat([Validators.minLength(10), Validators.maxLength(15)]);
+            val_validators = [Validators.minLength(10), Validators.maxLength(15)];
         }
         else if (type == this.enum.ContactType.Email.val) {
             if (item.get('previousType').value == this.enum.ContactType.Telephone.val || item.get('previousType').value == this.enum.ContactType.Cellular.val) {
                 item.get('val').patchValue('');
             }
-            current_validators = current_validators.concat([Validators.email]);
+            val_validators = [Validators.email];
         }
         else {
             item.get('val').patchValue('');
+            leaveMessage.patchValue('');
+            current_validators = [];
         }
 
         item.get('previousType').patchValue(type);
-        this.setControlValidators(item.get('val'), current_validators);
+        this.setControlValidators(item.get('val'), current_validators.concat(val_validators));
+        this.setControlValidators(leaveMessage, current_validators);
+
     }
 
     checkAtLeastOneContactMethod(base_form: AbstractControl, isDeligate: boolean = false) {
@@ -198,7 +203,7 @@ export class FormBase {
         for (let i = 0; i < contactMethods.controls.length; ++i) {
             let thisMethod = contactMethods.controls[i];
             //&& thisMethod.get('leaveMessage').value == this.enum.Boolean.True.val
-            if (thisMethod.get('val').value && thisMethod.get('val').valid) {
+            if (thisMethod.get('val').value && thisMethod.get('val').valid && thisMethod.get('leaveMessage').valid) {
                 isValid = true;
             }
         }

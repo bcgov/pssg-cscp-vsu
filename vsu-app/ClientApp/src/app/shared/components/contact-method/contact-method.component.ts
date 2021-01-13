@@ -12,7 +12,7 @@ export class ContactMethodComponent extends FormBase implements OnInit {
     @Input() isDeligate: boolean = false;
     @Input() parent: FormGroup;
     @Input() disabled: boolean;
-    @Input() isRequired: boolean;
+    // @Input() isRequired: boolean;
 
     constructor(private controlContainer: ControlContainer) {
         super();
