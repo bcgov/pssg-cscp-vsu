@@ -41,9 +41,9 @@
             </app-field>
         </div>
 
-        <div class="col-md-4" *ngIf="client_details.coastInfo">
+        <div class="col-md-4" *ngIf="client_details.aliases">
             <app-field label="Alias(es)">
-                <input class="form-control" type="text" [(ngModel)]="client_details.coastInfo.vsd_aliasnames" [class.read-only]="true">
+                <input class="form-control" type="text" [(ngModel)]="client_details.aliases" [class.read-only]="true">
             </app-field>
         </div>
 

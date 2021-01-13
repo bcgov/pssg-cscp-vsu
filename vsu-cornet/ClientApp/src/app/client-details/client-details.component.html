@@ -50,9 +50,9 @@
       <app-victim-contacts *ngIf="currentPage === PAGES.VictimInformation" [client_details]="this.client_details"></app-victim-contacts>
       <app-state-transitions *ngIf="currentPage === PAGES.StateTransitions" [client_details]="this.client_details"></app-state-transitions>
 
-      <!-- <div class="button-container">
+      <div class="button-container">
         <button (click)="createOffender()" class="btn btn-secondary" *ngIf="coastOffenderDoesNotExist">Create COAST Offender</button>
-      </div> -->
+      </div>
     </div>
 
     <!-- <div class="col-3">

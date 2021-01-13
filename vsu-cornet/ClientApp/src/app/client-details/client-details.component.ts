@@ -6,7 +6,7 @@ import { NotificationService } from '../services/notification.service';
 import { OffenderService } from '../services/offender.service';
 import { EnumHelper } from '../shared/enums-list';
 import { FormBase } from '../shared/form-base';
-import { IAuthorityDocument, IClientDetails, IHearing, IKeyDate, IMovement, IStateTransition, IVictimContact } from '../shared/interfaces/client-details.interface';
+import { IAuthorityDocument, IClientDetails, ICoastOffender, IHearing, IKeyDate, IMovement, IStateTransition, IVictimContact } from '../shared/interfaces/client-details.interface';
 import { IClientParameters, ICornetParameters } from '../shared/interfaces/cornet-api-parameters.interface';
 
 enum PAGES {
@@ -90,6 +90,15 @@ export class ClientDetailsComponent extends FormBase implements OnInit {
   }
 
   getClientDetails(clientNumber) {
+
+    this.isLoading = true;
+
+    this.loadOffenderFromCoast(clientNumber);
+    this.loadOffenderFromCornet(clientNumber);
+    this.loadNotifications(clientNumber);
+  }
+
+  loadOffenderFromCornet(clientNumber: string) {
     let parameters: IClientParameters = {
       search_type: 'ID',
       identifier_type: 'CSNO',
@@ -100,26 +109,14 @@ export class ClientDetailsComponent extends FormBase implements OnInit {
       client: this.client,
     };
 
-    this.isLoading = true;
-
-    this.offenderService.getOffenderByCSNumber(clientNumber).subscribe((res) => {
-      console.log("coast offender");
-      console.log(res);
-      if (res && res.value && res.value.length == 1) {
-        this.client_details.coastInfo = res.value[0];
-      }
-      else {
-        this.coastOffenderDoesNotExist = true;
-      }
-    }, (err) => {
-      console.log(err);
-    });
-
     this.cornetService.getClients(parameters).subscribe((res) => {
       if (res && res.clients) {
         if (res.clients.length > 0) {
           let aliases = res.clients.filter(c => c.isCurrentName == "N");
+          console.log("aliases");
           console.log(aliases.map(a => a.personName));
+          // aliases.push({ personName: "Test, McTest" });
+          this.client_details.aliases = aliases.map(a => a.personName).join(', ');
         }
         let curr_client = res.clients.find(c => c.isCurrentName == "Y");
         Object.assign(this.client_details, curr_client);
@@ -131,7 +128,9 @@ export class ClientDetailsComponent extends FormBase implements OnInit {
       alert("Error retrieving cornet info");
       console.log(err);
     });
+  }
 
+  loadNotifications(clientNumber: string) {
     this.notificationService.getNotificationsForClient(clientNumber).subscribe((res) => {
       if (res && res.value && res.value.length) {
         res.value.forEach((n: any) => {
@@ -296,8 +295,41 @@ export class ClientDetailsComponent extends FormBase implements OnInit {
 
   }
 
+  loadOffenderFromCoast(clientNumber: string) {
+    this.offenderService.getOffenderByCSNumber(clientNumber).subscribe((res) => {
+      console.log("coast offender");
+      console.log(res);
+      if (res && res.value && res.value.length == 1) {
+        this.client_details.coastInfo = res.value[0];
+      }
+      else {
+        this.coastOffenderDoesNotExist = true;
+      }
+    }, (err) => {
+      console.log(err);
+    });
+  }
+
   createOffender() {
-    console.log("create offender in coast");
+    let offender: ICoastOffender = {
+      vsd_birthdate: new Date(this.client_details.personBirthDate),
+      vsd_firstname: this.client_details.givenNames,
+      vsd_lastname: this.client_details.lastName,
+      vsd_csnumber: this.client_details.clientNumber,
+      vsd_gender: this.enums.getOptionsSetValFromName(this.enums.Gender, this.client_details.personGenderIdentityCodeType).val
+    }
+    this.isLoading = true;
+    this.offenderService.createOffender(offender).subscribe((res) => {
+      console.log(res);
+      console.log("offender created");
+      this.coastOffenderDoesNotExist = false;
+      this.loadOffenderFromCoast(this.client_details.clientNumber);
+      this.loadNotifications(this.client_details.clientNumber);
+      // this.isLoading = false;
+    }, (err) => {
+      console.log(err);
+      this.isLoading = false;
+    });;
   }
 
   setPage(page: PAGES) {
