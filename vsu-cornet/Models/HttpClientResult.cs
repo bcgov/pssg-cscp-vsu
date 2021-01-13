@@ -4,7 +4,7 @@ using System.Net;
 
 namespace Gov.Cscp.Victims.Public.Models
 {
-	public class DynamicsResult
+	public class HttpClientResult
 	{
 		public HttpResponseMessage responseMessage { get; set; }
 		public JObject result { get; set; }

@@ -22,7 +22,7 @@ namespace Gov.Cscp.Victims.Public.Controllers
             {
                 string endpointUrl = $"vsd_cornetnotifications?$filter=statecode eq 0 and vsd_clientnumber eq '{clientId}'";
 
-                DynamicsResult result = await _dynamicsResultService.Get(endpointUrl);
+                HttpClientResult result = await _dynamicsResultService.Get(endpointUrl);
                 return StatusCode((int)result.statusCode, result.result.ToString());
             }
             finally { }

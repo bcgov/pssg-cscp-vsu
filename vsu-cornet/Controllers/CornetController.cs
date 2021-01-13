@@ -79,7 +79,7 @@ namespace Gov.Cscp.Victims.Public.Controllers
                     client = client
                 };
 
-                DynamicsResult result = await _cornetResultService.Get(endpointUrl, headers);
+                HttpClientResult result = await _cornetResultService.Get(endpointUrl, headers);
                 return StatusCode((int)result.statusCode, result.result.ToString());
             }
             finally { }
@@ -117,7 +117,7 @@ namespace Gov.Cscp.Victims.Public.Controllers
                     client = client
                 };
 
-                DynamicsResult result = await _cornetResultService.Get(endpointUrl, headers);
+                HttpClientResult result = await _cornetResultService.Get(endpointUrl, headers);
                 return StatusCode((int)result.statusCode, result.result.ToString());
             }
             finally { }
@@ -155,7 +155,7 @@ namespace Gov.Cscp.Victims.Public.Controllers
                     client = client
                 };
 
-                DynamicsResult result = await _cornetResultService.Get(endpointUrl, headers);
+                HttpClientResult result = await _cornetResultService.Get(endpointUrl, headers);
                 return StatusCode((int)result.statusCode, result.result.ToString());
             }
             finally { }
@@ -193,7 +193,7 @@ namespace Gov.Cscp.Victims.Public.Controllers
                     client = client
                 };
 
-                DynamicsResult result = await _cornetResultService.Get(endpointUrl, headers);
+                HttpClientResult result = await _cornetResultService.Get(endpointUrl, headers);
                 return StatusCode((int)result.statusCode, result.result.ToString());
             }
             finally { }
@@ -231,7 +231,7 @@ namespace Gov.Cscp.Victims.Public.Controllers
                     client = client
                 };
 
-                DynamicsResult result = await _cornetResultService.Get(endpointUrl, headers);
+                HttpClientResult result = await _cornetResultService.Get(endpointUrl, headers);
                 return StatusCode((int)result.statusCode, result.result.ToString());
             }
             finally { }
@@ -269,7 +269,7 @@ namespace Gov.Cscp.Victims.Public.Controllers
                     client = client
                 };
 
-                DynamicsResult result = await _cornetResultService.Get(endpointUrl, headers);
+                HttpClientResult result = await _cornetResultService.Get(endpointUrl, headers);
                 return StatusCode((int)result.statusCode, result.result.ToString());
             }
             finally { }
@@ -307,7 +307,7 @@ namespace Gov.Cscp.Victims.Public.Controllers
                     client = client
                 };
 
-                DynamicsResult result = await _cornetResultService.Get(endpointUrl, headers);
+                HttpClientResult result = await _cornetResultService.Get(endpointUrl, headers);
                 return StatusCode((int)result.statusCode, result.result.ToString());
             }
             finally { }

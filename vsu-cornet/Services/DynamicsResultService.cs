@@ -9,8 +9,8 @@ namespace Gov.Cscp.Victims.Public.Services
 {
     public interface IDynamicsResultService
     {
-        Task<DynamicsResult> Get(string endpointUrl);
-        Task<DynamicsResult> Post(string endpointUrl, string requestJson);
+        Task<HttpClientResult> Get(string endpointUrl);
+        Task<HttpClientResult> Post(string endpointUrl, string requestJson);
     }
 
     public class DynamicsResultService : IDynamicsResultService
@@ -24,19 +24,19 @@ namespace Gov.Cscp.Victims.Public.Services
             _configuration = configuration;
         }
 
-        public async Task<DynamicsResult> Get(string endpointUrl)
+        public async Task<HttpClientResult> Get(string endpointUrl)
         {
-            DynamicsResult blob = await DynamicsResultAsync(HttpMethod.Get, endpointUrl, "");
+            HttpClientResult blob = await DynamicsResultAsync(HttpMethod.Get, endpointUrl, "");
             return blob;
         }
 
-        public async Task<DynamicsResult> Post(string endpointUrl, string modelJson)
+        public async Task<HttpClientResult> Post(string endpointUrl, string modelJson)
         {
-            DynamicsResult blob = await DynamicsResultAsync(HttpMethod.Post, endpointUrl, modelJson);
+            HttpClientResult blob = await DynamicsResultAsync(HttpMethod.Post, endpointUrl, modelJson);
             return blob;
         }
 
-        private async Task<DynamicsResult> DynamicsResultAsync(HttpMethod method, string endpointUrl, string requestJson)
+        private async Task<HttpClientResult> DynamicsResultAsync(HttpMethod method, string endpointUrl, string requestJson)
         {
             endpointUrl = _configuration["DYNAMICS_ODATA_URI"] + endpointUrl;
             requestJson = requestJson.Replace("fortunecookie", "@odata.");
@@ -52,7 +52,7 @@ namespace Gov.Cscp.Victims.Public.Services
 
             string _responseContent = await _httpResponse.Content.ReadAsStringAsync();
 
-            DynamicsResult result = new DynamicsResult();
+            HttpClientResult result = new HttpClientResult();
             result.statusCode = _statusCode;
             result.responseMessage = _httpResponse;
             result.result = new Newtonsoft.Json.Linq.JObject();

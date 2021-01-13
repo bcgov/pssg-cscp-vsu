@@ -127,6 +127,8 @@ export class ClientDetailsComponent extends FormBase implements OnInit {
         this.client_details.givenNames = this.client_details.personName.split(',').splice(1).join(',');
       }
     }, (err) => {
+      this.isLoading = false;
+      alert("Error retrieving cornet info");
       console.log(err);
     });
 

@@ -17,8 +17,8 @@ namespace Gov.Cscp.Victims.Public.Services
 
     public interface ICornetResultService
     {
-        Task<DynamicsResult> Get(string endpointUrl, CornetHeaderInfo headers);
-        Task<DynamicsResult> Post(string endpointUrl, string requestJson, CornetHeaderInfo headers);
+        Task<HttpClientResult> Get(string endpointUrl, CornetHeaderInfo headers);
+        Task<HttpClientResult> Post(string endpointUrl, string requestJson, CornetHeaderInfo headers);
     }
 
     public class CornetResultService : ICornetResultService
@@ -32,19 +32,19 @@ namespace Gov.Cscp.Victims.Public.Services
             _configuration = configuration;
         }
 
-        public async Task<DynamicsResult> Get(string endpointUrl, CornetHeaderInfo headers)
+        public async Task<HttpClientResult> Get(string endpointUrl, CornetHeaderInfo headers)
         {
-            DynamicsResult blob = await DynamicsResultAsync(HttpMethod.Get, endpointUrl, "", headers);
+            HttpClientResult blob = await CornetResultAsync(HttpMethod.Get, endpointUrl, "", headers);
             return blob;
         }
 
-        public async Task<DynamicsResult> Post(string endpointUrl, string modelJson, CornetHeaderInfo headers)
+        public async Task<HttpClientResult> Post(string endpointUrl, string modelJson, CornetHeaderInfo headers)
         {
-            DynamicsResult blob = await DynamicsResultAsync(HttpMethod.Post, endpointUrl, modelJson, headers);
+            HttpClientResult blob = await CornetResultAsync(HttpMethod.Post, endpointUrl, modelJson, headers);
             return blob;
         }
 
-        private async Task<DynamicsResult> DynamicsResultAsync(HttpMethod method, string endpointUrl, string requestJson, CornetHeaderInfo headers)
+        private async Task<HttpClientResult> CornetResultAsync(HttpMethod method, string endpointUrl, string requestJson, CornetHeaderInfo headers)
         {
             endpointUrl = _configuration["CORNET_URI"] + endpointUrl;
             requestJson = requestJson.Replace("fortunecookie", "@odata.");
@@ -63,7 +63,7 @@ namespace Gov.Cscp.Victims.Public.Services
 
             string _responseContent = await _httpResponse.Content.ReadAsStringAsync();
 
-            DynamicsResult result = new DynamicsResult();
+            HttpClientResult result = new HttpClientResult();
             result.statusCode = _statusCode;
             result.responseMessage = _httpResponse;
             result.result = new Newtonsoft.Json.Linq.JObject();

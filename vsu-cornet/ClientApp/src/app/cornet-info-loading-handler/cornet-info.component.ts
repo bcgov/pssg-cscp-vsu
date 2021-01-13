@@ -12,6 +12,7 @@ export class CornetInfoLoadingHandler implements OnInit {
     isIE: boolean = false;
     showError: boolean = false;
     coastInfo: ICoastOffender;
+    isLoading: boolean = true;
 
     constructor(private router: Router,
         private route: ActivatedRoute,
@@ -43,6 +44,7 @@ export class CornetInfoLoadingHandler implements OnInit {
         this.offenderService.getOffenderById(vsd_offenderid).subscribe((res) => {
             console.log("coast offender");
             console.log(res);
+            this.isLoading = false;
             if (res && res.value && res.value.length == 1) {
                 this.coastInfo = res.value[0];
 
@@ -52,12 +54,12 @@ export class CornetInfoLoadingHandler implements OnInit {
                 }
                 else {
                     console.log("go to client search");
-                    this.router.navigate([`client-search`], { queryParams: { dosearch: true, surname: this.coastInfo.vsd_lastname, givenName: this.coastInfo.vsd_firstname, gender: this.coastInfo.vsd_gender, birthyear: this.coastInfo.vsd_birthdate ? this.coastInfo.vsd_birthdate.slice(0, 4) : "" } });
+                    this.router.navigate([`client-search`], { queryParams: { dosearch: true, surname: this.coastInfo.vsd_lastname, givenName: this.coastInfo.vsd_firstname, gender: this.coastInfo.vsd_gender, birthyear: this.coastInfo.vsd_birthdate ? this.coastInfo.vsd_birthdate.slice(0, 4) : null } });
                     // this.router.navigate([`client-search?dosearch=true&surname=${this.coastInfo.vsd_lastname}&givenName=${this.coastInfo.vsd_firstname}&gender=${this.coastInfo.vsd_gender}&birthdate=${this.coastInfo.vsd_birthdate}`]);
                 }
             }
             else {
-
+                this.showError = true;
             }
 
         }, (err) => {
