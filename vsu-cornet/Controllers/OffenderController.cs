@@ -22,7 +22,7 @@ namespace Gov.Cscp.Victims.Public.Controllers
             {
                 string endpointUrl = $"vsd_offenders?$filter=vsd_offenderid eq {offenderId}";
 
-                DynamicsResult result = await _dynamicsResultService.Get(endpointUrl);
+                HttpClientResult result = await _dynamicsResultService.Get(endpointUrl);
                 return StatusCode((int)result.statusCode, result.result.ToString());
             }
             finally { }
@@ -35,7 +35,7 @@ namespace Gov.Cscp.Victims.Public.Controllers
             {
                 string endpointUrl = $"vsd_offenders?$filter=statecode eq 0 and vsd_csnumber eq '{cs}'";
 
-                DynamicsResult result = await _dynamicsResultService.Get(endpointUrl);
+                HttpClientResult result = await _dynamicsResultService.Get(endpointUrl);
                 return StatusCode((int)result.statusCode, result.result.ToString());
             }
             finally { }

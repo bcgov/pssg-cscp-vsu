@@ -1,3 +1,6 @@
-<div class="form-wrapper" style="position: relative;">
+<div class="form-wrapper" style="position: relative;" *ngIf="isLoading">
   Loading...
+</div>
+<div *ngIf="showError">
+  Unable to retrieve offender info
 </div>
