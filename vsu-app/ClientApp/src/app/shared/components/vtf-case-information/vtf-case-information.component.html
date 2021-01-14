@@ -17,17 +17,37 @@
 
     <div class="collection-notice-container">
         <h3>Collection Notice</h3>
-        <p>The personal information requested on this form is collected under the authority of section 26(c) and disclosed to the Ministry of Finance
-            under the authority of section 33.1(1)(i.1)(i) and (ii) of the Freedom of Information and Protection of Privacy Act for the purpose of
-            administering the Victim Travel Fund. If you have any questions about the collection of your personal information please contact Victim
-            Safety Unit Manager, (604) 660-0316 or 1-877-315-8822 (toll-free).
+        <p>The Victim Services and Crime Prevention Division, VSU, will collect your personal information for the purpose of providing you with services in
+            accordance with sections 26(a) and (c) of the Freedom of Information and Protection of Privacy Act (FoIPPA) and disclose it to the Ministry of
+            Finance under the authority of section 33.1(1)(i) and (ii) of FoIPPA for the purpose of administering the Victim Travel Fund.
+            Your personal information will also be collected as per section 26(e) of the FoIPPA in order to evaluate the program to better serve you.
+            Should you have any questions about the collection of your personal information please contact the Victim Safety Unit Manager at (604) 660-0316
+            or 1-877-315-8822 (toll-free).
         </p>
     </div>
 
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-6">
             <app-field label="VTF Case #" [required]="true" [valid]="isMyControlValid(form.get('vtfCaseNumber'))" errorMessage="Please enter your vtf case number" [disabled]="isDisabled">
-                <input class="form-control" type="text" formControlName="vtfCaseNumber" maxlength="100" (change)="caseNumberChange()">
+                <input class="form-control" type="text" formControlName="vtfCaseNumber" maxlength="100" (change)="caseInfoChange()" [class.input-valid]="isValid && didCheck" [class.input-invalid]="!isValid && didCheck">
+            </app-field>
+        </div>
+        <div class="col-md-6 date-col">
+            <app-field label="Birth Date" [required]="true" [valid]="isMyControlValid(form.get('birthDate'))" errorMessage="Please enter your birth date" [disabled]="isDisabled" (change)="caseInfoChange()">
+                <app-date-field [control]="form.get('birthDate')" [max]="today" [class.input-valid]="isValid && didCheck" [class.input-invalid]="!isValid && didCheck"></app-date-field>
+            </app-field>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <app-field label="First Name" [required]="true" [valid]="isMyControlValid(form.get('firstName'))" errorMessage="Please enter your first name" [disabled]="isDisabled">
+                <input class="form-control" type="text" formControlName="firstName" maxlength="100" (change)="caseInfoChange()" [class.input-valid]="isValid && didCheck" [class.input-invalid]="!isValid && didCheck">
+            </app-field>
+        </div>
+        <div class="col-md-6">
+            <app-field label="Last Name" [required]="true" [valid]="isMyControlValid(form.get('lastName'))" errorMessage="Please enter your last name" [disabled]="isDisabled">
+                <input class="form-control" type="text" formControlName="lastName" maxlength="100" (change)="caseInfoChange()" [class.input-valid]="isValid && didCheck" [class.input-invalid]="!isValid && didCheck">
             </app-field>
         </div>
     </div>

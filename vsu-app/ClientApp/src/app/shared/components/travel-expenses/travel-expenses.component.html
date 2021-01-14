@@ -3,19 +3,102 @@
         <h1>Travel Expenses</h1>
     </div>
 
-    <h2 class="blue-header mt-0">Transportation Expenses</h2>
 
+    <div class="row">
+        <div class="col-md-12">
+            <div [class.is-disabled]="isDisabled">
+                <label class="inline-label inline-checkbox">
+                    <input type="checkbox" [value]="true" name="hasContactInfoChanged" formControlName="hasContactInfoChanged" (change)="hasContactInfoChangedChange($event.target.checked)">
+                    <span>Has your contact information changed?</span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="showContactInfoComments" class="row">
+        <div class="col-md-12">
+            <app-field label="Contact information comments" [disabled]="isDisabled">
+                <textarea class="form-control bigger" formControlName="contactInfoComments" maxlength="500"></textarea>
+            </app-field>
+        </div>
+    </div>
+
+    <div formArrayName="travelDates" *ngFor="let item of form.get('travelDates')['controls']; let i = index;">
+        <div [formGroupName]="i" class="travel-date-info">
+            <div class="row remove-row">
+                <div [class.col-md-11]="form.get('travelDates')['controls'].length > 1" [class.col-md-12]="form.get('travelDates')['controls'].length == 1">
+                    <app-field label="Purpose of travel" [required]="true" [valid]="isMyControlValid(item.get('purposeOfTravel'))" errorMessage="Please enter a purpose of travel" [disabled]="isDisabled">
+                        <textarea class="form-control bigger" formControlName="purposeOfTravel" maxlength="500"></textarea>
+                    </app-field>
+                </div>
+
+                <div class="col-md-1">
+                    <div class="remove-button" *ngIf="form.get('travelDates')['controls'].length > 1">
+                        <br>
+                        <i class="fas fa-times-circle text-danger center-clear-btn" (click)="removeTravelDate(i)"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div>
+                        <app-field label="Travel Period (from):" [required]="true" [valid]="isMyControlValid(item.get('travelPeriodStart'))" errorMessage="Please select a travel start date" [disabled]="isDisabled">
+                            <input type="text" [max]="today" class="form-control date-picker" formControlName="travelPeriodStart" placeholder="yyyy/mm/dd" [matDatepicker]="travelPeriodStartPicker_i" (focus)="travelPeriodStartPicker_i.open()" (click)="travelPeriodStartPicker_i.open()" readonly (dateChange)="travelPeriodStartChange(i)">
+                            <mat-datepicker #travelPeriodStartPicker_i></mat-datepicker>
+                        </app-field>
+                    </div>
+                    <div class="time-div">
+                        <app-field [valid]="isMyControlValid(item.get('startTime'))" errorMessage="Please enter a vlaid time" [disabled]="isDisabled">
+                            <div class="time-app-field">
+                                <input formControlName="startTime" type="text" mask="00 : 00" class="form-control mr-2 time-input" placeholder="00 : 00" [pattern]="timeRegex">
+                                <select formControlName="startAMPM" class="form-control ml-2">
+                                    <option value="AM">AM</option>
+                                    <option value="PM">PM</option>
+                                </select>
+                            </div>
+                        </app-field>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div>
+                        <app-field label="Travel Period (to):" [required]="true" [valid]="isMyControlValid(item.get('travelPeriodEnd'))" errorMessage="Please select a valid travel end date" [disabled]="isDisabled">
+                            <input type="text" [max]="today" [min]="travelPeriodStartDates[i]" class="form-control date-picker" formControlName="travelPeriodEnd" placeholder="yyyy/mm/dd" [matDatepicker]="travelPeriodEndPicker_i" (focus)="travelPeriodEndPicker_i.open()" (click)="travelPeriodEndPicker_i.open()" readonly>
+                            <mat-datepicker #travelPeriodEndPicker_i></mat-datepicker>
+                        </app-field>
+                    </div>
+                    <div class="time-div">
+                        <app-field [valid]="isMyControlValid(item.get('endTime'))" errorMessage="Please enter a vlaid time" [disabled]="isDisabled">
+                            <div class="time-app-field">
+                                <input formControlName="endTime" type="text" mask="00 : 00" class="form-control mr-2 time-input" placeholder="00 : 00" [pattern]="timeRegex">
+                                <select formControlName="endAMPM" class="form-control ml-2">
+                                    <option value="AM">AM</option>
+                                    <option value="PM">PM</option>
+                                </select>
+                            </div>
+                        </app-field>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="add-additional-btn-container">
+        <button *ngIf="!isDisabled" class="btn btn-secondary" (click)="addAdditionalTravelDate()">+ ADD ADDITIONAL TRAVEL DATE</button>
+    </div>
+
+    <h2 class="blue-header mt-0">Transportation Expenses</h2>
 
     <label>Personal vehicle use: Total distance travelled</label>
     <div class="row">
         <div class="col-md-6">
             <app-field label="Mileage (in km)" [required]="true" [valid]="isMyControlValid(form.get('mileage'))" errorMessage="Please enter mileage" [disabled]="isDisabled">
-                <input class="form-control" type="text" mask="separator.2" formControlName="mileage" maxlength="100">
+                <input class="form-control" type="text" mask="separator.2" formControlName="mileage" maxlength="100" (input)="updateMileageTotal()">
             </app-field>
         </div>
         <div class="col-md-6">
-            <app-field label="Total mileage expenses" [required]="true" [valid]="isMyControlValid(form.get('mileageExpenses'))" errorMessage="Please enter mileage expenses" [disabled]="isDisabled">
-                <input class="form-control" type="text" mask="separator.2" formControlName="mileageExpenses" maxlength="100">
+            <app-field label="Total mileage expenses" [required]="false" [disabled]="isDisabled">
+                <input class="form-control" type="text" mask="separator.2" prefix="$" formControlName="mileageExpenses" maxlength="100">
             </app-field>
         </div>
     </div>
@@ -95,11 +178,15 @@
 
     <h2 class="blue-header mt-0">Meal Expenses</h2>
 
+    <p>Please enter the total amount of meals you wish to claim per day for all people included in the travel party.</p>
+
+    <ng-template #dateTemplate>On the day of travel to court you can claim for all 3 meals if you leave by 7am; lunch and dinner if you leave by 12pm and dinner if you leave by 6pm. On day of travel home you can claim for breakfast if you arrive after 7am; breakfast and lunch if you arrive after 12pm and all 3 meals if you arrive after 6pm.</ng-template>
+
     <div formArrayName="mealExpenses" *ngFor="let item of form.get('mealExpenses')['controls']; let i = index;">
         <div [formGroupName]="i" class="meal-expense-info">
             <div class="row">
                 <div class="col">
-                    <app-field label="Date" [required]="true" [valid]="isMyControlValid(item.get('date'))" errorMessage="Please enter the date" [disabled]="isDisabled">
+                    <app-field label="Date" [required]="true" [valid]="isMyControlValid(item.get('date'))" errorMessage="Please enter the date" [disabled]="isDisabled" [tooltipReference]="dateTemplate">
                         <input type="text" [max]="today" class="form-control date-picker" formControlName="date" placeholder="yyyy/mm/dd" [matDatepicker]="mealDatePicker_i" (focus)="mealDatePicker_i.open()" (click)="mealDatePicker_i.open()" readonly>
                         <mat-datepicker #mealDatePicker_i></mat-datepicker>
                     </app-field>
@@ -151,12 +238,12 @@
         <div [formGroupName]="i" class="other-expense-info">
             <div class="row">
                 <div class="col">
-                    <app-field label="Description" [required]="true" [valid]="isMyControlValid(item.get('description'))" errorMessage="Please enter expense description" [disabled]="isDisabled">
+                    <app-field label="Description" [required]="false" [valid]="isMyControlValid(item.get('description'))" errorMessage="Please enter expense description" [disabled]="isDisabled">
                         <input class="form-control" type="text" formControlName="description" maxlength="100">
                     </app-field>
                 </div>
                 <div class="col">
-                    <app-field label="Amount" [required]="true" [valid]="isMyControlValid(item.get('amount'))" errorMessage="Please enter amount" [disabled]="isDisabled">
+                    <app-field label="Amount" [required]="false" [valid]="isMyControlValid(item.get('amount'))" errorMessage="Please enter amount" [disabled]="isDisabled">
                         <input class="form-control" type="text" mask="separator.2" formControlName="amount" maxlength="100">
                     </app-field>
                 </div>

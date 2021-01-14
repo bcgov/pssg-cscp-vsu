@@ -14,6 +14,13 @@ import { VTFReimbursementApplicantInfoHelper } from "../shared/components/vtf-re
 import { iLookupData } from "../shared/interfaces/lookup-data.interface";
 import { TravelExpensesHelper } from "../shared/components/travel-expenses/travel-expenses.helper";
 
+enum PAGES {
+    CASE_INFORMATION,
+    TRAVEL_AND_EXPENSES,
+    DECLARATION,
+    CONFIRMATION
+}
+
 @Component({
     selector: 'app-vtf-reimbursement',
     templateUrl: './vtf-reimbursement.component.html',
@@ -28,6 +35,8 @@ export class VictimTravelFundReimbursementComponent extends FormBase implements 
     public currentFormStep: number = 0;
     public showPrintView: boolean = false;
     formType = FORM_TYPES.TRAVEL_FUNDS_REIMBURSEMENT;
+
+    PAGES = PAGES;
 
     elements: string[] = ['caseInformation', 'applicantInformation', 'travelExpenses', 'authorizationInformation'];
 

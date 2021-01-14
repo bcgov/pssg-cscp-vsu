@@ -17,8 +17,8 @@
                         <ng-template matStepperIcon="number">
                         </ng-template>
                         <mat-step label="VTF Case Information" [stepControl]="fb.group({name: ['caseInformation']})" [hasError]="max_selected_index >= 2 && !isMyControlValid(form.get('caseInformation'))"></mat-step>
-                        <mat-step label="Applicant Information" [stepControl]="fb.group({name: ['applicantInformation']})" [hasError]="!isMyControlValid(form.get('applicantInformation'))"></mat-step>
-                        <mat-step label="Travel Expenses" [stepControl]="fb.group({name: ['travelExpenses']})" [hasError]="!isMyControlValid(form.get('travelExpenses'))"></mat-step>
+                        <!-- <mat-step label="Applicant Information" [stepControl]="fb.group({name: ['applicantInformation']})" [hasError]="!isMyControlValid(form.get('applicantInformation'))"></mat-step> -->
+                        <mat-step label="Travel Information & Expenses" [stepControl]="fb.group({name: ['travelExpenses']})" [hasError]="!isMyControlValid(form.get('travelExpenses'))"></mat-step>
                         <mat-step label="Declaration & Authorization" [stepControl]="fb.group({name: ['authorizationInformation']})" [hasError]="!isMyControlValid(form.get('authorizationInformation'))"></mat-step>
                         <mat-step label="Confirmation" *ngIf="showConfirmation" [stepControl]="fb.group({name: ['confirmation']})"></mat-step>
                     </mat-vertical-stepper>
@@ -36,26 +36,25 @@
                 </div>
 
                 <div class="pagebreak"> </div>
-                <app-vtf-case-information [formType]="formType.val" [formGroup]="form" formGroupName="caseInformation" [lookupData]="lookupData" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == 0 || showPrintView"></app-vtf-case-information>
+                <app-vtf-case-information [formType]="formType.val" [formGroup]="form" formGroupName="caseInformation" [lookupData]="lookupData" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == PAGES.CASE_INFORMATION || showPrintView"></app-vtf-case-information>
+
+                <!-- <div class="pagebreak"> </div>
+                <app-vtf-reimbursement-applicant-information [formType]="formType.val" [formGroup]="form" formGroupName="applicantInformation" [lookupData]="lookupData" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == 1 || showPrintView"></app-vtf-reimbursement-applicant-information> -->
 
                 <div class="pagebreak"> </div>
-                <app-vtf-reimbursement-applicant-information [formType]="formType.val" [formGroup]="form" formGroupName="applicantInformation" [lookupData]="lookupData" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == 1 || showPrintView"></app-vtf-reimbursement-applicant-information>
+                <app-travel-expenses [formType]="formType.val" [formGroup]="form" formGroupName="travelExpenses" [lookupData]="lookupData" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == PAGES.TRAVEL_AND_EXPENSES || showPrintView"></app-travel-expenses>
 
                 <div class="pagebreak"> </div>
-                <app-travel-expenses [formType]="formType.val" [formGroup]="form" formGroupName="travelExpenses" [lookupData]="lookupData" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == 2 || showPrintView"></app-travel-expenses>
-
-
+                <app-authorization [formType]="formType.val" [formGroup]="form" formGroupName="authorizationInformation" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == PAGES.DECLARATION || showPrintView"></app-authorization>
+                
                 <div class="pagebreak"> </div>
-                <app-authorization [formType]="formType.val" [formGroup]="form" formGroupName="authorizationInformation" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == 3 || showPrintView"></app-authorization>
+                <app-confirmation [formType]="formType.val" [confirmationNumber]="form.get('confirmation.confirmationNumber').value" (showPrintView)="showPrintView = $event" *ngIf="stepper.selectedIndex == PAGES.CONFIRMATION"></app-confirmation>
 
                 <div *ngIf="showValidationMessage" class="error-summary">
                     <i class="fas fa-exclamation-triangle" style="margin-right: 10px;"></i>
                     <span>There are errors with some fields on this page. Please scroll up to review and fix the errors (marked in red) before continuing.</span>
                 </div>
-
-                <div class="pagebreak"> </div>
-                <app-confirmation [formType]="formType.val" [confirmationNumber]="form.get('confirmation.confirmationNumber').value" (showPrintView)="showPrintView = $event" *ngIf="stepper.selectedIndex == 4"></app-confirmation>
-
+                
                 <section class="button-container" *ngIf="!showPrintView" [class.disabled-wrapper]="submitting">
                     <span class="right-buttons">
                         <button (click)="submit();" class="btn btn-primary continue-btn" [class.is-disabled]="submitting" *ngIf="stepper.selectedIndex == 4 && !showConfirmation">SUBMIT</button>

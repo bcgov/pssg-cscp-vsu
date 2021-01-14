@@ -18,6 +18,9 @@ export class VTFCaseInformationComponent extends FormBase implements OnInit {
     @Input() formType: ApplicationType;
     public form: FormGroup;
 
+    isValid: boolean = false;
+    didCheck: boolean = false;
+
     constructor(private controlContainer: ControlContainer,
         private caseService: CaseService,
         private contactService: ContactService,
@@ -28,18 +31,32 @@ export class VTFCaseInformationComponent extends FormBase implements OnInit {
     ngOnInit() {
         this.form = <FormGroup>this.controlContainer.control;
         setTimeout(() => { this.form.markAsTouched(); }, 0);
+
+        this.isValid = this.form.get('isValid').value;
+        this.didCheck = this.form.get('didCheck').value;
         console.log("vtf case info component");
         console.log(this.form);
     }
 
-    caseNumberChange() {
-        let caseNumber = this.form.get('vtfCaseNumber').value;
-        console.log(caseNumber);
-        if (caseNumber) {
-            this.getContactIdFromCase(caseNumber);
+    caseInfoChange() {
+        let info = {
+            caseNumber: this.form.get('vtfCaseNumber').value,
+            firstName: this.form.get('firstName').value,
+            lastName: this.form.get('lastName').value,
+            birthDate: this.form.get('birthDate').value,
+        }
+
+        if (info && info.caseNumber && info.birthDate && info.firstName && info.lastName) {
+            //validate
+            console.log("TODO - validate info here!");
+            this.isValid = true;
+            this.didCheck = true;
+
+            this.form.get('isValid').patchValue(this.isValid);
+            this.form.get('didCheck').patchValue(this.didCheck);
         }
         else {
-
+            //haven't filled in all fields
         }
     }
 
