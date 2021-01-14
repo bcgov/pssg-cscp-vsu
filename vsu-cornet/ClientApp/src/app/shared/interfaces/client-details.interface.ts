@@ -10,6 +10,7 @@ export interface IClientDetails {
     lastName?: string;
     givenNames?: string;
     notifications?: INotification[];
+    aliases?: string;
 
     coastInfo?: ICoastOffender;
 
@@ -22,22 +23,22 @@ export interface IClientDetails {
 }
 
 export interface ICoastOffender {
-    _vsd_contactid_value: string;
-    vsd_aliasnames: string;
-    vsd_awol: number;
-    vsd_birthdate: string;
-    vsd_communitystatus: number;
+    _vsd_contactid_value?: string;
+    vsd_aliasnames?: string;
+    vsd_awol?: number;
+    vsd_birthdate: Date;
+    vsd_communitystatus?: number;
     vsd_csnumber: string;
     vsd_firstname: string;
     vsd_gender: number;
-    vsd_incustody: number;
-    vsd_inout: number;
-    vsd_intermittentsentence: number;
+    vsd_incustody?: number;
+    vsd_inout?: number;
+    vsd_intermittentsentence?: number;
     vsd_lastname: string;
-    vsd_offenderid: string;
-    vsd_policefilenumber: string;
-    vsd_probationofficerbailsupervisor: string;
-    vsd_reportingorder: number;
+    vsd_offenderid?: string;
+    vsd_policefilenumber?: string;
+    vsd_probationofficerbailsupervisor?: string;
+    vsd_reportingorder?: number;
 }
 
 export interface INotification {

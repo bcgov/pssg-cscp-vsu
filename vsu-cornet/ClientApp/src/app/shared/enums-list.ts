@@ -34,6 +34,13 @@ export class EnumHelper {
         return Object.values(optionSet).find((o: IOptionSetVal) => o.val == val) as IOptionSetVal;
     }
 
+    /**
+     * Helper to retrieve option set data from the name
+     */
+    public getOptionsSetValFromName(optionSet: any, name: string): IOptionSetVal {
+        return Object.values(optionSet).find((o: IOptionSetVal) => o.name == name) as IOptionSetVal;
+    }
+
     public EventType = {
         KEY_DATE:       <IOptionSetVal> { val: 100000000, name: "KEY_DATE" },
         MOVEMENT:       <IOptionSetVal> { val: 100000001, name: "MOVEMENT" },

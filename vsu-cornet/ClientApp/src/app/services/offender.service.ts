@@ -2,6 +2,7 @@ import { retry, catchError } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { ICoastOffender } from '../shared/interfaces/client-details.interface';
 
 
 @Injectable({
@@ -23,6 +24,13 @@ export class OffenderService {
 
     getOffenderById(offenderId: string): Observable<any> {
         return this.http.get<any>(`${this.apiUrl}/${offenderId}`, { headers: this.headers }).pipe(
+            retry(3),
+            catchError(this.handleError)
+        );
+    }
+
+    createOffender(offender: ICoastOffender): Observable<any> {
+        return this.http.post<any>(`${this.apiUrl}`, offender, { headers: this.headers }).pipe(
             retry(3),
             catchError(this.handleError)
         );
