@@ -1,10 +1,16 @@
+using Gov.Cscp.Victims.Public.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Gov.Cscp.Victims.Public.Services;
+using Microsoft.Extensions.HealthChecks;
+using Serilog.Exceptions;
+using Serilog;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System;
 
 namespace Gov.Cscp.Victims.Public
 {
@@ -32,6 +38,15 @@ namespace Gov.Cscp.Victims.Public
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+
+            // health checks
+            services.AddHealthChecks(checks =>
+            {
+                checks.AddValueTaskCheck("HTTP Endpoint", () => new ValueTask<IHealthCheckResult>(HealthCheckResult.Healthy("Ok")));
+
+            });
+
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,6 +72,53 @@ namespace Gov.Cscp.Victims.Public
                     name: "default",
                     template: "{controller}/{action=Index}/{id?}");
             });
+
+            //splunk setup
+            if (!string.IsNullOrEmpty(Configuration["SPLUNK_COLLECTOR_URL"]) &&
+                !string.IsNullOrEmpty(Configuration["SPLUNK_TOKEN"])
+                )
+            {
+
+                Serilog.Sinks.Splunk.CustomFields fields = new Serilog.Sinks.Splunk.CustomFields();
+                if (!string.IsNullOrEmpty(Configuration["SPLUNK_CHANNEL"]))
+                {
+                    fields.CustomFieldList.Add(new Serilog.Sinks.Splunk.CustomField("channel", Configuration["SPLUNK_CHANNEL"]));
+                }
+                var splunkUri = new Uri(Configuration["SPLUNK_COLLECTOR_URL"]);
+                var upperSplunkHost = splunkUri.Host?.ToUpperInvariant() ?? string.Empty;
+
+                // Fix for bad SSL issues 
+
+                Log.Logger = new LoggerConfiguration()
+                    .Enrich.FromLogContext()
+                    .Enrich.WithExceptionDetails()
+                    .WriteTo.Console()
+                    // .WriteTo.EventCollector(Configuration["SPLUNK_COLLECTOR_URL"], Configuration["SPLUNK_TOKEN"])
+                    .WriteTo.EventCollector(splunkHost: Configuration["SPLUNK_COLLECTOR_URL"],
+                                           eventCollectorToken: Configuration["SPLUNK_TOKEN"], sourceType: "portal",
+                                           restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Information,
+#pragma warning disable CA2000 // Dispose objects before losing scope
+                                                        messageHandler: new HttpClientHandler()
+                                                        {
+                                                            ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; }
+                                                        }
+#pragma warning restore CA2000 // Dispose objects before losing scope
+                                                      )
+                    .CreateLogger();
+
+                Serilog.Debugging.SelfLog.Enable(Console.Error);
+
+                Log.Logger.Information("VSU Webforms Started");
+
+            }
+            else
+            {
+                Log.Logger = new LoggerConfiguration()
+                    .Enrich.FromLogContext()
+                    .Enrich.WithExceptionDetails()
+                    .WriteTo.Console()
+                    .CreateLogger();
+            }
 
             app.UseSpa(spa =>
             {

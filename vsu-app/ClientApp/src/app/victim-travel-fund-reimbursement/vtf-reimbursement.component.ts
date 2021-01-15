@@ -149,6 +149,11 @@ export class VictimTravelFundReimbursementComponent extends FormBase implements 
 
     submit() {
         console.log("TODO -submit");
+        this.applicationService.testSplunk().subscribe((res) => {
+            console.log(res);
+        }, (err) => {
+            console.log(err);
+        });
         // console.log(this.form);
         // if (this.form.valid) {
         //     this.submitting = true;

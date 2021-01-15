@@ -46,7 +46,7 @@
 
                 <div class="pagebreak"> </div>
                 <app-authorization [formType]="formType.val" [formGroup]="form" formGroupName="authorizationInformation" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == PAGES.DECLARATION || showPrintView"></app-authorization>
-                
+
                 <div class="pagebreak"> </div>
                 <app-confirmation [formType]="formType.val" [confirmationNumber]="form.get('confirmation.confirmationNumber').value" (showPrintView)="showPrintView = $event" *ngIf="stepper.selectedIndex == PAGES.CONFIRMATION"></app-confirmation>
 
@@ -54,11 +54,11 @@
                     <i class="fas fa-exclamation-triangle" style="margin-right: 10px;"></i>
                     <span>There are errors with some fields on this page. Please scroll up to review and fix the errors (marked in red) before continuing.</span>
                 </div>
-                
+
                 <section class="button-container" *ngIf="!showPrintView" [class.disabled-wrapper]="submitting">
                     <span class="right-buttons">
-                        <button (click)="submit();" class="btn btn-primary continue-btn" [class.is-disabled]="submitting" *ngIf="stepper.selectedIndex == 4 && !showConfirmation">SUBMIT</button>
-                        <button (click)="gotoNextStep(stepper);" class="btn btn-primary continue-btn" [class.is-disabled]="submitting" *ngIf="stepper.selectedIndex < 4 || (stepper.selectedIndex == 4 && showConfirmation)">{{stepper.selectedIndex === 0 ? 'START FORM' : 'CONTINUE'}} <i class="fas fa-chevron-right"></i></button>
+                        <button (click)="submit();" class="btn btn-primary continue-btn" [class.is-disabled]="submitting" *ngIf="stepper.selectedIndex == PAGES.DECLARATION && !showConfirmation">SUBMIT</button>
+                        <button (click)="gotoNextStep(stepper);" class="btn btn-primary continue-btn" [class.is-disabled]="submitting" *ngIf="stepper.selectedIndex < PAGES.DECLARATION || (stepper.selectedIndex == PAGES.DECLARATION && showConfirmation)">{{stepper.selectedIndex === 0 ? 'START FORM' : 'CONTINUE'}} <i class="fas fa-chevron-right"></i></button>
                         <button (click)="gotoPreviousStep(stepper);" class="btn btn-primary continue-btn" [class.is-disabled]="submitting" *ngIf="stepper.selectedIndex > 0 && !showConfirmation"><i class="fas fa-chevron-left"></i> BACK</button>
                     </span>
                 </section>

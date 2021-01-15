@@ -3,6 +3,9 @@ using Gov.Cscp.Victims.Public.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.Rest;
+using Serilog;
+using Microsoft.Extensions.Configuration;
 
 namespace Gov.Cscp.Victims.Public.Controllers
 {
@@ -10,10 +13,23 @@ namespace Gov.Cscp.Victims.Public.Controllers
     public class ApplicationController : Controller
     {
         private readonly IDynamicsResultService _dynamicsResultService;
+        private readonly ILogger _logger;
 
-        public ApplicationController(IDynamicsResultService dynamicsResultService)
+        public ApplicationController(IConfiguration configuration, IDynamicsResultService dynamicsResultService)
         {
             this._dynamicsResultService = dynamicsResultService;
+            _logger = Log.Logger;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> TestSplunk([FromBody] ApplicationData model)
+        {
+            try
+            {
+                _logger.Error("Test splunk error message");
+                return Ok();
+            }
+            finally { }
         }
 
         [HttpPost]
@@ -25,13 +41,18 @@ namespace Gov.Cscp.Victims.Public.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-                
+
                 string endpointUrl = "vsd_CreateVSUCase";
                 JsonSerializerOptions options = new JsonSerializerOptions();
                 options.IgnoreNullValues = true;
                 string modelString = System.Text.Json.JsonSerializer.Serialize(model, options);
                 DynamicsResult result = await _dynamicsResultService.Post(endpointUrl, modelString);
                 return StatusCode((int)result.statusCode, result.result.ToString());
+            }
+            catch (HttpOperationException httpOperationException)
+            {
+                _logger.Error(httpOperationException, "Unexpected error while submitting application");
+                return BadRequest();
             }
             finally { }
         }
