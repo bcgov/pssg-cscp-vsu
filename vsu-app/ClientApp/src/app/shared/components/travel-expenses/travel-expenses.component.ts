@@ -7,6 +7,11 @@ import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from "@angular/materia
 import { MomentDateAdapter } from "@angular/material-moment-adapter";
 import * as moment from 'moment';
 import { TravelExpensesHelper } from "./travel-expenses.helper";
+import { TIME } from "../../regex.constants";
+
+const BREAKFAST = 12;
+const LUNCH = 13.8;
+const DINNER = 23.25;
 
 @Component({
     selector: 'app-travel-expenses',
@@ -23,7 +28,10 @@ export class TravelExpensesComponent extends FormBase implements OnInit {
     @Input() formType: ApplicationType;
     public form: FormGroup;
 
-    today = new Date();
+    timeRegex = TIME;
+
+    showContactInfoComments: boolean = false;
+
     travelPeriodStartDate: Date = null;
     travelPeriodStartDates: Date[] = [];
     travelExpenseHelper: TravelExpensesHelper = new TravelExpensesHelper();
@@ -38,6 +46,43 @@ export class TravelExpensesComponent extends FormBase implements OnInit {
         setTimeout(() => { this.form.markAsTouched(); }, 0);
         console.log("travel expenses component");
         console.log(this.form);
+
+        this.showContactInfoComments = this.form.get('hasContactInfoChanged').value === true;
+    }
+
+    hasContactInfoChangedChange(val) {
+        this.showContactInfoComments = val;
+    }
+
+    travelPeriodStartChange(index: number) {
+        console.log(index);
+        let travelDate = this.form.get('travelDates')['controls'][index];
+        this.travelPeriodStartDates[index] = moment(travelDate.get('travelPeriodStart').value).toDate();
+        console.log(this.travelPeriodStartDates[index]);
+        let startDate = moment(travelDate.get('travelPeriodStart').value);
+
+        let endDate = travelDate.get('travelPeriodEnd').value;
+        if (endDate && moment(endDate).isBefore(startDate)) {
+            travelDate.get('travelPeriodEnd').patchValue(null);
+        }
+    }
+
+    addAdditionalTravelDate() {
+        let travelDates = this.form.get('travelDates') as FormArray;
+        travelDates.push(this.travelExpenseHelper.addTravelDate(this.fb));
+        this.travelPeriodStartDates.push(null);
+    }
+
+    removeTravelDate(index: number) {
+        let travelDates = this.form.get('travelDates') as FormArray;
+        travelDates.removeAt(index);
+        this.travelPeriodStartDates.splice(index, 1);
+    }
+
+    updateMileageTotal() {
+        let mileage = this.form.get('mileage').value;
+        let total = mileage * 0.35;
+        this.form.get('mileageExpenses').patchValue(total.toFixed(2));
     }
 
     addOtherTransportationExpense() {
@@ -67,7 +112,7 @@ export class TravelExpensesComponent extends FormBase implements OnInit {
         let numberOfNights = accommodation.get('numberOfNights').value || 0;
         let dailyRoomRate = accommodation.get('dailyRoomRate').value || 0;
         let total = numberOfNights * dailyRoomRate;
-        accommodation.get('totalExpenses').patchValue(total);
+        accommodation.get('totalExpenses').patchValue(total.toFixed(2));
     }
 
     addMealExpense() {
@@ -88,11 +133,11 @@ export class TravelExpensesComponent extends FormBase implements OnInit {
             let breakfast = meal.get('breakfast').value || 0;
             let lunch = meal.get('lunch').value || 0;
             let dinner = meal.get('dinner').value || 0;
-            let this_total = parseFloat(breakfast) + parseFloat(lunch) + parseFloat(dinner);
-            meal.get('total').patchValue(Math.round(this_total * 100 + Number.EPSILON) / 100);
+            let this_total = (breakfast * BREAKFAST) + (lunch * LUNCH) + (dinner * DINNER);
+            meal.get('total').patchValue((Math.round(this_total * 100 + Number.EPSILON) / 100).toFixed(2));
             total += this_total;
         });
-        this.form.get('mealTotal').patchValue(Math.round(total * 100 + Number.EPSILON) / 100);
+        this.form.get('mealTotal').patchValue((Math.round(total * 100 + Number.EPSILON) / 100).toFixed(2));
     }
 
     addOtherExpense() {

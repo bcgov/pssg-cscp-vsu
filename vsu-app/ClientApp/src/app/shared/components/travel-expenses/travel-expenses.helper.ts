@@ -7,8 +7,13 @@ export class TravelExpensesHelper {
     postalRegex = POSTAL_CODE;
     public setupFormGroup(fb: FormBuilder, form_type: ApplicationType): FormGroup {
         let group = {
+            hasContactInfoChanged: [false],
+            contactInfoComments: [''],
+
+            travelDates: fb.array([this.addTravelDate(fb)]),
+
             mileage: ['', [Validators.required]],
-            mileageExpenses: ['', [Validators.required]],
+            mileageExpenses: [{ value: 0, disabled: true }],
             otherTransportationExpenses: fb.array([this.addOtherTransportationExpense(fb)]),
             accommodationExpenses: fb.array([this.addAccommodationExpense(fb)]),
             mealExpenses: fb.array([this.addMealExpense(fb)], [Validators.required]),
@@ -22,6 +27,18 @@ export class TravelExpensesHelper {
             additionalComments: [''],
         }
         return fb.group(group);
+    }
+
+    addTravelDate(fb: FormBuilder) {
+        return fb.group({
+            purposeOfTravel: ['', Validators.required],
+            travelPeriodStart: ['', Validators.required],
+            startTime: [''],
+            startAMPM: ['AM'],
+            travelPeriodEnd: ['', Validators.required],
+            endTime: [''],
+            endAMPM: ['AM'],
+        });
     }
 
     addOtherTransportationExpense(fb: FormBuilder) {
@@ -58,8 +75,8 @@ export class TravelExpensesHelper {
 
     addOtherExpense(fb: FormBuilder) {
         let group = {
-            description: ['', [Validators.required]],
-            amount: ['', [Validators.required]],
+            description: [''],
+            amount: [''],
         };
 
         return fb.group(group);
