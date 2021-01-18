@@ -42,7 +42,8 @@ namespace Gov.Cscp.Victims.Public.Controllers
                     return BadRequest(ModelState);
                 }
 
-                string endpointUrl = "vsd_CreateVSUCase";
+                // string endpointUrl = "vsd_CreateVSUCase";
+                string endpointUrl = "vsd_CreateVSUCaseTESTFAIL";
                 JsonSerializerOptions options = new JsonSerializerOptions();
                 options.IgnoreNullValues = true;
                 string modelString = System.Text.Json.JsonSerializer.Serialize(model, options);
