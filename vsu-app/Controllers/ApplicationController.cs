@@ -26,7 +26,7 @@ namespace Gov.Cscp.Victims.Public.Controllers
         {
             try
             {
-                _logger.Error("Test splunk error message");
+                _logger.Error(new HttpOperationException("Test splunk error message"), "Test splunk error message");
                 return Ok();
             }
             finally { }
@@ -42,8 +42,7 @@ namespace Gov.Cscp.Victims.Public.Controllers
                     return BadRequest(ModelState);
                 }
 
-                // string endpointUrl = "vsd_CreateVSUCase";
-                string endpointUrl = "vsd_CreateVSUCaseTESTFAIL";
+                string endpointUrl = "vsd_CreateVSUCase";
                 JsonSerializerOptions options = new JsonSerializerOptions();
                 options.IgnoreNullValues = true;
                 string modelString = System.Text.Json.JsonSerializer.Serialize(model, options);
