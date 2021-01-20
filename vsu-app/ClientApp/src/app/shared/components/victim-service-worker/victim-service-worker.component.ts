@@ -15,6 +15,7 @@ import { CitiesSearchResponse, iCity, iLookupData } from "../../interfaces/looku
 export class VSWComponent extends FormBase implements OnInit {
     public form: FormGroup;
     @Input() isDisabled: boolean;
+    @Input() isRequired: boolean = false;
     @Input() lookupData: iLookupData;
     @Input() formType: ApplicationType;
 

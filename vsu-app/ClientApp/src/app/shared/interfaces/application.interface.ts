@@ -151,6 +151,7 @@ export interface iVictimServiceWorker {
     extension?: string;
     email: string;
     city?: string;
+    okToDiscussTravel?: number;
 }
 
 export interface iOffenceInformation {

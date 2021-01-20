@@ -85,6 +85,26 @@ namespace Gov.Cscp.Victims.Public.Controllers
             finally { }
         }
 
+        [HttpGet("event")]
+        public async Task<IActionResult> GetEvent(string event_type, string id_name, string event_id, string guid, string username, string fullname, string client)
+        {
+            try
+            {
+                string endpointUrl = $"{event_type}?{id_name}={event_id}&guid={guid}";
+                // Console.WriteLine(endpointUrl);
+                CornetHeaderInfo headers = new CornetHeaderInfo
+                {
+                    username = username,
+                    fullname = fullname,
+                    client = client
+                };
+
+                HttpClientResult result = await _cornetResultService.Get(endpointUrl, headers);
+                return StatusCode((int)result.statusCode, result.result.ToString());
+            }
+            finally { }
+        }
+
         [HttpGet("authority-document")]
         public async Task<IActionResult> GetAuthorityDocument(string event_id, string guid, string username, string fullname, string client)
         {

@@ -38,7 +38,7 @@
 
     <!-- Victim Service Worker -->
     <div class="victimServiceWorker" formArrayName="victimServiceWorker" *ngFor="let item of form.get('victimServiceWorker')['controls']; let i = index;">
-        <app-victim-service-worker [formGroupName]="i" [formGroup]="item" [isDisabled]="isDisabled" [formType]="formType"></app-victim-service-worker>
+        <app-victim-service-worker [formGroupName]="i" [formGroup]="item" [isDisabled]="isDisabled" [formType]="formType" [isRequired]="true"></app-victim-service-worker>
     </div>
 
     <div *ngIf="form.get('victimServiceWorker')['length'] > 0 && form.get('designate')['length'] > 0" class="designate-separator"></div>

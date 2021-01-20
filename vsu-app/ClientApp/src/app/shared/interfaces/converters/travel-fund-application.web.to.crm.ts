@@ -46,7 +46,7 @@ function getCRMApplication(application: iTravelFundApplication) {
         relationship_to_victim = application.ApplicantInformation.IFMRelationship;
     }
     else if (application.ApplicantInformation.applicantType === enums.ApplicantType.Victim_Service_Worker.val && application.ApplicantInformation.victimServiceWorker.length > 0) {
-        //TODO - need fields in dynamics to capture vsw info
+        //TODO - need fields in dynamics to capture vsw info (labled as Manager name on the webform)
         temp = application.ApplicantInformation.vswComment;
         temp = application.ApplicantInformation.coveredByVictimServiceProgram;
         temp = application.ApplicantInformation.coveredByVictimServiceProgramComment;
@@ -121,6 +121,10 @@ function getCRMApplication(application: iTravelFundApplication) {
         vsd_declarationdate: application.AuthorizationInformation.date,
         vsd_applicantssignature: application.AuthorizationInformation.signature,
     };
+
+    if (application.CaseInformation.victimServiceWorker.length > 0) {
+        crm_application.vsd_vsu_discussvtfappwithvsp = application.CaseInformation.victimServiceWorker[0].okToDiscussTravel;
+    }
 
     let requested_expenses = [];
 

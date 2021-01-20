@@ -8,6 +8,10 @@ export interface iApplicationFormCRM {
 }
 
 export interface iCRMApplication {
+    vsd_vsu_decision1impacttooutcome?: number;
+    vsd_vsu_decision2travelover100km?: number;
+    vsd_vsu_decision3nootherfundingsource?: number;
+
     vsd_vsu_applicationtype: number;
     vsd_cvap_victimfirstname: string;
     vsd_cvap_victimmiddlename: string;
@@ -21,10 +25,10 @@ export interface iCRMApplication {
 
     vsd_vsu_victimtravelfundapplicationsubmitted?: number;
     vsd_vsu_vtfappsubmittedunknowncomments?: string;
-    
+
     vsd_vsu_otherfamilymembersapplyingtovtf?: number;
     vsd_vsu_otherfamilymembersvtfothercomments?: string;
-    
+
     vsd_applicantsfirstname: string;
     vsd_applicantsmiddlename: string;
     vsd_applicantslastname: string;
@@ -53,6 +57,7 @@ export interface iCRMApplication {
     vsd_vsu_methodofcontact3number: string;
     vsd_vsu_methodofcontact3leavedetailedmessage: number;
     vsd_vsu_notificationto?: number;
+    vsd_vsu_discussvtfappwithvsp?: number;
 
     vsd_vsu_significantcourtupdates?: number;
     vsd_vsu_finalcourtresults?: number;
@@ -106,7 +111,7 @@ export interface iCRMParticipant {
     vsd_postalcode?: string;
 
     vsd_vsu_oktosendmail?: number;
-    
+
     vsd_email?: string;
     vsd_relationship1: string;
     vsd_relationship1other?: string;
