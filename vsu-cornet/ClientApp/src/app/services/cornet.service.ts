@@ -27,6 +27,18 @@ export class CornetService {
         );
     }
 
+    getEvent(parameters: ICornetParameters): Observable<any> {
+        let params = []
+        for (let key in parameters) {
+            params.push(key + "=" + parameters[key]);
+        }
+        let query_parameters = params.join("&");
+        return this.http.get<any>(`${this.apiUrl}/event?${query_parameters}`, { headers: this.headers }).pipe(
+            retry(3),
+            catchError(this.handleError)
+        );
+    }
+
     getAuthorityDocument(parameters: ICornetParameters): Observable<any> {
         let params = []
         for (let key in parameters) {

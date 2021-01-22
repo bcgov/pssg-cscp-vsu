@@ -192,7 +192,7 @@ export class ClientSearchComponent extends FormBase implements OnInit {
     };
 
     let type = "";
-    let text = ""
+    let text = "";
     if (this.form.get('cs').value) {
       type = "CSNO";
       text = this.form.get('cs').value;
