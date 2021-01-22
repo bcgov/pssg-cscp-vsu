@@ -259,7 +259,16 @@
         let clients = [];
         let displayed_clients = [];
         let current_name = false;
+
         let _formContext = null;
+        let events = [];
+        let offences = [];
+        let movements = [];
+        let hearings = [];
+        let victim_information = [];
+        let state_transitions = [];
+        let key_dates = [];
+
         window.onload = function () {
             initPaginator();
             this.search_type = "exact";
@@ -283,7 +292,6 @@
                 $("#search-container").removeClass("hidden");
             }
         }
-
 
         function search() {
             let parameters = {
@@ -319,8 +327,6 @@
             if (type) parameters.IdentifierType = type;
             if (text) parameters.IdentifierText = text;
 
-            console.log(parameters);
-
             var myHeaders = new Headers();
             myHeaders.append("username", parameters.UserName);
             myHeaders.append("fullname", parameters.FullName);
@@ -333,48 +339,7 @@
                 body: JSON.stringify(parameters),
                 credentials: "same-origin"
             };
-
-            if (window.location.origin === "file://") {
-                console.log("running locally - skipping fetch");
-                //test some client results...
-                clients = [
-                    {
-                        "personBirthDate": "1956-02-20",
-                        "clientNumber": "00672766",
-                        "locationTypeCode": {
-                            "custody": null,
-                            "community": null
-                        },
-                        "personName": "D, THOMAS",
-                        "personGenderIdentityCodeType": "M",
-                        "isCurrentName": "N"
-                    },
-                    {
-                        "personBirthDate": "1958-02-27",
-                        "clientNumber": "01230093",
-                        "locationTypeCode": {
-                            "custody": null,
-                            "community": null
-                        },
-                        "personName": "D, JONATHAN MICHAEL",
-                        "personGenderIdentityCodeType": "M",
-                        "isCurrentName": "Y"
-                    },
-                    {
-                        "personBirthDate": "1959-12-14",
-                        "clientNumber": "01199066",
-                        "locationTypeCode": {
-                            "custody": null,
-                            "community": null
-                        },
-                        "personName": "D, PARWAAN",
-                        "personGenderIdentityCodeType": "M",
-                        "isCurrentName": "Y"
-                    }
-                ];
-                addResultsToTable(clients);
-                // return;
-            }
+            
             let searchUrl = parent.Xrm.Page.context.getClientUrl();
             searchUrl += "/api/data/v9.0/vsd_CORNETOffenderSearch";
 
@@ -423,8 +388,6 @@
 
         function initPaginator() {
             //if existing paginator, remove the old one
-
-            //TODO - update rows shown to use some variable that we can potentially set with a drop down
             let nav = $("#nav");
             if (nav) nav.remove();
 
@@ -548,8 +511,180 @@
         }
 
         function loadOffender(cs_number) {
+            events = [];
+            offences = [];
+            movements = [];
+            hearings = [];
+            victim_information = [];
+            state_transitions = [];
+            key_dates = [];
+            getNotificationsForOffender(cs_number);
 
         }
+
+        function getNotificationsForOffender(cs_number) {
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+
+            var requestOptions = {
+                method: 'GET',
+                headers: myHeaders,
+                credentials: "same-origin"
+            };
+
+            let notificationUrl = parent.Xrm.Page.context.getClientUrl();
+            notificationUrl += `/api/data/v9.0/vsd_cornetnotifications?$filter=statecode eq 0 and vsd_clientnumber eq '${cs_number}'`;
+
+            fetch(notificationUrl, requestOptions)
+                .then(response => response.text())
+                .then(res => {
+                    let data = JSON.parse(res);
+                    console.log(data);
+                    if (data && data.value && data.value.length > 0) {
+                        events = data.value;
+                        loadCornetEvents();
+                    }
+                })
+                .catch(error => console.log('error', error));
+        }
+
+        function loadCornetEvents() {
+            let promise_array = [];
+
+            for (let i = 0; i < events.length; ++i) {
+                let event = events[i];
+                let event_type = getOptionsSetVal(EventType, event.vsd_eventtype);
+
+                let parameters = {
+                    EventId: event.vsd_eventreferenceid,
+                    Guid: event.vsd_guid,
+
+                    UserName: "test",
+                    FullName: "test",
+                    Client: "test",
+                };
+
+                console.log(event_type);
+
+                switch (event_type) {
+                    case EventType.AUTH_DOCM: {
+                        promise_array.push(new Promise((resolve, reject) => {
+                            parameters.EventType = EventType.AUTH_DOCM.val;
+                            parameters.Id = "authority_document_id";
+
+                            getEvent(parameters).then(res => {
+                                console.log(res);
+                            });
+                        }));
+                        break;
+                    }
+                    case EventType.HEARING: {
+                        promise_array.push(new Promise((resolve, reject) => {
+                            parameters.EventType = EventType.HEARING.val;
+                            parameters.Id = "hearing_id";
+
+                            getEvent(parameters).then(res => {
+                                console.log(res);
+                            });
+                        }));
+                        break;
+                    }
+                    case EventType.KEY_DATE: {
+                        promise_array.push(new Promise((resolve, reject) => {
+                            parameters.EventType = EventType.KEY_DATE.val;
+                            parameters.Id = "key_date_id";
+
+                            getEvent(parameters).then(res => {
+                                console.log(res);
+                            });
+                        }));
+                        break;
+                    }
+                    case EventType.MOVEMENT: {
+                        promise_array.push(new Promise((resolve, reject) => {
+                            parameters.EventType = EventType.MOVEMENT.val;
+                            parameters.Id = "movement_id";
+
+                            getEvent(parameters).then(res => {
+                                console.log(res);
+                            });
+                        }));
+                        break;
+                    }
+                    case EventType.STATE_TRAN: {
+                        promise_array.push(new Promise((resolve, reject) => {
+                            parameters.EventType = EventType.STATE_TRAN.val;
+                            parameters.Id = "state_transition_id";
+
+                            getEvent(parameters).then(res => {
+                                console.log(res);
+                            });
+                        }));
+                        break;
+                    }
+                    case EventType.VICT_CNTCT: {
+                        promise_array.push(new Promise((resolve, reject) => {
+                            parameters.EventType = EventType.VICT_CNTCT.val;
+                            parameters.Id = "individual_id";
+
+                            getEvent(parameters).then(res => {
+                                console.log(res);
+                            });
+                        }));
+                        break;
+                    }
+                }
+            }
+        }
+
+        function getEvent(parameters) {
+            return new Promise((resolve, reject) => {
+                console.log(parameters);
+                var myHeaders = new Headers();
+                myHeaders.append("username", parameters.UserName);
+                myHeaders.append("fullname", parameters.FullName);
+                myHeaders.append("client", parameters.Client);
+                myHeaders.append("Content-Type", "application/json");
+
+                var requestOptions = {
+                    method: 'POST',
+                    headers: myHeaders,
+                    body: JSON.stringify(parameters),
+                    credentials: "same-origin"
+                };
+
+                let eventUrl = parent.Xrm.Page.context.getClientUrl();
+                eventUrl += "/api/data/v9.0/vsd_GetCORNETEvent";
+
+                fetch(eventUrl, requestOptions)
+                    .then(response => response.text())
+                    .then(res => {
+                        let parsed = JSON.parse(res);
+                        if (parsed && parsed.Result) {
+                            let data = JSON.parse(parsed.Result);
+                            resolve(data);
+                        }
+
+                    })
+                    .catch(error => console.log('error', error));
+            });
+        }
+
+
+        function getOptionsSetVal(optionSet, val) {
+            return Object.values(optionSet).find((o) => o.val == val);
+        }
+
+        const EventType = {
+            KEY_DATE: { val: 100000000, name: "KEY_DATE" },
+            MOVEMENT: { val: 100000001, name: "MOVEMENT" },
+            HEARING: { val: 100000002, name: "HEARING" },
+            STATE_TRAN: { val: 100000003, name: "STATE_TRAN" },
+            VICT_CNTCT: { val: 100000004, name: "VICT_CNTCT" },
+            AUTH_DOCM: { val: 100000005, name: "AUTH_DOCM" },
+        };
+
+
     </script>
 </body>
 
