@@ -1,5 +1,5 @@
 import { ApplicationType, EnumHelper } from "../../enums-list";
-import { iCRMApplication, iCRMCourtInfo, iCRMParticipant, iApplicationFormCRM, iCRMOffence } from "../dynamics/crm-application";
+import { iCRMApplication, iCRMCourtInfo, iCRMParticipant, iApplicationFormCRM, iCRMOffence, iCRMTravelInfo } from "../dynamics/crm-application";
 import { iTravelFundApplication } from "../application.interface";
 import * as _ from 'lodash';
 
@@ -16,7 +16,7 @@ export function convertTravelFundApplicationToCRM(application: iTravelFundApplic
         OffenceCollection: getOffenceInfo(application),
         PoliceFileNumberCollection: [],
         ProviderCollection: getCRMProviderCollection(application),
-        //TODO - travel info collection
+        TravelInfoCollection: getCRMTravelInfoCollection(application),
     }
 
     return crm_application;
@@ -110,9 +110,9 @@ function getCRMApplication(application: iTravelFundApplication) {
         vsd_vsu_travelexpenserequest_03: "",
         vsd_vsu_travelexpenserequesttransportother: "",
         vsd_vsu_travelexpenserequestother: application.TravelInformation.expenses.applyForOtherText,
-        vsd_vsu_purposeoftravel: application.TravelInformation.purposeOfTravel,
-        vsd_vsu_travelperiodfrom: application.TravelInformation.travelPeriodStart,
-        vsd_vsu_travelperiodto: application.TravelInformation.travelPeriodEnd,
+        // vsd_vsu_purposeoftravel: application.TravelInformation.purposeOfTravel,
+        // vsd_vsu_travelperiodfrom: application.TravelInformation.travelPeriodStart,
+        // vsd_vsu_travelperiodto: application.TravelInformation.travelPeriodEnd,
         vsd_vsu_additionaltravelcomments: application.TravelInformation.additionalComments,
 
 
@@ -187,8 +187,22 @@ function getOffenceInfo(application: iTravelFundApplication) {
 }
 
 function getCRMTravelInfoCollection(application: iTravelFundApplication) {
-    //TODO - need fields and api update
-    let travel_collection: any[] = [];
+    let travel_collection: iCRMTravelInfo[] = [];
+    let courtFileNumber = "";
+    if (application.CaseInformation.courtInfo.length > 0) {
+        courtFileNumber = application.CaseInformation.courtInfo[0].courtFileNumber;
+    }
+
+    application.TravelInformation.courtDates.forEach(c => {
+        travel_collection.push({
+            vsd_courtdate: c.courtDate,
+            vsd_courtfilenumber_text: courtFileNumber,
+            vsd_purposeoftravel: c.purposeOfTravel,
+            vsd_travelperiodfrom: c.travelPeriodStart,
+            vsd_travelperiodto: c.travelPeriodEnd
+        });
+    })
+
     return travel_collection;
 }
 

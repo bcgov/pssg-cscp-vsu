@@ -5,6 +5,7 @@ export interface iApplicationFormCRM {
     OffenceCollection?: iCRMOffence[];
     PoliceFileNumberCollection: iCRMPoliceFileNumber[];
     ProviderCollection: iCRMParticipant[];
+    TravelInfoCollection: iCRMTravelInfo[];
 }
 
 export interface iCRMApplication {
@@ -128,6 +129,15 @@ export interface iCRMParticipant {
     vsd_vsu_methodofcontact3number?: string;
     vsd_vsu_methodofcontact3leavedetailedmessage?: number;
 }
+
+export interface iCRMTravelInfo {
+    vsd_courtdate: Date;
+    vsd_courtfilenumber_text: string;
+    vsd_purposeoftravel: string;
+    vsd_travelperiodfrom: Date;
+    vsd_travelperiodto: Date;
+}
+
 export interface iCRMDocument {
     // fortunecookietype: string;
     filename: string;

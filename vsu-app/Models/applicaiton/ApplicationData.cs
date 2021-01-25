@@ -7,5 +7,6 @@ namespace Gov.Cscp.Victims.Public.Models
         public CourtInfo[] CourtInfoCollection { get; set; }
         public Participant[] ProviderCollection { get; set; }
         public Offence[] OffenceCollection { get; set; }
+        public TravelInfo[] TravelInfoCollection { get; set; }
     }
 }

@@ -93,10 +93,7 @@ export interface iRecipientDetails {
 
 export interface iTravelInformation {
     expenses: TravelExpenses;
-    courtDates: Date[];
-    purposeOfTravel: string;
-    travelPeriodStart: Date;
-    travelPeriodEnd: Date;
+    courtDates: iCourtDate[];
     additionalComments: string;
 }
 
@@ -111,6 +108,13 @@ export interface TravelExpenses {
     applyForOther: boolean;
     applyForTransportationOtherText: string;
     applyForOtherText: string;
+}
+
+export interface iCourtDate {
+    courtDate: Date;
+    purposeOfTravel: string;
+    travelPeriodStart: Date;
+    travelPeriodEnd: Date;
 }
 
 export interface iAuthorizationInformation {

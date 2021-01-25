@@ -12,6 +12,7 @@ export function convertNotificationApplicationToCRM(application: iNotificationAp
         PoliceFileNumberCollection: [],
         ProviderCollection: getCRMProviderCollection(application),
         DocumentCollection: [],
+        TravelInfoCollection: [],
     }
 
     return crm_application;
