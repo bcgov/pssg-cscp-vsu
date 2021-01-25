@@ -176,7 +176,9 @@ export class ClientDetailsComponent extends FormBase implements OnInit {
       switch (event_type) {
         case this.enums.EventType.AUTH_DOCM: {
           promise_array.push(new Promise<void>((resolve, reject) => {
-            this.cornetService.getAuthorityDocument(parameters).subscribe((res: IAuthorityDocument) => {
+            parameters.event_type = "authorityDocument";
+            parameters.id_name = "authority_document_id";
+            this.cornetService.getEvent(parameters).subscribe((res: IAuthorityDocument) => {
               if (res) {
                 this.client_details.authorityDocuments.push(res);
               }
@@ -190,7 +192,9 @@ export class ClientDetailsComponent extends FormBase implements OnInit {
         }
         case this.enums.EventType.HEARING: {
           promise_array.push(new Promise<void>((resolve, reject) => {
-            this.cornetService.getHearing(parameters).subscribe((res: IHearing) => {
+            parameters.event_type = "hearing";
+            parameters.id_name = "hearing_id";
+            this.cornetService.getEvent(parameters).subscribe((res: IHearing) => {
               if (res) {
                 this.client_details.hearings.push(res);
               }
@@ -204,7 +208,9 @@ export class ClientDetailsComponent extends FormBase implements OnInit {
         }
         case this.enums.EventType.KEY_DATE: {
           promise_array.push(new Promise<void>((resolve, reject) => {
-            this.cornetService.getKeyDate(parameters).subscribe((res: IKeyDate) => {
+            parameters.event_type = "keyDate";
+            parameters.id_name = "key_date_id";
+            this.cornetService.getEvent(parameters).subscribe((res: IKeyDate) => {
               if (res) {
                 this.client_details.keyDates.push(res);
               }
@@ -218,7 +224,9 @@ export class ClientDetailsComponent extends FormBase implements OnInit {
         }
         case this.enums.EventType.MOVEMENT: {
           promise_array.push(new Promise<void>((resolve, reject) => {
-            this.cornetService.getMovement(parameters).subscribe((res: IMovement) => {
+            parameters.event_type = "movement";
+            parameters.id_name = "movement_id";
+            this.cornetService.getEvent(parameters).subscribe((res: IMovement) => {
               if (res) {
                 if (res.activityDate.actual != null) res.activityDate.val = res.activityDate.actual;
                 else if (res.activityDate.scheduled != null) res.activityDate.val = res.activityDate.scheduled;
@@ -234,7 +242,9 @@ export class ClientDetailsComponent extends FormBase implements OnInit {
         }
         case this.enums.EventType.STATE_TRAN: {
           promise_array.push(new Promise<void>((resolve, reject) => {
-            this.cornetService.getStateTransition(parameters).subscribe((res: IStateTransition) => {
+            parameters.event_type = "stateTransition";
+            parameters.id_name = "state_transition_id";
+            this.cornetService.getEvent(parameters).subscribe((res: IStateTransition) => {
               if (res) {
                 //cornet doesn't include the event date in it's results, but we can get that from the crm notification
                 //so we combine it up
@@ -254,7 +264,9 @@ export class ClientDetailsComponent extends FormBase implements OnInit {
         }
         case this.enums.EventType.VICT_CNTCT: {
           promise_array.push(new Promise<void>((resolve, reject) => {
-            this.cornetService.getVictimContact(parameters).subscribe((res: IVictimContact) => {
+            parameters.event_type = "victimContact";
+            parameters.id_name = "individual_id";
+            this.cornetService.getEvent(parameters).subscribe((res: IVictimContact) => {
               if (res) {
                 this.client_details.victimContacts.push(res);
               }

@@ -15,6 +15,8 @@ export interface IClientParameters {
 }
 
 export interface ICornetParameters {
+    event_type?: string;
+    id_name?: string;
     event_id?: string;
     guid?: string;
 

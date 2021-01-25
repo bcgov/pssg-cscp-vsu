@@ -1,0 +1,1011 @@
+<html>
+
+<head>
+</head>
+
+<body style="overflow-wrap: break-word;">
+    <link href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" rel="stylesheet" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="./Bootstrap.css" />
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <title>VSU Cornet</title>
+    <meta charset="utf-8">
+    <style type="text/css">
+        body {
+            font-size: 17px;
+        }
+
+        .nav-link {
+            cursor: pointer;
+        }
+
+        .active-page {
+            font-weight: bold;
+            text-decoration: underline !important;
+        }
+
+        .btn {
+            min-width: 120px;
+            font-size: 16px;
+            border-radius: 5px;
+            display: inline-block;
+            padding: 6px 12px;
+            font-weight: 400;
+            line-height: 1.42857143;
+        }
+
+        .btn.btn-primary {
+            background-color: #38598a;
+            border: #38598a 1px solid;
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background-color: rgba(0, 51, 102, 1) !important;
+            color: #ffffff;
+            border-color: #204d74;
+            border-radius: 5px;
+        }
+
+        .btn.btn-secondary {
+            background-color: #fff;
+            border: #ccc 1px solid;
+            color: #003366;
+        }
+
+        .btn-secondary:hover {
+            background-color: #f2f2f2;
+        }
+
+        .btn-secondary:focus {
+            border-color: #ccc;
+            box-shadow: 0 0 0 0.2rem #ccc;
+        }
+
+        .btn-outline-primary {
+            color: #38598a;
+            border-color: #38598a;
+        }
+
+        .btn-outline-primary:hover {
+            color: #fff;
+            background-color: #38598a;
+            border-color: #38598a;
+        }
+
+        .btn-outline-primary:focus {
+            color: #38598a;
+            border-color: #38598a;
+        }
+
+        .btn-outline-primary:focus:hover {
+            color: #fff;
+            background-color: #38598a;
+            border-color: #38598a;
+        }
+
+        .btn.btn-primary.sv_prev_btn {
+            background-color: #ccc;
+            border: #ccc 1px solid;
+            color: #000;
+            min-width: 120px;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        .btn.btn-primary.sv_prev_btn:hover {
+            background-color: #2f567b !important;
+            color: #ffffff;
+            border-color: #204d74;
+            border-radius: 5px;
+        }
+
+        .table td,
+        .table th {
+            padding: .75rem;
+            vertical-align: top;
+            border-top: 1px solid #dee2e6 !important;
+        }
+
+        P {
+            margin: 0;
+        }
+
+        input[type="radio"] {
+            margin-left: 10px;
+            margin-right: 5px;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 2px;
+        }
+
+        label {
+            font-weight: normal;
+        }
+
+        .required:after {
+            content: " *";
+            color: red;
+        }
+
+        .search-button-container {
+            position: relative;
+        }
+
+        .search-button {
+            position: absolute;
+            bottom: 0;
+        }
+
+        .is-disabled {
+            opacity: 0.6;
+            text-decoration: none;
+            pointer-events: none;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+
+    <div class="container">
+        <!-- search section -->
+        <div class="search-container hidden" id="search-container">
+            <div class="row mt-5">
+                <div class="col">
+                    <h2 class="m-0">CORNET Search</h2>
+                </div>
+                <div class="col">
+                    <input type="radio" name="search_type" value="Exact" id="exact" onchange="searchTypeChange('exact')" checked><label for="exact">Exact Search</label>
+                    <input type="radio" name="search_type" value="Partial" id="partial" onchange="searchTypeChange('partial')"><label for="partial">Partial Search</label>
+                    <input type="radio" name="search_type" value="Soundex" id="soundex" onchange="searchTypeChange('soundex')"><label for="soundex">Soundex Search</label>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-md-3">
+                    <label for="surname" class="surname required">Surname</label>
+                    <br>
+                    <input class="form-control surname" type="text" id="surname" name="surname" oninput="surnameChange(this.value)">
+                </div>
+
+                <div class="col-md-3">
+                    <label for="given_name" class="given_name">Given name</label>
+                    <br>
+                    <input class="form-control given_name" type="text" id="given_name" name="given_name" oninput="fieldChange(this.value)">
+                </div>
+
+                <div class="col-md-3">
+                    <label for="second_name" class="second_name">Second name</label>
+                    <br>
+                    <input class="form-control second_name" type="text" id="second_name" name="second_name" oninput="fieldChange(this.value)">
+                </div>
+
+                <div class="col-md-3">
+                    <br>
+                    <input type="checkbox" class="current_name" id="current_name" name="current_name" onchange="currentNameChange(this.checked)">
+                    <label for="current_name" class="current_name">Current Name</label>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-md-3">
+                    <label for="gender" class="gender">Gender</label>
+                    <br>
+                    <select class="form-control gender" id="gender" name="gender" oninput="fieldChange(this.value)">
+                        <option value=""></option>
+                        <option value="M">Male</option>
+                        <option value="F">Female</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3 d-flex">
+                    <div class="col-6 pl-0">
+                        <label for="birth_year" class="birth_year">Birth year</label>
+                        <br>
+                        <input class="form-control birth_year" type="text" id="birth_year" name="birth_year" placeholder="yyyy" oninput="fieldChange(this.value)">
+                    </div>
+
+                    <div class="col-6 pr-0">
+                        <label for="year_range" class="year_range">Year range</label>
+                        <br>
+                        <input class="form-control year_range" type="text" id="year_range" name="year_range" placeholder="+/-" oninput="fieldChange(this.value)">
+                    </div>
+                </div>
+
+                <div class="col-md-3 d-flex">
+                    <div class="col-6 pl-0">
+                        <label for="cs" class="cs">CS#</label>
+                        <br>
+                        <input class="form-control cs" type="text" id="cs" name="cs" oninput="csChange(this.value)">
+                    </div>
+
+                    <div class="col-6 pr-0">
+                        <label for="fps" class="fps">FPS#</label>
+                        <br>
+                        <input class="form-control fps" type="text" id="fps" name="fps" oninput="fpsChange(this.value)">
+                    </div>
+                </div>
+
+                <div class="col-md-3 search-button-container">
+                    <button onclick="search()" class="btn btn-primary search-button" id="search-button">SEARCH CORNET</button>
+                </div>
+            </div>
+
+            <div class="row mt-5 search-results-row hidden">
+                <div class="col">
+                    <table class="table table-striped" id="client-table">
+                        <thead class="thead">
+                            <th>Last Name</th>
+                            <th>Given Names</th>
+                            <th>Current Name</th>
+                            <th>Gender</th>
+                            <th>Birth date</th>
+                            <th>CS#</th>
+                            <th>Custody status</th>
+                            <th>Actions</th>
+                        </thead>
+
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+        <!-- END of search section -->
+
+        <!-- client details section -->
+        <div class="client-details-container hidden" id="client-details-container">
+            <div class="row">
+                <div class="col">
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a id="tab-subject-info" class="nav-link nav-tab-table active-page" onclick="showTabContent(event, 'subject-information-container')">Subject Information</a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="tab-offences" class="nav-link nav-tab-table is-disabled" onclick="showTabContent(event, 'offences-container')">Offences</a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="tab-movements" class="nav-link nav-tab-table is-disabled" onclick="showTabContent(event, 'movements-container')">Movements</a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="tab-hearings" class="nav-link nav-tab-table is-disabled" onclick="showTabContent(event, 'hearings-container')">Parole Hearings</a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="tab-victim-info" class="nav-link nav-tab-table is-disabled" onclick="showTabContent(event, 'victim-information-container')">Victim Information</a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="tab-state-transition" class="nav-link nav-tab-table is-disabled" onclick="showTabContent(event, 'state-transitions-container')">State Transitions</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="subject-information-container">
+                <div class="row mt-5">
+                    <div class="col">
+                        <p><strong>Subject Information</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="offences-container" class="hidden">
+                <div class="row mt-5">
+                    <div class="col">
+                        <p><strong>Offences</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="movements-container" class="hidden">
+                <div class="row mt-5">
+                    <div class="col">
+                        <p><strong>Movements</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="hearings-container" class="hidden">
+                <div class="row mt-5">
+                    <div class="col">
+                        <p><strong>Parole Hearings</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="victim-information-container" class="hidden">
+                <div class="row mt-5">
+                    <div class="col">
+                        <p><strong>Victim Information</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="state-transitions-container" class="hidden">
+                <div class="row mt-5">
+                    <div class="col">
+                        <p><strong>State Transitions</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-5">
+                <div class="col">
+                    <button onclick="showSearch()" class="btn btn-secondary">Return to Search</button>
+                </div>
+            </div>
+        </div>
+        <!-- END of client details section -->
+    </div>
+
+    <script>
+        const ROWS_SHOWN = 5;
+        let clients = [];
+        let displayed_clients = [];
+        let current_name = false;
+
+        let _formContext = null;
+        let client_details = {};
+        let events = [];
+        let offences = [];
+        let movements = [];
+        let hearings = [];
+        let victim_information = [];
+        let state_transitions = [];
+        let key_dates = [];
+
+        window.onload = function () {
+            initPaginator();
+            this.search_type = "exact";
+            $("#search-button").addClass("is-disabled");
+
+            let entity = parent.Xrm.Page.data.entity.getEntityName();
+            if (entity == "vsd_offender") {
+                let cs_number = parent.Xrm.Page.getAttribute("vsd_csnumber").getValue();
+
+                if (cs_number) {
+                    showOffender(cs_number);
+                }
+                else {
+                    showSearch();
+
+                    let surname = parent.Xrm.Page.getAttribute("vsd_lastname").getValue();
+                    let given_name = parent.Xrm.Page.getAttribute("vsd_firstname").getValue();
+                    let gender = parent.Xrm.Page.getAttribute("vsd_gender").getValue();
+                    if (gender) {
+                        let opt = getOptionsSetVal(GenderOptionSet, gender);
+                        gender = opt.name;
+                    }
+                    let birth_year = parent.Xrm.Page.getAttribute("vsd_birthdate").getValue();
+                    if (birth_year) {
+                        birth_year = birth_year.getFullYear();
+                    }
+                    $('#surname').val(surname);
+                    $('#given_name').val(given_name);
+                    $('#gender').val(gender);
+                    $('#birth_year').val(birth_year);
+
+                    search();
+                }
+            }
+            else {
+                showSearch();
+            }
+        };
+
+        //TODO
+        //The CRM form call this function during an onload js event and passes us the formContext
+        function setClientApiContext(xrm, formContext) {
+            // Optionally set Xrm and formContext as global variables on the page.
+            window.Xrm = xrm;
+            _formContext = formContext;
+
+            let cs_number = _formContext.getAttribute("vsd_csnumber");
+            console.log(cs_number);
+
+            if (cs_number) {
+                $("#search-container").addClass("hidden");
+                $("#client-details-container").removeClass("hidden");
+                loadOffender(cs_number);
+            }
+            else {
+                $("#search-container").removeClass("hidden");
+            }
+        }
+
+        function search() {
+            let parameters = {
+                SearchType: this.search_type,
+                Surname: $('#surname').val(),
+                Given1: $('#given_name').val(),
+                Given2: $('#second_name').val(),
+                Gender: $('#gender').val(),
+                BirthYear: $('#birth_year').val(),
+                BirthYearRange: $('#year_range').val(),
+
+                UserName: "test",
+                FullName: "test",
+                Client: "test",
+            };
+
+            let type = "";
+            let text = "";
+            let cs = $('#cs').val();
+            let fps = $('#fps').val();
+
+            if (cs) {
+                type = "CSNO";
+                text = cs;
+                parameters.SearchType = "ID";
+            }
+            else if (fps) {
+                type = "FPS";
+                text = cs;
+                parameters.SearchType = "ID";
+            }
+
+            if (type) parameters.IdentifierType = type;
+            if (text) parameters.IdentifierText = text;
+
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: JSON.stringify(parameters),
+                credentials: "same-origin"
+            };
+
+            let endpoint = parent.Xrm.Page.context.getClientUrl();
+            endpoint += "/api/data/v9.0/vsd_CORNETOffenderSearch";
+
+            fetch(endpoint, requestOptions)
+                .then(response => response.text())
+                .then(res => {
+                    let parsed = JSON.parse(res);
+                    if (parsed && parsed.Result) {
+                        let data = JSON.parse(parsed.Result);
+                        console.log(data);
+                        addResultsToTable(data.clients);
+                    }
+
+                })
+                .catch(error => console.log('error', error));
+        }
+
+        function addResultsToTable(clients) {
+            if (current_name) {
+                displayed_clients = clients.filter(c => c.isCurrentName == 'Y');
+            }
+            else {
+                displayed_clients = clients;
+            }
+
+            //make sure table shows and any existing rows are removed
+            $(".search-results-row").removeClass("hidden");
+            $("#client-table").find("tr:gt(0)").remove();
+
+            displayed_clients.forEach((client, i) => {
+                let tr = `<tr>
+                    <td>${client.personName.split(',')[0]}</td>
+                    <td>${client.personName.split(',').splice(1).join(',')}</td>
+                    <td>${client.isCurrentName == 'Y' ? '<i class="far fa-check-circle"></i>' : ''}</td>
+                    <td>${client.personGenderIdentityCodeType || ''}</td>
+                    <td>${client.personBirthDate || ''}</td>
+                    <td>${client.clientNumber || ''}</td>
+                    <td>${client.locationTypeCode.custody || ''}</td>
+                    <td>${client.clientNumber ? '<button onclick="showOffenderClick(' + i + ')" class="btn btn-secondary">View Offender</button>' : ''}</td>
+                    
+                    </tr>`;
+                $("#client-table").append(tr);
+            });
+            initPaginator();
+        }
+
+        function initPaginator() {
+            //if existing paginator, remove the old one
+            let nav = $("#nav");
+            if (nav) nav.remove();
+
+            $('#client-table').after('<div id="nav"></div>');
+            var rowsShown = ROWS_SHOWN;
+            var rowsTotal = $('#client-table tbody tr').length;
+            var numPages = rowsTotal / rowsShown;
+            for (i = 0; i < numPages; i++) {
+                var pageNum = i + 1;
+                $('#nav').append('<a href="#" rel="' + i + '">' + pageNum + '</a> ');
+            }
+            $('#client-table tbody tr').hide();
+            $('#client-table tbody tr').slice(0, rowsShown).show();
+            $('#nav a:first').addClass('active');
+            $('#nav a').bind('click', function () {
+
+                $('#nav a').removeClass('active');
+                $(this).addClass('active');
+                var currPage = $(this).attr('rel');
+                var startItem = currPage * rowsShown;
+                var endItem = startItem + rowsShown;
+                $('#client-table tbody tr').css('opacity', '0.0').hide().slice(startItem, endItem).css('display', 'table-row').animate({ opacity: 1 }, 300);
+            });
+        }
+
+        function searchTypeChange(val) {
+            this.search_type = val;
+            if (val === "exact") {
+                $(".given_name").removeClass("is-disabled");
+                $(".second_name").removeClass("is-disabled");
+                $(".current_name").removeClass("is-disabled");
+                $(".current_name_label").removeClass("is-disabled");
+                $(".gender").removeClass("is-disabled");
+                $(".birth_year").removeClass("is-disabled");
+                $(".year_range").removeClass("is-disabled");
+            }
+            else if (val === "partial" || val === "soundex") {
+                $(".given_name").val("");
+                $(".second_name").val("");
+                $(".current_name").val("");
+                $(".gender").val("");
+                $(".birth_year").val("");
+                $(".year_range").val("");
+
+                $(".given_name").addClass("is-disabled");
+                $(".second_name").addClass("is-disabled");
+                $(".current_name").addClass("is-disabled");
+                $(".current_name_label").addClass("is-disabled");
+                $(".gender").addClass("is-disabled");
+                $(".birth_year").addClass("is-disabled");
+                $(".year_range").addClass("is-disabled");
+            }
+        }
+
+        function surnameChange(val) {
+            if (val) {
+                $("#search-button").removeClass("is-disabled");
+                $("#cs").val("");
+                $("#fps").val("");
+            }
+            else {
+                $("#search-button").addClass("is-disabled");
+            }
+        }
+
+        function fieldChange(val) {
+            if (val) {
+                $("#cs").val("");
+                $("#fps").val("");
+            }
+        }
+
+        function csChange(val) {
+            if (val) {
+                $("#search-button").removeClass("is-disabled");
+                $("#surname").val("");
+                $("#given_name").val("");
+                $("#second_name").val("");
+                $("#gender").val("");
+                $("#birth_year").val("");
+                $("#year_range").val("");
+                $("#fps").val("");
+            }
+            else {
+                $("#search-button").addClass("is-disabled");
+            }
+        }
+
+        function fpsChange(val) {
+            if (val) {
+                $("#search-button").removeClass("is-disabled");
+                $("#surname").val("");
+                $("#given_name").val("");
+                $("#second_name").val("");
+                $("#gender").val("");
+                $("#birth_year").val("");
+                $("#year_range").val("");
+                $("#cs").val("");
+            }
+            else {
+                $("#search-button").addClass("is-disabled");
+            }
+        }
+
+        function currentNameChange(val) {
+            current_name = val;
+            addResultsToTable(clients);
+        }
+
+        function showOffenderClick(val) {
+            let cs_number = displayed_clients[val].clientNumber;
+            console.log(displayed_clients[val].clientNumber);
+            showOffender(cs_number);
+        }
+
+        function showOffender(cs_number) {
+            $("#search-container").addClass("hidden");
+            $("#client-details-container").removeClass("hidden");
+
+            loadOffender(cs_number, OffenderIdType.CS_NUMBER);
+        }
+
+        function showSearch() {
+            $("#search-container").removeClass("hidden");
+            $("#client-details-container").addClass("hidden");
+        }
+
+        function loadOffender(id, id_type) {
+            client_details = {};
+            events = [];
+            offences = [];
+            movements = [];
+            hearings = [];
+            victim_information = [];
+            state_transitions = [];
+            key_dates = [];
+
+            getCOASTOffender(id, id_type).then(offender => {
+                console.log("coast offender info");
+                console.log(offender);
+                let cs_number = "";
+                if (id_type === OffenderIdType.CS_NUMBER) {
+                    cs_number = id;
+                }
+                if (!$.isEmptyObject(offender)) {
+                    cs_number = offender.vsd_csnumber;
+                }
+
+                if (cs_number) {
+                    getNotificationsForOffender(cs_number);
+
+                    loadCornetOffender(cs_number).then(res => {
+                        client_details = res.find(o => o.isCurrentName === "Y");
+                        if (res.length > 1) {
+                            let aliases = res.filter(c => c.isCurrentName == "N");
+                            console.log("aliases");
+                            console.log(aliases.map(a => a.personName));
+                            client_details.aliases = aliases.map(a => a.personName).join(', ');
+                        }
+                        console.log(client_details);
+                    });
+                }
+
+            });
+
+        }
+
+        function loadCornetOffender(cs_number) {
+            return new Promise((resolve, reject) => {
+                let parameters = {
+                    SearchType: "ID",
+                    IdentifierType: "CSNO",
+                    IdentifierText: cs_number,
+
+                    UserName: "test",
+                    FullName: "test",
+                    Client: "test",
+                };
+
+                var myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
+
+                var requestOptions = {
+                    method: 'POST',
+                    headers: myHeaders,
+                    body: JSON.stringify(parameters),
+                    credentials: "same-origin"
+                };
+
+                let endpoint = parent.Xrm.Page.context.getClientUrl();
+                endpoint += "/api/data/v9.0/vsd_CORNETOffenderSearch";
+
+                fetch(endpoint, requestOptions)
+                    .then(response => response.text())
+                    .then(res => {
+                        let parsed = JSON.parse(res);
+                        if (parsed && parsed.Result) {
+                            let data = JSON.parse(parsed.Result);
+                            console.log(data);
+                            resolve(data.clients);
+                        }
+                        else {
+                            resolve([]);
+                        }
+
+                    })
+                    .catch(error => console.log('error', error));
+            }).catch(err => {
+                reject(err);
+            });
+        }
+
+        function getCOASTOffender(id, id_type) {
+            return new Promise((resolve, reject) => {
+                var myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
+
+                var requestOptions = {
+                    method: 'GET',
+                    headers: myHeaders,
+                    credentials: "same-origin"
+                };
+
+                let endpoint = parent.Xrm.Page.context.getClientUrl();
+                if (id_type === OffenderIdType.ID) {
+                    endpoint += `/api/data/v9.0/vsd_offenders?$filter=vsd_offenderid eq '${id}'`;
+                }
+                else if (id_type === OffenderIdType.CS_NUMBER) {
+                    endpoint += `/api/data/v9.0/vsd_offenders?$filter=vsd_csnumber eq '${id}'`;
+                }
+                else {
+                    resolve({});
+                }
+
+                fetch(endpoint, requestOptions)
+                    .then(response => response.text())
+                    .then(res => {
+                        let data = JSON.parse(res);
+                        console.log(data);
+                        if (data && data.value && data.value.length > 0) {
+                            resolve(data.value[0]);
+                        }
+                        else {
+                            resolve({});
+                        }
+                    })
+                    .catch(error => console.log('error', error));
+            }).catch(err => {
+                reject(err);
+            });
+
+        }
+
+        function getNotificationsForOffender(cs_number) {
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+
+            var requestOptions = {
+                method: 'GET',
+                headers: myHeaders,
+                credentials: "same-origin"
+            };
+
+            let endpoint = parent.Xrm.Page.context.getClientUrl();
+            endpoint += `/api/data/v9.0/vsd_cornetnotifications?$filter=statecode eq 0 and vsd_clientnumber eq '${cs_number}'`;
+
+            fetch(endpoint, requestOptions)
+                .then(response => response.text())
+                .then(res => {
+                    let data = JSON.parse(res);
+                    console.log(data);
+                    if (data && data.value && data.value.length > 0) {
+                        events = data.value;
+                        loadCornetEvents();
+                    }
+                })
+                .catch(error => console.log('error', error));
+        }
+
+        function loadCornetEvents() {
+            let promise_array = [];
+
+            for (let i = 0; i < events.length; ++i) {
+                let event = events[i];
+                let event_type = getOptionsSetVal(EventType, event.vsd_eventtype);
+
+                let parameters = {
+                    EventId: event.vsd_eventreferenceid,
+                    Guid: event.vsd_guid,
+
+                    UserName: "test",
+                    FullName: "test",
+                    Client: "test",
+                };
+
+                console.log(event_type);
+
+                switch (event_type) {
+                    case EventType.AUTH_DOCM: {
+                        promise_array.push(new Promise((resolve, reject) => {
+                            parameters.EventType = EventType.AUTH_DOCM.val;
+                            parameters.Id = "authority_document_id";
+
+                            getEvent(parameters).then(res => {
+                                if (res) {
+                                    offences.push(res);
+                                }
+                                resolve();
+                            });
+                        }));
+                        break;
+                    }
+                    case EventType.HEARING: {
+                        promise_array.push(new Promise((resolve, reject) => {
+                            parameters.EventType = EventType.HEARING.val;
+                            parameters.Id = "hearing_id";
+
+                            getEvent(parameters).then(res => {
+                                if (res) {
+                                    hearings.push(res);
+                                }
+                                resolve();
+                            });
+                        }));
+                        break;
+                    }
+                    case EventType.KEY_DATE: {
+                        promise_array.push(new Promise((resolve, reject) => {
+                            parameters.EventType = EventType.KEY_DATE.val;
+                            parameters.Id = "key_date_id";
+
+                            getEvent(parameters).then(res => {
+                                if (res) {
+                                    key_dates.push(res);
+                                }
+                                resolve();
+                            });
+                        }));
+                        break;
+                    }
+                    case EventType.MOVEMENT: {
+                        promise_array.push(new Promise((resolve, reject) => {
+                            parameters.EventType = EventType.MOVEMENT.val;
+                            parameters.Id = "movement_id";
+
+                            getEvent(parameters).then(res => {
+                                if (res) {
+                                    movements.push(res);
+                                }
+                                resolve();
+                            });
+                        }));
+                        break;
+                    }
+                    case EventType.STATE_TRAN: {
+                        promise_array.push(new Promise((resolve, reject) => {
+                            parameters.EventType = EventType.STATE_TRAN.val;
+                            parameters.Id = "state_transition_id";
+
+                            getEvent(parameters).then(res => {
+                                if (res) {
+                                    state_transitions.push(res);
+                                }
+                                resolve();
+                            });
+                        }));
+                        break;
+                    }
+                    case EventType.VICT_CNTCT: {
+                        promise_array.push(new Promise((resolve, reject) => {
+                            parameters.EventType = EventType.VICT_CNTCT.val;
+                            parameters.Id = "individual_id";
+
+                            getEvent(parameters).then(res => {
+                                if (res) {
+                                    victim_information.push(res);
+                                }
+                                resolve();
+                            });
+                        }));
+                        break;
+                    }
+                }
+            }
+
+
+            Promise.all(promise_array).then(() => {
+                console.log("loaded offences");
+                console.log(offences);
+                console.log(movements);
+
+                if (offences.length > 0) {
+                    $("#tab-offences").removeClass("is-disabled");
+                }
+
+                if (movements.length > 0) {
+                    $("#tab-movements").removeClass("is-disabled");
+                }
+
+                if (hearings.length > 0) {
+                    $("#tab-hearings").removeClass("is-disabled");
+                }
+
+                if (victim_information.length > 0) {
+                    $("#tab-victim-info").removeClass("is-disabled");
+                }
+
+                if (state_transitions.length > 0) {
+                    $("#tab-state-transition").removeClass("is-disabled");
+                }
+            });
+        }
+
+        function getEvent(parameters) {
+            return new Promise((resolve, reject) => {
+                console.log(parameters);
+                var myHeaders = new Headers();
+                myHeaders.append("username", parameters.UserName);
+                myHeaders.append("fullname", parameters.FullName);
+                myHeaders.append("client", parameters.Client);
+                myHeaders.append("Content-Type", "application/json");
+
+                var requestOptions = {
+                    method: 'POST',
+                    headers: myHeaders,
+                    body: JSON.stringify(parameters),
+                    credentials: "same-origin"
+                };
+
+                let endpoint = parent.Xrm.Page.context.getClientUrl();
+                endpoint += "/api/data/v9.0/vsd_GetCORNETEvent";
+
+                fetch(endpoint, requestOptions)
+                    .then(response => response.text())
+                    .then(res => {
+                        let parsed = JSON.parse(res);
+                        if (parsed && parsed.Result && parsed.IsSuccess) {
+                            let data = JSON.parse(parsed.Result);
+                            resolve(data);
+                        }
+                        else {
+                            resolve(null);
+                        }
+                    })
+                    .catch(error => console.log('error', error));
+            }).catch(err => {
+                reject(err);
+            });
+        }
+
+        function showTabContent(event, tab) {
+            let toHide = TABS.filter(t => t != tab);
+            toHide.forEach(t => {
+                $(`#${t}`).addClass("hidden");
+            });
+
+            $(`#${tab}`).removeClass("hidden");
+
+            $(".nav-link").removeClass("active");
+            event.currentTarget.className += " active";
+        }
+
+
+        function getOptionsSetVal(optionSet, val) {
+            return Object.values(optionSet).find((o) => o.val == val);
+        }
+
+        const TABS = [
+            "subject-information-container",
+            "offences-container",
+            "movements-container",
+            "hearings-container",
+            "victim-information-container",
+            "state-transitions-container",
+        ];
+
+        const GenderOptionSet = {
+            Male: { val: 100000000, name: "M" },
+            Female: { val: 100000001, name: "F" },
+            X: { val: 100000002, name: "X" },
+        };
+
+        const EventType = {
+            KEY_DATE: { val: 100000000, name: "KEY_DATE" },
+            MOVEMENT: { val: 100000001, name: "MOVEMENT" },
+            HEARING: { val: 100000002, name: "HEARING" },
+            STATE_TRAN: { val: 100000003, name: "STATE_TRAN" },
+            VICT_CNTCT: { val: 100000004, name: "VICT_CNTCT" },
+            AUTH_DOCM: { val: 100000005, name: "AUTH_DOCM" },
+        };
+
+        const OffenderIdType = {
+            ID: 0,
+            CS_NUMBER: 1
+        }
+
+
+    </script>
+</body>
+
+</html>

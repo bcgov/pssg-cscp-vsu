@@ -47,6 +47,7 @@ namespace Gov.Cscp.Victims.Public.Models
         public string vsd_vsu_methodofcontact3number { get; set; }
         public int? vsd_vsu_methodofcontact3leavedetailedmessage { get; set; }
         public int? vsd_vsu_notificationto { get; set; }
+        public int? vsd_vsu_discussvtfappwithvsp { get; set; }
 
         public int? vsd_vsu_significantcourtupdates { get; set; }
         public int? vsd_vsu_finalcourtresults { get; set; }

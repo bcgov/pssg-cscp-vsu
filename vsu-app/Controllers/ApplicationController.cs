@@ -26,7 +26,7 @@ namespace Gov.Cscp.Victims.Public.Controllers
         {
             try
             {
-                _logger.Error(new HttpOperationException("Test splunk error message"), "Test splunk error message");
+                _logger.Error("Test splunk error message");
                 return Ok();
             }
             finally { }
