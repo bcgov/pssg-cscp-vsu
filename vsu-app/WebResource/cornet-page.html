@@ -16,6 +16,15 @@
             font-size: 17px;
         }
 
+        .nav-link {
+            cursor: pointer;
+        }
+
+        .active-page {
+            font-weight: bold;
+            text-decoration: underline !important;
+        }
+
         .btn {
             min-width: 120px;
             font-size: 16px;
@@ -142,8 +151,8 @@
     </style>
 
     <div class="container">
-        <!-- hidden -->
-        <div class="search-container " id="search-container">
+        <!-- search section -->
+        <div class="search-container hidden" id="search-container">
             <div class="row mt-5">
                 <div class="col">
                     <h2 class="m-0">CORNET Search</h2>
@@ -246,12 +255,90 @@
 
             </div>
         </div>
-
+        <!-- END of search section -->
 
         <!-- client details section -->
         <div class="client-details-container hidden" id="client-details-container">
-            <button onclick="showSearch()" class="btn btn-secondary">Return to Search</button>
+            <div class="row">
+                <div class="col">
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a id="tab-subject-info" class="nav-link nav-tab-table active-page" onclick="showTabContent(event, 'subject-information-container')">Subject Information</a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="tab-offences" class="nav-link nav-tab-table is-disabled" onclick="showTabContent(event, 'offences-container')">Offences</a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="tab-movements" class="nav-link nav-tab-table is-disabled" onclick="showTabContent(event, 'movements-container')">Movements</a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="tab-hearings" class="nav-link nav-tab-table is-disabled" onclick="showTabContent(event, 'hearings-container')">Parole Hearings</a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="tab-victim-info" class="nav-link nav-tab-table is-disabled" onclick="showTabContent(event, 'victim-information-container')">Victim Information</a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="tab-state-transition" class="nav-link nav-tab-table is-disabled" onclick="showTabContent(event, 'state-transitions-container')">State Transitions</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="subject-information-container">
+                <div class="row mt-5">
+                    <div class="col">
+                        <p><strong>Subject Information</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="offences-container" class="hidden">
+                <div class="row mt-5">
+                    <div class="col">
+                        <p><strong>Offences</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="movements-container" class="hidden">
+                <div class="row mt-5">
+                    <div class="col">
+                        <p><strong>Movements</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="hearings-container" class="hidden">
+                <div class="row mt-5">
+                    <div class="col">
+                        <p><strong>Parole Hearings</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="victim-information-container" class="hidden">
+                <div class="row mt-5">
+                    <div class="col">
+                        <p><strong>Victim Information</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="state-transitions-container" class="hidden">
+                <div class="row mt-5">
+                    <div class="col">
+                        <p><strong>State Transitions</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-5">
+                <div class="col">
+                    <button onclick="showSearch()" class="btn btn-secondary">Return to Search</button>
+                </div>
+            </div>
         </div>
+        <!-- END of client details section -->
     </div>
 
     <script>
@@ -261,6 +348,7 @@
         let current_name = false;
 
         let _formContext = null;
+        let client_details = {};
         let events = [];
         let offences = [];
         let movements = [];
@@ -273,8 +361,43 @@
             initPaginator();
             this.search_type = "exact";
             $("#search-button").addClass("is-disabled");
+
+            let entity = parent.Xrm.Page.data.entity.getEntityName();
+            if (entity == "vsd_offender") {
+                let cs_number = parent.Xrm.Page.getAttribute("vsd_csnumber").getValue();
+
+                if (cs_number) {
+                    showOffender(cs_number);
+                }
+                else {
+                    showSearch();
+
+                    let surname = parent.Xrm.Page.getAttribute("vsd_lastname").getValue();
+                    let given_name = parent.Xrm.Page.getAttribute("vsd_firstname").getValue();
+                    let gender = parent.Xrm.Page.getAttribute("vsd_gender").getValue();
+                    if (gender) {
+                        let opt = getOptionsSetVal(GenderOptionSet, gender);
+                        gender = opt.name;
+                    }
+                    let birth_year = parent.Xrm.Page.getAttribute("vsd_birthdate").getValue();
+                    if (birth_year) {
+                        birth_year = birth_year.getFullYear();
+                    }
+                    $('#surname').val(surname);
+                    $('#given_name').val(given_name);
+                    $('#gender').val(gender);
+                    $('#birth_year').val(birth_year);
+
+                    search();
+                }
+            }
+            else {
+                showSearch();
+            }
         };
 
+        //TODO
+        //The CRM form call this function during an onload js event and passes us the formContext
         function setClientApiContext(xrm, formContext) {
             // Optionally set Xrm and formContext as global variables on the page.
             window.Xrm = xrm;
@@ -328,9 +451,6 @@
             if (text) parameters.IdentifierText = text;
 
             var myHeaders = new Headers();
-            myHeaders.append("username", parameters.UserName);
-            myHeaders.append("fullname", parameters.FullName);
-            myHeaders.append("client", parameters.Client);
             myHeaders.append("Content-Type", "application/json");
 
             var requestOptions = {
@@ -339,11 +459,11 @@
                 body: JSON.stringify(parameters),
                 credentials: "same-origin"
             };
-            
-            let searchUrl = parent.Xrm.Page.context.getClientUrl();
-            searchUrl += "/api/data/v9.0/vsd_CORNETOffenderSearch";
 
-            fetch(searchUrl, requestOptions)
+            let endpoint = parent.Xrm.Page.context.getClientUrl();
+            endpoint += "/api/data/v9.0/vsd_CORNETOffenderSearch";
+
+            fetch(endpoint, requestOptions)
                 .then(response => response.text())
                 .then(res => {
                     let parsed = JSON.parse(res);
@@ -378,7 +498,7 @@
                     <td>${client.personBirthDate || ''}</td>
                     <td>${client.clientNumber || ''}</td>
                     <td>${client.locationTypeCode.custody || ''}</td>
-                    <td>${client.clientNumber ? '<button onclick="showOffender(' + i + ')" class="btn btn-secondary">View Offender</button>' : ''}</td>
+                    <td>${client.clientNumber ? '<button onclick="showOffenderClick(' + i + ')" class="btn btn-secondary">View Offender</button>' : ''}</td>
                     
                     </tr>`;
                 $("#client-table").append(tr);
@@ -497,12 +617,17 @@
             addResultsToTable(clients);
         }
 
-        function showOffender(val) {
+        function showOffenderClick(val) {
+            let cs_number = displayed_clients[val].clientNumber;
             console.log(displayed_clients[val].clientNumber);
+            showOffender(cs_number);
+        }
+
+        function showOffender(cs_number) {
             $("#search-container").addClass("hidden");
             $("#client-details-container").removeClass("hidden");
 
-            loadOffender(displayed_clients[val].clientNumber);
+            loadOffender(cs_number, OffenderIdType.CS_NUMBER);
         }
 
         function showSearch() {
@@ -510,7 +635,8 @@
             $("#client-details-container").addClass("hidden");
         }
 
-        function loadOffender(cs_number) {
+        function loadOffender(id, id_type) {
+            client_details = {};
             events = [];
             offences = [];
             movements = [];
@@ -518,7 +644,120 @@
             victim_information = [];
             state_transitions = [];
             key_dates = [];
-            getNotificationsForOffender(cs_number);
+
+            getCOASTOffender(id, id_type).then(offender => {
+                console.log("coast offender info");
+                console.log(offender);
+                let cs_number = "";
+                if (id_type === OffenderIdType.CS_NUMBER) {
+                    cs_number = id;
+                }
+                if (!$.isEmptyObject(offender)) {
+                    cs_number = offender.vsd_csnumber;
+                }
+
+                if (cs_number) {
+                    getNotificationsForOffender(cs_number);
+
+                    loadCornetOffender(cs_number).then(res => {
+                        client_details = res.find(o => o.isCurrentName === "Y");
+                        if (res.length > 1) {
+                            let aliases = res.filter(c => c.isCurrentName == "N");
+                            console.log("aliases");
+                            console.log(aliases.map(a => a.personName));
+                            client_details.aliases = aliases.map(a => a.personName).join(', ');
+                        }
+                        console.log(client_details);
+                    });
+                }
+
+            });
+
+        }
+
+        function loadCornetOffender(cs_number) {
+            return new Promise((resolve, reject) => {
+                let parameters = {
+                    SearchType: "ID",
+                    IdentifierType: "CSNO",
+                    IdentifierText: cs_number,
+
+                    UserName: "test",
+                    FullName: "test",
+                    Client: "test",
+                };
+
+                var myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
+
+                var requestOptions = {
+                    method: 'POST',
+                    headers: myHeaders,
+                    body: JSON.stringify(parameters),
+                    credentials: "same-origin"
+                };
+
+                let endpoint = parent.Xrm.Page.context.getClientUrl();
+                endpoint += "/api/data/v9.0/vsd_CORNETOffenderSearch";
+
+                fetch(endpoint, requestOptions)
+                    .then(response => response.text())
+                    .then(res => {
+                        let parsed = JSON.parse(res);
+                        if (parsed && parsed.Result) {
+                            let data = JSON.parse(parsed.Result);
+                            console.log(data);
+                            resolve(data.clients);
+                        }
+                        else {
+                            resolve([]);
+                        }
+
+                    })
+                    .catch(error => console.log('error', error));
+            }).catch(err => {
+                reject(err);
+            });
+        }
+
+        function getCOASTOffender(id, id_type) {
+            return new Promise((resolve, reject) => {
+                var myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
+
+                var requestOptions = {
+                    method: 'GET',
+                    headers: myHeaders,
+                    credentials: "same-origin"
+                };
+
+                let endpoint = parent.Xrm.Page.context.getClientUrl();
+                if (id_type === OffenderIdType.ID) {
+                    endpoint += `/api/data/v9.0/vsd_offenders?$filter=vsd_offenderid eq '${id}'`;
+                }
+                else if (id_type === OffenderIdType.CS_NUMBER) {
+                    endpoint += `/api/data/v9.0/vsd_offenders?$filter=vsd_csnumber eq '${id}'`;
+                }
+                else {
+                    resolve({});
+                }
+
+                fetch(endpoint, requestOptions)
+                    .then(response => response.text())
+                    .then(res => {
+                        let data = JSON.parse(res);
+                        console.log(data);
+                        if (data && data.value && data.value.length > 0) {
+                            resolve(data.value[0]);
+                        }
+                        else {
+                            resolve({});
+                        }
+                    })
+                    .catch(error => console.log('error', error));
+            }).catch(err => {
+                reject(err);
+            });
 
         }
 
@@ -532,10 +771,10 @@
                 credentials: "same-origin"
             };
 
-            let notificationUrl = parent.Xrm.Page.context.getClientUrl();
-            notificationUrl += `/api/data/v9.0/vsd_cornetnotifications?$filter=statecode eq 0 and vsd_clientnumber eq '${cs_number}'`;
+            let endpoint = parent.Xrm.Page.context.getClientUrl();
+            endpoint += `/api/data/v9.0/vsd_cornetnotifications?$filter=statecode eq 0 and vsd_clientnumber eq '${cs_number}'`;
 
-            fetch(notificationUrl, requestOptions)
+            fetch(endpoint, requestOptions)
                 .then(response => response.text())
                 .then(res => {
                     let data = JSON.parse(res);
@@ -573,7 +812,10 @@
                             parameters.Id = "authority_document_id";
 
                             getEvent(parameters).then(res => {
-                                console.log(res);
+                                if (res) {
+                                    offences.push(res);
+                                }
+                                resolve();
                             });
                         }));
                         break;
@@ -584,7 +826,10 @@
                             parameters.Id = "hearing_id";
 
                             getEvent(parameters).then(res => {
-                                console.log(res);
+                                if (res) {
+                                    hearings.push(res);
+                                }
+                                resolve();
                             });
                         }));
                         break;
@@ -595,7 +840,10 @@
                             parameters.Id = "key_date_id";
 
                             getEvent(parameters).then(res => {
-                                console.log(res);
+                                if (res) {
+                                    key_dates.push(res);
+                                }
+                                resolve();
                             });
                         }));
                         break;
@@ -606,7 +854,10 @@
                             parameters.Id = "movement_id";
 
                             getEvent(parameters).then(res => {
-                                console.log(res);
+                                if (res) {
+                                    movements.push(res);
+                                }
+                                resolve();
                             });
                         }));
                         break;
@@ -617,7 +868,10 @@
                             parameters.Id = "state_transition_id";
 
                             getEvent(parameters).then(res => {
-                                console.log(res);
+                                if (res) {
+                                    state_transitions.push(res);
+                                }
+                                resolve();
                             });
                         }));
                         break;
@@ -628,13 +882,43 @@
                             parameters.Id = "individual_id";
 
                             getEvent(parameters).then(res => {
-                                console.log(res);
+                                if (res) {
+                                    victim_information.push(res);
+                                }
+                                resolve();
                             });
                         }));
                         break;
                     }
                 }
             }
+
+
+            Promise.all(promise_array).then(() => {
+                console.log("loaded offences");
+                console.log(offences);
+                console.log(movements);
+
+                if (offences.length > 0) {
+                    $("#tab-offences").removeClass("is-disabled");
+                }
+
+                if (movements.length > 0) {
+                    $("#tab-movements").removeClass("is-disabled");
+                }
+
+                if (hearings.length > 0) {
+                    $("#tab-hearings").removeClass("is-disabled");
+                }
+
+                if (victim_information.length > 0) {
+                    $("#tab-victim-info").removeClass("is-disabled");
+                }
+
+                if (state_transitions.length > 0) {
+                    $("#tab-state-transition").removeClass("is-disabled");
+                }
+            });
         }
 
         function getEvent(parameters) {
@@ -653,27 +937,58 @@
                     credentials: "same-origin"
                 };
 
-                let eventUrl = parent.Xrm.Page.context.getClientUrl();
-                eventUrl += "/api/data/v9.0/vsd_GetCORNETEvent";
+                let endpoint = parent.Xrm.Page.context.getClientUrl();
+                endpoint += "/api/data/v9.0/vsd_GetCORNETEvent";
 
-                fetch(eventUrl, requestOptions)
+                fetch(endpoint, requestOptions)
                     .then(response => response.text())
                     .then(res => {
                         let parsed = JSON.parse(res);
-                        if (parsed && parsed.Result) {
+                        if (parsed && parsed.Result && parsed.IsSuccess) {
                             let data = JSON.parse(parsed.Result);
                             resolve(data);
                         }
-
+                        else {
+                            resolve(null);
+                        }
                     })
                     .catch(error => console.log('error', error));
+            }).catch(err => {
+                reject(err);
             });
+        }
+
+        function showTabContent(event, tab) {
+            let toHide = TABS.filter(t => t != tab);
+            toHide.forEach(t => {
+                $(`#${t}`).addClass("hidden");
+            });
+
+            $(`#${tab}`).removeClass("hidden");
+
+            $(".nav-link").removeClass("active");
+            event.currentTarget.className += " active";
         }
 
 
         function getOptionsSetVal(optionSet, val) {
             return Object.values(optionSet).find((o) => o.val == val);
         }
+
+        const TABS = [
+            "subject-information-container",
+            "offences-container",
+            "movements-container",
+            "hearings-container",
+            "victim-information-container",
+            "state-transitions-container",
+        ];
+
+        const GenderOptionSet = {
+            Male: { val: 100000000, name: "M" },
+            Female: { val: 100000001, name: "F" },
+            X: { val: 100000002, name: "X" },
+        };
 
         const EventType = {
             KEY_DATE: { val: 100000000, name: "KEY_DATE" },
@@ -683,6 +998,11 @@
             VICT_CNTCT: { val: 100000004, name: "VICT_CNTCT" },
             AUTH_DOCM: { val: 100000005, name: "AUTH_DOCM" },
         };
+
+        const OffenderIdType = {
+            ID: 0,
+            CS_NUMBER: 1
+        }
 
 
     </script>
