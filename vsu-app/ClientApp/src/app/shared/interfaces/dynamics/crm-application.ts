@@ -5,7 +5,7 @@ export interface iApplicationFormCRM {
     OffenceCollection?: iCRMOffence[];
     PoliceFileNumberCollection: iCRMPoliceFileNumber[];
     ProviderCollection: iCRMParticipant[];
-    TravelInfoCollection: iCRMTravelInfo[];
+    TravelInfoCollection?: iCRMTravelInfo[];
 }
 
 export interface iCRMApplication {

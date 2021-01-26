@@ -396,9 +396,9 @@
             }
         };
 
-        //TODO
         //The CRM form call this function during an onload js event and passes us the formContext
         function setClientApiContext(xrm, formContext) {
+            console.log("setting form context");
             // Optionally set Xrm and formContext as global variables on the page.
             window.Xrm = xrm;
             _formContext = formContext;
@@ -633,6 +633,8 @@
         function showSearch() {
             $("#search-container").removeClass("hidden");
             $("#client-details-container").addClass("hidden");
+
+            //TODO - should reset all the offender details page setup and info so it's fresh should we return to it
         }
 
         function loadOffender(id, id_type) {
