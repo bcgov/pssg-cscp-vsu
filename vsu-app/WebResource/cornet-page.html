@@ -21,10 +21,6 @@
             flex-wrap: wrap;
         }
 
-        /* .flex-container>div {
-            padding-left: 0 !important;
-        } */
-
         .nav-link {
             cursor: pointer;
         }
@@ -187,8 +183,6 @@
             border: 16px solid #f3f3f3;
             border-radius: 50%;
             border-top: 16px solid #3498db;
-            /* width: 120px; */
-            /* height: 120px; */
             -webkit-animation: spin 2s linear infinite;
             /* Safari */
             animation: spin 2s linear infinite;
@@ -361,6 +355,7 @@
                 </div>
             </div>
 
+            <!-- Subject Information section -->
             <div id="subject-information-container">
                 <div class="row mt-5">
                     <div class="col">
@@ -487,6 +482,7 @@
                     </div>
                 </div>
             </div>
+            <!-- END of Subject Information section -->
 
             <div id="offences-container" class="hidden">
                 <div class="row mt-5">
@@ -683,10 +679,10 @@
                     <button onclick="clearOffenderDetails(); showSearch();" class="btn btn-secondary">Return to Search</button>
                 </div>
                 <div class="col hidden" id="link-offender">
-                    <button onclick="linkOffender()" class="btn btn-secondary">Link Offender</button>
+                    <button onclick="linkOffender()" class="btn btn-secondary btn-link-offender">Link Offender</button>
                 </div>
                 <div class="col hidden" id="create-offender">
-                    <button onclick="createOffender()" class="btn btn-secondary">Create Offender</button>
+                    <button onclick="createOffender()" class="btn btn-secondary btn-create-offender">Create Offender</button>
                 </div>
             </div>
         </div>
@@ -765,7 +761,6 @@
             "offenderAWOL",
             "offenderReportingOrder",
         ];
-
         const VictimDetailsFields = [
             "victimName",
             "victimEffectiveDate",
@@ -777,16 +772,24 @@
             "victimEmail",
         ];
 
+        //number of search table rows to show at a time, the rest are paginated
         const ROWS_SHOWN = 5;
 
+        //controls whether to show Link/Create buttons
         let BUTTON_STATUS = OffenderButtonStatus.NONE;
+        //CRM form the webresource is hosted in
+        //if on the Offender form we need to either show search + Link ability, or we just show the already linked details
+        //TODO - other source form will be search + create ability
         let FORM_TYPE = FormTypes.OTHER;
 
+        let OFFENDER_IS_LINKED = false;
+
+        //search results from cornet
         let clients = [];
         let displayed_clients = [];
         let current_name = false;
 
-        let _formContext = null;
+        //variables to hold client details info and cornet event info
         let client_details = {};
         let coastInfo = {};
         let events = [];
@@ -804,10 +807,15 @@
 
             let entity = parent.Xrm.Page.data.entity.getEntityName();
             if (entity == "vsd_offender") {
+                //if this offender has CS Number (that is: it is linked to a cornet client already):
+                //-> then show the client details - no search ability
+                //if there is no CS Number (not already linked)
+                //-> then default to search and has link ability
                 FORM_TYPE = FormTypes.OFFENDER;
                 let cs_number = parent.Xrm.Page.getAttribute("vsd_csnumber").getValue();
 
                 if (cs_number) {
+                    OFFENDER_IS_LINKED = true;
                     BUTTON_STATUS = OffenderButtonStatus.NONE;
                     showOffender(cs_number);
                 }
@@ -845,26 +853,6 @@
                 showSearch();
             }
         };
-
-        // //The CRM form call this function during an onload js event and passes us the formContext
-        // function setClientApiContext(xrm, formContext) {
-        //     console.log("setting form context");
-        //     // Optionally set Xrm and formContext as global variables on the page.
-        //     window.Xrm = xrm;
-        //     _formContext = formContext;
-
-        //     let cs_number = _formContext.getAttribute("vsd_csnumber");
-        //     console.log(cs_number);
-
-        //     if (cs_number) {
-        //         $("#search-container").addClass("hidden");
-        //         $("#client-details-container").removeClass("hidden");
-        //         loadOffender(cs_number);
-        //     }
-        //     else {
-        //         $("#search-container").removeClass("hidden");
-        //     }
-        // }
 
         function search() {
             $(".loading-indicator").removeClass("hidden");
@@ -1119,6 +1107,9 @@
                 if (!$.isEmptyObject(offender)) {
                     coastInfo = offender;
                     cs_number = offender.vsd_csnumber;
+                    if (!OFFENDER_IS_LINKED) {
+                        $(".btn-link-offender").addClass("is-disabled");
+                    }
                 }
                 else if (FORM_TYPE === FormTypes.OTHER) {
                     $("#create-offender").removeClass("hidden");
@@ -1560,6 +1551,10 @@
 
             $(".nav-link").removeClass("active-page");
             $("#tab-subject-info").addClass("active-page");
+
+            //enable link/create buttons
+            $(".btn-link-offender").removeClass("is-disabled");
+            $(".btn-create-offender").removeClass("is-disabled");
         }
 
         function populateKeyDates() {
@@ -1695,6 +1690,7 @@
             console.log("saving...");
 
             setTimeout(() => {
+                OFFENDER_IS_LINKED = true;
                 console.log("reload offender");
                 loadOffender(client_details.clientNumber, OffenderIdType.CS_NUMBER);
             }, 2000);
