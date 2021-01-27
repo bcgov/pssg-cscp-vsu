@@ -1066,7 +1066,6 @@
 
         function showOffenderClick(val) {
             let cs_number = displayed_clients[val].clientNumber;
-            console.log(displayed_clients[val].clientNumber);
             showOffender(cs_number);
         }
 
@@ -1084,6 +1083,7 @@
             $("#client-details-container").addClass("hidden");
         }
 
+        //get and combine info from cornet and crm
         function loadOffender(id, id_type) {
             $(".loading-indicator").removeClass("hidden");
 
@@ -1236,6 +1236,7 @@
 
         }
 
+        //get all cornet notifications in coast for this cs number
         function getNotificationsForOffender(cs_number) {
             return new Promise((resolve, reject) => {
                 var myHeaders = new Headers();
@@ -1268,10 +1269,9 @@
             });
         }
 
+        //for each cornet notification found in CRM we need to load the cornet details
         function loadCornetEvents() {
             return new Promise((resolve, reject) => {
-
-
                 let promise_array = [];
 
                 for (let i = 0; i < events.length; ++i) {
@@ -1430,6 +1430,7 @@
             });
         }
 
+        //load a single event from cornet
         function getEvent(parameters) {
             return new Promise((resolve, reject) => {
                 var myHeaders = new Headers();
@@ -1466,42 +1467,7 @@
             });
         }
 
-        function populateSubjectInformation() {
-            console.log("setting subject info");
-            console.log(client_details);
-
-            $("#offenderLastName").val(client_details.lastName);
-            $("#offenderGivenNames").val(client_details.givenNames);
-            $("#offenderCurrentName").prop("checked", client_details.isCurrentName == 'Y');
-
-            $("#offenderGender").val(client_details.personGenderIdentityCodeType);
-            $("#offenderBirthdate").val(client_details.personBirthDate);
-            $("#offenderAliases").val(client_details.aliases);
-
-            $("#offenderCS").val(client_details.clientNumber);
-
-            if (client_details.coastInfo) {
-                $(".offender-coast-info").removeClass("hidden");
-
-                $("#offenderInCustody").prop("checked", client_details.coastInfo.vsd_incustody === CRMBoolean.True);
-                $("#offenderInOut").prop("checked", client_details.coastInfo.vsd_inout === CRMBoolean.True);
-                $("#offenderIntermittentSentence").prop("checked", client_details.coastInfo.vsd_intermittentsentence === CRMBoolean.True);
-
-
-                $("#offenderCommunityStatus").prop("checked", client_details.coastInfo.vsd_communitystatus === CommunityStatus.Active);
-                $("#offenderAWOL").prop("checked", client_details.coastInfo.vsd_awol === CRMBoolean.True);
-
-                $("#offenderProbationOfficer").val(client_details.coastInfo.vsd_probationofficerbailsupervisor);
-                $("#offenderReportingOrder").prop("checked", client_details.coastInfo.vsd_reportingorder === CRMBoolean.True);
-                $("#offenderPoliceFileNumber").val(client_details.coastInfo.vsd_policefilenumber);
-            }
-
-            if (client_details.locationTypeCode.custody) {
-                $(".custody-location").removeClass("hidden");
-                $("#offenderCustodyLocation").val(client_details.locationTypeCode.custody);
-            }
-        }
-
+        //used when leaving the details page to ensure a fresh slate if the user loads a new offender
         function clearOffenderDetails() {
             //clear offender details variables
             client_details = {};
@@ -1555,6 +1521,43 @@
             //enable link/create buttons
             $(".btn-link-offender").removeClass("is-disabled");
             $(".btn-create-offender").removeClass("is-disabled");
+        }
+
+        //functions to populate the various sections of the client details page
+        function populateSubjectInformation() {
+            console.log("setting subject info");
+            console.log(client_details);
+
+            $("#offenderLastName").val(client_details.lastName);
+            $("#offenderGivenNames").val(client_details.givenNames);
+            $("#offenderCurrentName").prop("checked", client_details.isCurrentName == 'Y');
+
+            $("#offenderGender").val(client_details.personGenderIdentityCodeType);
+            $("#offenderBirthdate").val(client_details.personBirthDate);
+            $("#offenderAliases").val(client_details.aliases);
+
+            $("#offenderCS").val(client_details.clientNumber);
+
+            if (client_details.coastInfo) {
+                $(".offender-coast-info").removeClass("hidden");
+
+                $("#offenderInCustody").prop("checked", client_details.coastInfo.vsd_incustody === CRMBoolean.True);
+                $("#offenderInOut").prop("checked", client_details.coastInfo.vsd_inout === CRMBoolean.True);
+                $("#offenderIntermittentSentence").prop("checked", client_details.coastInfo.vsd_intermittentsentence === CRMBoolean.True);
+
+
+                $("#offenderCommunityStatus").prop("checked", client_details.coastInfo.vsd_communitystatus === CommunityStatus.Active);
+                $("#offenderAWOL").prop("checked", client_details.coastInfo.vsd_awol === CRMBoolean.True);
+
+                $("#offenderProbationOfficer").val(client_details.coastInfo.vsd_probationofficerbailsupervisor);
+                $("#offenderReportingOrder").prop("checked", client_details.coastInfo.vsd_reportingorder === CRMBoolean.True);
+                $("#offenderPoliceFileNumber").val(client_details.coastInfo.vsd_policefilenumber);
+            }
+
+            if (client_details.locationTypeCode.custody) {
+                $(".custody-location").removeClass("hidden");
+                $("#offenderCustodyLocation").val(client_details.locationTypeCode.custody);
+            }
         }
 
         function populateKeyDates() {
@@ -1665,9 +1668,6 @@
             $("#victimTelephone").val(victim.telephoneNumberType.number);
             $("#victimMobile").val(victim.cellNumberType.number);
             $("#victimEmail").val(victim.emailType.emailAddress);
-
-            console.log("show victim details");
-            console.log(victim);
         }
 
         function linkOffender() {
@@ -1687,11 +1687,9 @@
             parent.Xrm.Page.getAttribute("vsd_aliasnames").setValue(client_details.aliases);
             parent.Xrm.Page.data.entity.save();
 
-            console.log("saving...");
-
+            //small delay to let the crm page save so that when we reload we get accurate info
             setTimeout(() => {
                 OFFENDER_IS_LINKED = true;
-                console.log("reload offender");
                 loadOffender(client_details.clientNumber, OffenderIdType.CS_NUMBER);
             }, 2000);
         }
@@ -1712,7 +1710,6 @@
             $(".nav-link").removeClass("active-page");
             event.currentTarget.className += " active-page";
         }
-
 
         function getOptionsSetVal(optionSet, val) {
             return Object.values(optionSet).find((o) => o.val == val);
