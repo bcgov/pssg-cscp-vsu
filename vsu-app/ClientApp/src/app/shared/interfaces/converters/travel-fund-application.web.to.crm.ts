@@ -1,4 +1,4 @@
-import { ApplicationType, EnumHelper } from "../../enums-list";
+import { ApplicationType, EnumHelper, PARTICIPANT_TYPES } from "../../enums-list";
 import { iCRMApplication, iCRMCourtInfo, iCRMParticipant, iApplicationFormCRM, iCRMOffence, iCRMTravelInfo } from "../dynamics/crm-application";
 import { iTravelFundApplication } from "../application.interface";
 import * as _ from 'lodash';
@@ -216,7 +216,7 @@ function getCRMProviderCollection(application: iTravelFundApplication) {
         vsd_lastname: application.CaseInformation.accusedLastName,
         vsd_birthdate: application.CaseInformation.accusedBirthDate,
         vsd_gender: application.CaseInformation.accusedGender,
-        vsd_relationship1: "Subject",
+        vsd_relationship1: PARTICIPANT_TYPES.ACCUSED,
     });
 
     //CaseInformation Additional Accused
@@ -227,7 +227,7 @@ function getCRMProviderCollection(application: iTravelFundApplication) {
             vsd_lastname: accused.lastName,
             vsd_birthdate: accused.birthDate,
             vsd_gender: accused.gender,
-            vsd_relationship1: "Subject",
+            vsd_relationship1: PARTICIPANT_TYPES.ACCUSED,
         });
     });
 
@@ -239,7 +239,7 @@ function getCRMProviderCollection(application: iTravelFundApplication) {
                     vsd_firstname: cc.firstName,
                     vsd_lastname: cc.lastName,
                     vsd_phonenumber: cc.telephone,
-                    vsd_relationship1: "Crown Counsel",
+                    vsd_relationship1: PARTICIPANT_TYPES.CROWN_COUNSEL,
                     vsd_relationship1other: "",
                 });
             }
@@ -260,7 +260,7 @@ function getCRMProviderCollection(application: iTravelFundApplication) {
                     vsd_mainphoneextension: vsw.extension,
                     vsd_city: vsw.city,
                     vsd_email: vsw.email,
-                    vsd_relationship1: "Victim Services Worker",
+                    vsd_relationship1: PARTICIPANT_TYPES.VICTIM_SERVICE_WORKER,
                     vsd_relationship1other: "",
                 });
             }
