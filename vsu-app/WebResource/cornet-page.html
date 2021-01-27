@@ -242,25 +242,25 @@
             </div>
 
             <div class="row mt-3">
-                <div class="col-md-3">
+                <div class="col-3">
                     <label for="surname" class="surname required">Surname</label>
                     <br>
                     <input class="form-control surname" type="text" id="surname" name="surname" oninput="surnameChange(this.value)">
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-3">
                     <label for="given_name" class="given_name">Given name</label>
                     <br>
                     <input class="form-control given_name" type="text" id="given_name" name="given_name" oninput="fieldChange(this.value)">
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-3">
                     <label for="second_name" class="second_name">Second name</label>
                     <br>
                     <input class="form-control second_name" type="text" id="second_name" name="second_name" oninput="fieldChange(this.value)">
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-3">
                     <br>
                     <input type="checkbox" class="current_name" id="current_name" name="current_name" onchange="currentNameChange(this.checked)">
                     <label for="current_name" class="current_name">Current Name</label>
@@ -268,7 +268,7 @@
             </div>
 
             <div class="row mt-3">
-                <div class="col-md-3">
+                <div class="col-3">
                     <label for="gender" class="gender">Gender</label>
                     <br>
                     <select class="form-control gender" id="gender" name="gender" oninput="fieldChange(this.value)">
@@ -278,7 +278,7 @@
                     </select>
                 </div>
 
-                <div class="col-md-3 d-flex">
+                <div class="col-3 d-flex">
                     <div class="col-6 pl-0">
                         <label for="birth_year" class="birth_year">Birth year</label>
                         <br>
@@ -292,7 +292,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-3 d-flex">
+                <div class="col-3 d-flex">
                     <div class="col-6 pl-0">
                         <label for="cs" class="cs">CS#</label>
                         <br>
@@ -306,7 +306,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-3 search-button-container">
+                <div class="col-3 search-button-container">
                     <button onclick="search()" class="btn btn-primary search-button" id="search-button">SEARCH CORNET</button>
                 </div>
             </div>
@@ -369,17 +369,17 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-4">
                         <label for="offenderLastName" class="offenderLastName">Last Name</label>
                         <br>
                         <input class="form-control offenderLastName read-only" type="text" id="offenderLastName" name="offenderLastName">
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-4">
                         <label for="offenderGivenNames" class="offenderGivenNames">Given Names</label>
                         <br>
                         <input class="form-control offenderGivenNames read-only" type="text" id="offenderGivenNames" name="offenderGivenNames">
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-4">
                         <br>
                         <input type="checkbox" class="current_name read-only" id="offenderCurrentName" name="offenderCurrentName">
                         <label for="offenderCurrentName" class="offenderCurrentName read-only-checkbox">Current Name</label>
@@ -387,17 +387,17 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-4">
                         <label for="offenderGender" class="offenderGender">Gender</label>
                         <br>
                         <input class="form-control offenderGender read-only" type="text" id="offenderGender" name="offenderGender">
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-4">
                         <label for="offenderBirthdate" class="offenderBirthdate">Birthdate</label>
                         <br>
                         <input class="form-control offenderBirthdate read-only" type="text" id="offenderBirthdate" name="offenderBirthdate">
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-4">
                         <label for="offenderAliases" class="offenderAliases">Alias(es)</label>
                         <br>
                         <input class="form-control offenderAliases read-only" type="text" id="offenderAliases" name="offenderAliases">
@@ -411,7 +411,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-4">
                         <label for="offenderCS" class="offenderCS">CS#</label>
                         <br>
                         <input class="form-control offenderCS read-only" type="text" id="offenderCS" name="offenderCS">
@@ -425,24 +425,24 @@
                 </div>
 
                 <div class="row offender-coast-info hidden">
-                    <div class="col-md-4">
+                    <div class="col-4">
                         <label for="offenderInCustody" class="offenderInCustody read-only-checkbox">In custody?</label>
                         <input type="checkbox" class="offenderInCustody read-only" id="offenderInCustody" name="offenderInCustody">
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-4">
                         <label for="offenderInOut" class="offenderInOut read-only-checkbox">In/Out?</label>
                         <input type="checkbox" class="offenderInOut read-only" id="offenderInOut" name="offenderInOut">
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-4">
                         <label for="offenderIntermittentSentence" class="offenderIntermittentSentence read-only-checkbox">Intermittent sentence?</label>
                         <input type="checkbox" class="offenderIntermittentSentence read-only" id="offenderIntermittentSentence" name="offenderIntermittentSentence">
                     </div>
                 </div>
 
                 <div class="row key-date-container flex-container" id="key-dates">
-                    <div class="col-md-4 custody-location hidden">
+                    <div class="col-4 custody-location hidden">
                         <label for="offenderCustodyLocation" class="offenderCustodyLocation">Custody location</label>
                         <br>
                         <input class="form-control offenderCustodyLocation read-only" type="text" id="offenderCustodyLocation" name="offenderCustodyLocation">
@@ -456,31 +456,31 @@
                 </div>
 
                 <div class="row offender-coast-info hidden">
-                    <div class="col-md-4">
+                    <div class="col-4">
                         <label for="offenderCommunityStatus" class="offenderCommunityStatus read-only-checkbox">Community Status</label>
                         <input type="checkbox" class="offenderCommunityStatus read-only" id="offenderCommunityStatus" name="offenderCommunityStatus">
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-4">
                         <label for="offenderAWOL" class="offenderAWOL read-only-checkbox">AWOL?</label>
                         <input type="checkbox" class="offenderAWOL read-only" id="offenderAWOL" name="offenderAWOL">
                     </div>
                 </div>
 
                 <div class="row offender-coast-info hidden mt-4">
-                    <div class="col-md-4">
+                    <div class="col-4">
                         <label for="offenderProbationOfficer" class="offenderProbationOfficer">Probation officer / bail supervisor</label>
                         <br>
                         <input class="form-control offenderProbationOfficer read-only" type="text" id="offenderProbationOfficer" name="offenderProbationOfficer">
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-4">
                         <br>
                         <label for="offenderReportingOrder" class="offenderReportingOrder read-only-checkbox">Reporting Order?</label>
                         <input type="checkbox" class="offenderReportingOrder read-only" id="offenderReportingOrder" name="offenderReportingOrder">
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-4">
                         <label for="offenderPoliceFileNumber" class="offenderPoliceFileNumber">Police File Number</label>
                         <br>
                         <input class="form-control offenderPoliceFileNumber read-only" type="text" id="offenderPoliceFileNumber" name="offenderPoliceFileNumber">
@@ -589,6 +589,70 @@
                         </table>
                     </div>
                 </div>
+
+                <div class="victim-details-container hidden">
+                    <div class="row">
+                        <div class="col">
+                            <label>Victim Details</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="victimName" class="victimName">Name</label>
+                            <br>
+                            <input class="form-control victimName read-only" type="text" id="victimName" name="victimName">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-2">
+                            <label for="victimEffectiveDate" class="victimEffectiveDate">Effective Date</label>
+                            <br>
+                            <input class="form-control victimEffectiveDate read-only" type="text" id="victimEffectiveDate" name="victimEffectiveDate">
+                        </div>
+
+                        <div class="col-2">
+                            <label for="victimExpiryDate" class="victimExpiryDate">Expiry Date</label>
+                            <br>
+                            <input class="form-control victimExpiryDate read-only" type="text" id="victimExpiryDate" name="victimExpiryDate">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="victimPrimaryAddress" class="victimPrimaryAddress">Primary Address</label>
+                            <br>
+                            <input class="form-control victimPrimaryAddress read-only" type="text" id="victimPrimaryAddress" name="victimPrimaryAddress">
+                        </div>
+
+                        <div class="col-6">
+                            <label for="victimMailingAddress" class="victimMailingAddress">Mailing Address</label>
+                            <br>
+                            <input class="form-control victimMailingAddress read-only" type="text" id="victimMailingAddress" name="victimMailingAddress">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="victimTelephone" class="victimTelephone">Telephone</label>
+                            <br>
+                            <input class="form-control victimTelephone read-only" type="text" id="victimTelephone" name="victimTelephone">
+                        </div>
+
+                        <div class="col-4">
+                            <label for="victimMobile" class="victimMobile">Mobile</label>
+                            <br>
+                            <input class="form-control victimMobile read-only" type="text" id="victimMobile" name="victimMobile">
+                        </div>
+
+                        <div class="col-4">
+                            <label for="victimEmail" class="victimEmail">Email</label>
+                            <br>
+                            <input class="form-control victimEmail read-only" type="text" id="victimEmail" name="victimEmail">
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div id="state-transitions-container" class="hidden">
@@ -680,6 +744,38 @@
             ID: 0,
             CS_NUMBER: 1
         }
+
+        const OffenderDetailsFields = [
+            "offenderLastName",
+            "offenderGivenNames",
+            "offenderGender",
+            "offenderBirthdate",
+            "offenderAliases",
+            "offenderCS",
+            "offenderCustodyLocation",
+            "offenderProbationOfficer",
+            "offenderPoliceFileNumber",
+        ];
+        const OffenderDetailsCheckboxes = [
+            "offenderCurrentName",
+            "offenderInCustody",
+            "offenderInOut",
+            "offenderIntermittentSentence",
+            "offenderCommunityStatus",
+            "offenderAWOL",
+            "offenderReportingOrder",
+        ];
+
+        const VictimDetailsFields = [
+            "victimName",
+            "victimEffectiveDate",
+            "victimExpiryDate",
+            "victimPrimaryAddress",
+            "victimMailingAddress",
+            "victimTelephone",
+            "victimMobile",
+            "victimEmail",
+        ];
 
         const ROWS_SHOWN = 5;
 
@@ -826,10 +922,13 @@
                     if (parsed && parsed.Result) {
                         if (parsed.Result.includes("No Content")) {
                             console.log("no results from cornet");
+                            //remove any old rows in the table and remove the paginator
+                            $("#client-table").find("tr:gt(0)").remove();
+                            let nav = $("#nav");
+                            if (nav) nav.remove();
                             return;
                         }
                         let data = JSON.parse(parsed.Result);
-                        console.log(data);
                         addResultsToTable(data.clients);
                     }
 
@@ -845,7 +944,7 @@
                 displayed_clients = clients;
             }
 
-            //make sure table shows and any existing rows are removed
+            //make sure table shows and any previously existing rows are removed
             $(".search-results-row").removeClass("hidden");
             $("#client-table").find("tr:gt(0)").remove();
 
@@ -1393,9 +1492,9 @@
             if (client_details.coastInfo) {
                 $(".offender-coast-info").removeClass("hidden");
 
-                $("#offenderInCustody").val(client_details.coastInfo.vsd_incustody === CRMBoolean.True);
-                $("#offenderInOut").val(client_details.coastInfo.vsd_inout === CRMBoolean.True);
-                $("#offenderIntermittentSentence").val(client_details.coastInfo.vsd_intermittentsentence === CRMBoolean.True);
+                $("#offenderInCustody").prop("checked", client_details.coastInfo.vsd_incustody === CRMBoolean.True);
+                $("#offenderInOut").prop("checked", client_details.coastInfo.vsd_inout === CRMBoolean.True);
+                $("#offenderIntermittentSentence").prop("checked", client_details.coastInfo.vsd_intermittentsentence === CRMBoolean.True);
 
 
                 $("#offenderCommunityStatus").prop("checked", client_details.coastInfo.vsd_communitystatus === CommunityStatus.Active);
@@ -1423,31 +1522,20 @@
             victim_information = [];
             state_transitions = [];
             key_dates = [];
-            //clear subject information inputs
-            $("#offenderLastName").val('');
-            $("#offenderGivenNames").val('');
-            $("#offenderCurrentName").prop("checked", false);
-
-            $("#offenderGender").val('');
-            $("#offenderBirthdate").val('');
-            $("#offenderAliases").val('');
-
-            $("#offenderInCustody").val(false);
-            $("#offenderInOut").val(false);
-            $("#offenderIntermittentSentence").val(false);
-
-            $("#offenderCustodyLocation").val('');
-
-            $("#offenderCommunityStatus").prop("checked", false);
-            $("#offenderAWOL").prop("checked", false);
-
-            $("#offenderProbationOfficer").val('');
-            $("#offenderReportingOrder").prop("checked", false);
-            $("#offenderPoliceFileNumber").val('');
-
+            //clear subject information inputs and victim details inputs
+            OffenderDetailsFields.forEach(field => {
+                $(`#${field}`).val('');
+            });
+            OffenderDetailsCheckboxes.forEach(field => {
+                $(`#${field}`).prop("checked", false);
+            });
+            VictimDetailsFields.forEach(field => {
+                $(`#${field}`).val('');
+            });
             //hide sections that are dependant on the existence of certain offender data
             $(".offender-coast-info").addClass("hidden");
             $(".custody-location").addClass("hidden");
+            $(".victim-details-container").addClass("hidden");
             //disabled all tabs
             $("#tab-offences").addClass("is-disabled");
             $("#tab-movements").addClass("is-disabled");
@@ -1478,7 +1566,7 @@
             $("#key-dates").find("div:gt(0)").remove();
 
             key_dates.forEach((keyDate, i) => {
-                let div = `<div class="col-md-4">
+                let div = `<div class="col-4">
                                 <label for="offenderKeyDate${i}" class="offenderKeyDate${i}">${keyDate.activityCategory.description}</label>
                                 <br>
                                 <input class="form-control offenderKeyDate read-only" type="text" id="offenderKeyDate${i}" name="offenderKeyDate${i}" value="${keyDate.activityDate}">
@@ -1550,9 +1638,9 @@
                 let tr = `<tr>
                             <td>${victim.personFullName}</td>
                             <td>${victim.victimToPersonRelationship}</td>
-                            <td>${'action'}</td>
+                            <td>${'<button onclick="showVictimDetails(' + i + ')" class="btn btn-secondary">View Details</button>'}</td>
                         </tr>`;
-                $("#victim-information").append(tr);
+                $("#victim-information-table").append(tr);
             });
         }
 
@@ -1566,8 +1654,25 @@
                             <td>${transition.activitySubType.code}</td>
                             <td>${transition.activityReason.description}</td>
                         </tr>`;
-                $("#sate-transitions").append(tr);
+                $("#sate-transitions-table").append(tr);
             });
+        }
+
+        function showVictimDetails(index) {
+            let victim = victim_information[index];
+            $(".victim-details-container").removeClass("hidden");
+
+            $("#victimName").val(victim.personFullName);
+            $("#victimEffectiveDate").val(victim.victimContactDate.effective);
+            $("#victimExpiryDate").val(victim.victimContactDate.expiry);
+            $("#victimPrimaryAddress").val(victim.primaryAddressFull);
+            $("#victimMailingAddress").val(victim.mailingAddressFull);
+            $("#victimTelephone").val(victim.telephoneNumberType.number);
+            $("#victimMobile").val(victim.cellNumberType.number);
+            $("#victimEmail").val(victim.emailType.emailAddress);
+
+            console.log("show victim details");
+            console.log(victim);
         }
 
         function linkOffender() {
@@ -1575,7 +1680,16 @@
             $("#return-to-search").addClass("hidden");
             $(".loading-indicator").removeClass("hidden");
 
+            let birthdate = new Date(client_details.personBirthDate + "T00:00:00");
+            let gender = getOptionsSetFromName(GenderOptionSet, client_details.personGenderIdentityCodeType);
+
             parent.Xrm.Page.getAttribute("vsd_csnumber").setValue(client_details.clientNumber);
+            parent.Xrm.Page.getAttribute("vsd_firstname").setValue(client_details.givenNames);
+            parent.Xrm.Page.getAttribute("vsd_middlename").setValue('');
+            parent.Xrm.Page.getAttribute("vsd_lastname").setValue(client_details.lastName);
+            parent.Xrm.Page.getAttribute("vsd_birthdate").setValue(birthdate);
+            parent.Xrm.Page.getAttribute("vsd_gender").setValue(gender.val);
+            parent.Xrm.Page.getAttribute("vsd_aliasnames").setValue(client_details.aliases);
             parent.Xrm.Page.data.entity.save();
 
             console.log("saving...");
@@ -1606,6 +1720,10 @@
 
         function getOptionsSetVal(optionSet, val) {
             return Object.values(optionSet).find((o) => o.val == val);
+        }
+
+        function getOptionsSetFromName(optionSet, name) {
+            return Object.values(optionSet).find((o) => o.name == name);
         }
     </script>
 </body>
