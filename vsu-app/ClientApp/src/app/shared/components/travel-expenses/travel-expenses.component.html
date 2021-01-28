@@ -193,17 +193,17 @@
                 </div>
                 <div class="col">
                     <app-field label="Breakfast" [required]="true" [valid]="isMyControlValid(item.get('breakfast'))" errorMessage="Please enter breakfast amount" [disabled]="isDisabled">
-                        <input class="form-control" type="text" mask="separator.2" formControlName="breakfast" maxlength="100" (input)="updateMealTotals()">
+                        <input class="form-control" type="text" mask="separator.0" formControlName="breakfast" maxlength="100" (input)="updateMealTotals()">
                     </app-field>
                 </div>
                 <div class="col">
                     <app-field label="Lunch" [required]="true" [valid]="isMyControlValid(item.get('lunch'))" errorMessage="Please enter lunch amount" [disabled]="isDisabled">
-                        <input class="form-control" type="text" mask="separator.2" formControlName="lunch" maxlength="100" (input)="updateMealTotals()">
+                        <input class="form-control" type="text" mask="separator.0" formControlName="lunch" maxlength="100" (input)="updateMealTotals()">
                     </app-field>
                 </div>
                 <div class="col">
                     <app-field label="Dinner" [required]="true" [valid]="isMyControlValid(item.get('dinner'))" errorMessage="Please enter dinner amount" [disabled]="isDisabled">
-                        <input class="form-control" type="text" mask="separator.2" formControlName="dinner" maxlength="100" (input)="updateMealTotals()">
+                        <input class="form-control" type="text" mask="separator.0" formControlName="dinner" maxlength="100" (input)="updateMealTotals()">
                     </app-field>
                 </div>
                 <div class="col">
@@ -275,7 +275,7 @@
                 <div class="row">
                     <div class="col">
                         <app-field label="Child Age" [required]="false" [disabled]="isDisabled">
-                            <input class="form-control" type="text" mask="separator.2" formControlName="age" maxlength="100">
+                            <input class="form-control" type="text" mask="separator.0" formControlName="age" maxlength="100">
                         </app-field>
                     </div>
                     <div class="col">

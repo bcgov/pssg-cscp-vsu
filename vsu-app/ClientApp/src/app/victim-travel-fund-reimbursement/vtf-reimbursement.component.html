@@ -38,9 +38,6 @@
                 <div class="pagebreak"> </div>
                 <app-vtf-case-information [formType]="formType.val" [formGroup]="form" formGroupName="caseInformation" [lookupData]="lookupData" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == PAGES.CASE_INFORMATION || showPrintView"></app-vtf-case-information>
 
-                <!-- <div class="pagebreak"> </div>
-                <app-vtf-reimbursement-applicant-information [formType]="formType.val" [formGroup]="form" formGroupName="applicantInformation" [lookupData]="lookupData" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == 1 || showPrintView"></app-vtf-reimbursement-applicant-information> -->
-
                 <div class="pagebreak"> </div>
                 <app-travel-expenses [formType]="formType.val" [formGroup]="form" formGroupName="travelExpenses" [lookupData]="lookupData" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == PAGES.TRAVEL_AND_EXPENSES || showPrintView"></app-travel-expenses>
 

@@ -35,17 +35,17 @@
             </label>
         </app-field>
     </section>
-
-    <!-- Victim Service Worker -->
-    <div class="victimServiceWorker" formArrayName="victimServiceWorker" *ngFor="let item of form.get('victimServiceWorker')['controls']; let i = index;">
-        <app-victim-service-worker [formGroupName]="i" [formGroup]="item" [isDisabled]="isDisabled" [formType]="formType" [isRequired]="true"></app-victim-service-worker>
+    
+    <!-- Designate Information -->
+    <div class="designate" formArrayName="designate" *ngFor="let item of form.get('designate')['controls']; let i = index;">
+        <app-designate [formGroupName]="i" [formGroup]="item" [isDisabled]="isDisabled" [formType]="formType" [baseForm]="form.parent" [lookupData]="lookupData"></app-designate>
     </div>
 
     <div *ngIf="form.get('victimServiceWorker')['length'] > 0 && form.get('designate')['length'] > 0" class="designate-separator"></div>
 
-    <!-- Designate Information -->
-    <div class="designate" formArrayName="designate" *ngFor="let item of form.get('designate')['controls']; let i = index;">
-        <app-designate [formGroupName]="i" [formGroup]="item" [isDisabled]="isDisabled" [formType]="formType" [baseForm]="form.parent" [lookupData]="lookupData"></app-designate>
+    <!-- Victim Service Worker -->
+    <div class="victimServiceWorker" formArrayName="victimServiceWorker" *ngFor="let item of form.get('victimServiceWorker')['controls']; let i = index;">
+        <app-victim-service-worker [formGroupName]="i" [formGroup]="item" [isDisabled]="isDisabled" [formType]="formType" [isRequired]="true"></app-victim-service-worker>
     </div>
 
     <!-- Notification Details -->
