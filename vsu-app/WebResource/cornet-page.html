@@ -106,6 +106,12 @@
             border-radius: 5px;
         }
 
+        .btn-link-offender,
+        .btn-create-offender {
+            float: right;
+            ;
+        }
+
         .table td,
         .table th {
             padding: .75rem;
@@ -224,7 +230,7 @@
     <div class="container">
         <!-- search section -->
         <div class="search-container hidden" id="search-container">
-            <div class="row mt-5">
+            <div class="row mt-4">
                 <div class="col">
                     <h2 class="m-0">CORNET Search</h2>
                 </div>
@@ -357,7 +363,7 @@
 
             <!-- Subject Information section -->
             <div id="subject-information-container">
-                <div class="row mt-5">
+                <div class="row mt-4">
                     <div class="col">
                         <p><strong>Subject Information</strong></p>
                     </div>
@@ -399,7 +405,7 @@
                     </div>
                 </div>
 
-                <div class="row bc-corrections-info mt-5">
+                <div class="row bc-corrections-info mt-4">
                     <div class="col">
                         <p><strong>BC Corrections</strong></p>
                     </div>
@@ -444,7 +450,7 @@
                     </div>
                 </div>
 
-                <div class="row community-info offender-coast-info hidden mt-5">
+                <div class="row community-info offender-coast-info hidden mt-4">
                     <div class="col">
                         <p><strong>Community Information</strong></p>
                     </div>
@@ -485,7 +491,7 @@
             <!-- END of Subject Information section -->
 
             <div id="offences-container" class="hidden">
-                <div class="row mt-5">
+                <div class="row mt-4">
                     <div class="col">
                         <p><strong>Offences</strong></p>
                     </div>
@@ -513,7 +519,7 @@
             </div>
 
             <div id="movements-container" class="hidden">
-                <div class="row mt-5">
+                <div class="row mt-4">
                     <div class="col">
                         <p><strong>Movements</strong></p>
                     </div>
@@ -539,7 +545,7 @@
             </div>
 
             <div id="hearings-container" class="hidden">
-                <div class="row mt-5">
+                <div class="row mt-4">
                     <div class="col">
                         <p><strong>Parole Hearings</strong></p>
                     </div>
@@ -566,7 +572,7 @@
             </div>
 
             <div id="victim-information-container" class="hidden">
-                <div class="row mt-5">
+                <div class="row mt-4">
                     <div class="col">
                         <p><strong>Victim Information</strong></p>
                     </div>
@@ -652,7 +658,7 @@
             </div>
 
             <div id="state-transitions-container" class="hidden">
-                <div class="row mt-5">
+                <div class="row mt-4">
                     <div class="col">
                         <p><strong>State Transitions</strong></p>
                     </div>
@@ -690,6 +696,7 @@
     </div>
 
     <script>
+        //global constants
         const OffenderButtonStatus = {
             SHOW_LINK: 0,
             SHOW_CREATE: 1,
@@ -779,15 +786,15 @@
         let BUTTON_STATUS = OffenderButtonStatus.NONE;
         //CRM form the webresource is hosted in
         //if on the Offender form we need to either show search + Link ability, or we just show the already linked details
-        //TODO - other source form will be search + create ability
-        let FORM_TYPE = FormTypes.OTHER;
+        //TODO - some other source form will be search + create ability
+        let FORM_TYPE = FormTypes.NONE;
 
-        let OFFENDER_IS_LINKED = false;
+        let OFFENDER_EXISTS_IN_COAST = false;
 
         //search results from cornet
         let clients = [];
         let displayed_clients = [];
-        let current_name = false;
+        let filter_on_current_name = false;
 
         //variables to hold client details info and cornet event info
         let client_details = {};
@@ -803,11 +810,11 @@
         window.onload = function () {
             initPaginator();
             this.search_type = "exact";
-            $("#search-button").addClass("is-disabled");
+            disableSearchButton();
 
             let entity = parent.Xrm.Page.data.entity.getEntityName();
             if (entity == "vsd_offender") {
-                //if this offender has CS Number (that is: it is linked to a cornet client already):
+                //if this offender has CS Number (that is: it is linked to a cornet client already)
                 //-> then show the client details - no search ability
                 //if there is no CS Number (not already linked)
                 //-> then default to search and has link ability
@@ -815,14 +822,14 @@
                 let cs_number = parent.Xrm.Page.getAttribute("vsd_csnumber").getValue();
 
                 if (cs_number) {
-                    OFFENDER_IS_LINKED = true;
+                    OFFENDER_EXISTS_IN_COAST = true;
                     BUTTON_STATUS = OffenderButtonStatus.NONE;
                     showOffender(cs_number);
                 }
                 else {
                     BUTTON_STATUS = OffenderButtonStatus.SHOW_LINK;
-                    $("#link-offender").removeClass("hidden");
-                    $("#return-to-search").removeClass("hidden");
+                    showLinkOffenderButton();
+                    showReturnToSearchButton();
                     showSearch();
 
                     let surname = parent.Xrm.Page.getAttribute("vsd_lastname").getValue();
@@ -842,20 +849,20 @@
                     $('#birth_year').val(birth_year);
 
                     if (surname) {
-                        $("#search-button").removeClass("is-disabled");
+                        enableSearchButton();
                         search();
                     }
                 }
             }
             else {
-                $("#return-to-search").removeClass("hidden");
+                showReturnToSearchButton();
                 FORM_TYPE = FormTypes.OTHER;
                 showSearch();
             }
         };
 
         function search() {
-            $(".loading-indicator").removeClass("hidden");
+            showLoadingSpinner();
             let parameters = {
                 SearchType: this.search_type,
                 Surname: $('#surname').val(),
@@ -905,13 +912,13 @@
             fetch(endpoint, requestOptions)
                 .then(response => response.text())
                 .then(res => {
-                    $(".loading-indicator").addClass("hidden");
+                    hideLoadingSpinner();
                     let parsed = JSON.parse(res);
                     if (parsed && parsed.Result) {
-                        if (parsed.Result.includes("No Content")) {
+                        if ((!parsed.IsSuccess) || parsed.Result.includes("No Content")) {
                             console.log("no results from cornet");
                             //remove any old rows in the table and remove the paginator
-                            $("#client-table").find("tr:gt(0)").remove();
+                            emptySearchResultsTable();
                             let nav = $("#nav");
                             if (nav) nav.remove();
                             return;
@@ -919,13 +926,12 @@
                         let data = JSON.parse(parsed.Result);
                         addResultsToTable(data.clients);
                     }
-
                 })
                 .catch(error => console.log('error', error));
         }
 
         function addResultsToTable(clients) {
-            if (current_name) {
+            if (filter_on_current_name) {
                 displayed_clients = clients.filter(c => c.isCurrentName == 'Y');
             }
             else {
@@ -934,7 +940,7 @@
 
             //make sure table shows and any previously existing rows are removed
             $(".search-results-row").removeClass("hidden");
-            $("#client-table").find("tr:gt(0)").remove();
+            emptySearchResultsTable();
 
             displayed_clients.forEach((client, i) => {
                 let tr = `<tr>
@@ -945,7 +951,7 @@
                     <td>${client.personBirthDate || ''}</td>
                     <td>${client.clientNumber || ''}</td>
                     <td>${client.locationTypeCode.custody || ''}</td>
-                    <td>${client.clientNumber ? '<button onclick="showOffenderClick(' + i + ')" class="btn btn-secondary">View Offender</button>' : ''}</td>
+                    <td>${client.clientNumber ? '<button onclick="viewOffenderClick(' + i + ')" class="btn btn-secondary">View Offender</button>' : ''}</td>
                     
                     </tr>`;
                 $("#client-table").append(tr);
@@ -1011,12 +1017,12 @@
 
         function surnameChange(val) {
             if (val) {
-                $("#search-button").removeClass("is-disabled");
+                enableSearchButton();
                 $("#cs").val("");
                 $("#fps").val("");
             }
             else {
-                $("#search-button").addClass("is-disabled");
+                disableSearchButton();
             }
         }
 
@@ -1029,7 +1035,7 @@
 
         function csChange(val) {
             if (val) {
-                $("#search-button").removeClass("is-disabled");
+                enableSearchButton();
                 $("#surname").val("");
                 $("#given_name").val("");
                 $("#second_name").val("");
@@ -1039,13 +1045,13 @@
                 $("#fps").val("");
             }
             else {
-                $("#search-button").addClass("is-disabled");
+                disableSearchButton();
             }
         }
 
         function fpsChange(val) {
             if (val) {
-                $("#search-button").removeClass("is-disabled");
+                enableSearchButton();
                 $("#surname").val("");
                 $("#given_name").val("");
                 $("#second_name").val("");
@@ -1055,37 +1061,37 @@
                 $("#cs").val("");
             }
             else {
-                $("#search-button").addClass("is-disabled");
+                disableSearchButton();
             }
         }
 
         function currentNameChange(val) {
-            current_name = val;
+            filter_on_current_name = val;
             addResultsToTable(clients);
         }
 
-        function showOffenderClick(val) {
+        function viewOffenderClick(val) {
             let cs_number = displayed_clients[val].clientNumber;
             showOffender(cs_number);
         }
 
         function showOffender(cs_number) {
-            parent.document.querySelectorAll("#tablist")[0].scrollIntoView(true)
-            $("#search-container").addClass("hidden");
-            $("#client-details-container").removeClass("hidden");
+            scrollPageToTop();
+            hideSearchSection();
+            showClientDetailsSection();
 
             loadOffender(cs_number, OffenderIdType.CS_NUMBER);
         }
 
         function showSearch() {
-            parent.document.querySelectorAll("#tablist")[0].scrollIntoView(true)
-            $("#search-container").removeClass("hidden");
-            $("#client-details-container").addClass("hidden");
+            scrollPageToTop();
+            showSearchSection();
+            hideClientDetailsSection();
         }
 
         //get and combine info from cornet and crm
         function loadOffender(id, id_type) {
-            $(".loading-indicator").removeClass("hidden");
+            showLoadingSpinner();
 
             client_details = {};
             coastInfo = {};
@@ -1107,12 +1113,10 @@
                 if (!$.isEmptyObject(offender)) {
                     coastInfo = offender;
                     cs_number = offender.vsd_csnumber;
-                    if (!OFFENDER_IS_LINKED) {
-                        $(".btn-link-offender").addClass("is-disabled");
+                    if (!OFFENDER_EXISTS_IN_COAST) {
+                        disableLinkOffenderButton();
+                        disableCreateOffenderButton();
                     }
-                }
-                else if (FORM_TYPE === FormTypes.OTHER) {
-                    $("#create-offender").removeClass("hidden");
                 }
 
                 if (cs_number) {
@@ -1143,11 +1147,11 @@
                     }));
                 }
                 else {
-                    $(".loading-indicator").addClass("hidden");
+                    hideLoadingSpinner();
                 }
 
                 Promise.all(promise_array).then((res) => {
-                    $(".loading-indicator").addClass("hidden");
+                    hideLoadingSpinner();
                 });
             });
         }
@@ -1188,7 +1192,6 @@
                         else {
                             resolve([]);
                         }
-
                     })
                     .catch(error => console.log('error', error));
             }).catch(err => {
@@ -1383,7 +1386,6 @@
                     }
                 }
 
-
                 Promise.all(promise_array).then(() => {
                     if (key_dates.length > 0) {
                         key_dates.sort((a, b) => {
@@ -1519,8 +1521,8 @@
             $("#tab-subject-info").addClass("active-page");
 
             //enable link/create buttons
-            $(".btn-link-offender").removeClass("is-disabled");
-            $(".btn-create-offender").removeClass("is-disabled");
+            enableLinkOffenderButton();
+            enableCreateOffenderButton();
         }
 
         //functions to populate the various sections of the client details page
@@ -1671,9 +1673,9 @@
         }
 
         function linkOffender() {
-            $("#link-offender").addClass("hidden");
-            $("#return-to-search").addClass("hidden");
-            $(".loading-indicator").removeClass("hidden");
+            hideLinkOffenderButton();
+            hideReturnToSearchButton();
+            showLoadingSpinner();
 
             let birthdate = new Date(client_details.personBirthDate + "T00:00:00");
             let gender = getOptionsSetFromName(GenderOptionSet, client_details.personGenderIdentityCodeType);
@@ -1689,13 +1691,13 @@
 
             //small delay to let the crm page save so that when we reload we get accurate info
             setTimeout(() => {
-                OFFENDER_IS_LINKED = true;
+                OFFENDER_EXISTS_IN_COAST = true;
                 loadOffender(client_details.clientNumber, OffenderIdType.CS_NUMBER);
             }, 2000);
         }
 
         function createOffender() {
-            $("#create-offender").addClass("hidden");
+            hideCreateOffenderButton();
             console.log("TODO - create offender in coast");
         }
 
@@ -1709,6 +1711,87 @@
 
             $(".nav-link").removeClass("active-page");
             event.currentTarget.className += " active-page";
+        }
+
+        //helpers to show/hide sections/buttons
+        function showLoadingSpinner() {
+            $(".loading-indicator").removeClass("hidden");
+        }
+
+        function hideLoadingSpinner() {
+            $(".loading-indicator").addClass("hidden");
+        }
+
+        function showSearchSection() {
+            $("#search-container").removeClass("hidden");
+        }
+
+        function hideSearchSection() {
+            $("#search-container").addClass("hidden");
+        }
+
+        function showClientDetailsSection() {
+            $("#client-details-container").removeClass("hidden");
+        }
+
+        function hideClientDetailsSection() {
+            $("#client-details-container").addClass("hidden");
+        }
+
+        function showLinkOffenderButton() {
+            $("#link-offender").removeClass("hidden");
+        }
+
+        function hideLinkOffenderButton() {
+            $("#link-offender").addClass("hidden");
+        }
+
+        function disableLinkOffenderButton() {
+            $(".btn-link-offender").addClass("is-disabled");
+        }
+
+        function enableLinkOffenderButton() {
+            $(".btn-link-offender").removeClass("is-disabled");
+        }
+
+        function showCreateOffenderButton() {
+            $("#create-offender").removeClass("hidden");
+        }
+
+        function hideCreateOffenderButton() {
+            $("#create-offender").addClass("hidden");
+        }
+
+        function disableCreateOffenderButton() {
+            $(".btn-create-offender").addClass("is-disabled");
+        }
+
+        function enableCreateOffenderButton() {
+            $(".btn-create-offender").removeClass("is-disabled");
+        }
+
+        function showReturnToSearchButton() {
+            $("#return-to-search").removeClass("hidden");
+        }
+
+        function hideReturnToSearchButton() {
+            $("#return-to-search").addClass("hidden");
+        }
+
+        function disableSearchButton() {
+            $("#search-button").addClass("is-disabled");
+        }
+
+        function enableSearchButton() {
+            $("#search-button").removeClass("is-disabled");
+        }
+
+        function emptySearchResultsTable() {
+            $("#client-table").find("tr:gt(0)").remove();
+        }
+
+        function scrollPageToTop() {
+            parent.document.querySelectorAll("#tablist")[0].scrollIntoView(true);
         }
 
         function getOptionsSetVal(optionSet, val) {
