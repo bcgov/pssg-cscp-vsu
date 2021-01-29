@@ -27,17 +27,6 @@ function getCRMApplication(application: iTravelFundApplication) {
 
     let temp: any = null;
 
-    //TODO - need fields in dynamics to capture these
-    temp = application.OverviewInformation.offencesComment;
-    temp = application.OverviewInformation.proceedingsImpactOutcome;
-    temp = application.OverviewInformation.proceedingsImpactOutcomeComment;
-    temp = application.OverviewInformation.travelMoreThan100KM;
-    temp = application.OverviewInformation.travelMoreThan100KMComment;
-    temp = application.OverviewInformation.notCoveredByOtherSources;
-    temp = application.OverviewInformation.notCoveredByOtherSourcesComment;
-    temp = application.OverviewInformation.additionalComments;
-
-
     let relationship_to_victim = "";
     if (application.ApplicantInformation.applicantType === enums.ApplicantType.Support_Person.val) {
         relationship_to_victim = application.ApplicantInformation.supportPersonRelationship;
@@ -60,6 +49,16 @@ function getCRMApplication(application: iTravelFundApplication) {
 
     let crm_application: iCRMApplication = {
         vsd_vsu_applicationtype: ApplicationType.TRAVEL_FUNDS,
+
+        vsd_vsu_offencescomments: application.OverviewInformation.offencesComment,
+        vsd_vsu_decision1impacttooutcome: application.OverviewInformation.proceedingsImpactOutcome,
+        vsd_vsu_decision1comments: application.OverviewInformation.proceedingsImpactOutcomeComment,
+        vsd_vsu_decision2travelover100km: application.OverviewInformation.travelMoreThan100KM,
+        vsd_vsu_decision2comments: application.OverviewInformation.travelMoreThan100KMComment,
+        vsd_vsu_decision3nootherfundingsource: application.OverviewInformation.notCoveredByOtherSources,
+        vsd_vsu_decision3comments: application.OverviewInformation.notCoveredByOtherSourcesComment,
+        vsd_vsu_additionalcomments: application.OverviewInformation.additionalComments,
+
         vsd_vsu_applicanttype: application.ApplicantInformation.applicantType,
         vsd_cvap_relationshiptovictim: relationship_to_victim,
 
