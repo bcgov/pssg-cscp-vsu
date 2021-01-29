@@ -16,6 +16,7 @@ export class VSWComponent extends FormBase implements OnInit {
     public form: FormGroup;
     @Input() isDisabled: boolean;
     @Input() isRequired: boolean = false;
+    @Input() orgAndTelRequired: boolean = true;
     @Input() lookupData: iLookupData;
     @Input() formType: ApplicationType;
 

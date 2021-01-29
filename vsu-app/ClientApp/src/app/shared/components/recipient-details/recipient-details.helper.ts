@@ -11,8 +11,10 @@ export class RecipientDetailsHelper {
         let group = {
             notificationRecipient: ['', Validators.required],
 
-            victimServiceWorker: fb.array([]),
             designate: fb.array([]),
+            addOptionalVSW: [false],
+            vswIsOptionalPreviousSelection: [false],
+            victimServiceWorker: fb.array([]),
 
             courtUpdates: [''],
             courtResults: [''],
@@ -62,12 +64,13 @@ export class RecipientDetailsHelper {
     //     });
     // }
 
-    public createVictimServiceWorker(fb: FormBuilder) {
+    public createVictimServiceWorker(fb: FormBuilder, org_and_tel_required: boolean = true) {
+        let org_and_tel_validators = org_and_tel_required ? [Validators.required] : [];
         return fb.group({
             firstName: ['', [Validators.required]],
             lastName: [''],
-            organization: ['', [Validators.required]],
-            telephone: ['', [Validators.required]],
+            organization: ['', org_and_tel_validators],
+            telephone: ['', org_and_tel_validators],
             extension: [''],
             email: [''],
             city: [''],
