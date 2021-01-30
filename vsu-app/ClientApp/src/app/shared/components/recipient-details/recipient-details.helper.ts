@@ -28,42 +28,6 @@ export class RecipientDetailsHelper {
         return fb.group(group);
     }
 
-    // public createContactMethod(fb: FormBuilder, typeString: string = '') {
-    //     let current_validators = [];
-    //     let label = '';
-    //     let type: number;
-    //     switch (typeString) {
-    //         case 'telephone': {
-    //             type = this.enum.ContactType.Telephone.val;
-    //             current_validators = current_validators.concat([Validators.minLength(10), Validators.maxLength(15)]);
-    //             label = 'Telephone Number';
-    //             break;
-    //         }
-    //         case 'mobile': {
-    //             type = this.enum.ContactType.Cellular.val;
-    //             current_validators = current_validators.concat([Validators.minLength(10), Validators.maxLength(15)]);
-    //             label = 'Cellular Number';
-    //             break;
-    //         }
-    //         case 'email': {
-    //             type = this.enum.ContactType.Email.val;
-    //             current_validators = current_validators.concat([Validators.email]);
-    //             label = 'Email Address';
-    //             break;
-    //         }
-    //         default: {
-    //             break;
-    //         }
-    //     }
-    //     return fb.group({
-    //         type: [type],
-    //         previousType: [type],
-    //         val: ['', current_validators],
-    //         label: [label],
-    //         leaveMessage: [''],
-    //     });
-    // }
-
     public createVictimServiceWorker(fb: FormBuilder, org_and_tel_required: boolean = true) {
         let org_and_tel_validators = org_and_tel_required ? [Validators.required] : [];
         return fb.group({

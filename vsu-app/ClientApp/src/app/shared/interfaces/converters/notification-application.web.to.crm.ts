@@ -133,9 +133,8 @@ function getCRMProviderCollection(application: iNotificationApplication) {
                 vsd_postalcode: designate.address.postalCode,
                 vsd_relationship1: PARTICIPANT_TYPES.DESIGNATE,
                 vsd_relationship1other: "",
-
-                vsd_relationship2: designate.relationship ? "Other" : "",
-                vsd_relationship2other: designate.relationship,
+                vsd_relationship2: designate.relationship,
+                vsd_relationship2other: "",
 
                 vsd_vsu_oktosendmail: designate.mayWeSendCorrespondence,
 
