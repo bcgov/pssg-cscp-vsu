@@ -22,6 +22,15 @@ export const FORM_TYPES = {
     TRAVEL_FUNDS_REIMBURSEMENT: <IOptionSetVal> { val: 100000002, name: "Victim Travel Fund Reimbursement",  },
 };
 
+export const PARTICIPANT_TYPES = {
+    ACCUSED:                                        "Subject",
+    CROWN_COUNSEL:                                  "Crown Counsel",
+    DESIGNATE:                                      "Designate",
+    COURT_SUPPORT_CASE_WORKER:                      "Court Support Caseworker",
+    MINISTRY_OF_CHILDREN_AND_FAMILY_DEVELOPMENT:    "MCFD",
+    VICTIM_SERVICE_WORKER:                          "Victim Service Worker",
+};
+
 export enum ApplicationType {
     NOTIFICATION =          100000000,
     TRAVEL_FUNDS =          100000001,

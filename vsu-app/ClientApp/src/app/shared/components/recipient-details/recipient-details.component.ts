@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Component, Input, OnInit } from "@angular/core";
-import { AbstractControl, ControlContainer, FormArray, FormBuilder, FormControl, FormGroup } from "@angular/forms";
+import { AbstractControl, ControlContainer, FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/material";
 import { MomentDateAdapter } from "@angular/material-moment-adapter";
 import { noop, Observable, Observer, of, throwError } from 'rxjs';
@@ -36,6 +36,9 @@ export class RecipientDetailsComponent extends FormBase implements OnInit {
     suggestions$: Observable<iCity[]>;
     errorMessage: string;
 
+    vswIsOptional: boolean = false;
+    vswIsOptionalPreviousSelection: boolean = false;
+
     recipientDetailsHelper = new RecipientDetailsHelper();
 
     apiUrl = 'api/Lookup';
@@ -64,6 +67,10 @@ export class RecipientDetailsComponent extends FormBase implements OnInit {
         setTimeout(() => { this.form.markAsTouched(); }, 0);
         console.log("recipient details component");
         console.log(this.form);
+
+
+        this.vswIsOptional = this.form.get('addOptionalVSW').value;
+        this.vswIsOptionalPreviousSelection = this.form.get('vswIsOptionalPreviousSelection').value;
 
         this.NOTIFICATION_METHODS = [
             'courtUpdates',
@@ -105,11 +112,37 @@ export class RecipientDetailsComponent extends FormBase implements OnInit {
 
     setupVictimAndDesignate(addVictim: boolean, addDesignate: boolean) {
         let vsw = this.form.get('victimServiceWorker') as FormArray;
+        if (addVictim) {
+            this.vswIsOptional = false;
+        }
+
         if (addVictim && vsw.length == 0) {
             vsw.push(this.recipientDetailsHelper.createVictimServiceWorker(this.fb));
         }
+        else if (addVictim && vsw.length > 0) {
+            //an optional VSW exists - update validators
+            this.setControlValidators(vsw.controls[0].get('organization'), [Validators.required]);
+            this.setControlValidators(vsw.controls[0].get('telephone'), [Validators.required]);
+        }
         else if (!addVictim && vsw.length > 0) {
-            vsw.removeAt(0);
+            if (this.vswIsOptionalPreviousSelection) {
+                let options = { onlySelf: true, emitEvent: false };
+                this.form.get('addOptionalVSW').patchValue(true, options);
+                this.form.get('addOptionalVSW').updateValueAndValidity(options);
+                this.vswIsOptional = true;
+                //update validators
+                this.clearControlValidators(vsw.controls[0].get('organization'));
+                this.clearControlValidators(vsw.controls[0].get('telephone'));
+            }
+            else {
+                vsw.removeAt(0);
+            }
+        }
+
+        if (addVictim && this.form.get('addOptionalVSW').value) {
+            let options = { onlySelf: true, emitEvent: false };
+            this.form.get('addOptionalVSW').patchValue(false, options);
+            this.form.get('addOptionalVSW').updateValueAndValidity(options);
         }
 
         let designate = this.form.get('designate') as FormArray;
@@ -121,6 +154,20 @@ export class RecipientDetailsComponent extends FormBase implements OnInit {
         }
 
         console.log(this.form);
+    }
+
+    addOptionalVSWChange(addOptionalVSW: boolean) {
+        let vsw = this.form.get('victimServiceWorker') as FormArray;
+        this.form.get('vswIsOptionalPreviousSelection').patchValue(addOptionalVSW);
+        this.vswIsOptionalPreviousSelection = addOptionalVSW;
+
+        if (addOptionalVSW && vsw.length == 0) {
+            this.vswIsOptional = true;
+            vsw.push(this.recipientDetailsHelper.createVictimServiceWorker(this.fb, false));
+        }
+        else if (!addOptionalVSW && vsw.length > 0) {
+            vsw.removeAt(0);
+        }
     }
 
     checkAtLeastOneNotification() {

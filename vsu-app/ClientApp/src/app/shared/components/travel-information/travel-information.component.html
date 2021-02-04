@@ -107,7 +107,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <app-field label="Court Date" [required]="true" [valid]="isMyControlValid(item.get('courtDate'))" errorMessage="Please enter the date" [disabled]="isDisabled">
-                        <input type="text" [max]="today" class="form-control date-picker" formControlName="courtDate" placeholder="yyyy/mm/dd" [matDatepicker]="courtDatePicker_i" (focus)="courtDatePicker_i.open()" (click)="courtDatePicker_i.open()" readonly>
+                        <input type="text" class="form-control date-picker" formControlName="courtDate" placeholder="yyyy/mm/dd" [matDatepicker]="courtDatePicker_i" (focus)="courtDatePicker_i.open()" (click)="courtDatePicker_i.open()" readonly>
                         <mat-datepicker #courtDatePicker_i></mat-datepicker>
                     </app-field>
                 </div>
@@ -130,13 +130,13 @@
             <div class="row">
                 <div class="col-md-6">
                     <app-field label="Travel Period (from):" [required]="true" [valid]="isMyControlValid(item.get('travelPeriodStart'))" errorMessage="Please select a travel start date" [disabled]="isDisabled">
-                        <input type="text" [max]="today" class="form-control date-picker" formControlName="travelPeriodStart" placeholder="yyyy/mm/dd" [matDatepicker]="travelPeriodStartPicker_i" (focus)="travelPeriodStartPicker_i.open()" (click)="travelPeriodStartPicker_i.open()" readonly (dateChange)="travelPeriodStartChange(i)">
+                        <input type="text" class="form-control date-picker" formControlName="travelPeriodStart" placeholder="yyyy/mm/dd" [matDatepicker]="travelPeriodStartPicker_i" (focus)="travelPeriodStartPicker_i.open()" (click)="travelPeriodStartPicker_i.open()" readonly (dateChange)="travelPeriodStartChange(i)">
                         <mat-datepicker #travelPeriodStartPicker_i></mat-datepicker>
                     </app-field>
                 </div>
                 <div class="col-md-6">
                     <app-field label="Travel Period (to):" [required]="true" [valid]="isMyControlValid(item.get('travelPeriodEnd'))" errorMessage="Please select a valid travel end date" [disabled]="isDisabled">
-                        <input type="text" [max]="today" [min]="travelPeriodStartDates[i]" class="form-control date-picker" formControlName="travelPeriodEnd" placeholder="yyyy/mm/dd" [matDatepicker]="travelPeriodEndPicker_i" (focus)="travelPeriodEndPicker_i.open()" (click)="travelPeriodEndPicker_i.open()" readonly>
+                        <input type="text" [min]="travelPeriodStartDates[i]" class="form-control date-picker" formControlName="travelPeriodEnd" placeholder="yyyy/mm/dd" [matDatepicker]="travelPeriodEndPicker_i" (focus)="travelPeriodEndPicker_i.open()" (click)="travelPeriodEndPicker_i.open()" readonly>
                         <mat-datepicker #travelPeriodEndPicker_i></mat-datepicker>
                     </app-field>
                 </div>

@@ -1,4 +1,4 @@
-import { ApplicationType, EnumHelper } from "../../enums-list";
+import { ApplicationType, EnumHelper, PARTICIPANT_TYPES } from "../../enums-list";
 import { iCRMApplication, iCRMCourtInfo, iCRMParticipant, iApplicationFormCRM } from "../dynamics/crm-application";
 import { iNotificationApplication } from "../application.interface";
 
@@ -104,7 +104,7 @@ function getCRMProviderCollection(application: iNotificationApplication) {
         vsd_lastname: application.CaseInformation.accusedLastName,
         vsd_birthdate: application.CaseInformation.accusedBirthDate,
         vsd_gender: application.CaseInformation.accusedGender,
-        vsd_relationship1: "Subject",
+        vsd_relationship1: PARTICIPANT_TYPES.ACCUSED,
     });
 
     //CaseInformation Additional Accused
@@ -115,7 +115,7 @@ function getCRMProviderCollection(application: iNotificationApplication) {
             vsd_lastname: accused.lastName,
             vsd_birthdate: accused.birthDate,
             vsd_gender: accused.gender,
-            vsd_relationship1: "Subject",
+            vsd_relationship1: PARTICIPANT_TYPES.ACCUSED,
         });
     });
 
@@ -131,11 +131,10 @@ function getCRMProviderCollection(application: iNotificationApplication) {
                 vsd_city: designate.address.city,
                 vsd_province: designate.address.province,
                 vsd_postalcode: designate.address.postalCode,
-                vsd_relationship1: "Designate",
+                vsd_relationship1: PARTICIPANT_TYPES.DESIGNATE,
                 vsd_relationship1other: "",
-
-                vsd_relationship2: designate.relationship ? "Other" : "",
-                vsd_relationship2other: designate.relationship,
+                vsd_relationship2: designate.relationship,
+                vsd_relationship2other: "",
 
                 vsd_vsu_oktosendmail: designate.mayWeSendCorrespondence,
 
@@ -163,7 +162,7 @@ function getCRMProviderCollection(application: iNotificationApplication) {
                 vsd_mainphoneextension: vsw.extension,
                 vsd_city: vsw.city,
                 vsd_email: vsw.email,
-                vsd_relationship1: "Victim Services Worker",
+                vsd_relationship1: PARTICIPANT_TYPES.VICTIM_SERVICE_WORKER,
                 vsd_relationship1other: "",
             });
         });

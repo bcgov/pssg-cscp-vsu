@@ -5,7 +5,7 @@ export class AuthInfoHelper {
     public setupFormGroup(fb: FormBuilder, form_type: ApplicationType): FormGroup {
         let today = new Date();
         let group = {
-            declaration: ['', Validators.required],
+            declaration: ['', Validators.requiredTrue],
             fullName: ['', Validators.required],
             date: [today, Validators.required],
             signature: ['', Validators.required],

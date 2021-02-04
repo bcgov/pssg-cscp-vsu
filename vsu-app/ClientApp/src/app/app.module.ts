@@ -36,7 +36,6 @@ import { TravelOverviewComponent } from './shared/components/travel-overview/tra
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { VSWComponent } from './shared/components/victim-service-worker/victim-service-worker.component';
 import { VTFCaseInformationComponent } from './shared/components/vtf-case-information/vtf-case-information.component';
-import { VTFReimbursementApplicantInformationComponent } from './shared/components/vtf-reimbursement-applicant-information/vtf-reimbursement-applicant-information.component';
 import { VictimTravelFundApplicationComponent } from './victim-travel-fund-application/vtf-application.component';
 import { VictimTravelFundReimbursementComponent } from './victim-travel-fund-reimbursement/vtf-reimbursement.component';
 
@@ -66,7 +65,6 @@ import { VictimTravelFundReimbursementComponent } from './victim-travel-fund-rei
     TravelOverviewComponent,
     VSWComponent,
     VTFCaseInformationComponent,
-    VTFReimbursementApplicantInformationComponent,
     VictimTravelFundApplicationComponent,
     VictimTravelFundReimbursementComponent,
   ],

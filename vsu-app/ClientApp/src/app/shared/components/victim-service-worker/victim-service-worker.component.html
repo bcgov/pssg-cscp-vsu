@@ -14,7 +14,7 @@
             </app-field>
         </div>
         <div class="col-md-4">
-            <app-field label="Organization / Agency" [disabled]="isDisabled" [required]="isRequired" [valid]="isMyControlValid(form.get('organization'))" errorMessage="Please enter an organization">
+            <app-field label="Organization / Agency" [disabled]="isDisabled" [required]="isRequired  && orgAndTelRequired" [valid]="isMyControlValid(form.get('organization'))" errorMessage="Please enter an organization">
                 <input class="form-control" type="text" formControlName="organization" maxlength="100">
             </app-field>
         </div>
@@ -27,7 +27,7 @@
             </app-field>
         </div>
         <div class="col-md-4">
-            <app-field label="Telephone" [required]="isRequired" [valid]="isMyControlValid(form.get('telephone'))" errorMessage="Please enter a phone number" [disabled]="isDisabled">
+            <app-field label="Telephone" [required]="isRequired && orgAndTelRequired" [valid]="isMyControlValid(form.get('telephone'))" errorMessage="Please enter a phone number" [disabled]="isDisabled">
                 <input class="form-control" mask='000-000-0000' type="text" formControlName="telephone">
             </app-field>
         </div>

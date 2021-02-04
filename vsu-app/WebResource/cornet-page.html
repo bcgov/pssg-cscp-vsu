@@ -16,6 +16,11 @@
             font-size: 17px;
         }
 
+        .flex-container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
         .nav-link {
             cursor: pointer;
         }
@@ -101,6 +106,12 @@
             border-radius: 5px;
         }
 
+        .btn-link-offender,
+        .btn-create-offender {
+            float: right;
+            ;
+        }
+
         .table td,
         .table th {
             padding: .75rem;
@@ -145,15 +156,81 @@
             pointer-events: none;
         }
 
+        .read-only {
+            background-color: #eee;
+            opacity: 1;
+            text-decoration: none;
+            pointer-events: none;
+        }
+
+        .read-only-checkbox {
+            opacity: 1;
+            text-decoration: none;
+            pointer-events: none;
+        }
+
         .hidden {
             display: none;
         }
+
+        .bc-corrections-info {
+            padding-top: 1.8rem;
+            padding-bottom: 1rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.3);
+        }
+
+        .community-info {
+            padding-top: 1.8rem;
+            padding-bottom: 1rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.3);
+        }
+
+        .loading-indicator {
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #3498db;
+            -webkit-animation: spin 2s linear infinite;
+            /* Safari */
+            animation: spin 2s linear infinite;
+
+            position: fixed;
+            z-index: 999;
+            height: 6em;
+            width: 6em;
+            margin: auto;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+        }
+
+        @-webkit-keyframes spin {
+            0% {
+                -webkit-transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style>
+
+    <div class="loading-indicator hidden"></div>
 
     <div class="container">
         <!-- search section -->
         <div class="search-container hidden" id="search-container">
-            <div class="row mt-5">
+            <div class="row mt-4">
                 <div class="col">
                     <h2 class="m-0">CORNET Search</h2>
                 </div>
@@ -165,25 +242,25 @@
             </div>
 
             <div class="row mt-3">
-                <div class="col-md-3">
+                <div class="col-3">
                     <label for="surname" class="surname required">Surname</label>
                     <br>
                     <input class="form-control surname" type="text" id="surname" name="surname" oninput="surnameChange(this.value)">
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-3">
                     <label for="given_name" class="given_name">Given name</label>
                     <br>
                     <input class="form-control given_name" type="text" id="given_name" name="given_name" oninput="fieldChange(this.value)">
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-3">
                     <label for="second_name" class="second_name">Second name</label>
                     <br>
                     <input class="form-control second_name" type="text" id="second_name" name="second_name" oninput="fieldChange(this.value)">
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-3">
                     <br>
                     <input type="checkbox" class="current_name" id="current_name" name="current_name" onchange="currentNameChange(this.checked)">
                     <label for="current_name" class="current_name">Current Name</label>
@@ -191,7 +268,7 @@
             </div>
 
             <div class="row mt-3">
-                <div class="col-md-3">
+                <div class="col-3">
                     <label for="gender" class="gender">Gender</label>
                     <br>
                     <select class="form-control gender" id="gender" name="gender" oninput="fieldChange(this.value)">
@@ -201,7 +278,7 @@
                     </select>
                 </div>
 
-                <div class="col-md-3 d-flex">
+                <div class="col-3 d-flex">
                     <div class="col-6 pl-0">
                         <label for="birth_year" class="birth_year">Birth year</label>
                         <br>
@@ -215,7 +292,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-3 d-flex">
+                <div class="col-3 d-flex">
                     <div class="col-6 pl-0">
                         <label for="cs" class="cs">CS#</label>
                         <br>
@@ -229,7 +306,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-3 search-button-container">
+                <div class="col-3 search-button-container">
                     <button onclick="search()" class="btn btn-primary search-button" id="search-button">SEARCH CORNET</button>
                 </div>
             </div>
@@ -284,57 +361,334 @@
                 </div>
             </div>
 
+            <!-- Subject Information section -->
             <div id="subject-information-container">
-                <div class="row mt-5">
+                <div class="row mt-4">
                     <div class="col">
                         <p><strong>Subject Information</strong></p>
                     </div>
                 </div>
+
+                <div class="row">
+                    <div class="col-4">
+                        <label for="offenderLastName" class="offenderLastName">Last Name</label>
+                        <br>
+                        <input class="form-control offenderLastName read-only" type="text" id="offenderLastName" name="offenderLastName">
+                    </div>
+                    <div class="col-4">
+                        <label for="offenderGivenNames" class="offenderGivenNames">Given Names</label>
+                        <br>
+                        <input class="form-control offenderGivenNames read-only" type="text" id="offenderGivenNames" name="offenderGivenNames">
+                    </div>
+                    <div class="col-4">
+                        <br>
+                        <input type="checkbox" class="current_name read-only" id="offenderCurrentName" name="offenderCurrentName">
+                        <label for="offenderCurrentName" class="offenderCurrentName read-only-checkbox">Current Name</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-4">
+                        <label for="offenderGender" class="offenderGender">Gender</label>
+                        <br>
+                        <input class="form-control offenderGender read-only" type="text" id="offenderGender" name="offenderGender">
+                    </div>
+                    <div class="col-4">
+                        <label for="offenderBirthdate" class="offenderBirthdate">Birthdate</label>
+                        <br>
+                        <input class="form-control offenderBirthdate read-only" type="text" id="offenderBirthdate" name="offenderBirthdate">
+                    </div>
+                    <div class="col-4">
+                        <label for="offenderAliases" class="offenderAliases">Alias(es)</label>
+                        <br>
+                        <input class="form-control offenderAliases read-only" type="text" id="offenderAliases" name="offenderAliases">
+                    </div>
+                </div>
+
+                <div class="row bc-corrections-info mt-4">
+                    <div class="col">
+                        <p><strong>BC Corrections</strong></p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-4">
+                        <label for="offenderCS" class="offenderCS">CS#</label>
+                        <br>
+                        <input class="form-control offenderCS read-only" type="text" id="offenderCS" name="offenderCS">
+                    </div>
+                </div>
+
+                <div class="row mt-4 mb-4">
+                    <div class="col">
+                        <p>Institutional Information</p>
+                    </div>
+                </div>
+
+                <div class="row offender-coast-info hidden">
+                    <div class="col-4">
+                        <label for="offenderInCustody" class="offenderInCustody read-only-checkbox">In custody?</label>
+                        <input type="checkbox" class="offenderInCustody read-only" id="offenderInCustody" name="offenderInCustody">
+                    </div>
+
+                    <div class="col-4">
+                        <label for="offenderInOut" class="offenderInOut read-only-checkbox">In/Out?</label>
+                        <input type="checkbox" class="offenderInOut read-only" id="offenderInOut" name="offenderInOut">
+                    </div>
+
+                    <div class="col-4">
+                        <label for="offenderIntermittentSentence" class="offenderIntermittentSentence read-only-checkbox">Intermittent sentence?</label>
+                        <input type="checkbox" class="offenderIntermittentSentence read-only" id="offenderIntermittentSentence" name="offenderIntermittentSentence">
+                    </div>
+                </div>
+
+                <div class="row key-date-container flex-container" id="key-dates">
+                    <div class="col-4 custody-location hidden">
+                        <label for="offenderCustodyLocation" class="offenderCustodyLocation">Custody location</label>
+                        <br>
+                        <input class="form-control offenderCustodyLocation read-only" type="text" id="offenderCustodyLocation" name="offenderCustodyLocation">
+                    </div>
+                </div>
+
+                <div class="row community-info offender-coast-info hidden mt-4">
+                    <div class="col">
+                        <p><strong>Community Information</strong></p>
+                    </div>
+                </div>
+
+                <div class="row offender-coast-info hidden">
+                    <div class="col-4">
+                        <label for="offenderCommunityStatus" class="offenderCommunityStatus read-only-checkbox">Community Status</label>
+                        <input type="checkbox" class="offenderCommunityStatus read-only" id="offenderCommunityStatus" name="offenderCommunityStatus">
+                    </div>
+
+                    <div class="col-4">
+                        <label for="offenderAWOL" class="offenderAWOL read-only-checkbox">AWOL?</label>
+                        <input type="checkbox" class="offenderAWOL read-only" id="offenderAWOL" name="offenderAWOL">
+                    </div>
+                </div>
+
+                <div class="row offender-coast-info hidden mt-4">
+                    <div class="col-4">
+                        <label for="offenderProbationOfficer" class="offenderProbationOfficer">Probation officer / bail supervisor</label>
+                        <br>
+                        <input class="form-control offenderProbationOfficer read-only" type="text" id="offenderProbationOfficer" name="offenderProbationOfficer">
+                    </div>
+
+                    <div class="col-4">
+                        <br>
+                        <label for="offenderReportingOrder" class="offenderReportingOrder read-only-checkbox">Reporting Order?</label>
+                        <input type="checkbox" class="offenderReportingOrder read-only" id="offenderReportingOrder" name="offenderReportingOrder">
+                    </div>
+
+                    <div class="col-4">
+                        <label for="offenderPoliceFileNumber" class="offenderPoliceFileNumber">Police File Number</label>
+                        <br>
+                        <input class="form-control offenderPoliceFileNumber read-only" type="text" id="offenderPoliceFileNumber" name="offenderPoliceFileNumber">
+                    </div>
+                </div>
             </div>
+            <!-- END of Subject Information section -->
 
             <div id="offences-container" class="hidden">
-                <div class="row mt-5">
+                <div class="row mt-4">
                     <div class="col">
                         <p><strong>Offences</strong></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <table class="table table-striped" id="offences-table">
+                            <thead class="thead">
+                                <th>File #</th>
+                                <th>Seq #</th>
+                                <th>Court</th>
+                                <th>Act</th>
+                                <th>Section</th>
+                                <th>Sub.</th>
+                                <th>Description</th>
+                                <th>Doc Type</th>
+                                <th>Expiry</th>
+                            </thead>
+
+                            <tbody>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
 
             <div id="movements-container" class="hidden">
-                <div class="row mt-5">
+                <div class="row mt-4">
                     <div class="col">
                         <p><strong>Movements</strong></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <table class="table table-striped" id="movements-table">
+                            <thead class="thead">
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Type</th>
+                                <th>In/Out</th>
+                                <th>Movement Reason</th>
+                                <th>To</th>
+                                <th>Comment</th>
+                            </thead>
+
+                            <tbody>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
 
             <div id="hearings-container" class="hidden">
-                <div class="row mt-5">
+                <div class="row mt-4">
                     <div class="col">
                         <p><strong>Parole Hearings</strong></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <table class="table table-striped" id="hearings-table">
+                            <thead class="thead">
+                                <th>Possible Parole Date (Day)</th>
+                                <th>Possible Parole Date (Full)</th>
+                                <th>Hearing Purpose</th>
+                                <th>Hearing Scheduled Date</th>
+                                <th>Hearing Actual Date</th>
+                                <th>Hearing Type Description</th>
+                                <th>Hearing Purpose Type Description</th>
+                                <th>Hearing Outcome Type Description</th>
+                            </thead>
+
+                            <tbody>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
 
             <div id="victim-information-container" class="hidden">
-                <div class="row mt-5">
+                <div class="row mt-4">
                     <div class="col">
                         <p><strong>Victim Information</strong></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <table class="table table-striped" id="victim-information-table">
+                            <thead class="thead">
+                                <th>Name</th>
+                                <th>Relationship</th>
+                                <th>View Victim Details</th>
+                            </thead>
+
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="victim-details-container hidden">
+                    <div class="row">
+                        <div class="col">
+                            <label>Victim Details</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="victimName" class="victimName">Name</label>
+                            <br>
+                            <input class="form-control victimName read-only" type="text" id="victimName" name="victimName">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-2">
+                            <label for="victimEffectiveDate" class="victimEffectiveDate">Effective Date</label>
+                            <br>
+                            <input class="form-control victimEffectiveDate read-only" type="text" id="victimEffectiveDate" name="victimEffectiveDate">
+                        </div>
+
+                        <div class="col-2">
+                            <label for="victimExpiryDate" class="victimExpiryDate">Expiry Date</label>
+                            <br>
+                            <input class="form-control victimExpiryDate read-only" type="text" id="victimExpiryDate" name="victimExpiryDate">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="victimPrimaryAddress" class="victimPrimaryAddress">Primary Address</label>
+                            <br>
+                            <input class="form-control victimPrimaryAddress read-only" type="text" id="victimPrimaryAddress" name="victimPrimaryAddress">
+                        </div>
+
+                        <div class="col-6">
+                            <label for="victimMailingAddress" class="victimMailingAddress">Mailing Address</label>
+                            <br>
+                            <input class="form-control victimMailingAddress read-only" type="text" id="victimMailingAddress" name="victimMailingAddress">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="victimTelephone" class="victimTelephone">Telephone</label>
+                            <br>
+                            <input class="form-control victimTelephone read-only" type="text" id="victimTelephone" name="victimTelephone">
+                        </div>
+
+                        <div class="col-4">
+                            <label for="victimMobile" class="victimMobile">Mobile</label>
+                            <br>
+                            <input class="form-control victimMobile read-only" type="text" id="victimMobile" name="victimMobile">
+                        </div>
+
+                        <div class="col-4">
+                            <label for="victimEmail" class="victimEmail">Email</label>
+                            <br>
+                            <input class="form-control victimEmail read-only" type="text" id="victimEmail" name="victimEmail">
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div id="state-transitions-container" class="hidden">
-                <div class="row mt-5">
+                <div class="row mt-4">
                     <div class="col">
                         <p><strong>State Transitions</strong></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <table class="table table-striped" id="state-transitions-table">
+                            <thead class="thead">
+                                <th>Date</th>
+                                <th>Type</th>
+                                <th>Sub-Type</th>
+                                <th>Description</th>
+                            </thead>
+
+                            <tbody>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
 
             <div class="row mt-5">
-                <div class="col">
-                    <button onclick="showSearch()" class="btn btn-secondary">Return to Search</button>
+                <div class="col hidden" id="return-to-search">
+                    <button onclick="clearOffenderDetails(); showSearch();" class="btn btn-secondary">Return to Search</button>
+                </div>
+                <div class="col hidden" id="link-offender">
+                    <button onclick="linkOffender()" class="btn btn-secondary btn-link-offender">Link Offender</button>
+                </div>
+                <div class="col hidden" id="create-offender">
+                    <button onclick="createOffender()" class="btn btn-secondary btn-create-offender">Create Offender</button>
                 </div>
             </div>
         </div>
@@ -342,13 +696,109 @@
     </div>
 
     <script>
+        //global constants
+        const OffenderButtonStatus = {
+            SHOW_LINK: 0,
+            SHOW_CREATE: 1,
+            NONE: 2
+        }
+
+        const FormTypes = {
+            OFFENDER: 0,
+            OTHER: 1,
+            NONE: 2
+        }
+
+        const TABS = [
+            "subject-information-container",
+            "offences-container",
+            "movements-container",
+            "hearings-container",
+            "victim-information-container",
+            "state-transitions-container",
+        ];
+
+        const GenderOptionSet = {
+            Male: { val: 100000000, name: "M" },
+            Female: { val: 100000001, name: "F" },
+            X: { val: 100000002, name: "X" },
+        };
+
+        const CRMBoolean = {
+            True: 100000001,
+            False: 100000000,
+        }
+
+        const CommunityStatus = {
+            Active: 100000000,
+            Inactive: 100000001,
+        }
+
+        const EventType = {
+            KEY_DATE: { val: 100000000, name: "KEY_DATE" },
+            MOVEMENT: { val: 100000001, name: "MOVEMENT" },
+            HEARING: { val: 100000002, name: "HEARING" },
+            STATE_TRAN: { val: 100000003, name: "STATE_TRAN" },
+            VICT_CNTCT: { val: 100000004, name: "VICT_CNTCT" },
+            AUTH_DOCM: { val: 100000005, name: "AUTH_DOCM" },
+        };
+
+        const OffenderIdType = {
+            ID: 0,
+            CS_NUMBER: 1
+        }
+
+        const OffenderDetailsFields = [
+            "offenderLastName",
+            "offenderGivenNames",
+            "offenderGender",
+            "offenderBirthdate",
+            "offenderAliases",
+            "offenderCS",
+            "offenderCustodyLocation",
+            "offenderProbationOfficer",
+            "offenderPoliceFileNumber",
+        ];
+        const OffenderDetailsCheckboxes = [
+            "offenderCurrentName",
+            "offenderInCustody",
+            "offenderInOut",
+            "offenderIntermittentSentence",
+            "offenderCommunityStatus",
+            "offenderAWOL",
+            "offenderReportingOrder",
+        ];
+        const VictimDetailsFields = [
+            "victimName",
+            "victimEffectiveDate",
+            "victimExpiryDate",
+            "victimPrimaryAddress",
+            "victimMailingAddress",
+            "victimTelephone",
+            "victimMobile",
+            "victimEmail",
+        ];
+
+        //number of search table rows to show at a time, the rest are paginated
         const ROWS_SHOWN = 5;
+
+        //controls whether to show Link/Create buttons
+        let BUTTON_STATUS = OffenderButtonStatus.NONE;
+        //CRM form the webresource is hosted in
+        //if on the Offender form we need to either show search + Link ability, or we just show the already linked details
+        //TODO - some other source form will be search + create ability
+        let FORM_TYPE = FormTypes.NONE;
+
+        let OFFENDER_EXISTS_IN_COAST = false;
+
+        //search results from cornet
         let clients = [];
         let displayed_clients = [];
-        let current_name = false;
+        let filter_on_current_name = false;
 
-        let _formContext = null;
+        //variables to hold client details info and cornet event info
         let client_details = {};
+        let coastInfo = {};
         let events = [];
         let offences = [];
         let movements = [];
@@ -360,16 +810,26 @@
         window.onload = function () {
             initPaginator();
             this.search_type = "exact";
-            $("#search-button").addClass("is-disabled");
+            disableSearchButton();
 
             let entity = parent.Xrm.Page.data.entity.getEntityName();
             if (entity == "vsd_offender") {
+                //if this offender has CS Number (that is: it is linked to a cornet client already)
+                //-> then show the client details - no search ability
+                //if there is no CS Number (not already linked)
+                //-> then default to search and has link ability
+                FORM_TYPE = FormTypes.OFFENDER;
                 let cs_number = parent.Xrm.Page.getAttribute("vsd_csnumber").getValue();
 
                 if (cs_number) {
+                    OFFENDER_EXISTS_IN_COAST = true;
+                    BUTTON_STATUS = OffenderButtonStatus.NONE;
                     showOffender(cs_number);
                 }
                 else {
+                    BUTTON_STATUS = OffenderButtonStatus.SHOW_LINK;
+                    showLinkOffenderButton();
+                    showReturnToSearchButton();
                     showSearch();
 
                     let surname = parent.Xrm.Page.getAttribute("vsd_lastname").getValue();
@@ -388,35 +848,21 @@
                     $('#gender').val(gender);
                     $('#birth_year').val(birth_year);
 
-                    search();
+                    if (surname) {
+                        enableSearchButton();
+                        search();
+                    }
                 }
             }
             else {
+                showReturnToSearchButton();
+                FORM_TYPE = FormTypes.OTHER;
                 showSearch();
             }
         };
 
-        //The CRM form call this function during an onload js event and passes us the formContext
-        function setClientApiContext(xrm, formContext) {
-            console.log("setting form context");
-            // Optionally set Xrm and formContext as global variables on the page.
-            window.Xrm = xrm;
-            _formContext = formContext;
-
-            let cs_number = _formContext.getAttribute("vsd_csnumber");
-            console.log(cs_number);
-
-            if (cs_number) {
-                $("#search-container").addClass("hidden");
-                $("#client-details-container").removeClass("hidden");
-                loadOffender(cs_number);
-            }
-            else {
-                $("#search-container").removeClass("hidden");
-            }
-        }
-
         function search() {
+            showLoadingSpinner();
             let parameters = {
                 SearchType: this.search_type,
                 Surname: $('#surname').val(),
@@ -466,28 +912,35 @@
             fetch(endpoint, requestOptions)
                 .then(response => response.text())
                 .then(res => {
+                    hideLoadingSpinner();
                     let parsed = JSON.parse(res);
                     if (parsed && parsed.Result) {
+                        if ((!parsed.IsSuccess) || parsed.Result.includes("No Content")) {
+                            console.log("no results from cornet");
+                            //remove any old rows in the table and remove the paginator
+                            emptySearchResultsTable();
+                            let nav = $("#nav");
+                            if (nav) nav.remove();
+                            return;
+                        }
                         let data = JSON.parse(parsed.Result);
-                        console.log(data);
                         addResultsToTable(data.clients);
                     }
-
                 })
                 .catch(error => console.log('error', error));
         }
 
         function addResultsToTable(clients) {
-            if (current_name) {
+            if (filter_on_current_name) {
                 displayed_clients = clients.filter(c => c.isCurrentName == 'Y');
             }
             else {
                 displayed_clients = clients;
             }
 
-            //make sure table shows and any existing rows are removed
+            //make sure table shows and any previously existing rows are removed
             $(".search-results-row").removeClass("hidden");
-            $("#client-table").find("tr:gt(0)").remove();
+            emptySearchResultsTable();
 
             displayed_clients.forEach((client, i) => {
                 let tr = `<tr>
@@ -498,7 +951,7 @@
                     <td>${client.personBirthDate || ''}</td>
                     <td>${client.clientNumber || ''}</td>
                     <td>${client.locationTypeCode.custody || ''}</td>
-                    <td>${client.clientNumber ? '<button onclick="showOffenderClick(' + i + ')" class="btn btn-secondary">View Offender</button>' : ''}</td>
+                    <td>${client.clientNumber ? '<button onclick="viewOffenderClick(' + i + ')" class="btn btn-secondary">View Offender</button>' : ''}</td>
                     
                     </tr>`;
                 $("#client-table").append(tr);
@@ -564,12 +1017,12 @@
 
         function surnameChange(val) {
             if (val) {
-                $("#search-button").removeClass("is-disabled");
+                enableSearchButton();
                 $("#cs").val("");
                 $("#fps").val("");
             }
             else {
-                $("#search-button").addClass("is-disabled");
+                disableSearchButton();
             }
         }
 
@@ -582,7 +1035,7 @@
 
         function csChange(val) {
             if (val) {
-                $("#search-button").removeClass("is-disabled");
+                enableSearchButton();
                 $("#surname").val("");
                 $("#given_name").val("");
                 $("#second_name").val("");
@@ -592,13 +1045,13 @@
                 $("#fps").val("");
             }
             else {
-                $("#search-button").addClass("is-disabled");
+                disableSearchButton();
             }
         }
 
         function fpsChange(val) {
             if (val) {
-                $("#search-button").removeClass("is-disabled");
+                enableSearchButton();
                 $("#surname").val("");
                 $("#given_name").val("");
                 $("#second_name").val("");
@@ -608,37 +1061,40 @@
                 $("#cs").val("");
             }
             else {
-                $("#search-button").addClass("is-disabled");
+                disableSearchButton();
             }
         }
 
         function currentNameChange(val) {
-            current_name = val;
+            filter_on_current_name = val;
             addResultsToTable(clients);
         }
 
-        function showOffenderClick(val) {
+        function viewOffenderClick(val) {
             let cs_number = displayed_clients[val].clientNumber;
-            console.log(displayed_clients[val].clientNumber);
             showOffender(cs_number);
         }
 
         function showOffender(cs_number) {
-            $("#search-container").addClass("hidden");
-            $("#client-details-container").removeClass("hidden");
+            scrollPageToTop();
+            hideSearchSection();
+            showClientDetailsSection();
 
             loadOffender(cs_number, OffenderIdType.CS_NUMBER);
         }
 
         function showSearch() {
-            $("#search-container").removeClass("hidden");
-            $("#client-details-container").addClass("hidden");
-
-            //TODO - should reset all the offender details page setup and info so it's fresh should we return to it
+            scrollPageToTop();
+            showSearchSection();
+            hideClientDetailsSection();
         }
 
+        //get and combine info from cornet and crm
         function loadOffender(id, id_type) {
+            showLoadingSpinner();
+
             client_details = {};
+            coastInfo = {};
             events = [];
             offences = [];
             movements = [];
@@ -647,34 +1103,57 @@
             state_transitions = [];
             key_dates = [];
 
+
             getCOASTOffender(id, id_type).then(offender => {
-                console.log("coast offender info");
-                console.log(offender);
+                let promise_array = [];
                 let cs_number = "";
                 if (id_type === OffenderIdType.CS_NUMBER) {
                     cs_number = id;
                 }
                 if (!$.isEmptyObject(offender)) {
+                    coastInfo = offender;
                     cs_number = offender.vsd_csnumber;
+                    if (!OFFENDER_EXISTS_IN_COAST) {
+                        disableLinkOffenderButton();
+                        disableCreateOffenderButton();
+                    }
                 }
 
                 if (cs_number) {
-                    getNotificationsForOffender(cs_number);
+                    promise_array.push(new Promise((resolve, reject) => {
+                        getNotificationsForOffender(cs_number).then(() => {
+                            resolve();
+                        });
+                    }));
 
-                    loadCornetOffender(cs_number).then(res => {
-                        client_details = res.find(o => o.isCurrentName === "Y");
-                        if (res.length > 1) {
-                            let aliases = res.filter(c => c.isCurrentName == "N");
-                            console.log("aliases");
-                            console.log(aliases.map(a => a.personName));
-                            client_details.aliases = aliases.map(a => a.personName).join(', ');
-                        }
-                        console.log(client_details);
-                    });
+                    promise_array.push(new Promise((resolve, reject) => {
+                        loadCornetOffender(cs_number).then(res => {
+                            client_details = res.find(o => o.isCurrentName === "Y");
+                            if (res.length > 1) {
+                                let aliases = res.filter(c => c.isCurrentName == "N");
+                                client_details.aliases = aliases.map(a => a.personName).join(', ');
+                            }
+
+                            let curr_client = res.find(c => c.isCurrentName == "Y");
+                            Object.assign(client_details, curr_client);
+                            client_details.lastName = client_details.personName.split(',')[0];
+                            client_details.givenNames = client_details.personName.split(',').splice(1).join(',');
+                            if (!$.isEmptyObject(coastInfo)) {
+                                client_details.coastInfo = coastInfo;
+                            }
+                            populateSubjectInformation();
+                            resolve();
+                        });
+                    }));
+                }
+                else {
+                    hideLoadingSpinner();
                 }
 
+                Promise.all(promise_array).then((res) => {
+                    hideLoadingSpinner();
+                });
             });
-
         }
 
         function loadCornetOffender(cs_number) {
@@ -708,13 +1187,11 @@
                         let parsed = JSON.parse(res);
                         if (parsed && parsed.Result) {
                             let data = JSON.parse(parsed.Result);
-                            console.log(data);
                             resolve(data.clients);
                         }
                         else {
                             resolve([]);
                         }
-
                     })
                     .catch(error => console.log('error', error));
             }).catch(err => {
@@ -748,7 +1225,6 @@
                     .then(response => response.text())
                     .then(res => {
                         let data = JSON.parse(res);
-                        console.log(data);
                         if (data && data.value && data.value.length > 0) {
                             resolve(data.value[0]);
                         }
@@ -763,169 +1239,202 @@
 
         }
 
+        //get all cornet notifications in coast for this cs number
         function getNotificationsForOffender(cs_number) {
-            var myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/json");
+            return new Promise((resolve, reject) => {
+                var myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
 
-            var requestOptions = {
-                method: 'GET',
-                headers: myHeaders,
-                credentials: "same-origin"
-            };
-
-            let endpoint = parent.Xrm.Page.context.getClientUrl();
-            endpoint += `/api/data/v9.0/vsd_cornetnotifications?$filter=statecode eq 0 and vsd_clientnumber eq '${cs_number}'`;
-
-            fetch(endpoint, requestOptions)
-                .then(response => response.text())
-                .then(res => {
-                    let data = JSON.parse(res);
-                    console.log(data);
-                    if (data && data.value && data.value.length > 0) {
-                        events = data.value;
-                        loadCornetEvents();
-                    }
-                })
-                .catch(error => console.log('error', error));
-        }
-
-        function loadCornetEvents() {
-            let promise_array = [];
-
-            for (let i = 0; i < events.length; ++i) {
-                let event = events[i];
-                let event_type = getOptionsSetVal(EventType, event.vsd_eventtype);
-
-                let parameters = {
-                    EventId: event.vsd_eventreferenceid,
-                    Guid: event.vsd_guid,
-
-                    UserName: "test",
-                    FullName: "test",
-                    Client: "test",
+                var requestOptions = {
+                    method: 'GET',
+                    headers: myHeaders,
+                    credentials: "same-origin"
                 };
 
-                console.log(event_type);
+                let endpoint = parent.Xrm.Page.context.getClientUrl();
+                endpoint += `/api/data/v9.0/vsd_cornetnotifications?$filter=statecode eq 0 and vsd_clientnumber eq '${cs_number}'`;
 
-                switch (event_type) {
-                    case EventType.AUTH_DOCM: {
-                        promise_array.push(new Promise((resolve, reject) => {
-                            parameters.EventType = EventType.AUTH_DOCM.val;
-                            parameters.Id = "authority_document_id";
-
-                            getEvent(parameters).then(res => {
-                                if (res) {
-                                    offences.push(res);
-                                }
+                fetch(endpoint, requestOptions)
+                    .then(response => response.text())
+                    .then(res => {
+                        let data = JSON.parse(res);
+                        if (data && data.value && data.value.length > 0) {
+                            events = data.value;
+                            loadCornetEvents().then(() => {
                                 resolve();
                             });
-                        }));
-                        break;
-                    }
-                    case EventType.HEARING: {
-                        promise_array.push(new Promise((resolve, reject) => {
-                            parameters.EventType = EventType.HEARING.val;
-                            parameters.Id = "hearing_id";
-
-                            getEvent(parameters).then(res => {
-                                if (res) {
-                                    hearings.push(res);
-                                }
-                                resolve();
-                            });
-                        }));
-                        break;
-                    }
-                    case EventType.KEY_DATE: {
-                        promise_array.push(new Promise((resolve, reject) => {
-                            parameters.EventType = EventType.KEY_DATE.val;
-                            parameters.Id = "key_date_id";
-
-                            getEvent(parameters).then(res => {
-                                if (res) {
-                                    key_dates.push(res);
-                                }
-                                resolve();
-                            });
-                        }));
-                        break;
-                    }
-                    case EventType.MOVEMENT: {
-                        promise_array.push(new Promise((resolve, reject) => {
-                            parameters.EventType = EventType.MOVEMENT.val;
-                            parameters.Id = "movement_id";
-
-                            getEvent(parameters).then(res => {
-                                if (res) {
-                                    movements.push(res);
-                                }
-                                resolve();
-                            });
-                        }));
-                        break;
-                    }
-                    case EventType.STATE_TRAN: {
-                        promise_array.push(new Promise((resolve, reject) => {
-                            parameters.EventType = EventType.STATE_TRAN.val;
-                            parameters.Id = "state_transition_id";
-
-                            getEvent(parameters).then(res => {
-                                if (res) {
-                                    state_transitions.push(res);
-                                }
-                                resolve();
-                            });
-                        }));
-                        break;
-                    }
-                    case EventType.VICT_CNTCT: {
-                        promise_array.push(new Promise((resolve, reject) => {
-                            parameters.EventType = EventType.VICT_CNTCT.val;
-                            parameters.Id = "individual_id";
-
-                            getEvent(parameters).then(res => {
-                                if (res) {
-                                    victim_information.push(res);
-                                }
-                                resolve();
-                            });
-                        }));
-                        break;
-                    }
-                }
-            }
-
-
-            Promise.all(promise_array).then(() => {
-                console.log("loaded offences");
-                console.log(offences);
-                console.log(movements);
-
-                if (offences.length > 0) {
-                    $("#tab-offences").removeClass("is-disabled");
-                }
-
-                if (movements.length > 0) {
-                    $("#tab-movements").removeClass("is-disabled");
-                }
-
-                if (hearings.length > 0) {
-                    $("#tab-hearings").removeClass("is-disabled");
-                }
-
-                if (victim_information.length > 0) {
-                    $("#tab-victim-info").removeClass("is-disabled");
-                }
-
-                if (state_transitions.length > 0) {
-                    $("#tab-state-transition").removeClass("is-disabled");
-                }
+                        }
+                        else {
+                            resolve();
+                        }
+                    })
+                    .catch(error => console.log('error', error));
             });
         }
 
+        //for each cornet notification found in CRM we need to load the cornet details
+        function loadCornetEvents() {
+            return new Promise((resolve, reject) => {
+                let promise_array = [];
+
+                for (let i = 0; i < events.length; ++i) {
+                    let event = events[i];
+                    let event_type = getOptionsSetVal(EventType, event.vsd_eventtype);
+
+                    let parameters = {
+                        EventId: event.vsd_eventreferenceid,
+                        Guid: event.vsd_guid,
+
+                        UserName: "test",
+                        FullName: "test",
+                        Client: "test",
+                    };
+
+                    switch (event_type) {
+                        case EventType.AUTH_DOCM: {
+                            promise_array.push(new Promise((resolve, reject) => {
+                                parameters.EventType = EventType.AUTH_DOCM.val;
+                                parameters.Id = "authority_document_id";
+
+                                getEvent(parameters).then(res => {
+                                    if (res) {
+                                        offences.push(res);
+                                    }
+                                    resolve();
+                                });
+                            }));
+                            break;
+                        }
+                        case EventType.HEARING: {
+                            promise_array.push(new Promise((resolve, reject) => {
+                                parameters.EventType = EventType.HEARING.val;
+                                parameters.Id = "hearing_id";
+
+                                getEvent(parameters).then(res => {
+                                    if (res) {
+                                        hearings.push(res);
+                                    }
+                                    resolve();
+                                });
+                            }));
+                            break;
+                        }
+                        case EventType.KEY_DATE: {
+                            promise_array.push(new Promise((resolve, reject) => {
+                                parameters.EventType = EventType.KEY_DATE.val;
+                                parameters.Id = "key_date_id";
+
+                                getEvent(parameters).then(res => {
+                                    if (res) {
+                                        key_dates.push(res);
+                                    }
+                                    resolve();
+                                });
+                            }));
+                            break;
+                        }
+                        case EventType.MOVEMENT: {
+                            promise_array.push(new Promise((resolve, reject) => {
+                                parameters.EventType = EventType.MOVEMENT.val;
+                                parameters.Id = "movement_id";
+
+                                getEvent(parameters).then(res => {
+                                    if (res) {
+                                        if (res.activityDate.actual != null) res.activityDate.val = new Date(res.activityDate.actual);
+                                        else if (res.activityDate.scheduled != null) res.activityDate.val = new Date(res.activityDate.scheduled);
+                                        movements.push(res);
+                                    }
+                                    resolve();
+                                });
+                            }));
+                            break;
+                        }
+                        case EventType.STATE_TRAN: {
+                            promise_array.push(new Promise((resolve, reject) => {
+                                parameters.EventType = EventType.STATE_TRAN.val;
+                                parameters.Id = "state_transition_id";
+
+                                getEvent(parameters).then(res => {
+                                    if (res) {
+                                        //cornet doesn't include the event date in it's results, but we can get that from the crm notification
+                                        //so we combine it up
+                                        let notification = events.find(n => n.eventReferenceId == res.activityId);
+                                        if (notification) {
+                                            res.eventDate = notification.eventDate;
+                                        }
+                                        state_transitions.push(res);
+                                    }
+                                    resolve();
+                                });
+                            }));
+                            break;
+                        }
+                        case EventType.VICT_CNTCT: {
+                            promise_array.push(new Promise((resolve, reject) => {
+                                parameters.EventType = EventType.VICT_CNTCT.val;
+                                parameters.Id = "individual_id";
+
+                                getEvent(parameters).then(res => {
+                                    if (res) {
+                                        victim_information.push(res);
+                                    }
+                                    resolve();
+                                });
+                            }));
+                            break;
+                        }
+                    }
+                }
+
+                Promise.all(promise_array).then(() => {
+                    if (key_dates.length > 0) {
+                        key_dates.sort((a, b) => {
+                            return new Date(b.activityDate).getTime() - new Date(a.activityDate).getTime();
+                        });
+                        populateKeyDates();
+                    }
+
+                    if (offences.length > 0) {
+                        offences.forEach(offence => {
+                            offence.chargeCounts.sort((a, b) => {
+                                return (a.countSeqNo > b.countSeqNo) ? 1 : -1;
+                            });
+                        });
+                        $("#tab-offences").removeClass("is-disabled");
+                        populateOffences();
+                    }
+
+                    if (movements.length > 0) {
+                        movements.sort((a, b) => {
+                            return b.activityDate.val.getTime() - a.activityDate.val.getTime();
+                        });
+                        $("#tab-movements").removeClass("is-disabled");
+                        populateMovements();
+                    }
+
+                    if (hearings.length > 0) {
+                        $("#tab-hearings").removeClass("is-disabled");
+                        populateHearings();
+                    }
+
+                    if (victim_information.length > 0) {
+                        $("#tab-victim-info").removeClass("is-disabled");
+                        populateVictimInformation();
+                    }
+
+                    if (state_transitions.length > 0) {
+                        $("#tab-state-transition").removeClass("is-disabled");
+                        populateStateTransitions();
+                    }
+
+                    resolve();
+                });
+            });
+        }
+
+        //load a single event from cornet
         function getEvent(parameters) {
             return new Promise((resolve, reject) => {
-                console.log(parameters);
                 var myHeaders = new Headers();
                 myHeaders.append("username", parameters.UserName);
                 myHeaders.append("fullname", parameters.FullName);
@@ -960,6 +1469,238 @@
             });
         }
 
+        //used when leaving the details page to ensure a fresh slate if the user loads a new offender
+        function clearOffenderDetails() {
+            //clear offender details variables
+            client_details = {};
+            coastInfo = {};
+            events = [];
+            offences = [];
+            movements = [];
+            hearings = [];
+            victim_information = [];
+            state_transitions = [];
+            key_dates = [];
+            //clear subject information inputs and victim details inputs
+            OffenderDetailsFields.forEach(field => {
+                $(`#${field}`).val('');
+            });
+            OffenderDetailsCheckboxes.forEach(field => {
+                $(`#${field}`).prop("checked", false);
+            });
+            VictimDetailsFields.forEach(field => {
+                $(`#${field}`).val('');
+            });
+            //hide sections that are dependant on the existence of certain offender data
+            $(".offender-coast-info").addClass("hidden");
+            $(".custody-location").addClass("hidden");
+            $(".victim-details-container").addClass("hidden");
+            //disabled all tabs
+            $("#tab-offences").addClass("is-disabled");
+            $("#tab-movements").addClass("is-disabled");
+            $("#tab-hearings").addClass("is-disabled");
+            $("#tab-victim-info").addClass("is-disabled");
+            $("#tab-state-transition").addClass("is-disabled");
+            //empty all tables/key dates
+            $("#key-dates").find("div:gt(0)").remove();
+            $("#offences-table").find("tr:gt(0)").remove();
+            $("#movements-table").find("tr:gt(0)").remove();
+            $("#hearings-table").find("tr:gt(0)").remove();
+            $("#victim-information-table").find("tr:gt(0)").remove();
+            $("#sate-transitions-table").find("tr:gt(0)").remove();
+            //set subject info as selected tab - show/hide as needed
+            let tab = "subject-information-container";
+            let toHide = TABS.filter(t => t != tab);
+            toHide.forEach(t => {
+                $(`#${t}`).addClass("hidden");
+            });
+
+            $(`#${tab}`).removeClass("hidden");
+
+            $(".nav-link").removeClass("active-page");
+            $("#tab-subject-info").addClass("active-page");
+
+            //enable link/create buttons
+            enableLinkOffenderButton();
+            enableCreateOffenderButton();
+        }
+
+        //functions to populate the various sections of the client details page
+        function populateSubjectInformation() {
+            console.log("setting subject info");
+            console.log(client_details);
+
+            $("#offenderLastName").val(client_details.lastName);
+            $("#offenderGivenNames").val(client_details.givenNames);
+            $("#offenderCurrentName").prop("checked", client_details.isCurrentName == 'Y');
+
+            $("#offenderGender").val(client_details.personGenderIdentityCodeType);
+            $("#offenderBirthdate").val(client_details.personBirthDate);
+            $("#offenderAliases").val(client_details.aliases);
+
+            $("#offenderCS").val(client_details.clientNumber);
+
+            if (client_details.coastInfo) {
+                $(".offender-coast-info").removeClass("hidden");
+
+                $("#offenderInCustody").prop("checked", client_details.coastInfo.vsd_incustody === CRMBoolean.True);
+                $("#offenderInOut").prop("checked", client_details.coastInfo.vsd_inout === CRMBoolean.True);
+                $("#offenderIntermittentSentence").prop("checked", client_details.coastInfo.vsd_intermittentsentence === CRMBoolean.True);
+
+
+                $("#offenderCommunityStatus").prop("checked", client_details.coastInfo.vsd_communitystatus === CommunityStatus.Active);
+                $("#offenderAWOL").prop("checked", client_details.coastInfo.vsd_awol === CRMBoolean.True);
+
+                $("#offenderProbationOfficer").val(client_details.coastInfo.vsd_probationofficerbailsupervisor);
+                $("#offenderReportingOrder").prop("checked", client_details.coastInfo.vsd_reportingorder === CRMBoolean.True);
+                $("#offenderPoliceFileNumber").val(client_details.coastInfo.vsd_policefilenumber);
+            }
+
+            if (client_details.locationTypeCode.custody) {
+                $(".custody-location").removeClass("hidden");
+                $("#offenderCustodyLocation").val(client_details.locationTypeCode.custody);
+            }
+        }
+
+        function populateKeyDates() {
+            $("#key-dates").find("div:gt(0)").remove();
+
+            key_dates.forEach((keyDate, i) => {
+                let div = `<div class="col-4">
+                                <label for="offenderKeyDate${i}" class="offenderKeyDate${i}">${keyDate.activityCategory.description}</label>
+                                <br>
+                                <input class="form-control offenderKeyDate read-only" type="text" id="offenderKeyDate${i}" name="offenderKeyDate${i}" value="${keyDate.activityDate}">
+                            </div>`;
+                $("#key-dates").append(div);
+            });
+        }
+
+        function populateOffences() {
+            $("#offences-table").find("tr:gt(0)").remove();
+
+            offences.forEach((offence, i) => {
+                offence.chargeCounts.forEach((charge, j) => {
+                    let tr = `<tr>
+                            <td>${charge.fileNumber}</td>
+                            <td>${charge.countSeqNo}</td>
+                            <td>${offence.courtLocationDescription}</td>
+                            <td>${charge.statuteAct}</td>
+                            <td>${charge.statuteSectionNo}</td>
+                            <td>${charge.statuteSubsectionParagraph || ''}</td>
+                            <td>${charge.statuteDescription}</td>
+                            <td>${offence.documentTypeCode}</td>
+                            <td>${offence.expiryDate ? new Date(offence.expiryDate).toLocaleString('en-us', { month: "short", day: 'numeric', year: 'numeric' }) : ''}</td>
+                        </tr>`;
+                    $("#offences-table").append(tr);
+                });
+            });
+        }
+
+        function populateMovements() {
+            $("#movements-table").find("tr:gt(0)").remove();
+
+            movements.forEach((movement, i) => {
+                let tr = `<tr>
+                            <td>${movement.activityDate.val.toLocaleString('en-us', { month: "short", day: 'numeric', year: 'numeric' })}</td>
+                            <td>${movement.activityDate.val.toLocaleTimeString()}</td>
+                            <td>${movement.activityCategory.description}</td>
+                            <td>${movement.activitySubCategory.code}</td>
+                            <td>${movement.activityReason.description}</td>
+                            <td>${movement.supervisionFacility.to || ''}</td>
+                            <td>${movement.activityDescription || ''}</td>
+                        </tr>`;
+                $("#movements-table").append(tr);
+            });
+        }
+
+        function populateHearings() {
+            $("#hearings-table").find("tr:gt(0)").remove();
+
+            hearings.forEach((hearing, i) => {
+                let tr = `<tr>
+                            <td>${hearing.activityDate.actual}</td>
+                            <td>${hearing.activityDate.actual}</td>
+                            <td>${hearing.activityType.code}</td>
+                            <td>${hearing.activityDate.scheduled}</td>
+                            <td>${hearing.activityDate.actual}</td>
+                            <td>${hearing.activityType.description}</td>
+                            <td>${hearing.hearingRequestType.description}</td>
+                            <td>${hearing.hearingDecision.description}</td>
+                        </tr>`;
+                $("#hearings-table").append(tr);
+            });
+        }
+
+        function populateVictimInformation() {
+            $("#victim-information-table").find("tr:gt(0)").remove();
+
+            victim_information.forEach((victim, i) => {
+                let tr = `<tr>
+                            <td>${victim.personFullName}</td>
+                            <td>${victim.victimToPersonRelationship}</td>
+                            <td>${'<button onclick="showVictimDetails(' + i + ')" class="btn btn-secondary">View Details</button>'}</td>
+                        </tr>`;
+                $("#victim-information-table").append(tr);
+            });
+        }
+
+        function populateStateTransitions() {
+            $("#sate-transitions-table").find("tr:gt(0)").remove();
+
+            state_transitions.forEach((transition, i) => {
+                let tr = `<tr>
+                            <td>${transition.eventDate}</td>
+                            <td>${transition.activityType.code}</td>
+                            <td>${transition.activitySubType.code}</td>
+                            <td>${transition.activityReason.description}</td>
+                        </tr>`;
+                $("#sate-transitions-table").append(tr);
+            });
+        }
+
+        function showVictimDetails(index) {
+            let victim = victim_information[index];
+            $(".victim-details-container").removeClass("hidden");
+
+            $("#victimName").val(victim.personFullName);
+            $("#victimEffectiveDate").val(victim.victimContactDate.effective);
+            $("#victimExpiryDate").val(victim.victimContactDate.expiry);
+            $("#victimPrimaryAddress").val(victim.primaryAddressFull);
+            $("#victimMailingAddress").val(victim.mailingAddressFull);
+            $("#victimTelephone").val(victim.telephoneNumberType.number);
+            $("#victimMobile").val(victim.cellNumberType.number);
+            $("#victimEmail").val(victim.emailType.emailAddress);
+        }
+
+        function linkOffender() {
+            hideLinkOffenderButton();
+            hideReturnToSearchButton();
+            showLoadingSpinner();
+
+            let birthdate = new Date(client_details.personBirthDate + "T00:00:00");
+            let gender = getOptionsSetFromName(GenderOptionSet, client_details.personGenderIdentityCodeType);
+
+            parent.Xrm.Page.getAttribute("vsd_csnumber").setValue(client_details.clientNumber);
+            parent.Xrm.Page.getAttribute("vsd_firstname").setValue(client_details.givenNames);
+            parent.Xrm.Page.getAttribute("vsd_middlename").setValue('');
+            parent.Xrm.Page.getAttribute("vsd_lastname").setValue(client_details.lastName);
+            parent.Xrm.Page.getAttribute("vsd_birthdate").setValue(birthdate);
+            parent.Xrm.Page.getAttribute("vsd_gender").setValue(gender.val);
+            parent.Xrm.Page.getAttribute("vsd_aliasnames").setValue(client_details.aliases);
+            parent.Xrm.Page.data.entity.save();
+
+            //small delay to let the crm page save so that when we reload we get accurate info
+            setTimeout(() => {
+                OFFENDER_EXISTS_IN_COAST = true;
+                loadOffender(client_details.clientNumber, OffenderIdType.CS_NUMBER);
+            }, 2000);
+        }
+
+        function createOffender() {
+            hideCreateOffenderButton();
+            console.log("TODO - create offender in coast");
+        }
+
         function showTabContent(event, tab) {
             let toHide = TABS.filter(t => t != tab);
             toHide.forEach(t => {
@@ -968,45 +1709,98 @@
 
             $(`#${tab}`).removeClass("hidden");
 
-            $(".nav-link").removeClass("active");
-            event.currentTarget.className += " active";
+            $(".nav-link").removeClass("active-page");
+            event.currentTarget.className += " active-page";
         }
 
+        //helpers to show/hide sections/buttons
+        function showLoadingSpinner() {
+            $(".loading-indicator").removeClass("hidden");
+        }
+
+        function hideLoadingSpinner() {
+            $(".loading-indicator").addClass("hidden");
+        }
+
+        function showSearchSection() {
+            $("#search-container").removeClass("hidden");
+        }
+
+        function hideSearchSection() {
+            $("#search-container").addClass("hidden");
+        }
+
+        function showClientDetailsSection() {
+            $("#client-details-container").removeClass("hidden");
+        }
+
+        function hideClientDetailsSection() {
+            $("#client-details-container").addClass("hidden");
+        }
+
+        function showLinkOffenderButton() {
+            $("#link-offender").removeClass("hidden");
+        }
+
+        function hideLinkOffenderButton() {
+            $("#link-offender").addClass("hidden");
+        }
+
+        function disableLinkOffenderButton() {
+            $(".btn-link-offender").addClass("is-disabled");
+        }
+
+        function enableLinkOffenderButton() {
+            $(".btn-link-offender").removeClass("is-disabled");
+        }
+
+        function showCreateOffenderButton() {
+            $("#create-offender").removeClass("hidden");
+        }
+
+        function hideCreateOffenderButton() {
+            $("#create-offender").addClass("hidden");
+        }
+
+        function disableCreateOffenderButton() {
+            $(".btn-create-offender").addClass("is-disabled");
+        }
+
+        function enableCreateOffenderButton() {
+            $(".btn-create-offender").removeClass("is-disabled");
+        }
+
+        function showReturnToSearchButton() {
+            $("#return-to-search").removeClass("hidden");
+        }
+
+        function hideReturnToSearchButton() {
+            $("#return-to-search").addClass("hidden");
+        }
+
+        function disableSearchButton() {
+            $("#search-button").addClass("is-disabled");
+        }
+
+        function enableSearchButton() {
+            $("#search-button").removeClass("is-disabled");
+        }
+
+        function emptySearchResultsTable() {
+            $("#client-table").find("tr:gt(0)").remove();
+        }
+
+        function scrollPageToTop() {
+            parent.document.querySelectorAll("#tablist")[0].scrollIntoView(true);
+        }
 
         function getOptionsSetVal(optionSet, val) {
             return Object.values(optionSet).find((o) => o.val == val);
         }
 
-        const TABS = [
-            "subject-information-container",
-            "offences-container",
-            "movements-container",
-            "hearings-container",
-            "victim-information-container",
-            "state-transitions-container",
-        ];
-
-        const GenderOptionSet = {
-            Male: { val: 100000000, name: "M" },
-            Female: { val: 100000001, name: "F" },
-            X: { val: 100000002, name: "X" },
-        };
-
-        const EventType = {
-            KEY_DATE: { val: 100000000, name: "KEY_DATE" },
-            MOVEMENT: { val: 100000001, name: "MOVEMENT" },
-            HEARING: { val: 100000002, name: "HEARING" },
-            STATE_TRAN: { val: 100000003, name: "STATE_TRAN" },
-            VICT_CNTCT: { val: 100000004, name: "VICT_CNTCT" },
-            AUTH_DOCM: { val: 100000005, name: "AUTH_DOCM" },
-        };
-
-        const OffenderIdType = {
-            ID: 0,
-            CS_NUMBER: 1
+        function getOptionsSetFromName(optionSet, name) {
+            return Object.values(optionSet).find((o) => o.name == name);
         }
-
-
     </script>
 </body>
 

@@ -10,7 +10,6 @@ import { NotificationQueueService } from "../services/notification-queue.service
 import { Router } from "@angular/router";
 import { Title } from "@angular/platform-browser";
 import { VTFCaseInfoHelper } from "../shared/components/vtf-case-information/vtf-case-information.helper";
-import { VTFReimbursementApplicantInfoHelper } from "../shared/components/vtf-reimbursement-applicant-information/vtf-reimbursement-applicant-information.helper";
 import { iLookupData } from "../shared/interfaces/lookup-data.interface";
 import { TravelExpensesHelper } from "../shared/components/travel-expenses/travel-expenses.helper";
 
@@ -51,7 +50,6 @@ export class VictimTravelFundReimbursementComponent extends FormBase implements 
     showConfirmation: boolean = false;
 
     vtfCaseInfoHelper = new VTFCaseInfoHelper();
-    applicantInfoInfoHelper = new VTFReimbursementApplicantInfoHelper();
     travelExpensesHelper = new TravelExpensesHelper();
     authInfoHelper = new AuthInfoHelper();
 
@@ -121,7 +119,6 @@ export class VictimTravelFundReimbursementComponent extends FormBase implements 
     buildApplicationForm(): FormGroup {
         let group = {
             caseInformation: this.vtfCaseInfoHelper.setupFormGroup(this.fb, this.formType.val),
-            applicantInformation: this.applicantInfoInfoHelper.setupFormGroup(this.fb, this.formType.val),
             travelExpenses: this.travelExpensesHelper.setupFormGroup(this.fb, this.formType.val),
             authorizationInformation: this.authInfoHelper.setupFormGroup(this.fb, this.formType.val),
             confirmation: this.fb.group({ confirmationNumber: "" }),
@@ -139,7 +136,6 @@ export class VictimTravelFundReimbursementComponent extends FormBase implements 
         return {};
         // let data = {
         //     CaseInformation: this.form.get('caseInformation').value as iCaseInformation,
-        //     ApplicantInformation: this.form.get('applicantInformation').value as iApplicantInformation,
         //     TravelInformation: this.form.get('travelExpenses').value as iTravelInformation,
         //     AuthorizationInformation: this.form.get('authorizationInformation').value as iAuthorizationInformation,
         // } as iTravelFundApplication;

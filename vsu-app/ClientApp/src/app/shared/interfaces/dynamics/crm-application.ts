@@ -9,9 +9,14 @@ export interface iApplicationFormCRM {
 }
 
 export interface iCRMApplication {
+    vsd_vsu_offencescomments?: string;
     vsd_vsu_decision1impacttooutcome?: number;
+    vsd_vsu_decision1comments?: string;
     vsd_vsu_decision2travelover100km?: number;
+    vsd_vsu_decision2comments?: string;
     vsd_vsu_decision3nootherfundingsource?: number;
+    vsd_vsu_decision3comments?: string;
+    vsd_vsu_additionalcomments?: string;
 
     vsd_vsu_applicationtype: number;
     vsd_cvap_victimfirstname: string;

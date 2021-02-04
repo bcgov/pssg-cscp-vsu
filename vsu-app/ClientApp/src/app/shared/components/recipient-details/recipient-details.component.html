@@ -36,16 +36,23 @@
         </app-field>
     </section>
 
-    <!-- Victim Service Worker -->
-    <div class="victimServiceWorker" formArrayName="victimServiceWorker" *ngFor="let item of form.get('victimServiceWorker')['controls']; let i = index;">
-        <app-victim-service-worker [formGroupName]="i" [formGroup]="item" [isDisabled]="isDisabled" [formType]="formType" [isRequired]="true"></app-victim-service-worker>
+    <!-- Designate Information -->
+    <div class="designate" formArrayName="designate" *ngFor="let item of form.get('designate')['controls']; let i = index;">
+        <app-designate [formGroupName]="i" [formGroup]="item" [isDisabled]="isDisabled" [formType]="formType" [baseForm]="form.parent" [lookupData]="lookupData"></app-designate>
     </div>
 
     <div *ngIf="form.get('victimServiceWorker')['length'] > 0 && form.get('designate')['length'] > 0" class="designate-separator"></div>
 
-    <!-- Designate Information -->
-    <div class="designate" formArrayName="designate" *ngFor="let item of form.get('designate')['controls']; let i = index;">
-        <app-designate [formGroupName]="i" [formGroup]="item" [isDisabled]="isDisabled" [formType]="formType" [baseForm]="form.parent" [lookupData]="lookupData"></app-designate>
+    <div class="checkbox-container" [class.is-disabled]="isDisabled" *ngIf="form.get('notificationRecipient').value === enum.NotificationRecipientEnum.Myself.val || form.get('notificationRecipient').value === enum.NotificationRecipientEnum.Designate.val || form.get('notificationRecipient').value === enum.NotificationRecipientEnum.Myself_And_Designate.val">
+        <label class="inline-label inline-checkbox">
+            <input type="checkbox" [value]="true" name="addOptionalVSW" formControlName="addOptionalVSW" (change)="addOptionalVSWChange($event.target.checked)">
+            <span>Click here if you have a Victim Service Worker (VSW) and would like to enter their details, but not add them to the notification recipient list:</span>
+        </label>
+    </div>
+
+    <!-- Victim Service Worker -->
+    <div class="victimServiceWorker" formArrayName="victimServiceWorker" *ngFor="let item of form.get('victimServiceWorker')['controls']; let i = index;">
+        <app-victim-service-worker [formGroupName]="i" [formGroup]="item" [isDisabled]="isDisabled" [formType]="formType" [isRequired]="true" [orgAndTelRequired]="!vswIsOptional"></app-victim-service-worker>
     </div>
 
     <!-- Notification Details -->

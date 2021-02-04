@@ -15,6 +15,15 @@ namespace Gov.Cscp.Victims.Public.Models
         public int vsd_vsu_applicanttype { get; set; }
         public string vsd_vsuapplicanttypeother { get; set; }
 
+        public string vsd_vsu_offencescomments { get; set; }
+        public int? vsd_vsu_decision1impacttooutcome { get; set; }
+        public string vsd_vsu_decision1comments { get; set; }
+        public int? vsd_vsu_decision2travelover100km { get; set; }
+        public string vsd_vsu_decision2comments { get; set; }
+        public int? vsd_vsu_decision3nootherfundingsource { get; set; }
+        public string vsd_vsu_decision3comments { get; set; }
+        public string vsd_vsu_additionalcomments { get; set; }
+
         public string vsd_cvap_relationshiptovictim { get; set; }
         public int? vsd_vsu_victimtravelfundapplicationsubmitted { get; set; }
         public string vsd_vsu_vtfappsubmittedunknowncomments { get; set; }

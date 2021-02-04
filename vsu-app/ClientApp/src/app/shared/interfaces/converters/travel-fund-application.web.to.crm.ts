@@ -1,4 +1,4 @@
-import { ApplicationType, EnumHelper } from "../../enums-list";
+import { ApplicationType, EnumHelper, PARTICIPANT_TYPES } from "../../enums-list";
 import { iCRMApplication, iCRMCourtInfo, iCRMParticipant, iApplicationFormCRM, iCRMOffence, iCRMTravelInfo } from "../dynamics/crm-application";
 import { iTravelFundApplication } from "../application.interface";
 import * as _ from 'lodash';
@@ -27,17 +27,6 @@ function getCRMApplication(application: iTravelFundApplication) {
 
     let temp: any = null;
 
-    //TODO - need fields in dynamics to capture these
-    temp = application.OverviewInformation.offencesComment;
-    temp = application.OverviewInformation.proceedingsImpactOutcome;
-    temp = application.OverviewInformation.proceedingsImpactOutcomeComment;
-    temp = application.OverviewInformation.travelMoreThan100KM;
-    temp = application.OverviewInformation.travelMoreThan100KMComment;
-    temp = application.OverviewInformation.notCoveredByOtherSources;
-    temp = application.OverviewInformation.notCoveredByOtherSourcesComment;
-    temp = application.OverviewInformation.additionalComments;
-
-
     let relationship_to_victim = "";
     if (application.ApplicantInformation.applicantType === enums.ApplicantType.Support_Person.val) {
         relationship_to_victim = application.ApplicantInformation.supportPersonRelationship;
@@ -60,6 +49,16 @@ function getCRMApplication(application: iTravelFundApplication) {
 
     let crm_application: iCRMApplication = {
         vsd_vsu_applicationtype: ApplicationType.TRAVEL_FUNDS,
+
+        vsd_vsu_offencescomments: application.OverviewInformation.offencesComment,
+        vsd_vsu_decision1impacttooutcome: application.OverviewInformation.proceedingsImpactOutcome,
+        vsd_vsu_decision1comments: application.OverviewInformation.proceedingsImpactOutcomeComment,
+        vsd_vsu_decision2travelover100km: application.OverviewInformation.travelMoreThan100KM,
+        vsd_vsu_decision2comments: application.OverviewInformation.travelMoreThan100KMComment,
+        vsd_vsu_decision3nootherfundingsource: application.OverviewInformation.notCoveredByOtherSources,
+        vsd_vsu_decision3comments: application.OverviewInformation.notCoveredByOtherSourcesComment,
+        vsd_vsu_additionalcomments: application.OverviewInformation.additionalComments,
+
         vsd_vsu_applicanttype: application.ApplicantInformation.applicantType,
         vsd_cvap_relationshiptovictim: relationship_to_victim,
 
@@ -216,7 +215,7 @@ function getCRMProviderCollection(application: iTravelFundApplication) {
         vsd_lastname: application.CaseInformation.accusedLastName,
         vsd_birthdate: application.CaseInformation.accusedBirthDate,
         vsd_gender: application.CaseInformation.accusedGender,
-        vsd_relationship1: "Subject",
+        vsd_relationship1: PARTICIPANT_TYPES.ACCUSED,
     });
 
     //CaseInformation Additional Accused
@@ -227,7 +226,7 @@ function getCRMProviderCollection(application: iTravelFundApplication) {
             vsd_lastname: accused.lastName,
             vsd_birthdate: accused.birthDate,
             vsd_gender: accused.gender,
-            vsd_relationship1: "Subject",
+            vsd_relationship1: PARTICIPANT_TYPES.ACCUSED,
         });
     });
 
@@ -239,7 +238,7 @@ function getCRMProviderCollection(application: iTravelFundApplication) {
                     vsd_firstname: cc.firstName,
                     vsd_lastname: cc.lastName,
                     vsd_phonenumber: cc.telephone,
-                    vsd_relationship1: "Crown Counsel",
+                    vsd_relationship1: PARTICIPANT_TYPES.CROWN_COUNSEL,
                     vsd_relationship1other: "",
                 });
             }
@@ -260,7 +259,7 @@ function getCRMProviderCollection(application: iTravelFundApplication) {
                     vsd_mainphoneextension: vsw.extension,
                     vsd_city: vsw.city,
                     vsd_email: vsw.email,
-                    vsd_relationship1: "Victim Services Worker",
+                    vsd_relationship1: PARTICIPANT_TYPES.VICTIM_SERVICE_WORKER,
                     vsd_relationship1other: "",
                 });
             }
