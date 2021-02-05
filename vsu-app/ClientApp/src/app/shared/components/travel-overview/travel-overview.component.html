@@ -3,7 +3,7 @@
         <h1>Overview</h1>
     </div>
 
-    <p>The Victim Travel Fund provides funding to facilitate victim or immediate family member attendance and participation in criminal
+    <p>The Victim Travel Fund provides funding to facilitate victim or immediate family member attendance and participation in
         justice proceedings taking place in criminal court in BC. Funding may also be available to attend BC Review Board hearings. The maximum
         amount of funding that can be provided in relation to a case is $3,000.00. This funding limit may be distributed over multiple
         court/Review Board hearing dates and is distributed between eligible applicants on a case (see below).
@@ -19,10 +19,10 @@
             attend and participate in the justice proceedings, one support person may also be eligible to apply.</li>
         <li>Immediate family members of a deceased victim. Eligible immediate family members include parents, spouse, children and siblings as defined in
             the <a href="https://www.bclaws.ca/civix/document/id/complete/statreg/96478_01" target="_blank" title="Victims of Crime Act">Victims of Crime Act</a>.
-            Note: Immediate family members of a deceased victim should first apply for
-            <a href="https://www2.gov.bc.ca/gov/content/justice/criminal-justice/bcs-criminal-justice-system/if-you-are-a-victim-of-a-crime/victim-of-crime/financial-assistance-benefits" target="_blank">funding</a>
-            through the Crime Victim Assistance Program, except in cases where
-            the fatality was as a result of a motor vehicle accident.</li>
+            Note: Immediate family members of a deceased victim should first apply for funding through the
+            <a href="https://www2.gov.bc.ca/gov/content/justice/criminal-justice/bcs-criminal-justice-system/if-you-are-a-victim-of-a-crime/victim-of-crime/financial-assistance-benefits" target="_blank">Crime Victim Assistance Program</a>
+            , except in cases where the fatality was as a result of a motor vehicle accident.
+        </li>
     </ol>
 
     <p>Prior to completing your Victim Travel Fund application please answer the following questions to assist in determining your eligibility to receive funding:</p>
@@ -30,12 +30,19 @@
     <ol>
         <li><label>Does the criminal charge fall under one of these offences?</label>
             <div class="form-group flex-container" *ngIf="offenceList">
-                <div formArrayName="offences" *ngFor="let offence of form.get('offences')['controls']; let i=index" class="col-md-6">
+                <div class="col-12 offence-list-header-container">
+                    <div class="row mb-4">
+                        <div class="col-3">Criminal Code Section</div>
+                        <div class="col-9 pl-1">Description of Offence</div>
+                    </div>
+                </div>
+                <div formArrayName="offences" *ngFor="let offence of form.get('offences')['controls']; let i=index" class="col-12">
                     <div [formGroupName]="i">
                         <app-field [disabled]="isDisabled">
-                            <label>
-                                <input type="checkbox" [value]="true" name="" formControlName="checked" (change)="selectedOffenceChange()">
-                                {{offence.get('name').value}}
+                            <label class="full-width row">
+                                <input class="col-1" type="checkbox" [value]="true" name="" formControlName="checked" (change)="selectedOffenceChange()">
+                                <span class="col-2">{{offence.get('criminal_code').value}}</span>
+                                <span class="col-9">{{offence.get('name').value}}</span>
                             </label>
                         </app-field>
                     </div>
@@ -62,9 +69,9 @@
             </app-field>
         </li>
 
-        <li>Will you be required to travel more than 100 km from your home (one way) to attend the proceeding?
-            <a href="https://drivebc.ca/directions.html" target="_blank">Drive BC Distance Calculator</a>
-            Please enter one way distance in the Comments, along with any additional comments.
+        <li>Will you be required to travel more than 100 km from your home (one way) to attend the proceeding? Using
+            <a href="https://drivebc.ca/directions.html" target="_blank">Drive BC Distance Calculator</a>,
+            please enter one way distance in the Comments, along with any additional comments.
             <app-field label="" errorMessage="Please select one" [valid]="isMyControlValid(form.get('travelMoreThan100KM'))" [disabled]="isDisabled">
                 <label class="inline-label">
                     <input type="radio" [value]="enum.Boolean.True.val" name="travelMoreThan100KM" formControlName="travelMoreThan100KM">

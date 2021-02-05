@@ -23,7 +23,7 @@ export class ConfirmationComponent implements OnInit {
         }
         else if (this.formType.val === ApplicationType.TRAVEL_FUNDS) {
             //Please write down the following number for future reference:
-            this.confirmationMessage = "Thank you for for submitting a Victim Travel Fund Application to the Victim Safety Unit."
+            this.confirmationMessage = "Thank you for for submitting a Victim Travel Funds Application to the Victim Safety Unit."
         }
     }
 

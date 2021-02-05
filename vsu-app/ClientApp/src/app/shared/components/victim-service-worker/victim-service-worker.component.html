@@ -1,6 +1,7 @@
 <div [formGroup]="form">
-    <p><strong>Victim Service Worker (VSW) Information</strong></p>
-    <p><em>Please provide your VSW contact information.</em></p>
+    <p><strong>Victim Service Worker (VSW)</strong></p>
+    <p *ngIf="formType !== ApplicationType.TRAVEL_FUNDS"><em>Please provide your VSW contact information.</em></p>
+    <p *ngIf="formType === ApplicationType.TRAVEL_FUNDS"><em>If you have a VSW you may choose to provide their contact information here.</em></p>
 
     <div class="row">
         <div class="col-md-4">

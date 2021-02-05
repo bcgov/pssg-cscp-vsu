@@ -80,12 +80,19 @@
     <div *ngIf="formType === ApplicationType.TRAVEL_FUNDS">
         <label>Offences</label>
         <div class="form-group flex-container" *ngIf="offenceList">
-            <div formArrayName="offences" *ngFor="let offence of form.get('offences')['controls']; let i=index" class="col-md-6">
+            <div class="col-12">
+                <div class="row mb-4">
+                    <div class="col-3">Criminal Code Section</div>
+                    <div class="col-9 pl-1">Description of Offence</div>
+                </div>
+            </div>
+            <div formArrayName="offences" *ngFor="let offence of form.get('offences')['controls']; let i=index" class="col-12">
                 <div [formGroupName]="i">
                     <app-field [disabled]="isDisabled">
-                        <label>
-                            <input type="checkbox" [value]="true" name="" formControlName="checked">
-                            {{offence.get('name').value}}
+                        <label class="full-width row">
+                            <input class="col-1" type="checkbox" [value]="true" name="" formControlName="checked">
+                            <span class="col-2">{{offence.get('criminal_code').value}}</span>
+                            <span class="col-9">{{offence.get('name').value}}</span>
                         </label>
                     </app-field>
                 </div>
@@ -97,7 +104,7 @@
         <button *ngIf="!isDisabled" class="btn btn-secondary" (click)="addAdditionalCourtInfo()">+ ADD ADDITIONAL COURT FILE</button>
     </div>
 
-    <h2 class="blue-header">Accused / Offender<span *ngIf="formType === ApplicationType.NOTIFICATION"> / Respondent Information</span></h2>
+    <h2 class="blue-header">Accused / Offender Information<span *ngIf="formType === ApplicationType.NOTIFICATION"> / Respondent Information</span></h2>
     <div class="row">
         <div class="col-md-4">
             <app-field label="First Name" [required]="true" [valid]="isMyControlValid(form.get('accusedFirstName'))" errorMessage="Please enter first name" [disabled]="isDisabled">
@@ -138,13 +145,6 @@
     <div class="additionalAccused" formArrayName="additionalAccused" *ngFor="let item of form.get('additionalAccused')['controls']; let i = index;">
         <div [formGroupName]="i" class="additional-offender-info">
             <div class="row">
-                <!-- <div class="col-md-6">
-                    <app-field label="Name of Additional Accused / Offender" [disabled]="isDisabled">
-                        <input class="form-control" type="text" formControlName="name" maxlength="100">
-                    </app-field>
-                </div> -->
-
-
                 <div class="col-md-4">
                     <app-field label="First Name" [required]="true" [valid]="isMyControlValid(item.get('firstName'))" errorMessage="Please enter first name" [disabled]="isDisabled">
                         <input class="form-control" type="text" formControlName="firstName" maxlength="100">
@@ -160,9 +160,8 @@
                         <input class="form-control" type="text" formControlName="lastName" maxlength="100">
                     </app-field>
                 </div>
-
-
             </div>
+
             <div class="row">
                 <div class="col-md-6">
                     <app-field label="Birth Date" class="full-width" [disabled]="isDisabled">

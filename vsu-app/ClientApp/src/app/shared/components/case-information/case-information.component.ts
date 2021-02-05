@@ -93,6 +93,10 @@ export class CaseInformationComponent extends FormBase implements OnInit {
   }
 
   populateOffences() {
+    this.offenceList.sort((a, b) => {
+      return (parseFloat(a.vsd_criminalcode) - parseFloat(b.vsd_criminalcode));
+    });
+
     let offences = this.form.get('offences') as FormArray;
     if (offences.length > 0) return;
     this.offenceList.forEach(offence => {
