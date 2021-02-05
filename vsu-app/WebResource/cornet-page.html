@@ -987,6 +987,8 @@
         }
 
         function searchTypeChange(val) {
+
+            //test
             this.search_type = val;
             if (val === "exact") {
                 $(".given_name").removeClass("is-disabled");
@@ -1645,7 +1647,7 @@
         }
 
         function populateStateTransitions() {
-            $("#sate-transitions-table").find("tr:gt(0)").remove();
+            $("#state-transitions-table").find("tr:gt(0)").remove();
 
             state_transitions.forEach((transition, i) => {
                 let tr = `<tr>
@@ -1654,7 +1656,7 @@
                             <td>${transition.activitySubType.code}</td>
                             <td>${transition.activityReason.description}</td>
                         </tr>`;
-                $("#sate-transitions-table").append(tr);
+                $("#state-transitions-table").append(tr);
             });
         }
 
@@ -1682,7 +1684,6 @@
 
             parent.Xrm.Page.getAttribute("vsd_csnumber").setValue(client_details.clientNumber);
             parent.Xrm.Page.getAttribute("vsd_firstname").setValue(client_details.givenNames);
-            parent.Xrm.Page.getAttribute("vsd_middlename").setValue('');
             parent.Xrm.Page.getAttribute("vsd_lastname").setValue(client_details.lastName);
             parent.Xrm.Page.getAttribute("vsd_birthdate").setValue(birthdate);
             parent.Xrm.Page.getAttribute("vsd_gender").setValue(gender.val);
