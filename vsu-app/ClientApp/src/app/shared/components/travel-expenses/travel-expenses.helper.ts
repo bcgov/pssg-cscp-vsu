@@ -19,6 +19,7 @@ export class TravelExpensesHelper {
             mealExpenses: fb.array([this.addMealExpense(fb)], [Validators.required]),
             mealTotal: [{ value: 0, disabled: true }],
             otherExpenses: fb.array([this.addOtherExpense(fb)]),
+            otherTotal: [{ value: 0, disabled: true }],
 
             didYouPayChildcareExpenses: [false],
             children: fb.array([]),
