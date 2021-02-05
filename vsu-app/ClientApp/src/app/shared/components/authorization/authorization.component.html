@@ -47,7 +47,8 @@
     </app-field>
 
     <section *ngIf="formType === ApplicationType.TRAVEL_REIMBURSEMENT">
-      <label>Add receipts</label>
+      <ng-template #receiptsTemplate>Use of Statement in Lieu of Receipt must be discussed in advance with VSU staff.</ng-template>
+      <label>Add receipts<span class='tooltip-icon' data-placement="right" data-animation="true" data-show="true" [tooltip]="receiptsTemplate"><i class='fa fa-info-circle'> </i></span></label>
       <app-file-uploader [formGroup]="form" [formType]="formType" [documents]="form.get('documents')"></app-file-uploader>
     </section>
 

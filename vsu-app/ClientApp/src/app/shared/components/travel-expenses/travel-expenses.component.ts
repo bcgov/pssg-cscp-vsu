@@ -123,6 +123,7 @@ export class TravelExpensesComponent extends FormBase implements OnInit {
     removeMealExpense(index: number) {
         let mealExpenses = this.form.get('mealExpenses') as FormArray;
         mealExpenses.removeAt(index);
+        this.updateMealTotals();
     }
 
     updateMealTotals() {
@@ -148,6 +149,18 @@ export class TravelExpensesComponent extends FormBase implements OnInit {
     removeOtherExpense(index: number) {
         let otherExpenses = this.form.get('otherExpenses') as FormArray;
         otherExpenses.removeAt(index);
+        this.updateOtherTotal();
+    }
+
+    updateOtherTotal() {
+        let otherExpenses = this.form.get('otherExpenses') as FormArray;
+
+        let total = 0;
+        otherExpenses.controls.forEach(expense => {
+            let amount = expense.get('amount').value || 0;
+            total += parseFloat(amount);
+        });
+        this.form.get('otherTotal').patchValue((Math.round(total * 100 + Number.EPSILON) / 100).toFixed(2));
     }
 
     payChildcareExpensesChange(val: boolean) {

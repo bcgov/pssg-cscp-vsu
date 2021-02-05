@@ -49,7 +49,7 @@
                         </app-field>
                     </div>
                     <div class="time-div">
-                        <app-field [valid]="isMyControlValid(item.get('startTime'))" errorMessage="Please enter a vlaid time" [disabled]="isDisabled">
+                        <app-field [valid]="isMyControlValid(item.get('startTime'))" errorMessage="Please enter a valid time" [disabled]="isDisabled">
                             <div class="time-app-field">
                                 <input formControlName="startTime" type="text" mask="00 : 00" class="form-control mr-2 time-input" placeholder="00 : 00" [pattern]="timeRegex">
                                 <select formControlName="startAMPM" class="form-control ml-2">
@@ -68,7 +68,7 @@
                         </app-field>
                     </div>
                     <div class="time-div">
-                        <app-field [valid]="isMyControlValid(item.get('endTime'))" errorMessage="Please enter a vlaid time" [disabled]="isDisabled">
+                        <app-field [valid]="isMyControlValid(item.get('endTime'))" errorMessage="Please enter a valid time" [disabled]="isDisabled">
                             <div class="time-app-field">
                                 <input formControlName="endTime" type="text" mask="00 : 00" class="form-control mr-2 time-input" placeholder="00 : 00" [pattern]="timeRegex">
                                 <select formControlName="endAMPM" class="form-control ml-2">
@@ -140,11 +140,13 @@
 
     <h2 class="blue-header mt-0">Accommodation Expenses (receipts required)</h2>
 
+    <ng-template #roomRateTemplate>Daily room rate reimbursement claim should not exceed current government rate, unless prior approval granted.</ng-template>
+
     <div formArrayName="accommodationExpenses" *ngFor="let item of form.get('accommodationExpenses')['controls']; let i = index;">
         <div [formGroupName]="i" class="accommodation-expense-info">
             <div class="row">
                 <div class="col">
-                    <app-field label="Type of accommodation" [required]="false" [valid]="isMyControlValid(item.get('type'))" errorMessage="Please enter type of accommodation" [disabled]="isDisabled">
+                    <app-field label="Accommodation type" [required]="false" [valid]="isMyControlValid(item.get('type'))" errorMessage="Please enter type of accommodation" [disabled]="isDisabled">
                         <input class="form-control" type="text" formControlName="type" maxlength="100">
                     </app-field>
                 </div>
@@ -154,7 +156,7 @@
                     </app-field>
                 </div>
                 <div class="col">
-                    <app-field label="Daily room rate" [required]="false" [valid]="isMyControlValid(item.get('dailyRoomRate'))" errorMessage="Please enter daily room rate" [disabled]="isDisabled">
+                    <app-field label="Daily room rate" [required]="false" [valid]="isMyControlValid(item.get('dailyRoomRate'))" errorMessage="Please enter daily room rate" [disabled]="isDisabled" [tooltipReference]="roomRateTemplate">
                         <input class="form-control" type="text" mask="separator.2" formControlName="dailyRoomRate" maxlength="100" (input)="updateAccommodationTotal(i)">
                     </app-field>
                 </div>
@@ -244,7 +246,7 @@
                 </div>
                 <div class="col">
                     <app-field label="Amount" [required]="false" [valid]="isMyControlValid(item.get('amount'))" errorMessage="Please enter amount" [disabled]="isDisabled">
-                        <input class="form-control" type="text" mask="separator.2" formControlName="amount" maxlength="100">
+                        <input class="form-control" type="text" mask="separator.2" formControlName="amount" maxlength="100" (input)="updateOtherTotal()">
                     </app-field>
                 </div>
                 <div class="col-1 remove-button" *ngIf="form.get('otherExpenses')['controls'].length > 1 && !isDisabled">
@@ -255,16 +257,28 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-3">
+            <app-field label="Total other expenses" [required]="false" [disabled]="isDisabled">
+                <input class="form-control" type="text" mask="separator.2" prefix="$" formControlName="otherTotal" maxlength="100">
+            </app-field>
+        </div>
+    </div>
+
 
     <div class="add-additional-btn-container">
         <button *ngIf="!isDisabled" class="btn btn-secondary" (click)="addOtherExpense()">+ ADD OTHER EXPENSE</button>
     </div>
 
+    <ng-template #childCareTemplate>Reasonable child care expenses may be paid if you needed someone other than a household or family member to provide childcare in order for you to attend the court proceedings.</ng-template>
+
     <div [class.is-disabled]="isDisabled" class="mt-5">
-        <label class="inline-label inline-checkbox">
-            <input type="checkbox" [value]="true" name="didYouPayChildcareExpenses" formControlName="didYouPayChildcareExpenses" (change)="payChildcareExpensesChange($event.target.checked)">
-            <span>Did you pay childcare expenses?</span>
-        </label>
+        <app-field [disabled]="isDisabled">
+            <label class="inline-label inline-checkbox">
+                <input type="checkbox" [value]="true" name="didYouPayChildcareExpenses" formControlName="didYouPayChildcareExpenses" (change)="payChildcareExpensesChange($event.target.checked)">
+                <span>Did you pay childcare expenses?<span class='tooltip-icon' data-placement="right" data-animation="true" data-show="true" [tooltip]="childCareTemplate"><i class='fa fa-info-circle'> </i></span></span>
+            </label>
+        </app-field>
     </div>
 
     <section *ngIf="form.get('didYouPayChildcareExpenses').value == true">
