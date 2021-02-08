@@ -207,6 +207,7 @@ function getCRMTravelInfoCollection(application: iTravelFundApplication) {
 
 function getCRMProviderCollection(application: iTravelFundApplication) {
     let provider_collection: iCRMParticipant[] = [];
+    let enums = new EnumHelper();
 
     //CaseInformation Accused / Offender
     provider_collection.push({
@@ -237,7 +238,8 @@ function getCRMProviderCollection(application: iTravelFundApplication) {
                 provider_collection.push({
                     vsd_firstname: cc.firstName,
                     vsd_lastname: cc.lastName,
-                    vsd_phonenumber: cc.telephone,
+                    vsd_vsu_methodofcontact1type: cc.telephone ? enums.ContactType.Telephone.val : null,
+                    vsd_vsu_methodofcontact1number: cc.telephone,
                     vsd_relationship1: PARTICIPANT_TYPES.CROWN_COUNSEL,
                     vsd_relationship1other: "",
                 });
@@ -248,6 +250,8 @@ function getCRMProviderCollection(application: iTravelFundApplication) {
     //Victim Service Worker
     if (application.CaseInformation.victimServiceWorker) {
         application.CaseInformation.victimServiceWorker.forEach(vsw => {
+            //if any field besides okToDiscussTravel has data - we need to add this provider
+            //otherwise we don't add a vsw provider
             let testVSW = _.cloneDeep(vsw);
             delete testVSW["okToDiscussTravel"];
             if (checkObjectHasValue(testVSW)) {
@@ -255,10 +259,12 @@ function getCRMProviderCollection(application: iTravelFundApplication) {
                     vsd_firstname: vsw.firstName,
                     vsd_lastname: vsw.lastName,
                     vsd_companyname: vsw.organization,
-                    vsd_phonenumber: vsw.telephone,
-                    vsd_mainphoneextension: vsw.extension,
+                    vsd_vsu_methodofcontact1type: vsw.telephone ? enums.ContactType.Telephone.val : null,
+                    vsd_vsu_methodofcontact1number: vsw.telephone,
+                    vsd_vsu_methodofcontact1ext: vsw.extension,
                     vsd_city: vsw.city,
-                    vsd_email: vsw.email,
+                    vsd_vsu_methodofcontact2type: vsw.email ? enums.ContactType.Email.val : null,
+                    vsd_vsu_methodofcontact2number: vsw.email,
                     vsd_relationship1: PARTICIPANT_TYPES.VICTIM_SERVICE_WORKER,
                     vsd_relationship1other: "",
                 });
