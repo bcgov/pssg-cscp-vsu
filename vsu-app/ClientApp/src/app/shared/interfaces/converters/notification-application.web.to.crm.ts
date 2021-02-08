@@ -96,6 +96,7 @@ function getCRMCourtInfoCollection(application: iNotificationApplication) {
 
 function getCRMProviderCollection(application: iNotificationApplication) {
     let provider_collection: iCRMParticipant[] = [];
+    let enums = new EnumHelper();
 
     //CaseInformation Accused / Offender
     provider_collection.push({
@@ -158,10 +159,12 @@ function getCRMProviderCollection(application: iNotificationApplication) {
                 vsd_firstname: vsw.firstName,
                 vsd_lastname: vsw.lastName,
                 vsd_companyname: vsw.organization,
-                vsd_phonenumber: vsw.telephone,
-                vsd_mainphoneextension: vsw.extension,
+                vsd_vsu_methodofcontact1type: vsw.telephone ? enums.ContactType.Telephone.val : null,
+                vsd_vsu_methodofcontact1number: vsw.telephone,
+                vsd_vsu_methodofcontact1ext: vsw.extension,
                 vsd_city: vsw.city,
-                vsd_email: vsw.email,
+                vsd_vsu_methodofcontact2type: vsw.email ? enums.ContactType.Email.val : null,
+                vsd_vsu_methodofcontact2number: vsw.email,
                 vsd_relationship1: PARTICIPANT_TYPES.VICTIM_SERVICE_WORKER,
                 vsd_relationship1other: "",
             });

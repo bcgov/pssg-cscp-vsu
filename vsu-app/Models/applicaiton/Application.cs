@@ -48,6 +48,7 @@ namespace Gov.Cscp.Victims.Public.Models
         public int? vsd_vsu_oktosendmail { get; set; }
         public int? vsd_vsu_methodofcontact1type { get; set; }
         public string vsd_vsu_methodofcontact1number { get; set; }
+        public string vsd_vsu_methodofcontact1ext { get; set; }
         public int? vsd_vsu_methodofcontact1leavedetailedmessage { get; set; }
         public int? vsd_vsu_methodofcontact2type { get; set; }
         public string vsd_vsu_methodofcontact2number { get; set; }

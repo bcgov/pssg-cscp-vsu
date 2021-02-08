@@ -126,6 +126,7 @@ export interface iCRMParticipant {
 
     vsd_vsu_methodofcontact1type?: number;
     vsd_vsu_methodofcontact1number?: string;
+    vsd_vsu_methodofcontact1ext?: string;
     vsd_vsu_methodofcontact1leavedetailedmessage?: number;
     vsd_vsu_methodofcontact2type?: number;
     vsd_vsu_methodofcontact2number?: string;
