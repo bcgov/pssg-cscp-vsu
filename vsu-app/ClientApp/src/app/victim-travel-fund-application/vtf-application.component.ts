@@ -172,6 +172,7 @@ export class VictimTravelFundApplicationComponent extends FormBase implements On
                     }, 0);
                 }
                 else {
+                    this.notify.addNotification("There was an error submitting the application.", "danger", 4000);
                     console.log(res.Result);
                 }
             }, (err) => {
