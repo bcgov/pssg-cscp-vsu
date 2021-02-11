@@ -685,11 +685,11 @@
                     <button onclick="clearOffenderDetails(); showSearch();" class="btn btn-secondary">Return to Search</button>
                 </div>
                 <div class="col hidden" id="link-offender">
-                    <button onclick="linkOffender()" class="btn btn-secondary btn-link-offender">Link Offender</button>
+                    <button onclick="linkOffender()" class="btn btn-secondary btn-link-offender">Link</button>
                 </div>
-                <div class="col hidden" id="create-offender">
+                <!-- <div class="col hidden" id="create-offender">
                     <button onclick="createOffender()" class="btn btn-secondary btn-create-offender">Create Offender</button>
-                </div>
+                </div> -->
             </div>
         </div>
         <!-- END of client details section -->
@@ -951,7 +951,7 @@
                     <td>${client.personBirthDate || ''}</td>
                     <td>${client.clientNumber || ''}</td>
                     <td>${client.locationTypeCode.custody || ''}</td>
-                    <td>${client.clientNumber ? '<button onclick="viewOffenderClick(' + i + ')" class="btn btn-secondary">View Offender</button>' : ''}</td>
+                    <td>${client.clientNumber ? '<button onclick="viewOffenderClick(' + i + ')" class="btn btn-secondary">View</button>' : ''}</td>
                     
                     </tr>`;
                 $("#client-table").append(tr);
@@ -1115,7 +1115,7 @@
                     cs_number = offender.vsd_csnumber;
                     if (!OFFENDER_EXISTS_IN_COAST) {
                         disableLinkOffenderButton();
-                        disableCreateOffenderButton();
+                        // disableCreateOffenderButton();
                     }
                 }
 
@@ -1522,7 +1522,7 @@
 
             //enable link/create buttons
             enableLinkOffenderButton();
-            enableCreateOffenderButton();
+            // enableCreateOffenderButton();
         }
 
         //functions to populate the various sections of the client details page
@@ -1695,10 +1695,10 @@
             }, 2000);
         }
 
-        function createOffender() {
-            hideCreateOffenderButton();
-            console.log("TODO - create offender in coast");
-        }
+        // function createOffender() {
+        //     hideCreateOffenderButton();
+        //     console.log("TODO - create offender in coast");
+        // }
 
         function showTabContent(event, tab) {
             let toHide = TABS.filter(t => t != tab);
@@ -1753,21 +1753,21 @@
             $(".btn-link-offender").removeClass("is-disabled");
         }
 
-        function showCreateOffenderButton() {
-            $("#create-offender").removeClass("hidden");
-        }
+        // function showCreateOffenderButton() {
+        //     $("#create-offender").removeClass("hidden");
+        // }
 
-        function hideCreateOffenderButton() {
-            $("#create-offender").addClass("hidden");
-        }
+        // function hideCreateOffenderButton() {
+        //     $("#create-offender").addClass("hidden");
+        // }
 
-        function disableCreateOffenderButton() {
-            $(".btn-create-offender").addClass("is-disabled");
-        }
+        // function disableCreateOffenderButton() {
+        //     $(".btn-create-offender").addClass("is-disabled");
+        // }
 
-        function enableCreateOffenderButton() {
-            $(".btn-create-offender").removeClass("is-disabled");
-        }
+        // function enableCreateOffenderButton() {
+        //     $(".btn-create-offender").removeClass("is-disabled");
+        // }
 
         function showReturnToSearchButton() {
             $("#return-to-search").removeClass("hidden");
