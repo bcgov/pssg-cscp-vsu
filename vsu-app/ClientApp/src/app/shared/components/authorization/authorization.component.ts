@@ -37,6 +37,14 @@ export class AuthorizationComponent extends FormBase implements OnInit {
         setTimeout(() => { this.form.markAsTouched(); }, 0);
         console.log("auth info component");
         console.log(this.form);
+
+        if (this.formType === ApplicationType.TRAVEL_REIMBURSEMENT) {
+            let subTotal = this.form.parent.get('travelExpenses.subTotal').value || 0;
+            this.form.get('subTotal').patchValue(subTotal);
+            if (this.form.get('inLieuOfReceipt').value) {
+                this.updateTotalClaim();
+            }
+        }
     }
 
     showSignPad(control): void {
@@ -55,5 +63,27 @@ export class AuthorizationComponent extends FormBase implements OnInit {
             },
             err => console.log(err)
         );
+    }
+
+    inLieuOfReceiptChange(val: boolean) {
+        if (val) {
+            this.updateTotalClaim();
+        }
+        else {
+            this.form.get('travelAdvanceAlreadyPaid').patchValue('');
+            this.form.get('totalReimbursementClaim').patchValue('');
+        }
+    }
+
+    updateTotalClaim() {
+        let subTotal = this.form.get('subTotal').value || 0;
+        let advanceTotal = this.form.get('travelAdvanceAlreadyPaid').value || 0;
+
+        let total = parseFloat(subTotal) - parseFloat(advanceTotal);
+        if (total < 0) {
+            this.form.get('travelAdvanceAlreadyPaid').patchValue(subTotal)
+            total = 0;
+        }
+        this.form.get('totalReimbursementClaim').patchValue((Math.round(total * 100 + Number.EPSILON) / 100).toFixed(2));
     }
 }

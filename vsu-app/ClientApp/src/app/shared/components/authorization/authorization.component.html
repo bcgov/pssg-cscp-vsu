@@ -46,11 +46,44 @@
       </label>
     </app-field>
 
-    <section *ngIf="formType === ApplicationType.TRAVEL_REIMBURSEMENT">
+    <ng-container *ngIf="formType === ApplicationType.TRAVEL_REIMBURSEMENT">
       <ng-template #receiptsTemplate>Use of Statement in Lieu of Receipt must be discussed in advance with VSU staff.</ng-template>
       <label>Add receipts<span class='tooltip-icon' data-placement="right" data-animation="true" data-show="true" [tooltip]="receiptsTemplate"><i class='fa fa-info-circle'> </i></span></label>
       <app-file-uploader [formGroup]="form" [formType]="formType" [documents]="form.get('documents')"></app-file-uploader>
-    </section>
+
+      <div class="row">
+        <div class="col-12">
+          <label class="inline-label inline-checkbox">
+            <input type="checkbox" [value]="true" name="inLieuOfReceipt" formControlName="inLieuOfReceipt" (change)="inLieuOfReceiptChange($event.target.checked)">
+            <span>Statement in lieu of receipt.</span>
+          </label>
+        </div>
+      </div>
+
+      <ng-container *ngIf="form.get('inLieuOfReceipt').value">
+        <div class="row">
+          <div class="col-6"></div>
+          <div class="col-6">
+            <app-field label="Sub-total of all expenses" [required]="false" [disabled]="isDisabled">
+              <input class="form-control" type="text" mask="separator.2" prefix="$" formControlName="subTotal" maxlength="100">
+            </app-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-6">
+            <app-field label="Travel advance already paid" [required]="false" [valid]="isMyControlValid(form.get('travelAdvanceAlreadyPaid'))" [disabled]="isDisabled">
+              <input class="form-control" type="text" mask="separator.2" formControlName="travelAdvanceAlreadyPaid" maxlength="100" (input)="updateTotalClaim()">
+            </app-field>
+          </div>
+          <div class="col-6">
+            <app-field label="Total travel reimbursement claim" [required]="false" [disabled]="isDisabled">
+              <input class="form-control" type="text" mask="separator.2" prefix="$" formControlName="totalReimbursementClaim" maxlength="100">
+            </app-field>
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
 
     <div class="row">
       <div class="col-md-6">
