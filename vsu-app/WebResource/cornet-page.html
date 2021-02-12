@@ -307,7 +307,7 @@
                 </div>
 
                 <div class="col-3 search-button-container">
-                    <button onclick="search()" class="btn btn-primary search-button" id="search-button">SEARCH CORNET</button>
+                    <button onclick="search()" class="btn btn-primary search-button" id="search-button">SEARCH</button>
                 </div>
             </div>
 
@@ -554,11 +554,11 @@
                     <div class="col">
                         <table class="table table-striped" id="hearings-table">
                             <thead class="thead">
-                                <th>Possible Parole Date (Day)</th>
-                                <th>Possible Parole Date (Full)</th>
+                                <!-- <th>Possible Parole Date (Day)</th> -->
+                                <th>Possible Parole Date</th>
                                 <th>Hearing Purpose</th>
                                 <th>Hearing Scheduled Date</th>
-                                <th>Hearing Actual Date</th>
+                                <!-- <th>Hearing Actual Date</th> -->
                                 <th>Hearing Type Description</th>
                                 <th>Hearing Purpose Type Description</th>
                                 <th>Hearing Outcome Type Description</th>
@@ -685,11 +685,11 @@
                     <button onclick="clearOffenderDetails(); showSearch();" class="btn btn-secondary">Return to Search</button>
                 </div>
                 <div class="col hidden" id="link-offender">
-                    <button onclick="linkOffender()" class="btn btn-secondary btn-link-offender">Link Offender</button>
+                    <button onclick="linkOffender()" class="btn btn-secondary btn-link-offender">Link</button>
                 </div>
-                <div class="col hidden" id="create-offender">
+                <!-- <div class="col hidden" id="create-offender">
                     <button onclick="createOffender()" class="btn btn-secondary btn-create-offender">Create Offender</button>
-                </div>
+                </div> -->
             </div>
         </div>
         <!-- END of client details section -->
@@ -951,7 +951,7 @@
                     <td>${client.personBirthDate || ''}</td>
                     <td>${client.clientNumber || ''}</td>
                     <td>${client.locationTypeCode.custody || ''}</td>
-                    <td>${client.clientNumber ? '<button onclick="viewOffenderClick(' + i + ')" class="btn btn-secondary">View Offender</button>' : ''}</td>
+                    <td>${client.clientNumber ? '<button onclick="viewOffenderClick(' + i + ')" class="btn btn-secondary">View</button>' : ''}</td>
                     
                     </tr>`;
                 $("#client-table").append(tr);
@@ -1115,7 +1115,7 @@
                     cs_number = offender.vsd_csnumber;
                     if (!OFFENDER_EXISTS_IN_COAST) {
                         disableLinkOffenderButton();
-                        disableCreateOffenderButton();
+                        // disableCreateOffenderButton();
                     }
                 }
 
@@ -1312,6 +1312,10 @@
 
                                 getEvent(parameters).then(res => {
                                     if (res) {
+                                        res.activityDate.actualVal = '';
+                                        res.activityDate.scheduledVal = '';
+                                        if (res.activityDate.actual != null) res.activityDate.actualVal = new Date(res.activityDate.actual);
+                                        if (res.activityDate.scheduled != null) res.activityDate.scheduledVal = new Date(res.activityDate.scheduled);
                                         hearings.push(res);
                                     }
                                     resolve();
@@ -1522,7 +1526,7 @@
 
             //enable link/create buttons
             enableLinkOffenderButton();
-            enableCreateOffenderButton();
+            // enableCreateOffenderButton();
         }
 
         //functions to populate the various sections of the client details page
@@ -1617,15 +1621,17 @@
             $("#hearings-table").find("tr:gt(0)").remove();
 
             hearings.forEach((hearing, i) => {
+                // <td>${hearing.activityDate.actual || ''}</td>
+                // <td>${hearing.activityDate.actual || ''}</td>
                 let tr = `<tr>
-                            <td>${hearing.activityDate.actual}</td>
-                            <td>${hearing.activityDate.actual}</td>
-                            <td>${hearing.activityType.code}</td>
-                            <td>${hearing.activityDate.scheduled}</td>
-                            <td>${hearing.activityDate.actual}</td>
-                            <td>${hearing.activityType.description}</td>
-                            <td>${hearing.hearingRequestType.description}</td>
-                            <td>${hearing.hearingDecision.description}</td>
+                            <td>${hearing.activityDate.actualVal ? hearing.activityDate.actualVal.toLocaleString('en-us', { month: "short", day: 'numeric', year: 'numeric' }) : ''}</td>
+                            
+                            <td>${hearing.hearingCategory.description}</td>
+                            <td>${hearing.activityDate.scheduledVal ? hearing.activityDate.scheduledVal.toLocaleString('en-us', { month: "short", day: 'numeric', year: 'numeric' }) : ''}</td>
+                            
+                            <td>${hearing.activityType.description || ''}</td>
+                            <td>${hearing.hearingRequestType.description || ''}</td>
+                            <td>${hearing.hearingDecision.description || ''}</td>
                         </tr>`;
                 $("#hearings-table").append(tr);
             });
@@ -1695,10 +1701,10 @@
             }, 2000);
         }
 
-        function createOffender() {
-            hideCreateOffenderButton();
-            console.log("TODO - create offender in coast");
-        }
+        // function createOffender() {
+        //     hideCreateOffenderButton();
+        //     console.log("TODO - create offender in coast");
+        // }
 
         function showTabContent(event, tab) {
             let toHide = TABS.filter(t => t != tab);
@@ -1753,21 +1759,21 @@
             $(".btn-link-offender").removeClass("is-disabled");
         }
 
-        function showCreateOffenderButton() {
-            $("#create-offender").removeClass("hidden");
-        }
+        // function showCreateOffenderButton() {
+        //     $("#create-offender").removeClass("hidden");
+        // }
 
-        function hideCreateOffenderButton() {
-            $("#create-offender").addClass("hidden");
-        }
+        // function hideCreateOffenderButton() {
+        //     $("#create-offender").addClass("hidden");
+        // }
 
-        function disableCreateOffenderButton() {
-            $(".btn-create-offender").addClass("is-disabled");
-        }
+        // function disableCreateOffenderButton() {
+        //     $(".btn-create-offender").addClass("is-disabled");
+        // }
 
-        function enableCreateOffenderButton() {
-            $(".btn-create-offender").removeClass("is-disabled");
-        }
+        // function enableCreateOffenderButton() {
+        //     $(".btn-create-offender").removeClass("is-disabled");
+        // }
 
         function showReturnToSearchButton() {
             $("#return-to-search").removeClass("hidden");

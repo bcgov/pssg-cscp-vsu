@@ -122,7 +122,7 @@
                 </div>
                 <div class="col">
                     <app-field label="Expenses" [required]="false" [valid]="isMyControlValid(item.get('amount'))" errorMessage="Please enter mileage expenses" [disabled]="isDisabled">
-                        <input class="form-control" type="text" mask="separator.2" formControlName="amount" maxlength="100">
+                        <input class="form-control" type="text" mask="separator.2" formControlName="amount" maxlength="100" (input)="updateSubTotal()">
                     </app-field>
                 </div>
                 <div class="col-1 remove-button" *ngIf="form.get('otherTransportationExpenses')['controls'].length > 1 && !isDisabled">
@@ -281,7 +281,7 @@
         </app-field>
     </div>
 
-    <section *ngIf="form.get('didYouPayChildcareExpenses').value == true">
+    <ng-container *ngIf="form.get('didYouPayChildcareExpenses').value == true">
         <p><strong>Childcare Expenses (receipts required)</strong></p>
 
         <div formArrayName="children" *ngFor="let item of form.get('children')['controls']; let i = index;">
@@ -343,7 +343,7 @@
                     </div>
                     <div class="col">
                         <app-field label="Amount paid" [required]="true" [valid]="isMyControlValid(item.get('amountPaid'))" errorMessage="Please enter amount paid" [disabled]="isDisabled">
-                            <input class="form-control" type="text" mask="separator.2" formControlName="amountPaid" maxlength="100">
+                            <input class="form-control" type="text" mask="separator.2" formControlName="amountPaid" maxlength="100" (input)="updateSubTotal()">
                         </app-field>
                     </div>
                 </div>
@@ -353,7 +353,26 @@
         <div class="add-additional-btn-container">
             <button *ngIf="!isDisabled" class="btn btn-secondary" (click)="addChild()">+ ADD CHILD</button>
         </div>
+    </ng-container>
 
-    </section>
-
+    <div class="row">
+        <div class="col-6"></div>
+        <div class="col-6">
+            <app-field label="Sub-total of all expenses" [required]="false" [disabled]="isDisabled">
+                <input class="form-control" type="text" mask="separator.2" prefix="$" formControlName="subTotal" maxlength="100">
+            </app-field>
+        </div>
+    </div>
+    <!-- <div class="row">
+        <div class="col-6">
+            <app-field label="Travel advance already paid" [required]="false" [valid]="isMyControlValid(form.get('travelAdvanceAlreadyPaid'))" [disabled]="isDisabled">
+                <input class="form-control" type="text" mask="separator.2" formControlName="travelAdvanceAlreadyPaid" maxlength="100" (input)="updateTotalClaim()">
+            </app-field>
+        </div>
+        <div class="col-6">
+            <app-field label="Total travel reimbursement claim" [required]="false" [disabled]="isDisabled">
+                <input class="form-control" type="text" mask="separator.2" prefix="$" formControlName="totalReimbursementClaim" maxlength="100">
+            </app-field>
+        </div>
+    </div> -->
 </div>

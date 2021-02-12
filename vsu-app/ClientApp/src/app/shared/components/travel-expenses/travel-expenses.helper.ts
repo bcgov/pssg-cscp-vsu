@@ -24,8 +24,10 @@ export class TravelExpensesHelper {
             didYouPayChildcareExpenses: [false],
             children: fb.array([]),
 
+            subTotal: [{ value: 0, disabled: true }],
 
-            additionalComments: [''],
+            travelAdvanceAlreadyPaid: [''],
+            totalReimbursementClaim: [{ value: 0, disabled: true }],
         }
         return fb.group(group);
     }

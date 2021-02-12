@@ -155,6 +155,7 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
                     }, 0);
                 }
                 else {
+                    this.notify.addNotification("There was an error submitting the application.", "danger", 4000);
                     console.log(res.Result);
                 }
             }, (err) => {
