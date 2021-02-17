@@ -4,8 +4,6 @@ import { ApplicationType } from "../../enums-list";
 import { FormBase } from "../../form-base";
 import { iLookupData } from "../../interfaces/lookup-data.interface";
 import * as _ from 'lodash';
-import { CaseService } from "../../../services/case.service";
-import { ContactService } from "../../../services/contact.service";
 
 @Component({
     selector: 'app-vtf-case-information',
@@ -22,8 +20,6 @@ export class VTFCaseInformationComponent extends FormBase implements OnInit {
     didCheck: boolean = false;
 
     constructor(private controlContainer: ControlContainer,
-        private caseService: CaseService,
-        private contactService: ContactService,
     ) {
         super();
     }
@@ -58,39 +54,5 @@ export class VTFCaseInformationComponent extends FormBase implements OnInit {
         else {
             //haven't filled in all fields
         }
-    }
-
-    getContactIdFromCase(caseNumber) {
-        this.caseService.getCaseByCaseNumber(caseNumber).subscribe((caseRes: any) => {
-            console.log("case res");
-            console.log(caseRes);
-            if (caseRes.value && caseRes.value.length > 0) {
-                let contactId = caseRes.value[0]._customerid_value;
-                console.log(contactId);
-                if (contactId) {
-                    this.getContact(contactId);
-                }
-            }
-            else {
-                this.clearVTFApplicant(this.form.parent);
-            }
-        }, (err) => {
-            console.log(err);
-        });
-    }
-
-    getContact(contactId) {
-        this.contactService.getContact(contactId).subscribe((contactRes: any) => {
-            console.log("contact res");
-            console.log(contactRes);
-            if (contactRes) {
-                this.setVTFApplicant(contactRes, this.form.parent);
-            }
-            else {
-                this.clearVTFApplicant(this.form.parent);
-            }
-        }, (err) => {
-            console.log(err);
-        });
     }
 }

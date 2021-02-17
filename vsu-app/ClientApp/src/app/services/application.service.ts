@@ -19,6 +19,13 @@ export class ApplicationService {
         );
     }
 
+    submitTEST(application: any): Observable<any> {
+        return this.http.post<any>(`${this.apiUrl}`, application, { headers: this.headers }).pipe(
+            retry(3),
+            catchError(this.handleError)
+        );
+    }
+
     testSplunk(): Observable<any> {
         return this.http.get<any>(`${this.apiUrl}`, { headers: this.headers }).pipe(
             retry(3),

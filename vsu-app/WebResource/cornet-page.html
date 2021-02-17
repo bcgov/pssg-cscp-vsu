@@ -501,13 +501,13 @@
                         <table class="table table-striped" id="offences-table">
                             <thead class="thead">
                                 <th>File #</th>
-                                <th>Seq #</th>
-                                <th>Court</th>
+                                <th>Count #</th>
+                                <th>Court Location</th>
                                 <th>Act</th>
                                 <th>Section</th>
                                 <th>Sub.</th>
                                 <th>Description</th>
-                                <th>Doc Type</th>
+                                <th>Doc. Type</th>
                                 <th>Expiry</th>
                             </thead>
 
@@ -685,7 +685,7 @@
                     <button onclick="clearOffenderDetails(); showSearch();" class="btn btn-secondary">Return to Search</button>
                 </div>
                 <div class="col hidden" id="link-offender">
-                    <button onclick="linkOffender()" class="btn btn-secondary btn-link-offender">Link</button>
+                    <button onclick="linkOffenderClick()" class="btn btn-secondary btn-link-offender">Link</button>
                 </div>
                 <!-- <div class="col hidden" id="create-offender">
                     <button onclick="createOffender()" class="btn btn-secondary btn-create-offender">Create Offender</button>
@@ -705,8 +705,9 @@
 
         const FormTypes = {
             OFFENDER: 0,
-            OTHER: 1,
-            NONE: 2
+            SUBJECT: 1,
+            OTHER: 2,
+            NONE: 3
         }
 
         const TABS = [
@@ -782,8 +783,6 @@
         //number of search table rows to show at a time, the rest are paginated
         const ROWS_SHOWN = 5;
 
-        //controls whether to show Link/Create buttons
-        let BUTTON_STATUS = OffenderButtonStatus.NONE;
         //CRM form the webresource is hosted in
         //if on the Offender form we need to either show search + Link ability, or we just show the already linked details
         //TODO - some other source form will be search + create ability
@@ -823,11 +822,9 @@
 
                 if (cs_number) {
                     OFFENDER_EXISTS_IN_COAST = true;
-                    BUTTON_STATUS = OffenderButtonStatus.NONE;
                     showOffender(cs_number);
                 }
                 else {
-                    BUTTON_STATUS = OffenderButtonStatus.SHOW_LINK;
                     showLinkOffenderButton();
                     showReturnToSearchButton();
                     showSearch();
@@ -854,9 +851,15 @@
                     }
                 }
             }
-            else {
+            else if (entity == "vsd_offender") {
+                FORM_TYPE = FormTypes.SUBJECT;
                 showReturnToSearchButton();
+                showLinkOffenderButton();
+                showSearch();
+            }
+            else {
                 FORM_TYPE = FormTypes.OTHER;
+                showReturnToSearchButton();
                 showSearch();
             }
         };
@@ -1113,10 +1116,12 @@
                 if (!$.isEmptyObject(offender)) {
                     coastInfo = offender;
                     cs_number = offender.vsd_csnumber;
-                    if (!OFFENDER_EXISTS_IN_COAST) {
-                        disableLinkOffenderButton();
-                        // disableCreateOffenderButton();
-                    }
+                    disableLinkOffenderButton();
+                    //TODO - add something to indicate the the reason the button is disabled is becase this cornet offender already exists in COAST
+                    // if (!OFFENDER_EXISTS_IN_COAST) {
+                    // disableLinkOffenderButton();
+                    // disableCreateOffenderButton();
+                    // }
                 }
 
                 if (cs_number) {
@@ -1678,6 +1683,15 @@
             $("#victimEmail").val(victim.emailType.emailAddress);
         }
 
+        function linkOffenderClick() {
+            if (FORM_TYPE === FormTypes.OFFENDER) {
+                linkOffender();
+            }
+            else if (FORM_TYPE === FormTypes.SUBJECT) {
+                createAndLink();
+            }
+        }
+
         function linkOffender() {
             hideLinkOffenderButton();
             hideReturnToSearchButton();
@@ -1701,10 +1715,12 @@
             }, 2000);
         }
 
-        // function createOffender() {
-        //     hideCreateOffenderButton();
-        //     console.log("TODO - create offender in coast");
-        // }
+        function createAndLink() {
+            // hideLinkOffenderButton();
+            // hideReturnToSearchButton();
+            // showLoadingSpinner();
+            console.log("TODO - create offender in coast, then Link that offender to this subject");
+        }
 
         function showTabContent(event, tab) {
             let toHide = TABS.filter(t => t != tab);

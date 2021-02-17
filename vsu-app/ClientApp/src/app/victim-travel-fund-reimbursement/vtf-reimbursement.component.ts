@@ -12,6 +12,7 @@ import { Title } from "@angular/platform-browser";
 import { VTFCaseInfoHelper } from "../shared/components/vtf-case-information/vtf-case-information.helper";
 import { iLookupData } from "../shared/interfaces/lookup-data.interface";
 import { TravelExpensesHelper } from "../shared/components/travel-expenses/travel-expenses.helper";
+import { convertTravelFundApplicationToCRM } from "../shared/interfaces/converters/travel-fund-application.web.to.crm";
 
 enum PAGES {
     CASE_INFORMATION,
@@ -145,41 +146,41 @@ export class VictimTravelFundReimbursementComponent extends FormBase implements 
 
     submit() {
         console.log("TODO -submit");
-        this.applicationService.testSplunk().subscribe((res) => {
-            console.log(res);
-        }, (err) => {
-            console.log(err);
-        });
-        // console.log(this.form);
-        // if (this.form.valid) {
-        //     this.submitting = true;
-        //     console.log("form is valid - submit");
-        //     let application = this.harvestForm();
-        //     let data = convertTravelFundApplicationToCRM(application);
-        //     console.log(data);
-        //     this.applicationService.submit(data).subscribe((res) => {
-        //         this.submitting = false;
-        //         console.log(res);
-        //         if (res.IsSuccess) {
-        //             console.log("CONFIRMATION NUMBER SHOULD COME FROM CRM");
-        //             this.form.get('confirmation.confirmationNumber').patchValue('RXXXXXX');
-        //             this.showConfirmation = true;
-        //             setTimeout(() => {
-        //                 this.gotoNextStep(this.applicationStepper);
-        //             }, 0);
-        //         }
-        //         else {
-        //             console.log(res.Result);
-        //         }
-        //     }, (err) => {
-        //         this.notify.addNotification("There was an error submitting the application.", "danger", 4000);
-        //         console.log(err);
-        //         this.submitting = false;
-        //     });
-        // }
-        // else {
-        //     console.log("form is NOT valid - NO submit");
-        //     this.validateAllFormFields(this.form);
-        // }
+        // this.applicationService.testSplunk().subscribe((res) => {
+        //     console.log(res);
+        // }, (err) => {
+        //     console.log(err);
+        // });
+        console.log(this.form);
+        if (this.form.valid) {
+            this.submitting = true;
+            console.log("form is valid - submit");
+            let application = this.harvestForm();
+            let data = {};
+            console.log(data);
+            this.applicationService.submitTEST(data).subscribe((res) => {
+                this.submitting = false;
+                console.log(res);
+                if (res.IsSuccess) {
+                    console.log("CONFIRMATION NUMBER SHOULD COME FROM CRM");
+                    this.form.get('confirmation.confirmationNumber').patchValue('RXXXXXX');
+                    this.showConfirmation = true;
+                    setTimeout(() => {
+                        this.gotoNextStep(this.applicationStepper);
+                    }, 0);
+                }
+                else {
+                    console.log(res.Result);
+                }
+            }, (err) => {
+                this.notify.addNotification("There was an error submitting the application.", "danger", 4000);
+                console.log(err);
+                this.submitting = false;
+            });
+        }
+        else {
+            console.log("form is NOT valid - NO submit");
+            this.validateAllFormFields(this.form);
+        }
     }
 }

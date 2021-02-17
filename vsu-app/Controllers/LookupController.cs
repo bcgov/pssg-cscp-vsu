@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Gov.Cscp.Victims.Public.Services;
 using Gov.Cscp.Victims.Public.Models;
+using Serilog;
+using System;
 
 namespace Gov.Cscp.Victims.Public.Controllers
 {
@@ -9,10 +11,12 @@ namespace Gov.Cscp.Victims.Public.Controllers
     public class LookupController : Controller
     {
         private readonly IDynamicsResultService _dynamicsResultService;
+        private readonly ILogger _logger;
 
         public LookupController(IDynamicsResultService dynamicsResultService)
         {
             this._dynamicsResultService = dynamicsResultService;
+            _logger = Log.Logger;
         }
 
         [HttpGet("countries")]
@@ -23,6 +27,11 @@ namespace Gov.Cscp.Victims.Public.Controllers
                 string endpointUrl = "vsd_countries?$select=vsd_name&$filter=statecode eq 0";
                 DynamicsResult result = await _dynamicsResultService.Get(endpointUrl);
                 return StatusCode((int)result.statusCode, result.result.ToString());
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e, "Unexpected error while looking up countries in COAST");
+                return BadRequest();
             }
             finally { }
         }
@@ -36,6 +45,11 @@ namespace Gov.Cscp.Victims.Public.Controllers
                 DynamicsResult result = await _dynamicsResultService.Get(endpointUrl);
                 return StatusCode((int)result.statusCode, result.result.ToString());
             }
+            catch (Exception e)
+            {
+                _logger.Error(e, "Unexpected error while looking up provinces in COAST");
+                return BadRequest();
+            }
             finally { }
         }
 
@@ -47,6 +61,11 @@ namespace Gov.Cscp.Victims.Public.Controllers
                 string endpointUrl = "vsd_cities?$select=_vsd_countryid_value,vsd_name,_vsd_stateid_value&$filter=statecode eq 0";
                 DynamicsResult result = await _dynamicsResultService.Get(endpointUrl);
                 return StatusCode((int)result.statusCode, result.result.ToString());
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e, "Unexpected error while looking up cities in COAST");
+                return BadRequest();
             }
             finally { }
         }
@@ -77,6 +96,11 @@ namespace Gov.Cscp.Victims.Public.Controllers
                 DynamicsResult result = await _dynamicsResultService.Post(endpointUrl, requestJson);
                 return StatusCode((int)result.statusCode, result.result.ToString());
             }
+            catch (Exception e)
+            {
+                _logger.Error(e, "Unexpected error while searching cities in COAST");
+                return BadRequest();
+            }
             finally { }
         }
 
@@ -90,6 +114,11 @@ namespace Gov.Cscp.Victims.Public.Controllers
                 DynamicsResult result = await _dynamicsResultService.Get(endpointUrl);
                 return StatusCode((int)result.statusCode, result.result.ToString());
             }
+            catch (Exception e)
+            {
+                _logger.Error(e, "Unexpected error while looking up cities by country in COAST");
+                return BadRequest();
+            }
             finally { }
         }
 
@@ -101,6 +130,11 @@ namespace Gov.Cscp.Victims.Public.Controllers
                 string endpointUrl = $"vsd_cities?$select=_vsd_countryid_value,vsd_name,_vsd_stateid_value&$filter=statecode eq 0 and _vsd_countryid_value eq {countryId} and _vsd_stateid_value eq {provinceId}";
                 DynamicsResult result = await _dynamicsResultService.Get(endpointUrl);
                 return StatusCode((int)result.statusCode, result.result.ToString());
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e, "Unexpected error while looking up cities by province in COAST");
+                return BadRequest();
             }
             finally { }
         }
@@ -114,6 +148,11 @@ namespace Gov.Cscp.Victims.Public.Controllers
                 DynamicsResult result = await _dynamicsResultService.Get(endpointUrl);
                 return StatusCode((int)result.statusCode, result.result.ToString());
             }
+            catch (Exception e)
+            {
+                _logger.Error(e, "Unexpected error while looking up courts in COAST");
+                return BadRequest();
+            }
             finally { }
         }
 
@@ -125,6 +164,11 @@ namespace Gov.Cscp.Victims.Public.Controllers
                 string endpointUrl = "vsd_offenses?$select=vsd_name,vsd_offenseid,vsd_criminalcode&$filter=statecode eq 0 and vsd_vsu_travelfundoffences eq 100000001";
                 DynamicsResult result = await _dynamicsResultService.Get(endpointUrl);
                 return StatusCode((int)result.statusCode, result.result.ToString());
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e, "Unexpected error while looking up offences in COAST");
+                return BadRequest();
             }
             finally { }
         }
