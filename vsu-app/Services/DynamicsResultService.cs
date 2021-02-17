@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Net;
 using System.Threading.Tasks;
 using System;
+using Serilog;
 
 namespace Gov.Cscp.Victims.Public.Services
 {
@@ -17,11 +18,13 @@ namespace Gov.Cscp.Victims.Public.Services
     {
         private HttpClient _client;
         private IConfiguration _configuration;
+        private readonly ILogger _logger;
 
         public DynamicsResultService(IConfiguration configuration, HttpClient httpClient)
         {
             _client = httpClient;
             _configuration = configuration;
+            _logger = Log.Logger;
         }
 
         public async Task<DynamicsResult> Get(string endpointUrl)
@@ -38,13 +41,13 @@ namespace Gov.Cscp.Victims.Public.Services
 
         private async Task<DynamicsResult> DynamicsResultAsync(HttpMethod method, string endpointUrl, string requestJson)
         {
-            endpointUrl = _configuration["DYNAMICS_ODATA_URI"] + endpointUrl;
+            string fullEndpoint = _configuration["DYNAMICS_ODATA_URI"] + endpointUrl;
             requestJson = requestJson.Replace("fortunecookie", "@odata.");
 
-            Console.WriteLine(endpointUrl);
+            Console.WriteLine(fullEndpoint);
             Console.WriteLine(requestJson);
 
-            HttpRequestMessage _httpRequest = new HttpRequestMessage(method, endpointUrl);
+            HttpRequestMessage _httpRequest = new HttpRequestMessage(method, fullEndpoint);
             _httpRequest.Content = new StringContent(requestJson, System.Text.Encoding.UTF8, "application/json");
 
             HttpResponseMessage _httpResponse = await _client.SendAsync(_httpRequest);
@@ -57,6 +60,11 @@ namespace Gov.Cscp.Victims.Public.Services
             result.responseMessage = _httpResponse;
             string clean = _responseContent.Replace("@odata.", "fortunecookie");
             result.result = Newtonsoft.Json.Linq.JObject.Parse(clean);
+
+            if (result.result.ContainsKey("IsSuccess") && result.result["IsSuccess"].ToString().Equals("False"))
+            {
+                _logger.Error($"Error calling API function {endpointUrl}. Error is:\n{result.result}");
+            }
 
             Console.WriteLine(result.result);
 

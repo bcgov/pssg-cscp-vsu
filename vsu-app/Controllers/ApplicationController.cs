@@ -1,11 +1,11 @@
 using Gov.Cscp.Victims.Public.Models;
 using Gov.Cscp.Victims.Public.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Serilog;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Microsoft.Rest;
-using Serilog;
-using Microsoft.Extensions.Configuration;
+using System;
 
 namespace Gov.Cscp.Victims.Public.Controllers
 {
@@ -21,17 +21,6 @@ namespace Gov.Cscp.Victims.Public.Controllers
             _logger = Log.Logger;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> TestSplunk([FromBody] ApplicationData model)
-        {
-            try
-            {
-                _logger.Error("Test splunk error message");
-                return Ok();
-            }
-            finally { }
-        }
-
         [HttpPost]
         public async Task<IActionResult> SubmitApplication([FromBody] ApplicationData model)
         {
@@ -39,6 +28,7 @@ namespace Gov.Cscp.Victims.Public.Controllers
             {
                 if (!ModelState.IsValid)
                 {
+                    _logger.Error($"API call to 'SubmitApplication' made with invalid model state. Error is:\n{ModelState}");
                     return BadRequest(ModelState);
                 }
 
@@ -49,9 +39,9 @@ namespace Gov.Cscp.Victims.Public.Controllers
                 DynamicsResult result = await _dynamicsResultService.Post(endpointUrl, modelString);
                 return StatusCode((int)result.statusCode, result.result.ToString());
             }
-            catch (HttpOperationException httpOperationException)
+            catch (Exception e)
             {
-                _logger.Error(httpOperationException, "Unexpected error while submitting application");
+                _logger.Error(e, "Unexpected error while submitting application");
                 return BadRequest();
             }
             finally { }
