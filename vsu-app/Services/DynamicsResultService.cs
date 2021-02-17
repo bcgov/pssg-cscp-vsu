@@ -1,5 +1,6 @@
 ﻿using Gov.Cscp.Victims.Public.Models;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Rest;
 using System.Net.Http;
 using System.Net;
 using System.Threading.Tasks;
@@ -63,7 +64,7 @@ namespace Gov.Cscp.Victims.Public.Services
 
             if (result.result.ContainsKey("IsSuccess") && result.result["IsSuccess"].ToString().Equals("False"))
             {
-                _logger.Error($"Error calling API function {endpointUrl}. Error is:\n{result.result}");
+                _logger.Error(new HttpOperationException($"Error calling API function {endpointUrl}"), $"Error calling API function {endpointUrl}. Error is:\n{result.result}\n\nJSON sent:{requestJson}", result.result, requestJson);
             }
 
             Console.WriteLine(result.result);
