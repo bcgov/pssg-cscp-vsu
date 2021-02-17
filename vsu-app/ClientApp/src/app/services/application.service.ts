@@ -26,12 +26,12 @@ export class ApplicationService {
         );
     }
 
-    testSplunk(): Observable<any> {
-        return this.http.get<any>(`${this.apiUrl}`, { headers: this.headers }).pipe(
-            retry(3),
-            catchError(this.handleError)
-        );
-    }
+    // testSplunk(): Observable<any> {
+    //     return this.http.get<any>(`${this.apiUrl}`, { headers: this.headers }).pipe(
+    //         retry(3),
+    //         catchError(this.handleError)
+    //     );
+    // }
 
     get headers(): HttpHeaders {
         return new HttpHeaders({ 'Content-Type': 'application/json' });
