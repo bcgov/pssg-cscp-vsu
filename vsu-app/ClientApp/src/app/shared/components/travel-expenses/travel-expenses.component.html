@@ -51,7 +51,7 @@
                     <div class="time-div">
                         <app-field [valid]="isMyControlValid(item.get('startTime'))" errorMessage="Please enter a valid time" [disabled]="isDisabled">
                             <div class="time-app-field">
-                                <input formControlName="startTime" type="text" mask="00 : 00" class="form-control mr-2 time-input" placeholder="00 : 00" [pattern]="timeRegex">
+                                <input formControlName="startTime" type="text" mask="00 : 00" class="form-control mr-2 time-input" placeholder="00 : 00" [pattern]="timeRegex" (change)="autoFormatTime(item.get('startTime'))">
                                 <select formControlName="startAMPM" class="form-control ml-2">
                                     <option value="AM">AM</option>
                                     <option value="PM">PM</option>
@@ -70,7 +70,7 @@
                     <div class="time-div">
                         <app-field [valid]="isMyControlValid(item.get('endTime'))" errorMessage="Please enter a valid time" [disabled]="isDisabled">
                             <div class="time-app-field">
-                                <input formControlName="endTime" type="text" mask="00 : 00" class="form-control mr-2 time-input" placeholder="00 : 00" [pattern]="timeRegex">
+                                <input formControlName="endTime" type="text" mask="00 : 00" class="form-control mr-2 time-input" placeholder="00 : 00" [pattern]="timeRegex" (change)="autoFormatTime(item.get('endTime'))">
                                 <select formControlName="endAMPM" class="form-control ml-2">
                                     <option value="AM">AM</option>
                                     <option value="PM">PM</option>

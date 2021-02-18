@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { ControlContainer, FormArray, FormBuilder, FormGroup } from "@angular/forms";
+import { AbstractControl, ControlContainer, FormArray, FormBuilder, FormGroup } from "@angular/forms";
 import { ApplicationType, MY_FORMATS } from "../../enums-list";
 import { FormBase } from "../../form-base";
 import { iLookupData } from "../../interfaces/lookup-data.interface";
