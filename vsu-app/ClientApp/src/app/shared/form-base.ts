@@ -66,6 +66,15 @@ export class FormBase {
         }
     }
 
+    autoFormatTime(control: AbstractControl) {
+        let time: string = control.value;
+        let val = parseInt(time);
+        if (time.length == 1) time = "0" + time + "00";
+        if (time.length == 2 && val >= 10 && val <= 12) time = time + "00";
+        if (time.length == 3) time = "0" + time;
+        control.patchValue(time);
+    }
+
     getErrors(formGroup: any, errors: any = {}) {
         Object.keys(formGroup.controls).forEach(field => {
             const control = formGroup.get(field);
@@ -121,8 +130,6 @@ export class FormBase {
 
         return control.value;
     }
-
-
 
     public hasValueSet(controlName: string): boolean {
         var control = this.form.get(controlName);
@@ -202,7 +209,6 @@ export class FormBase {
         let contactMethods = base_form.get('contactMethods') as FormArray;
         for (let i = 0; i < contactMethods.controls.length; ++i) {
             let thisMethod = contactMethods.controls[i];
-            //&& thisMethod.get('leaveMessage').value == this.enum.Boolean.True.val
             if (thisMethod.get('val').value && thisMethod.get('val').valid && thisMethod.get('leaveMessage').valid) {
                 isValid = true;
             }
@@ -293,12 +299,6 @@ export class FormBase {
             victimInfo.get('gender').disable(options);
         }
         else {
-            // victimInfo.get('firstName').patchValue('');
-            // victimInfo.get('middleName').patchValue('');
-            // victimInfo.get('lastName').patchValue('');
-            // victimInfo.get('birthDate').patchValue('');
-            // victimInfo.get('gender').patchValue('');
-
             victimInfo.get('firstName').enable(options);
             victimInfo.get('middleName').enable(options);
             victimInfo.get('lastName').enable(options);
@@ -338,12 +338,6 @@ export class FormBase {
             applicantInfo.get('gender').disable(options);
         }
         else {
-            // applicantInfo.get('firstName').patchValue('');
-            // applicantInfo.get('middleName').patchValue('');
-            // applicantInfo.get('lastName').patchValue('');
-            // applicantInfo.get('birthDate').patchValue('');
-            // applicantInfo.get('gender').patchValue('');
-
             applicantInfo.get('firstName').enable(options);
             applicantInfo.get('middleName').enable(options);
             applicantInfo.get('lastName').enable(options);
@@ -374,10 +368,6 @@ export class FormBase {
         applicantInfo.get('middleName').setErrors(null, options);
         applicantInfo.get('lastName').setErrors(null, options);
 
-        // applicantInfo.get('firstName').disable(options);
-        // applicantInfo.get('middleName').disable(options);
-        // applicantInfo.get('lastName').disable(options);
-
         applicantInfo.get('address.line1').patchValue(contact.address1_line1);
         applicantInfo.get('address.line2').patchValue(contact.address1_line2);
         applicantInfo.get('address.city').patchValue(contact.address1_city);
@@ -391,13 +381,6 @@ export class FormBase {
         applicantInfo.get('address.postalCode').setErrors(null, options);
         applicantInfo.get('address.province').setErrors(null, options);
         applicantInfo.get('address.country').setErrors(null, options);
-
-        // applicantInfo.get('address.line1').disable(options);
-        // applicantInfo.get('address.line2').disable(options);
-        // applicantInfo.get('address.city').disable(options);
-        // applicantInfo.get('address.postalCode').disable(options);
-        // applicantInfo.get('address.province').disable(options);
-        // applicantInfo.get('address.country').disable(options);
     }
 
     clearVTFApplicant(form: FormGroup | FormArray) {
@@ -408,23 +391,12 @@ export class FormBase {
         applicantInfo.get('middleName').patchValue('');
         applicantInfo.get('lastName').patchValue('');
 
-        // applicantInfo.get('firstName').setErrors(null, options);
-        // applicantInfo.get('middleName').setErrors(null, options);
-        // applicantInfo.get('lastName').setErrors(null, options);
-
         applicantInfo.get('address.line1').patchValue('');
         applicantInfo.get('address.line2').patchValue('');
         applicantInfo.get('address.city').patchValue('');
         applicantInfo.get('address.postalCode').patchValue('');
         applicantInfo.get('address.province').patchValue('');
         applicantInfo.get('address.country').patchValue('');
-
-        // applicantInfo.get('address.line1').setErrors(null, options);
-        // applicantInfo.get('address.line2').setErrors(null, options);
-        // applicantInfo.get('address.city').setErrors(null, options);
-        // applicantInfo.get('address.postalCode').setErrors(null, options);
-        // applicantInfo.get('address.province').setErrors(null, options);
-        // applicantInfo.get('address.country').setErrors(null, options);
 
         applicantInfo.markAsPristine();
         applicantInfo.updateValueAndValidity();

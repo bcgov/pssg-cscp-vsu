@@ -687,7 +687,7 @@
                 <div class="col hidden" id="link-offender">
                     <button onclick="linkOffenderClick()" class="btn btn-secondary btn-link-offender">Link</button>
                 </div>
-                <!-- <div class="col hidden" id="create-offender">
+                <!-- <div class="col hidden" id="offender-already-linked">
                     <button onclick="createOffender()" class="btn btn-secondary btn-create-offender">Create Offender</button>
                 </div> -->
             </div>
@@ -851,11 +851,24 @@
                     }
                 }
             }
-            else if (entity == "vsd_offender") {
+            else if (entity == "vsd_caseoffender") {
                 FORM_TYPE = FormTypes.SUBJECT;
-                showReturnToSearchButton();
-                showLinkOffenderButton();
-                showSearch();
+
+                let offender = parent.Xrm.Page.getAttribute("vsd_offender").getValue();
+                let cs_number = "";
+                if (offender && offender.length > 0 && offender[0].name) {
+                    cs_number = offender[0].name;
+                }
+
+                if (cs_number) {
+                    OFFENDER_EXISTS_IN_COAST = true;
+                    showOffender(cs_number);
+                }
+                else {
+                    showReturnToSearchButton();
+                    showLinkOffenderButton();
+                    showSearch();
+                }
             }
             else {
                 FORM_TYPE = FormTypes.OTHER;
@@ -919,7 +932,6 @@
                     let parsed = JSON.parse(res);
                     if (parsed && parsed.Result) {
                         if ((!parsed.IsSuccess) || parsed.Result.includes("No Content")) {
-                            console.log("no results from cornet");
                             //remove any old rows in the table and remove the paginator
                             emptySearchResultsTable();
                             let nav = $("#nav");
@@ -1114,14 +1126,30 @@
                     cs_number = id;
                 }
                 if (!$.isEmptyObject(offender)) {
+                    OFFENDER_EXISTS_IN_COAST = true;
                     coastInfo = offender;
                     cs_number = offender.vsd_csnumber;
-                    disableLinkOffenderButton();
+
+
+                    if (FORM_TYPE === FormTypes.OFFENDER) {
+                        disableLinkOffenderButton();
+                    }
+                    if (FORM_TYPE === FormTypes.SUBJECT) {
+                        //check if this offender is linked to any other subject
+                        isOffenderAlreadyLinkedToSubject().then((already_linked) => {
+                            if (already_linked) {
+                                disableLinkOffenderButton();
+                            }
+                        });
+                    }
                     //TODO - add something to indicate the the reason the button is disabled is becase this cornet offender already exists in COAST
                     // if (!OFFENDER_EXISTS_IN_COAST) {
                     // disableLinkOffenderButton();
                     // disableCreateOffenderButton();
                     // }
+                }
+                else {
+                    OFFENDER_EXISTS_IN_COAST = false;
                 }
 
                 if (cs_number) {
@@ -1136,7 +1164,8 @@
                             client_details = res.find(o => o.isCurrentName === "Y");
                             if (res.length > 1) {
                                 let aliases = res.filter(c => c.isCurrentName == "N");
-                                client_details.aliases = aliases.map(a => a.personName).join(', ');
+                                client_details.aliases = aliases.map(a => a.personName.replace(/,/g, '')).join(', ');
+                                client_details.aliasesForCRM = aliases.map(a => (a.personName + " - " + a.personBirthDate)).join('\n');
                             }
 
                             let curr_client = res.find(c => c.isCurrentName == "Y");
@@ -1241,7 +1270,6 @@
             }).catch(err => {
                 reject(err);
             });
-
         }
 
         //get all cornet notifications in coast for this cs number
@@ -1536,8 +1564,8 @@
 
         //functions to populate the various sections of the client details page
         function populateSubjectInformation() {
-            console.log("setting subject info");
-            console.log(client_details);
+            // console.log("setting subject info");
+            // console.log(client_details);
 
             $("#offenderLastName").val(client_details.lastName);
             $("#offenderGivenNames").val(client_details.givenNames);
@@ -1692,6 +1720,7 @@
             }
         }
 
+        //Sets COAST offender info to that of the info we have from Cornet
         function linkOffender() {
             hideLinkOffenderButton();
             hideReturnToSearchButton();
@@ -1705,7 +1734,7 @@
             parent.Xrm.Page.getAttribute("vsd_lastname").setValue(client_details.lastName);
             parent.Xrm.Page.getAttribute("vsd_birthdate").setValue(birthdate);
             parent.Xrm.Page.getAttribute("vsd_gender").setValue(gender.val);
-            parent.Xrm.Page.getAttribute("vsd_aliasnames").setValue(client_details.aliases);
+            parent.Xrm.Page.getAttribute("vsd_aliasnames").setValue(client_details.aliasesForCRM);
             parent.Xrm.Page.data.entity.save();
 
             //small delay to let the crm page save so that when we reload we get accurate info
@@ -1715,11 +1744,130 @@
             }, 2000);
         }
 
+        //Links the cornet offender info to the Subject
         function createAndLink() {
-            // hideLinkOffenderButton();
-            // hideReturnToSearchButton();
-            // showLoadingSpinner();
-            console.log("TODO - create offender in coast, then Link that offender to this subject");
+            hideLinkOffenderButton();
+            hideReturnToSearchButton();
+            showLoadingSpinner();
+            if (OFFENDER_EXISTS_IN_COAST) {
+                //link only
+                let link_data = [{
+                    entityType: "vsd_offender",
+                    id: coastInfo.vsd_offenderid,
+                    name: client_details.clientNumber,
+                }]
+                parent.Xrm.Page.getAttribute("vsd_offender").setValue(link_data);
+                parent.Xrm.Page.data.entity.save();
+
+                //small delay to let the crm page save so that when we reload we get accurate info
+                setTimeout(() => {
+                    OFFENDER_EXISTS_IN_COAST = true;
+                    loadOffender(client_details.clientNumber, OffenderIdType.CS_NUMBER);
+                    hideLoadingSpinner();
+                }, 2000);
+            }
+            else {
+                //create then link...
+                createCOASTOffender().then((res) => {
+                    getCOASTOffender(client_details.clientNumber, OffenderIdType.CS_NUMBER).then((offender) => {
+                        if (!$.isEmptyObject(offender)) {
+                            let link_data = [{
+                                entityType: "vsd_offender",
+                                id: offender.vsd_offenderid,
+                                name: client_details.clientNumber,
+                            }]
+                            parent.Xrm.Page.getAttribute("vsd_offender").setValue(link_data);
+                            parent.Xrm.Page.data.entity.save();
+
+                            //small delay to let the crm page save so that when we reload we get accurate info
+                            setTimeout(() => {
+                                OFFENDER_EXISTS_IN_COAST = true;
+                                loadOffender(client_details.clientNumber, OffenderIdType.CS_NUMBER);
+                                hideLoadingSpinner();
+                            }, 2000);
+                        }
+                        else {
+                            hideLoadingSpinner();
+                        }
+                    }).catch((err) => {
+                        console.log(err);
+                        hideLoadingSpinner();
+                    });
+                }).catch((err) => {
+                    console.log(err);
+                    hideLoadingSpinner();
+                });
+            }
+        }
+
+        function createCOASTOffender() {
+            return new Promise((resolve, reject) => {
+                let birthdate = new Date(client_details.personBirthDate + "T00:00:00");
+                let gender = getOptionsSetFromName(GenderOptionSet, client_details.personGenderIdentityCodeType);
+
+                let data = {
+                    vsd_csnumber: client_details.clientNumber,
+                    vsd_firstname: client_details.givenNames,
+                    vsd_lastname: client_details.lastName,
+                    vsd_birthdate: client_details.birthdate,
+                    vsd_gender: gender.val,
+                    vsd_aliasnames: client_details.aliasesForCRM,
+                }
+
+                var myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
+
+                let endpoint = parent.Xrm.Page.context.getClientUrl();
+                endpoint += "/api/data/v9.0/vsd_offenders";
+
+                var requestOptions = {
+                    method: 'POST',
+                    headers: myHeaders,
+                    body: JSON.stringify(data),
+                    credentials: "same-origin"
+                };
+
+                fetch(endpoint, requestOptions)
+                    .then(response => response.text())
+                    .then(res => {
+                        resolve();
+                    })
+                    .catch(error => { console.log('error', error); reject(error) });
+            }).catch(err => {
+                reject(err);
+            });
+        }
+
+        function isOffenderAlreadyLinkedToSubject() {
+            return new Promise((resolve, reject) => {
+                var myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
+
+                var requestOptions = {
+                    method: 'GET',
+                    headers: myHeaders,
+                    credentials: "same-origin"
+                };
+
+                let endpoint = parent.Xrm.Page.context.getClientUrl();
+                endpoint += `/api/data/v9.0/vsd_caseoffenders?$filter=_vsd_offender_value eq ${coastInfo.vsd_offenderid}`;
+
+                fetch(endpoint, requestOptions)
+                    .then(response => response.text())
+                    .then(res => {
+                        let data = JSON.parse(res);
+                        if (data && data.value && data.value.length > 0) {
+                            resolve(true);
+                        }
+                        else {
+                            resolve(false);
+                        }
+                    })
+                    .catch(error => console.log('error', error));
+            }).catch(err => {
+                reject(err);
+            });
+
         }
 
         function showTabContent(event, tab) {
