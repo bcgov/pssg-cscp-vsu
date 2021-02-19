@@ -30,7 +30,7 @@ namespace Gov.Cscp.Victims.Public.Controllers
             }
             catch (Exception e)
             {
-                _logger.Error(e, "Unexpected error while looking up countries in COAST");
+                _logger.Error(e, "Unexpected error while looking up countries in COAST. Source = VSU");
                 return BadRequest();
             }
             finally { }
@@ -47,7 +47,7 @@ namespace Gov.Cscp.Victims.Public.Controllers
             }
             catch (Exception e)
             {
-                _logger.Error(e, "Unexpected error while looking up provinces in COAST");
+                _logger.Error(e, "Unexpected error while looking up provinces in COAST. Source = VSU");
                 return BadRequest();
             }
             finally { }
@@ -64,7 +64,7 @@ namespace Gov.Cscp.Victims.Public.Controllers
             }
             catch (Exception e)
             {
-                _logger.Error(e, "Unexpected error while looking up cities in COAST");
+                _logger.Error(e, "Unexpected error while looking up cities in COAST. Source = VSU");
                 return BadRequest();
             }
             finally { }
@@ -98,7 +98,7 @@ namespace Gov.Cscp.Victims.Public.Controllers
             }
             catch (Exception e)
             {
-                _logger.Error(e, "Unexpected error while searching cities in COAST");
+                _logger.Error(e, "Unexpected error while searching cities in COAST. Source = VSU");
                 return BadRequest();
             }
             finally { }
@@ -116,7 +116,7 @@ namespace Gov.Cscp.Victims.Public.Controllers
             }
             catch (Exception e)
             {
-                _logger.Error(e, "Unexpected error while looking up cities by country in COAST");
+                _logger.Error(e, "Unexpected error while looking up cities by country in COAST. Source = VSU");
                 return BadRequest();
             }
             finally { }
@@ -133,7 +133,7 @@ namespace Gov.Cscp.Victims.Public.Controllers
             }
             catch (Exception e)
             {
-                _logger.Error(e, "Unexpected error while looking up cities by province in COAST");
+                _logger.Error(e, "Unexpected error while looking up cities by province in COAST. Source = VSU");
                 return BadRequest();
             }
             finally { }
@@ -150,7 +150,7 @@ namespace Gov.Cscp.Victims.Public.Controllers
             }
             catch (Exception e)
             {
-                _logger.Error(e, "Unexpected error while looking up courts in COAST");
+                _logger.Error(e, "Unexpected error while looking up courts in COAST. Source = VSU");
                 return BadRequest();
             }
             finally { }
@@ -167,7 +167,7 @@ namespace Gov.Cscp.Victims.Public.Controllers
             }
             catch (Exception e)
             {
-                _logger.Error(e, "Unexpected error while looking up offences in COAST");
+                _logger.Error(e, "Unexpected error while looking up offences in COAST. Source = VSU");
                 return BadRequest();
             }
             finally { }

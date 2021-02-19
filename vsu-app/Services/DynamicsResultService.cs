@@ -64,7 +64,7 @@ namespace Gov.Cscp.Victims.Public.Services
 
             if (result.result.ContainsKey("IsSuccess") && result.result["IsSuccess"].ToString().Equals("False"))
             {
-                _logger.Error(new HttpOperationException($"Error calling API function {endpointUrl}"), $"Error calling API function {endpointUrl}. Error is:\n{result.result}\n\nJSON sent:{requestJson}", result.result, requestJson);
+                _logger.Error(new HttpOperationException($"Error calling API function {endpointUrl}. Source = VSU"), $"Error calling API function {endpointUrl}. Source = VSU. Error is:\n{result.result}\n\nJSON sent:{requestJson}", result.result, requestJson);
             }
 
             Console.WriteLine(result.result);
