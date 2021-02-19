@@ -554,16 +554,14 @@
                     <div class="col">
                         <table class="table table-striped" id="hearings-table">
                             <thead class="thead">
-                                <!-- <th>Possible Parole Date (Day)</th> -->
                                 <th>Possible Parole Date</th>
                                 <th>Hearing Purpose</th>
                                 <th>Hearing Scheduled Date</th>
-                                <!-- <th>Hearing Actual Date</th> -->
                                 <th>Hearing Type Description</th>
                                 <th>Hearing Purpose Type Description</th>
                                 <th>Hearing Outcome Type Description</th>
                             </thead>
-
+                            
                             <tbody>
                             </tbody>
                         </table>
@@ -687,9 +685,6 @@
                 <div class="col hidden" id="link-offender">
                     <button onclick="linkOffenderClick()" class="btn btn-secondary btn-link-offender">Link</button>
                 </div>
-                <!-- <div class="col hidden" id="offender-already-linked">
-                    <button onclick="createOffender()" class="btn btn-secondary btn-create-offender">Create Offender</button>
-                </div> -->
             </div>
         </div>
         <!-- END of client details section -->
@@ -720,9 +715,9 @@
         ];
 
         const GenderOptionSet = {
-            Male: { val: 100000000, name: "M" },
+            Male:   { val: 100000000, name: "M" },
             Female: { val: 100000001, name: "F" },
-            X: { val: 100000002, name: "X" },
+            X:      { val: 100000002, name: "X" },
         };
 
         const CRMBoolean = {
@@ -736,12 +731,12 @@
         }
 
         const EventType = {
-            KEY_DATE: { val: 100000000, name: "KEY_DATE" },
-            MOVEMENT: { val: 100000001, name: "MOVEMENT" },
-            HEARING: { val: 100000002, name: "HEARING" },
+            KEY_DATE:   { val: 100000000, name: "KEY_DATE" },
+            MOVEMENT:   { val: 100000001, name: "MOVEMENT" },
+            HEARING:    { val: 100000002, name: "HEARING" },
             STATE_TRAN: { val: 100000003, name: "STATE_TRAN" },
             VICT_CNTCT: { val: 100000004, name: "VICT_CNTCT" },
-            AUTH_DOCM: { val: 100000005, name: "AUTH_DOCM" },
+            AUTH_DOCM:  { val: 100000005, name: "AUTH_DOCM" },
         };
 
         const OffenderIdType = {
@@ -780,14 +775,15 @@
             "victimEmail",
         ];
 
-        //number of search table rows to show at a time, the rest are paginated
+        //number of search table rows to show at a time, paginated table
         const ROWS_SHOWN = 5;
 
         //CRM form the webresource is hosted in
         //if on the Offender form we need to either show search + Link ability, or we just show the already linked details
-        //TODO - some other source form will be search + create ability
+        //if on the Subject form we need to either show search + Create/Link ability, or we just show the already linked details
         let FORM_TYPE = FormTypes.NONE;
 
+        //flag to track if the offender details loaded is for a CS# that already exists in COAST
         let OFFENDER_EXISTS_IN_COAST = false;
 
         //search results from cornet
@@ -853,7 +849,6 @@
             }
             else if (entity == "vsd_caseoffender") {
                 FORM_TYPE = FormTypes.SUBJECT;
-
                 let offender = parent.Xrm.Page.getAttribute("vsd_offender").getValue();
                 let cs_number = "";
                 if (offender && offender.length > 0 && offender[0].name) {
@@ -939,13 +934,13 @@
                             return;
                         }
                         let data = JSON.parse(parsed.Result);
-                        addResultsToTable(data.clients);
+                        addResultsToSearchTable(data.clients);
                     }
                 })
                 .catch(error => console.log('error', error));
         }
 
-        function addResultsToTable(clients) {
+        function addResultsToSearchTable(clients) {
             if (filter_on_current_name) {
                 displayed_clients = clients.filter(c => c.isCurrentName == 'Y');
             }
@@ -1082,7 +1077,7 @@
 
         function currentNameChange(val) {
             filter_on_current_name = val;
-            addResultsToTable(clients);
+            addResultsToSearchTable(clients);
         }
 
         function viewOffenderClick(val) {
@@ -1118,7 +1113,6 @@
             state_transitions = [];
             key_dates = [];
 
-
             getCOASTOffender(id, id_type).then(offender => {
                 let promise_array = [];
                 let cs_number = "";
@@ -1142,11 +1136,7 @@
                             }
                         });
                     }
-                    //TODO - add something to indicate the the reason the button is disabled is becase this cornet offender already exists in COAST
-                    // if (!OFFENDER_EXISTS_IN_COAST) {
-                    // disableLinkOffenderButton();
-                    // disableCreateOffenderButton();
-                    // }
+                    //TODO - add something to indicate the the reason the button is disabled is because this cornet offender already exists in COAST
                 }
                 else {
                     OFFENDER_EXISTS_IN_COAST = false;
@@ -1509,6 +1499,7 @@
         //used when leaving the details page to ensure a fresh slate if the user loads a new offender
         function clearOffenderDetails() {
             //clear offender details variables
+            OFFENDER_EXISTS_IN_COAST = false;
             client_details = {};
             coastInfo = {};
             events = [];
@@ -1557,9 +1548,7 @@
             $(".nav-link").removeClass("active-page");
             $("#tab-subject-info").addClass("active-page");
 
-            //enable link/create buttons
             enableLinkOffenderButton();
-            // enableCreateOffenderButton();
         }
 
         //functions to populate the various sections of the client details page
@@ -1654,14 +1643,10 @@
             $("#hearings-table").find("tr:gt(0)").remove();
 
             hearings.forEach((hearing, i) => {
-                // <td>${hearing.activityDate.actual || ''}</td>
-                // <td>${hearing.activityDate.actual || ''}</td>
                 let tr = `<tr>
                             <td>${hearing.activityDate.actualVal ? hearing.activityDate.actualVal.toLocaleString('en-us', { month: "short", day: 'numeric', year: 'numeric' }) : ''}</td>
-                            
                             <td>${hearing.hearingCategory.description}</td>
                             <td>${hearing.activityDate.scheduledVal ? hearing.activityDate.scheduledVal.toLocaleString('en-us', { month: "short", day: 'numeric', year: 'numeric' }) : ''}</td>
-                            
                             <td>${hearing.activityType.description || ''}</td>
                             <td>${hearing.hearingRequestType.description || ''}</td>
                             <td>${hearing.hearingDecision.description || ''}</td>
@@ -1761,13 +1746,12 @@
 
                 //small delay to let the crm page save so that when we reload we get accurate info
                 setTimeout(() => {
-                    OFFENDER_EXISTS_IN_COAST = true;
                     loadOffender(client_details.clientNumber, OffenderIdType.CS_NUMBER);
                     hideLoadingSpinner();
                 }, 2000);
             }
             else {
-                //create then link...
+                //create then link
                 createCOASTOffender().then((res) => {
                     getCOASTOffender(client_details.clientNumber, OffenderIdType.CS_NUMBER).then((offender) => {
                         if (!$.isEmptyObject(offender)) {
@@ -1867,7 +1851,6 @@
             }).catch(err => {
                 reject(err);
             });
-
         }
 
         function showTabContent(event, tab) {
@@ -1922,22 +1905,6 @@
         function enableLinkOffenderButton() {
             $(".btn-link-offender").removeClass("is-disabled");
         }
-
-        // function showCreateOffenderButton() {
-        //     $("#create-offender").removeClass("hidden");
-        // }
-
-        // function hideCreateOffenderButton() {
-        //     $("#create-offender").addClass("hidden");
-        // }
-
-        // function disableCreateOffenderButton() {
-        //     $(".btn-create-offender").addClass("is-disabled");
-        // }
-
-        // function enableCreateOffenderButton() {
-        //     $(".btn-create-offender").removeClass("is-disabled");
-        // }
 
         function showReturnToSearchButton() {
             $("#return-to-search").removeClass("hidden");
