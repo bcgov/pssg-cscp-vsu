@@ -28,7 +28,7 @@ namespace Gov.Cscp.Victims.Public.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    _logger.Error($"API call to 'SubmitApplication' made with invalid model state. Error is:\n{ModelState}");
+                    _logger.Error($"API call to 'SubmitApplication' made with invalid model state. Error is:\n{ModelState}. Source = VSU");
                     return BadRequest(ModelState);
                 }
 
@@ -41,7 +41,7 @@ namespace Gov.Cscp.Victims.Public.Controllers
             }
             catch (Exception e)
             {
-                _logger.Error(e, "Unexpected error while submitting application");
+                _logger.Error(e, "Unexpected error while submitting application. Source = VSU");
                 return BadRequest();
             }
             finally { }
