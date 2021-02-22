@@ -136,9 +136,17 @@
             font-weight: normal;
         }
 
+        .form-control {
+            margin-bottom: 10px;
+        }
+
         .required:after {
             content: " *";
             color: red;
+        }
+
+        .is-primary-contact:after {
+            content: " (Primary)";
         }
 
         .search-button-container {
@@ -561,7 +569,7 @@
                                 <th>Hearing Purpose Type Description</th>
                                 <th>Hearing Outcome Type Description</th>
                             </thead>
-                            
+
                             <tbody>
                             </tbody>
                         </table>
@@ -603,16 +611,22 @@
                             <br>
                             <input class="form-control victimName read-only" type="text" id="victimName" name="victimName">
                         </div>
+
+                        <div class="col-6">
+                            <label for="victimComment" class="victimComment">Comment</label>
+                            <br>
+                            <input class="form-control victimComment read-only" type="text" id="victimComment" name="victimComment">
+                        </div>
                     </div>
 
                     <div class="row">
-                        <div class="col-2">
+                        <div class="col-3">
                             <label for="victimEffectiveDate" class="victimEffectiveDate">Effective Date</label>
                             <br>
                             <input class="form-control victimEffectiveDate read-only" type="text" id="victimEffectiveDate" name="victimEffectiveDate">
                         </div>
 
-                        <div class="col-2">
+                        <div class="col-3">
                             <label for="victimExpiryDate" class="victimExpiryDate">Expiry Date</label>
                             <br>
                             <input class="form-control victimExpiryDate read-only" type="text" id="victimExpiryDate" name="victimExpiryDate">
@@ -627,9 +641,23 @@
                         </div>
 
                         <div class="col-6">
+                            <label for="victimSecondaryAddress" class="victimSecondaryAddress">Secondary Address</label>
+                            <br>
+                            <input class="form-control victimSecondaryAddress read-only" type="text" id="victimSecondaryAddress" name="victimSecondaryAddress">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
                             <label for="victimMailingAddress" class="victimMailingAddress">Mailing Address</label>
                             <br>
                             <input class="form-control victimMailingAddress read-only" type="text" id="victimMailingAddress" name="victimMailingAddress">
+                        </div>
+
+                        <div class="col-6">
+                            <label for="victimBusinessAddress" class="victimBusinessAddress">Business Address</label>
+                            <br>
+                            <input class="form-control victimBusinessAddress read-only" type="text" id="victimBusinessAddress" name="victimBusinessAddress">
                         </div>
                     </div>
 
@@ -650,6 +678,26 @@
                             <label for="victimEmail" class="victimEmail">Email</label>
                             <br>
                             <input class="form-control victimEmail read-only" type="text" id="victimEmail" name="victimEmail">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="victimTelephoneEffectiveDate" class="victimTelephoneEffectiveDate">Effective Date</label>
+                            <br>
+                            <input class="form-control victimTelephoneEffectiveDate read-only" type="text" id="victimTelephoneEffectiveDate" name="victimTelephoneEffectiveDate">
+                        </div>
+
+                        <div class="col-4">
+                            <label for="victimMobileEffectiveDate" class="victimMobileEffectiveDate">Effective Date</label>
+                            <br>
+                            <input class="form-control victimMobileEffectiveDate read-only" type="text" id="victimMobileEffectiveDate" name="victimMobileEffectiveDate">
+                        </div>
+
+                        <div class="col-4">
+                            <label for="victimEmailEffectiveDate" class="victimEmailEffectiveDate">Effective Date</label>
+                            <br>
+                            <input class="form-control victimEmailEffectiveDate read-only" type="text" id="victimEmailEffectiveDate" name="victimEmailEffectiveDate">
                         </div>
                     </div>
                 </div>
@@ -715,9 +763,9 @@
         ];
 
         const GenderOptionSet = {
-            Male:   { val: 100000000, name: "M" },
+            Male: { val: 100000000, name: "M" },
             Female: { val: 100000001, name: "F" },
-            X:      { val: 100000002, name: "X" },
+            X: { val: 100000002, name: "X" },
         };
 
         const CRMBoolean = {
@@ -731,12 +779,12 @@
         }
 
         const EventType = {
-            KEY_DATE:   { val: 100000000, name: "KEY_DATE" },
-            MOVEMENT:   { val: 100000001, name: "MOVEMENT" },
-            HEARING:    { val: 100000002, name: "HEARING" },
+            KEY_DATE: { val: 100000000, name: "KEY_DATE" },
+            MOVEMENT: { val: 100000001, name: "MOVEMENT" },
+            HEARING: { val: 100000002, name: "HEARING" },
             STATE_TRAN: { val: 100000003, name: "STATE_TRAN" },
             VICT_CNTCT: { val: 100000004, name: "VICT_CNTCT" },
-            AUTH_DOCM:  { val: 100000005, name: "AUTH_DOCM" },
+            AUTH_DOCM: { val: 100000005, name: "AUTH_DOCM" },
         };
 
         const OffenderIdType = {
@@ -766,13 +814,19 @@
         ];
         const VictimDetailsFields = [
             "victimName",
+            "victimComment",
             "victimEffectiveDate",
             "victimExpiryDate",
             "victimPrimaryAddress",
+            "victimSecondaryAddress",
             "victimMailingAddress",
+            "victimBusinessAddress",
             "victimTelephone",
+            "victimTelephoneEffectiveDate",
             "victimMobile",
+            "victimMobileEffectiveDate",
             "victimEmail",
+            "victimEmailEffectiveDate",
         ];
 
         //number of search table rows to show at a time, paginated table
@@ -1519,6 +1573,10 @@
             VictimDetailsFields.forEach(field => {
                 $(`#${field}`).val('');
             });
+            //ensure victim contact labels are "not primary"
+            $("label.victimTelephone").removeClass("is-primary-contact");
+            $("label.victimMobile").removeClass("is-primary-contact");
+            $("label.victimEmail").removeClass("is-primary-contact");
             //hide sections that are dependant on the existence of certain offender data
             $(".offender-coast-info").addClass("hidden");
             $(".custody-location").addClass("hidden");
@@ -1687,13 +1745,38 @@
             $(".victim-details-container").removeClass("hidden");
 
             $("#victimName").val(victim.personFullName);
+            $("#victimComment").val(victim.victimContactComment);
             $("#victimEffectiveDate").val(victim.victimContactDate.effective);
             $("#victimExpiryDate").val(victim.victimContactDate.expiry);
             $("#victimPrimaryAddress").val(victim.primaryAddressFull);
+            $("#victimSecondaryAddress").val(victim.secondaryAddressFull);
             $("#victimMailingAddress").val(victim.mailingAddressFull);
+            $("#victimBusinessAddress").val(victim.businessAddressFull);
             $("#victimTelephone").val(victim.telephoneNumberType.number);
+            $("#victimTelephoneEffectiveDate").val(victim.telephoneNumberType.effectiveDate);
             $("#victimMobile").val(victim.cellNumberType.number);
+            $("#victimMobileEffectiveDate").val(victim.cellNumberType.effectiveDate);
             $("#victimEmail").val(victim.emailType.emailAddress);
+            $("#victimEmailEffectiveDate").val(victim.emailType.effectiveDate);
+
+            if (victim.telephoneNumberType.isPrimary) {
+                $("label.victimTelephone").addClass("is-primary-contact");
+            }
+            else {
+                $("label.victimTelephone").removeClass("is-primary-contact");
+            }
+            if (victim.cellNumberType.isPrimary) {
+                $("label.victimMobile").addClass("is-primary-contact");
+            }
+            else {
+                $("label.victimMobile").removeClass("is-primary-contact");
+            }
+            if (victim.emailType.isPrimary) {
+                $("label.victimEmail").addClass("is-primary-contact");
+            }
+            else {
+                $("label.victimEmail").removeClass("is-primary-contact");
+            }
         }
 
         function linkOffenderClick() {
