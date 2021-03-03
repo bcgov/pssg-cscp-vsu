@@ -35,6 +35,17 @@ export interface iCRMApplication {
     vsd_vsu_otherfamilymembersapplyingtovtf?: number;
     vsd_vsu_otherfamilymembersvtfothercomments?: string;
 
+    vsd_vsu_vswcomments?: string;
+
+    vsd_vsu_costscoveredbyvsp?: number;
+    vsd_vsu_vspcomments?: string;
+
+    vsd_vsu_managerfirstname?: string;
+    vsd_vsu_managerlastname?: string;
+    vsd_vsu_organizationagencyname?: string;
+    vsd_vsu_managerphone?: string;
+    vsd_vsu_manageremail?: string;
+
     vsd_applicantsfirstname: string;
     vsd_applicantsmiddlename: string;
     vsd_applicantslastname: string;

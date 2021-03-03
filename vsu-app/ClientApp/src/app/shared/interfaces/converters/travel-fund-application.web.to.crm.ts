@@ -34,18 +34,6 @@ function getCRMApplication(application: iTravelFundApplication) {
     else if (application.ApplicantInformation.applicantType === enums.ApplicantType.Immediate_Family_Member.val) {
         relationship_to_victim = application.ApplicantInformation.IFMRelationship;
     }
-    else if (application.ApplicantInformation.applicantType === enums.ApplicantType.Victim_Service_Worker.val && application.ApplicantInformation.victimServiceWorker.length > 0) {
-        //TODO - need fields in dynamics to capture vsw info (labled as Manager name on the webform)
-        temp = application.ApplicantInformation.vswComment;
-        temp = application.ApplicantInformation.coveredByVictimServiceProgram;
-        temp = application.ApplicantInformation.coveredByVictimServiceProgramComment;
-
-        temp = application.ApplicantInformation.victimServiceWorker[0].firstName;
-        temp = application.ApplicantInformation.victimServiceWorker[0].lastName;
-        temp = application.ApplicantInformation.victimServiceWorker[0].organization;
-        temp = application.ApplicantInformation.victimServiceWorker[0].telephone;
-        temp = application.ApplicantInformation.victimServiceWorker[0].email;
-    }
 
     let crm_application: iCRMApplication = {
         vsd_vsu_applicationtype: ApplicationType.TRAVEL_FUNDS,
@@ -120,6 +108,19 @@ function getCRMApplication(application: iTravelFundApplication) {
         vsd_declarationdate: application.AuthorizationInformation.date,
         vsd_applicantssignature: application.AuthorizationInformation.signature,
     };
+
+    if (application.ApplicantInformation.applicantType === enums.ApplicantType.Victim_Service_Worker.val && application.ApplicantInformation.victimServiceWorker.length > 0) {
+        //TODO - need fields in dynamics to capture vsw info (labled as Manager name on the webform)
+        crm_application.vsd_vsu_vswcomments = application.ApplicantInformation.vswComment;
+        crm_application.vsd_vsu_costscoveredbyvsp = application.ApplicantInformation.coveredByVictimServiceProgram;
+        crm_application.vsd_vsu_vspcomments = application.ApplicantInformation.coveredByVictimServiceProgramComment;
+
+        crm_application.vsd_vsu_managerfirstname = application.ApplicantInformation.victimServiceWorker[0].firstName;
+        crm_application.vsd_vsu_managerlastname = application.ApplicantInformation.victimServiceWorker[0].lastName;
+        crm_application.vsd_vsu_organizationagencyname = application.ApplicantInformation.victimServiceWorker[0].organization;
+        crm_application.vsd_vsu_managerphone = application.ApplicantInformation.victimServiceWorker[0].telephone;
+        crm_application.vsd_vsu_manageremail = application.ApplicantInformation.victimServiceWorker[0].email;
+    }
 
     if (application.CaseInformation.victimServiceWorker.length > 0) {
         crm_application.vsd_vsu_discussvtfappwithvsp = application.CaseInformation.victimServiceWorker[0].okToDiscussTravel;

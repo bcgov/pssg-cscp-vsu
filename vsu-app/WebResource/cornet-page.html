@@ -187,6 +187,12 @@
             border-top: 1px solid rgba(0, 0, 0, 0.3);
         }
 
+        .institutional-info {
+            padding-top: 1.8rem;
+            padding-bottom: 1rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.3);
+        }
+
         .community-info {
             padding-top: 1.8rem;
             padding-bottom: 1rem;
@@ -413,11 +419,11 @@
                     </div>
                 </div>
 
-                <div class="row bc-corrections-info mt-4">
+                <!-- <div class="row bc-corrections-info mt-4">
                     <div class="col">
                         <p><strong>BC Corrections</strong></p>
                     </div>
-                </div>
+                </div> -->
 
                 <div class="row">
                     <div class="col-4">
@@ -427,9 +433,9 @@
                     </div>
                 </div>
 
-                <div class="row mt-4 mb-4">
+                <div class="row institutional-info mt-4 mb-4">
                     <div class="col">
-                        <p>Institutional Information</p>
+                        <p><strong>Institutional Information</strong></p>
                     </div>
                 </div>
 
@@ -452,7 +458,7 @@
 
                 <div class="row key-date-container flex-container" id="key-dates">
                     <div class="col-4 custody-location hidden">
-                        <label for="offenderCustodyLocation" class="offenderCustodyLocation">Custody location</label>
+                        <label for="offenderCustodyLocation" class="offenderCustodyLocation">Custody Location</label>
                         <br>
                         <input class="form-control offenderCustodyLocation read-only" type="text" id="offenderCustodyLocation" name="offenderCustodyLocation">
                     </div>
@@ -856,6 +862,9 @@
         let state_transitions = [];
         let key_dates = [];
 
+        //var to show how many cornet notifications returned no content - for debuggind
+        let no_content = [];
+
         window.onload = function () {
             initPaginator();
             this.search_type = "exact";
@@ -880,7 +889,13 @@
                     showSearch();
 
                     let surname = parent.Xrm.Page.getAttribute("vsd_lastname").getValue();
-                    let given_name = parent.Xrm.Page.getAttribute("vsd_firstname").getValue();
+                    let given_names = parent.Xrm.Page.getAttribute("vsd_firstname").getValue();
+                    let first = "";
+                    let second = "";
+                    if (given_names) {
+                        first = given_names.split(' ')[0] || "";
+                        second = given_names.split(' ')[1] || "";
+                    }
                     let gender = parent.Xrm.Page.getAttribute("vsd_gender").getValue();
                     if (gender) {
                         let opt = getOptionsSetVal(GenderOptionSet, gender);
@@ -891,7 +906,8 @@
                         birth_year = birth_year.getFullYear();
                     }
                     $('#surname').val(surname);
-                    $('#given_name').val(given_name);
+                    $('#given_name').val(first);
+                    $('#second_name').val(second);
                     $('#gender').val(gender);
                     $('#birth_year').val(birth_year);
 
@@ -1353,6 +1369,30 @@
         function loadCornetEvents() {
             return new Promise((resolve, reject) => {
                 let promise_array = [];
+                no_content = [];
+
+                let duplicates = events.filter((e1, index, self) => self.findIndex(e2 => e1.vsd_eventreferenceid === e2.vsd_eventreferenceid && e1.vsd_guid === e2.vsd_guid) != index);
+                let guids = {};
+                events.forEach(e => {
+                    if (guids[e.vsd_guid]) ++guids[e.vsd_guid];
+                    else guids[e.vsd_guid] = 1;
+                });
+                events.filter((e1, index, self) => self.findIndex(e2 => (e1.vsd_guid === e2.vsd_guid && e1.vsd_eventreferenceid !== e2.vsd_eventreferenceid)) !== index);
+
+                if (duplicates.length > 0) {
+                    console.log("duplicate cornet notifications:");
+                    console.log(duplicates);
+                }
+
+                let duplicateGUIDS = [];
+                for (let g in guids) {
+                    if (guids[g] > 1) duplicateGUIDS.push(g);
+                }
+
+                if (duplicateGUIDS.length > 0) {
+                    console.log("duplicate GUIDS:");
+                    console.log(duplicateGUIDS);
+                }
 
                 for (let i = 0; i < events.length; ++i) {
                     let event = events[i];
@@ -1468,6 +1508,15 @@
                 }
 
                 Promise.all(promise_array).then(() => {
+                    if (no_content.length > 0) {
+                        console.log("Tried to load " + events.length + " events. " + no_content.length + " of them returned no content from CORNET");
+                        let events_no_content = [];
+                        no_content.forEach(c => {
+                            events_no_content.push(events.find(e => e.vsd_eventreferenceid == c.EventId && e.vsd_guid == c.Guid));
+                        });
+                        console.log(events_no_content);
+                    }
+
                     if (key_dates.length > 0) {
                         key_dates.sort((a, b) => {
                             return new Date(b.activityDate).getTime() - new Date(a.activityDate).getTime();
@@ -1541,6 +1590,9 @@
                             resolve(data);
                         }
                         else {
+                            if (parsed && parsed.Result && parsed.Result.includes("No Content")) {
+                                no_content.push(parameters);
+                            }
                             resolve(null);
                         }
                     })
