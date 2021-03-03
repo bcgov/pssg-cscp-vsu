@@ -30,13 +30,23 @@ namespace Gov.Cscp.Victims.Public.Models
         public int? vsd_vsu_otherfamilymembersapplyingtovtf { get; set; }
         public string vsd_vsu_otherfamilymembersvtfothercomments { get; set; }
 
+        public string vsd_vsu_vswcomments { get; set; }
+
+        public int? vsd_vsu_costscoveredbyvsp { get; set; }
+        public string vsd_vsu_vspcomments { get; set; }
+
+        public string vsd_vsu_managerfirstname { get; set; }
+        public string vsd_vsu_managerlastname { get; set; }
+        public string vsd_vsu_organizationagencyname { get; set; }
+        public string vsd_vsu_managerphone { get; set; }
+        public string vsd_vsu_manageremail { get; set; }
+
         public string vsd_applicantsfirstname { get; set; }
         public string vsd_applicantsmiddlename { get; set; }
         public string vsd_applicantslastname { get; set; }
         public int vsd_applicantsgendercode { get; set; }
         public DateTime? vsd_applicantsbirthdate { get; set; }
 
-        // public int? vsd_applicantsmaritalstatus { get; set; }
         public string vsd_applicantspreferredlanguage { get; set; }
         public int? vsd_applicantsinterpreterneeded { get; set; }
         public string vsd_applicantsprimaryaddressline1 { get; set; }
