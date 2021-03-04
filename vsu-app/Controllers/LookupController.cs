@@ -172,5 +172,28 @@ namespace Gov.Cscp.Victims.Public.Controllers
             }
             finally { }
         }
+
+        [HttpGet("meal_rates")]
+        public async Task<IActionResult> GetMealRates()
+        {
+            try
+            {
+                //these ID's are completely static between all environments - so they get hardcoded in for loading the meal rates
+                string breakfastId = "bbebd045-fd76-eb11-b823-00505683fbf4";
+                string lunchId = "25934686-fd76-eb11-b823-00505683fbf4";
+                string dinnerId = "89d4ae92-fd76-eb11-b823-00505683fbf4";
+                string mileageId = "92351edf-2a7d-eb11-b824-00505683fbf4";
+
+                string endpointUrl = $"vsd_configs?$select=vsd_value,vsd_key&$filter=statecode eq 0 and (vsd_configid eq {breakfastId} or vsd_configid eq {lunchId} or vsd_configid eq {dinnerId} or vsd_configid eq {mileageId})";
+                DynamicsResult result = await _dynamicsResultService.Get(endpointUrl);
+                return StatusCode((int)result.statusCode, result.result.ToString());
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e, "Unexpected error while looking up offences in COAST. Source = VSU");
+                return BadRequest();
+            }
+            finally { }
+        }
     }
 }

@@ -21,6 +21,11 @@ enum PAGES {
     CONFIRMATION
 }
 
+const BREAKFAST_RATE_ID = "bbebd045-fd76-eb11-b823-00505683fbf4";
+const LUNCH_RATE_ID = "25934686-fd76-eb11-b823-00505683fbf4";
+const DINNER_RATE_ID = "89d4ae92-fd76-eb11-b823-00505683fbf4";
+const MILEAGE_RATE_ID = "92351edf-2a7d-eb11-b824-00505683fbf4";
+
 @Component({
     selector: 'app-vtf-reimbursement',
     templateUrl: './vtf-reimbursement.component.html',
@@ -46,6 +51,7 @@ export class VictimTravelFundReimbursementComponent extends FormBase implements 
         cities: [],
         courts: [],
         offences: [],
+        expenseRates: { breakfast: 0, lunch: 0, dinner: 0, mileage: 0 },
     };
 
     showConfirmation: boolean = false;
@@ -107,6 +113,27 @@ export class VictimTravelFundReimbursementComponent extends FormBase implements 
                 resolve();
             }, (err) => {
                 this.notify.addNotification("Encountered an error getting offence information.", "warning", 3000);
+            });
+        }));
+
+        promise_array.push(new Promise<void>((resolve, reject) => {
+            this.lookupService.getMealRates().subscribe((res) => {
+                console.log(res);
+                let rates = res.value;
+                let breakfast = rates.find(r => r.vsd_configid == BREAKFAST_RATE_ID);
+                this.lookupData.expenseRates.breakfast = breakfast ? parseFloat(breakfast.vsd_value) : 0;
+                
+                let lunch = rates.find(r => r.vsd_configid == LUNCH_RATE_ID);
+                this.lookupData.expenseRates.lunch = lunch ? parseFloat(lunch.vsd_value) : 0;
+                
+                let dinner = rates.find(r => r.vsd_configid == DINNER_RATE_ID);
+                this.lookupData.expenseRates.dinner = dinner ? parseFloat(dinner.vsd_value) : 0;
+                
+                let mileage = rates.find(r => r.vsd_configid == MILEAGE_RATE_ID);
+                this.lookupData.expenseRates.mileage = mileage ? parseFloat(mileage.vsd_value) : 0;
+                resolve();
+            }, (err) => {
+                this.notify.addNotification("Encountered an error getting country information.", "warning", 3000);
             });
         }));
 
