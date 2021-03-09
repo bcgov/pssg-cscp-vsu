@@ -4,6 +4,7 @@ export interface iLookupData {
     cities: iCity[];
     courts: iCourt[];
     offences?: iOffence[];
+    expenseRates?: iExpenseRates;
 }
 
 export interface iCountry {
@@ -42,4 +43,11 @@ export interface iOffence {
     vsd_offenseid: string;
     vsd_name: string;
     vsd_criminalcode: string;
+}
+
+export interface iExpenseRates {
+    breakfast: number;
+    lunch: number;
+    dinner: number;
+    mileage: number;
 }

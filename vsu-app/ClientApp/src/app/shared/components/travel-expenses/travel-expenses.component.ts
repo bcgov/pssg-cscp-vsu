@@ -9,10 +9,6 @@ import * as moment from 'moment';
 import { TravelExpensesHelper } from "./travel-expenses.helper";
 import { TIME } from "../../regex.constants";
 
-const BREAKFAST = 12;
-const LUNCH = 13.8;
-const DINNER = 23.25;
-
 @Component({
     selector: 'app-travel-expenses',
     templateUrl: './travel-expenses.component.html',
@@ -81,7 +77,7 @@ export class TravelExpensesComponent extends FormBase implements OnInit {
 
     updateMileageTotal() {
         let mileage = this.form.get('mileage').value;
-        let total = mileage * 0.35;
+        let total = mileage * this.lookupData.expenseRates.mileage;
         this.form.get('mileageExpenses').patchValue(total.toFixed(2));
         this.updateSubTotal();
     }
@@ -138,7 +134,7 @@ export class TravelExpensesComponent extends FormBase implements OnInit {
             let breakfast = meal.get('breakfast').value || 0;
             let lunch = meal.get('lunch').value || 0;
             let dinner = meal.get('dinner').value || 0;
-            let this_total = (breakfast * BREAKFAST) + (lunch * LUNCH) + (dinner * DINNER);
+            let this_total = (breakfast * this.lookupData.expenseRates.breakfast) + (lunch * this.lookupData.expenseRates.lunch) + (dinner * this.lookupData.expenseRates.dinner);
             meal.get('total').patchValue((Math.round(this_total * 100 + Number.EPSILON) / 100).toFixed(2));
             total += this_total;
         });
