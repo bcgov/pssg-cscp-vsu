@@ -1237,6 +1237,8 @@
                             }
                             populateSubjectInformation();
                             resolve();
+                        }).catch((err) => {
+                            reject(err);
                         });
                     }));
                 }
@@ -1246,6 +1248,9 @@
 
                 Promise.all(promise_array).then((res) => {
                     hideLoadingSpinner();
+                }).catch((err) => {
+                    hideLoadingSpinner();
+                    alert("Error retrieving subject information.");
                 });
             });
         }
@@ -1287,7 +1292,10 @@
                             resolve([]);
                         }
                     })
-                    .catch(error => console.log('error', error));
+                    .catch(err => {
+                        console.log('error', err)
+                        reject(err);
+                    });
             }).catch(err => {
                 reject(err);
             });
@@ -1326,7 +1334,10 @@
                             resolve({});
                         }
                     })
-                    .catch(error => console.log('error', error));
+                    .catch(error => {
+                        console.log('error', error);
+                        reject(error);
+                    });
             }).catch(err => {
                 reject(err);
             });
@@ -1361,7 +1372,10 @@
                             resolve();
                         }
                     })
-                    .catch(error => console.log('error', error));
+                    .catch(error => {
+                        console.log('error', error);
+                        reject(error);
+                    });
             });
         }
 
@@ -1371,13 +1385,19 @@
                 let promise_array = [];
                 no_content = [];
 
-                let duplicates = events.filter((e1, index, self) => self.findIndex(e2 => e1.vsd_eventreferenceid === e2.vsd_eventreferenceid && e1.vsd_guid === e2.vsd_guid) != index);
+                let duplicates = events.filter((e1, index, self) => self.findIndex(e2 => e1.vsd_eventreferenceid == e2.vsd_eventreferenceid && e1.vsd_guid == e2.vsd_guid) != index);
                 let guids = {};
                 events.forEach(e => {
                     if (guids[e.vsd_guid]) ++guids[e.vsd_guid];
                     else guids[e.vsd_guid] = 1;
                 });
-                events.filter((e1, index, self) => self.findIndex(e2 => (e1.vsd_guid === e2.vsd_guid && e1.vsd_eventreferenceid !== e2.vsd_eventreferenceid)) !== index);
+
+                //some events can share vsd_eventreferenceid's, this is expected if an event gets updated it creates a second entry
+                //in that case we only want to show that event once, so we filter unique vsd_eventreferenceid's
+                events = events.filter((e1, index, self) => self.findIndex(e2 => (e1.vsd_eventreferenceid == e2.vsd_eventreferenceid)) === index);
+
+                //this will filter out events that might have duplicate guids, but this shouldn't happen. Leaving them in so testers can see duplicates (if they exist...)
+                // events.filter((e1, index, self) => self.findIndex(e2 => (e1.vsd_guid === e2.vsd_guid && e1.vsd_eventreferenceid !== e2.vsd_eventreferenceid)) !== index);
 
                 if (duplicates.length > 0) {
                     console.log("duplicate cornet notifications:");
@@ -1596,7 +1616,10 @@
                             resolve(null);
                         }
                     })
-                    .catch(error => console.log('error', error));
+                    .catch(error => {
+                        console.log('error', error);
+                        reject(error);
+                    });
             }).catch(err => {
                 reject(err);
             });
@@ -1951,7 +1974,10 @@
                     .then(res => {
                         resolve();
                     })
-                    .catch(error => { console.log('error', error); reject(error) });
+                    .catch(error => {
+                        console.log('error', error);
+                        reject(error)
+                    });
             }).catch(err => {
                 reject(err);
             });
@@ -1982,7 +2008,10 @@
                             resolve(false);
                         }
                     })
-                    .catch(error => console.log('error', error));
+                    .catch(error => {
+                        console.log('error', error);
+                        reject(error)
+                    });
             }).catch(err => {
                 reject(err);
             });

@@ -72,6 +72,7 @@ export class ApplicantInformationComponent extends FormBase implements OnInit {
         if (this.formType === ApplicationType.TRAVEL_FUNDS) {
             let supportPersonRelationshipControl = this.form.get("supportPersonRelationship");
             let IFMRelationshipControl = this.form.get("IFMRelationship");
+            let costsCoveredControl = this.form.get('coveredByVictimServiceProgram');
 
             if (type === this.enum.ApplicantType.Support_Person.val) {
                 this.setControlValidators(supportPersonRelationshipControl, [Validators.required]);
@@ -95,9 +96,11 @@ export class ApplicantInformationComponent extends FormBase implements OnInit {
 
             if (type === this.enum.ApplicantType.Victim_Service_Worker.val) {
                 this.addVSW();
+                this.setControlValidators(costsCoveredControl, [Validators.required]);
             }
             else {
                 this.deleteVSW();
+                this.clearControlValidators(costsCoveredControl);
                 this.form.get("vswComment").patchValue('');
                 this.form.get("coveredByVictimServiceProgram").patchValue(null);
                 this.form.get("coveredByVictimServiceProgramComment").patchValue('');

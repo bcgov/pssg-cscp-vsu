@@ -12,7 +12,6 @@ import { Title } from "@angular/platform-browser";
 import { VTFCaseInfoHelper } from "../shared/components/vtf-case-information/vtf-case-information.helper";
 import { iLookupData } from "../shared/interfaces/lookup-data.interface";
 import { TravelExpensesHelper } from "../shared/components/travel-expenses/travel-expenses.helper";
-import { convertTravelFundApplicationToCRM } from "../shared/interfaces/converters/travel-fund-application.web.to.crm";
 
 enum PAGES {
     CASE_INFORMATION,

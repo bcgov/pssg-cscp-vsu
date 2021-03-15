@@ -101,7 +101,7 @@ export class TravelExpensesHelper {
                 province: ['British Columbia', [Validators.required]],
                 country: ['Canada', [Validators.required]],
             }),
-            childcareProviderGSTNumber: ['', [Validators.required]],
+            childcareProviderGSTNumber: [''],
             amountPaid: ['', [Validators.required]],
         };
 

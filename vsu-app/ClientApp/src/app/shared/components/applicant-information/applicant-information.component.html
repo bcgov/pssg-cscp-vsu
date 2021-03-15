@@ -59,7 +59,7 @@
 
         <div class="row">
             <div class="col-md-12">
-                <app-field label="Are these travel costs able to be covered (in full or in part) by your Victim Service Program operating budgets?" errorMessage="Please select one" [valid]="isMyControlValid(form.get('coveredByVictimServiceProgram'))" [disabled]="isDisabled">
+                <app-field label="Are these travel costs able to be covered (in full or in part) by your Victim Service Program operating budgets?" errorMessage="Please select one" [required]="true" [valid]="isMyControlValid(form.get('coveredByVictimServiceProgram'))" [disabled]="isDisabled">
                     <label class="inline-label">
                         <input type="radio" [value]="enum.Boolean.True.val" name="coveredByVictimServiceProgram" formControlName="coveredByVictimServiceProgram">
                         <span>Yes</span>
@@ -83,31 +83,31 @@
             <div [formGroupName]="i" class="vsw-info">
                 <div class="row">
                     <div class="col-md-6">
-                        <app-field label="Manager First Name" [required]="false" [valid]="isMyControlValid(item.get('firstName'))" errorMessage="Please enter your manager's first name" [disabled]="isDisabled">
+                        <app-field label="Manager First Name" [required]="true" [valid]="isMyControlValid(item.get('firstName'))" errorMessage="Please enter your manager's first name" [disabled]="isDisabled">
                             <input class="form-control" type="text" formControlName="firstName" maxlength="100">
                         </app-field>
                     </div>
                     <div class="col-md-6">
-                        <app-field label="Manager Last Name" [required]="false" [valid]="isMyControlValid(item.get('lastName'))" errorMessage="Please enter your manager's last name" [disabled]="isDisabled">
+                        <app-field label="Manager Last Name" [required]="true" [valid]="isMyControlValid(item.get('lastName'))" errorMessage="Please enter your manager's last name" [disabled]="isDisabled">
                             <input class="form-control" type="text" formControlName="lastName" maxlength="100">
                         </app-field>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <app-field label="Organization / Agency Name" [required]="false" [valid]="isMyControlValid(item.get('organization'))" errorMessage="Please enter your manager's organization / agency" [disabled]="isDisabled">
+                        <app-field label="Organization / Agency Name" [required]="true" [valid]="isMyControlValid(item.get('organization'))" errorMessage="Please enter your manager's organization / agency" [disabled]="isDisabled">
                             <input class="form-control" type="text" formControlName="organization" maxlength="100">
                         </app-field>
                     </div>
                     <div class="col-md-6">
-                        <app-field label="Manager Phone" [required]="false" [valid]="isMyControlValid(item.get('telephone'))" errorMessage="Please enter your manager's phone number" [disabled]="isDisabled">
+                        <app-field label="Manager Phone" [required]="true" [valid]="isMyControlValid(item.get('telephone'))" errorMessage="Please enter your manager's phone number" [disabled]="isDisabled">
                             <input class="form-control" mask='000-000-0000' type="text" formControlName="telephone" maxlength="100">
                         </app-field>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <app-field label="Manager Email" [required]="false" [valid]="isMyControlValid(item.get('email'))" errorMessage="Please enter your manager's email address" [disabled]="isDisabled">
+                        <app-field label="Manager Email" [required]="true" [valid]="isMyControlValid(item.get('email'))" errorMessage="Please enter your manager's email address" [disabled]="isDisabled">
                             <input class="form-control" type="text" formControlName="email" maxlength="100">
                         </app-field>
                     </div>
