@@ -363,7 +363,7 @@
                             <a id="tab-movements" class="nav-link nav-tab-table is-disabled" onclick="showTabContent(event, 'movements-container')">Movements</a>
                         </li>
                         <li class="nav-item">
-                            <a id="tab-hearings" class="nav-link nav-tab-table is-disabled" onclick="showTabContent(event, 'hearings-container')">Parole Hearings</a>
+                            <a id="tab-hearings" class="nav-link nav-tab-table is-disabled" onclick="showTabContent(event, 'hearings-container')">Hearings</a>
                         </li>
                         <li class="nav-item">
                             <a id="tab-victim-info" class="nav-link nav-tab-table is-disabled" onclick="showTabContent(event, 'victim-information-container')">Victim Information</a>
@@ -561,14 +561,14 @@
             <div id="hearings-container" class="hidden">
                 <div class="row mt-4">
                     <div class="col">
-                        <p><strong>Parole Hearings</strong></p>
+                        <p><strong>Hearings</strong></p>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
                         <table class="table table-striped" id="hearings-table">
                             <thead class="thead">
-                                <th>Possible Parole Date</th>
+                                <th>Date</th>
                                 <th>Hearing Purpose</th>
                                 <th>Hearing Scheduled Date</th>
                                 <th>Hearing Type Description</th>
@@ -1778,7 +1778,7 @@
             hearings.forEach((hearing, i) => {
                 let tr = `<tr>
                             <td>${hearing.activityDate.actualVal ? hearing.activityDate.actualVal.toLocaleString('en-us', { month: "short", day: 'numeric', year: 'numeric' }) : ''}</td>
-                            <td>${hearing.hearingCategory.description}</td>
+                            <td>${hearing.hearingCategory.description || ''}</td>
                             <td>${hearing.activityDate.scheduledVal ? hearing.activityDate.scheduledVal.toLocaleString('en-us', { month: "short", day: 'numeric', year: 'numeric' }) : ''}</td>
                             <td>${hearing.activityType.description || ''}</td>
                             <td>${hearing.hearingRequestType.description || ''}</td>
