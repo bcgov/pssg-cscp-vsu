@@ -12,10 +12,12 @@ export class TravelExpensesHelper {
 
             travelDates: fb.array([this.addTravelDate(fb)]),
 
-            mileage: ['', [Validators.required]],
-            mileageExpenses: [{ value: 0, disabled: true }],
-            otherTransportationExpenses: fb.array([this.addOtherTransportationExpense(fb)]),
+            // mileage: ['', [Validators.required]],
+            // mileageExpenses: [{ value: 0, disabled: true }],
+            transportationExpenses: fb.array([this.addTransportationExpense(fb)]),
+            transportationTotal: [{ value: 0, disabled: true }],
             accommodationExpenses: fb.array([this.addAccommodationExpense(fb)]),
+            accommodationTotal: [{ value: 0, disabled: true }],
             mealExpenses: fb.array([this.addMealExpense(fb)], [Validators.required]),
             mealTotal: [{ value: 0, disabled: true }],
             otherExpenses: fb.array([this.addOtherExpense(fb)]),
@@ -44,10 +46,11 @@ export class TravelExpensesHelper {
         });
     }
 
-    addOtherTransportationExpense(fb: FormBuilder) {
+    addTransportationExpense(fb: FormBuilder) {
         let group = {
             type: [''],
             amount: [''],
+            mileage: [''],
         };
 
         return fb.group(group);
@@ -101,7 +104,7 @@ export class TravelExpensesHelper {
                 province: ['British Columbia', [Validators.required]],
                 country: ['Canada', [Validators.required]],
             }),
-            childcareProviderGSTNumber: ['', [Validators.required]],
+            childcareProviderGSTNumber: [''],
             amountPaid: ['', [Validators.required]],
         };
 

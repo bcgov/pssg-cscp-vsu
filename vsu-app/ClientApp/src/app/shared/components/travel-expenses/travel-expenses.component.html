@@ -1,8 +1,7 @@
 <div [formGroup]="form">
     <div class="page-header mb-0">
-        <h1>Travel Expenses</h1>
+        <h1>Travel Information & Expenses</h1>
     </div>
-
 
     <div class="row">
         <div class="col-md-12">
@@ -87,54 +86,64 @@
         <button *ngIf="!isDisabled" class="btn btn-secondary" (click)="addAdditionalTravelDate()">+ ADD ADDITIONAL TRAVEL DATE</button>
     </div>
 
+
     <h2 class="blue-header mt-0">Transportation Expenses</h2>
 
-    <label>Personal vehicle use: Total distance travelled</label>
-    <div class="row">
-        <div class="col-md-6">
-            <app-field label="Mileage (in km)" [required]="true" [valid]="isMyControlValid(form.get('mileage'))" errorMessage="Please enter mileage" [disabled]="isDisabled">
-                <input class="form-control" type="text" mask="separator.2" formControlName="mileage" maxlength="100" (input)="updateMileageTotal()">
-            </app-field>
-        </div>
-        <div class="col-md-6">
-            <app-field label="Total mileage expenses" [required]="false" [disabled]="isDisabled">
-                <input class="form-control" type="text" mask="separator.2" prefix="$" formControlName="mileageExpenses" maxlength="100">
-            </app-field>
-        </div>
-    </div>
+    <p><strong>Transportation Type</strong></p>
 
-    <p><strong>Other transportation expenses (receipts required)</strong></p>
-
-    <div formArrayName="otherTransportationExpenses" *ngFor="let item of form.get('otherTransportationExpenses')['controls']; let i = index;">
+    <div formArrayName="transportationExpenses" *ngFor="let item of form.get('transportationExpenses')['controls']; let i = index;">
         <div [formGroupName]="i" class="other-transportation-info">
             <div class="row">
                 <div class="col">
                     <app-field label="Type" [required]="false" [valid]="isMyControlValid(item.get('type'))" errorMessage="Please select a value" [disabled]="isDisabled">
-                        <select formControlName="type" class="form-control ml-2">
+                        <select formControlName="type" class="form-control ml-2" (change)="transportationTypeChange(i)">
+                            <option value="vehicle">Personal Vehicle use</option>
                             <option value="air">Air</option>
                             <option value="bus">Bus</option>
-                            <option value="bus">Taxi</option>
-                            <option value="bus">Ferry</option>
-                            <option value="bus">Parking</option>
-                            <option value="bus">Other</option>
+                            <option value="taxi">Taxi</option>
+                            <option value="ferry">Ferry</option>
+                            <option value="parking">Parking</option>
+                            <option value="other">Other</option>
                         </select>
                     </app-field>
                 </div>
-                <div class="col">
-                    <app-field label="Expenses" [required]="false" [valid]="isMyControlValid(item.get('amount'))" errorMessage="Please enter mileage expenses" [disabled]="isDisabled">
-                        <input class="form-control" type="text" mask="separator.2" formControlName="amount" maxlength="100" (input)="updateSubTotal()">
-                    </app-field>
-                </div>
-                <div class="col-1 remove-button" *ngIf="form.get('otherTransportationExpenses')['controls'].length > 1 && !isDisabled">
+                <ng-container *ngIf="item.get('type').value === 'vehicle'">
+                    <div class="col">
+                        <app-field label="Mileage (in km)" [required]="false" [valid]="isMyControlValid(item.get('mileage'))" errorMessage="Please enter mileage" [disabled]="isDisabled">
+                            <input class="form-control" type="text" mask="separator.2" formControlName="mileage" maxlength="100" (input)="updateMileageTotal(i)">
+                        </app-field>
+                    </div>
+                    <div class="col">
+                        <app-field label="Total mileage expenses" [required]="false" [disabled]="isDisabled">
+                            <input class="form-control" type="text" mask="separator.2" prefix="$" formControlName="amount" maxlength="100">
+                        </app-field>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="item.get('type').value !== 'vehicle'">
+                    <div class="col">
+                        <app-field label="Expenses" [required]="false" [valid]="isMyControlValid(item.get('amount'))" errorMessage="Please enter mileage expenses" [disabled]="isDisabled">
+                            <input class="form-control" type="text" mask="separator.2" formControlName="amount" maxlength="100" (input)="updateTransportationTotals()">
+                        </app-field>
+                    </div>
+                </ng-container>
+                <div class="col-1 remove-button" *ngIf="form.get('transportationExpenses')['controls'].length > 1 && !isDisabled">
                     <br>
-                    <i class="fas fa-times-circle text-danger center-clear-btn" (click)="removeOtherTransportationExpense(i)"></i>
+                    <i class="fas fa-times-circle text-danger center-clear-btn" (click)="removeTransportationExpense(i)"></i>
                 </div>
             </div>
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-3">
+            <app-field label="Total transportation expenses" [required]="false" [disabled]="isDisabled" class="long-label">
+                <input class="form-control" type="text" mask="separator.2" prefix="$" formControlName="transportationTotal" maxlength="100">
+            </app-field>
+        </div>
+    </div>
+
     <div class="add-additional-btn-container">
-        <button *ngIf="!isDisabled" class="btn btn-secondary" (click)="addOtherTransportationExpense()">+ ADD OTHER TRANSPORTATION EXPENSE</button>
+        <button *ngIf="!isDisabled" class="btn btn-secondary" (click)="addTransportationExpense()">+ ADD TRANSPORTATION EXPENSE</button>
     </div>
 
 
@@ -152,12 +161,12 @@
                 </div>
                 <div class="col">
                     <app-field label="Number of nights" [required]="false" [valid]="isMyControlValid(item.get('numberOfNights'))" errorMessage="Please enter number of nights" [disabled]="isDisabled">
-                        <input class="form-control" type="text" mask="99" formControlName="numberOfNights" maxlength="100" (input)="updateAccommodationTotal(i)">
+                        <input class="form-control" type="text" mask="99" formControlName="numberOfNights" maxlength="100" (input)="updateAccommodationTotals()">
                     </app-field>
                 </div>
                 <div class="col">
                     <app-field label="Daily room rate" [required]="false" [valid]="isMyControlValid(item.get('dailyRoomRate'))" errorMessage="Please enter daily room rate" [disabled]="isDisabled" [tooltipReference]="roomRateTemplate">
-                        <input class="form-control" type="text" mask="separator.2" formControlName="dailyRoomRate" maxlength="100" (input)="updateAccommodationTotal(i)">
+                        <input class="form-control" type="text" mask="separator.2" formControlName="dailyRoomRate" maxlength="100" (input)="updateAccommodationTotals()">
                     </app-field>
                 </div>
                 <div class="col">
@@ -170,6 +179,14 @@
                     <i class="fas fa-times-circle text-danger center-clear-btn" (click)="removeAccommodationExpense(i)"></i>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-3">
+            <app-field label="Total accommodation expenses" [required]="false" [disabled]="isDisabled" class="long-label">
+                <input class="form-control" type="text" mask="separator.2" prefix="$" formControlName="accommodationTotal" maxlength="100">
+            </app-field>
         </div>
     </div>
 
@@ -223,7 +240,7 @@
 
     <div class="row">
         <div class="col-3">
-            <app-field label="Total meal expenses" [required]="false" [disabled]="isDisabled">
+            <app-field label="Total meal expenses" [required]="false" [disabled]="isDisabled" class="long-label">
                 <input class="form-control" type="text" mask="separator.2" prefix="$" formControlName="mealTotal" maxlength="100">
             </app-field>
         </div>
@@ -259,12 +276,11 @@
 
     <div class="row">
         <div class="col-3">
-            <app-field label="Total other expenses" [required]="false" [disabled]="isDisabled">
+            <app-field label="Total other expenses" [required]="false" [disabled]="isDisabled" class="long-label">
                 <input class="form-control" type="text" mask="separator.2" prefix="$" formControlName="otherTotal" maxlength="100">
             </app-field>
         </div>
     </div>
-
 
     <div class="add-additional-btn-container">
         <button *ngIf="!isDisabled" class="btn btn-secondary" (click)="addOtherExpense()">+ ADD OTHER EXPENSE</button>
@@ -337,7 +353,7 @@
 
                 <div class="row">
                     <div class="col">
-                        <app-field label="Childcare Provider GST/Business Number" [required]="true" [valid]="isMyControlValid(item.get('childcareProviderGSTNumber'))" errorMessage="Please enter gst/business number" [disabled]="isDisabled">
+                        <app-field label="Childcare Provider GST/Business Number" [required]="false" [valid]="isMyControlValid(item.get('childcareProviderGSTNumber'))" errorMessage="Please enter gst/business number" [disabled]="isDisabled">
                             <input class="form-control" type="text" mask="separator.2" formControlName="childcareProviderGSTNumber" maxlength="100">
                         </app-field>
                     </div>
@@ -363,16 +379,4 @@
             </app-field>
         </div>
     </div>
-    <!-- <div class="row">
-        <div class="col-6">
-            <app-field label="Travel advance already paid" [required]="false" [valid]="isMyControlValid(form.get('travelAdvanceAlreadyPaid'))" [disabled]="isDisabled">
-                <input class="form-control" type="text" mask="separator.2" formControlName="travelAdvanceAlreadyPaid" maxlength="100" (input)="updateTotalClaim()">
-            </app-field>
-        </div>
-        <div class="col-6">
-            <app-field label="Total travel reimbursement claim" [required]="false" [disabled]="isDisabled">
-                <input class="form-control" type="text" mask="separator.2" prefix="$" formControlName="totalReimbursementClaim" maxlength="100">
-            </app-field>
-        </div>
-    </div> -->
 </div>

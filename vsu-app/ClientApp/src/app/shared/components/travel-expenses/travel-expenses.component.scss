@@ -30,3 +30,8 @@
 .time-app-field {
     display: flex;
 }
+
+::ng-deep .long-label section label {
+    max-width: 300% !important;
+    width: 300% !important;
+}

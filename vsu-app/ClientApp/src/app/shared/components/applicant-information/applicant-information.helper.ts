@@ -56,12 +56,12 @@ export class ApplicantInfoHelper {
 
     public createVSW(fb: FormBuilder) {
         return fb.group({
-            firstName: [''],
-            lastName: [''],
-            organization: [''],
-            telephone: [''],
+            firstName: ['', Validators.required],
+            lastName: ['', Validators.required],
+            organization: ['', Validators.required],
+            telephone: ['', Validators.required],
             extension: [''],
-            email: ['', [Validators.email]],
+            email: ['', [Validators.required, Validators.email]],
             city: [''],
         });
     }

@@ -75,21 +75,58 @@ export class TravelExpensesComponent extends FormBase implements OnInit {
         this.travelPeriodStartDates.splice(index, 1);
     }
 
-    updateMileageTotal() {
-        let mileage = this.form.get('mileage').value;
+    transportationTypeChange(index: number) {
+        let transportationExpenses = this.form.get('transportationExpenses') as FormArray;
+        let group = transportationExpenses.controls[index];
+        if (group.get('type').value === "vehicle") {
+            if (group.get("amount").enabled) {
+                //we went from non vehicle to vehicle -> clear the amount
+                group.get("amount").patchValue('');
+                group.get("mileage").patchValue('');
+                this.updateTransportationTotals();
+
+            }
+            group.get("amount").disable();
+        }
+        else {
+            if (group.get("amount").disabled) {
+                //we went from vehicle to non vehicle -> clear the amount
+                group.get("amount").patchValue('');
+                group.get("mileage").patchValue('');
+                this.updateTransportationTotals();
+            }
+            group.get("amount").enable();
+        }
+    }
+
+    updateMileageTotal(index: number) {
+        let transportationExpenses = this.form.get('transportationExpenses') as FormArray;
+        let mileage = transportationExpenses.controls[index].get('mileage').value;
         let total = mileage * this.lookupData.expenseRates.mileage;
-        this.form.get('mileageExpenses').patchValue(total.toFixed(2));
-        this.updateSubTotal();
+        transportationExpenses.controls[index].get('amount').patchValue(total.toFixed(2));
+        this.updateTransportationTotals();
     }
 
-    addOtherTransportationExpense() {
-        let otherTransportationExpenses = this.form.get('otherTransportationExpenses') as FormArray;
-        otherTransportationExpenses.push(this.travelExpenseHelper.addOtherTransportationExpense(this.fb));
+    addTransportationExpense() {
+        let transportationExpenses = this.form.get('transportationExpenses') as FormArray;
+        transportationExpenses.push(this.travelExpenseHelper.addTransportationExpense(this.fb));
     }
 
-    removeOtherTransportationExpense(index: number) {
-        let otherTransportationExpenses = this.form.get('otherTransportationExpenses') as FormArray;
-        otherTransportationExpenses.removeAt(index);
+    removeTransportationExpense(index: number) {
+        let transportationExpenses = this.form.get('transportationExpenses') as FormArray;
+        transportationExpenses.removeAt(index);
+        this.updateTransportationTotals();
+    }
+
+    updateTransportationTotals() {
+        let transportationExpenses = this.form.get('transportationExpenses') as FormArray;
+
+        let total = 0;
+        transportationExpenses.controls.forEach(expense => {
+            let amount = expense.get('amount').value || 0;
+            total += parseFloat(amount);
+        });
+        this.form.get('transportationTotal').patchValue((Math.round(total * 100 + Number.EPSILON) / 100).toFixed(2));
         this.updateSubTotal();
     }
 
@@ -101,17 +138,21 @@ export class TravelExpensesComponent extends FormBase implements OnInit {
     removeAccommodationExpense(index: number) {
         let accommodationExpenses = this.form.get('accommodationExpenses') as FormArray;
         accommodationExpenses.removeAt(index);
-        this.updateSubTotal();
+        this.updateAccommodationTotals();
     }
 
-    updateAccommodationTotal(index: number) {
+    updateAccommodationTotals() {
         let accommodationExpenses = this.form.get('accommodationExpenses') as FormArray;
-        let accommodation = accommodationExpenses.controls[index];
 
-        let numberOfNights = accommodation.get('numberOfNights').value || 0;
-        let dailyRoomRate = accommodation.get('dailyRoomRate').value || 0;
-        let total = numberOfNights * dailyRoomRate;
-        accommodation.get('totalExpenses').patchValue(total.toFixed(2));
+        let total = 0;
+        accommodationExpenses.controls.forEach(accommodation => {
+            let numberOfNights = accommodation.get('numberOfNights').value || 0;
+            let dailyRoomRate = accommodation.get('dailyRoomRate').value || 0;
+            let this_total = numberOfNights * dailyRoomRate;
+            accommodation.get('totalExpenses').patchValue(this_total.toFixed(2));
+            total += this_total;
+        });
+        this.form.get('accommodationTotal').patchValue((Math.round(total * 100 + Number.EPSILON) / 100).toFixed(2));
         this.updateSubTotal();
     }
 
@@ -190,23 +231,10 @@ export class TravelExpensesComponent extends FormBase implements OnInit {
     }
 
     updateSubTotal() {
-        let mileageExpenses = parseFloat(this.form.get('mileageExpenses').value);
+        let transportationTotal = parseFloat(this.form.get('transportationTotal').value);
+        let accommodationTotal = parseFloat(this.form.get('accommodationTotal').value);;
         let mealTotal = parseFloat(this.form.get('mealTotal').value);
         let otherTotal = parseFloat(this.form.get('otherTotal').value);
-
-        let otherTransportationExpenses = this.form.get('otherTransportationExpenses') as FormArray;
-        let otherTransportationTotal = 0;
-        otherTransportationExpenses.controls.forEach(other => {
-            let amount = other.get('amount').value || 0;
-            otherTransportationTotal += parseFloat(amount);
-        });
-
-        let accommodationExpenses = this.form.get('accommodationExpenses') as FormArray;
-        let accommodationTotal = 0;
-        accommodationExpenses.controls.forEach(accommodation => {
-            let amount = accommodation.get('totalExpenses').value || 0;
-            accommodationTotal += parseFloat(amount);
-        });
 
         let children = this.form.get('children') as FormArray;
         let childTotal = 0;
@@ -215,7 +243,7 @@ export class TravelExpensesComponent extends FormBase implements OnInit {
             childTotal += parseFloat(amount);
         });
 
-        let subTotal = mileageExpenses + mealTotal + otherTotal + accommodationTotal + otherTransportationTotal + childTotal;
+        let subTotal = transportationTotal + mealTotal + otherTotal + accommodationTotal + childTotal;
 
         this.form.get('subTotal').patchValue((Math.round(subTotal * 100 + Number.EPSILON) / 100).toFixed(2));
     }
