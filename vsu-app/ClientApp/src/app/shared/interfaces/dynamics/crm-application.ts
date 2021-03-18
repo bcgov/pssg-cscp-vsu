@@ -148,8 +148,8 @@ export interface iCRMParticipant {
 }
 
 export interface iCRMTravelInfo {
-    vsd_courtdate: Date;
-    vsd_courtfilenumber_text: string;
+    vsd_courtdate?: Date;
+    vsd_courtfilenumber_text?: string;
     vsd_purposeoftravel: string;
     vsd_travelperiodfrom: Date;
     vsd_travelperiodto: Date;

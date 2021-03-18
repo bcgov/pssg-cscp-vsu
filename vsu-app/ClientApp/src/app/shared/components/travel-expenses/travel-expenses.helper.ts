@@ -60,7 +60,6 @@ export class TravelExpensesHelper {
         let group = {
             type: [''],
             numberOfNights: [''],
-            dailyRoomRate: [''],
             totalExpenses: [{ value: 0, disabled: true }],
         };
 
@@ -69,10 +68,10 @@ export class TravelExpensesHelper {
 
     addMealExpense(fb: FormBuilder) {
         let group = {
-            date: ['', [Validators.required]],
-            breakfast: ['', [Validators.required]],
-            lunch: ['', [Validators.required]],
-            dinner: ['', [Validators.required]],
+            date: [''],
+            breakfast: [''],
+            lunch: [''],
+            dinner: [''],
             total: [{ value: 0, disabled: true }],
         };
 
@@ -90,7 +89,7 @@ export class TravelExpensesHelper {
 
     addChild(fb: FormBuilder) {
         let group = {
-            age: [''],
+            age: ['', [Validators.required]],
             startDate: [''],
             endDate: [''],
             firstName: ['', [Validators.required]],

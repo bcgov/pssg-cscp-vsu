@@ -50,4 +50,5 @@ export interface iExpenseRates {
     lunch: number;
     dinner: number;
     mileage: number;
+    room: number;
 }

@@ -97,6 +97,10 @@ export class EnumHelper {
         Meals:                  <IOptionSetVal> { val: 100000005, name: "Meals"},
         Other:                  <IOptionSetVal> { val: 100000007, name: "Other"},
     }
+
+    //for reimbursement form - add option set for invoice expense type
+    //add option set for transportation types - air, bus, ferry...
+    
 }
 
 interface IOptionSetVal {

@@ -145,10 +145,11 @@ export class TravelExpensesComponent extends FormBase implements OnInit {
         let accommodationExpenses = this.form.get('accommodationExpenses') as FormArray;
 
         let total = 0;
+        let room_rate = this.lookupData.expenseRates.room;
         accommodationExpenses.controls.forEach(accommodation => {
             let numberOfNights = accommodation.get('numberOfNights').value || 0;
-            let dailyRoomRate = accommodation.get('dailyRoomRate').value || 0;
-            let this_total = numberOfNights * dailyRoomRate;
+            // let dailyRoomRate = accommodation.get('dailyRoomRate').value || 0;
+            let this_total = numberOfNights * room_rate;
             accommodation.get('totalExpenses').patchValue(this_total.toFixed(2));
             total += this_total;
         });

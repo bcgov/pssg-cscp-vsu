@@ -19,7 +19,6 @@ export class AuthInfoHelper {
 
         if (form_type === ApplicationType.TRAVEL_REIMBURSEMENT) {
             group['documents'] = fb.array([]);
-            group['inLieuOfReceipt'] = [false];
             group['subTotal'] = [{ value: 0, disabled: true }];
             group['travelAdvanceAlreadyPaid'] = [''];
             group['totalReimbursementClaim'] = [{ value: 0, disabled: true }];

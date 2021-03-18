@@ -10,6 +10,7 @@ export class VTFCaseInfoHelper {
             birthDate: ['', [Validators.required]],
             isValid: [false, [Validators.requiredTrue]],
             didCheck: [false],
+            incidentid: ['', [Validators.required]],
         };
 
         return fb.group(group);
