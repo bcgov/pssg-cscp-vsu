@@ -1,4 +1,5 @@
 import * as _ from 'lodash';
+import { EnumHelper } from '../../enums-list';
 import { iCRMTravelInfo } from '../dynamics/crm-application';
 import { iCRMInvoiceLineDetail, iInvoice, iReimbursementFormCRM } from "../dynamics/crm-reimbursement";
 import { iReimbursementForm } from "../reimbursement.interface";
@@ -9,7 +10,7 @@ export function convertReimbursementFormToCRM(data: iReimbursementForm) {
 
     let crm_application: iReimbursementFormCRM = {
         CaseId: getCRMCase(data),
-        ContactInfoComments: "",
+        ContactInfoComments: data.TravelInformation.contactInfoComments,
         Invoice: getInvoice(data),
         TravelInfoCollection: getCRMTravelInfoCollection(data),
         TransportationExpenseCollection: getCRMTravelExpenseCollection(data),
@@ -27,8 +28,9 @@ function getCRMCase(data: iReimbursementForm) {
 }
 
 function getInvoice(data: iReimbursementForm) {
+    let enums = new EnumHelper();
     let invoice: iInvoice = {
-        vsd_vsu_claimantcontactinfochanged: data.TravelInformation.hasContactInfoChanged ? 1 : 0,
+        vsd_vsu_claimantcontactinfochanged: data.TravelInformation.hasContactInfoChanged ? enums.Boolean.True.val : enums.Boolean.False.val,
         vsd_vsu_signaturedate: data.AuthorizationInformation.date,
         vsd_signature: data.AuthorizationInformation.fullName,
         vsd_vsu_declarationsignature: data.AuthorizationInformation.signature,
@@ -45,85 +47,109 @@ function getCRMTravelInfoCollection(data: iReimbursementForm) {
             vsd_travelperiodfrom: t.travelPeriodStart,
             vsd_travelperiodto: t.travelPeriodEnd
         });
-    })
+    });
 
     return travel_collection;
 }
 
 function getCRMTravelExpenseCollection(data: iReimbursementForm) {
     let travel_expense_collection: iCRMInvoiceLineDetail[] = [];
+    let enums = new EnumHelper();
 
     data.TravelInformation.transportationExpenses.forEach(t => {
-        travel_expense_collection.push({
-            //t.ype is just a string - so problems
-            vsd_vsu_expensetype: t.type,
-            //also problems
-            vsd_vsu_transportationtype: t.type,
-            vsd_vsu_mileage: t.mileage,
-            vsd_amountsimple: t.amount,
-        });
-    })
+        let expense: iCRMInvoiceLineDetail = {
+            vsd_vsu_expensetype: enums.TravelExpenseType.Transportation.val,
+            vsd_vsu_transportationtype: Number(t.type),
+        };
+        if (t.type == enums.TransportationType.Mileage.val) {
+            expense.vsd_vsu_mileage = Number(t.mileage);
+        }
+        else {
+            expense.vsd_amountsimple = Number(t.amount);
+        }
+        travel_expense_collection.push(expense);
+    });
 
     return travel_expense_collection;
 }
 
 function getCRMAccommodationExpenseCollection(data: iReimbursementForm) {
     let accommodation_expense_collection: iCRMInvoiceLineDetail[] = [];
+    let enums = new EnumHelper();
 
     data.TravelInformation.accommodationExpenses.forEach(a => {
         accommodation_expense_collection.push({
-            //a.type is just a string description here - so no good
-            vsd_vsu_expensetype: a.type,
-            vsd_vsu_other: a.type.toString(),
-            vsd_vsu_number: a.numberOfNights
+            vsd_vsu_expensetype: enums.TravelExpenseType.Accommodation.val,
+            vsd_vsu_other: a.type,
+            vsd_vsu_number: Number(a.numberOfNights)
         });
-    })
+    });
 
     return accommodation_expense_collection;
 }
 
 function getCRMMealExpenseCollection(data: iReimbursementForm) {
     let meal_expense_collection: iCRMInvoiceLineDetail[] = [];
+    let enums = new EnumHelper();
 
+    //Meal date doesn't have a field in COAST atm
     data.TravelInformation.mealExpenses.forEach(m => {
-        meal_expense_collection.push({
-            vsd_vsu_expensetype: m.breakfast,
-            vsd_vsu_number: m.dinner,
-        });
-    })
+        if (m.breakfast > 0) {
+            meal_expense_collection.push({
+                vsd_vsu_expensetype: enums.TravelExpenseType.Meal_Breakfast.val,
+                vsd_vsu_number: Number(m.breakfast),
+            });
+        }
+
+        if (m.lunch > 0) {
+            meal_expense_collection.push({
+                vsd_vsu_expensetype: enums.TravelExpenseType.Meal_Lunch.val,
+                vsd_vsu_number: Number(m.lunch),
+            });
+        }
+
+        if (m.dinner > 0) {
+            meal_expense_collection.push({
+                vsd_vsu_expensetype: enums.TravelExpenseType.Meal_Dinner.val,
+                vsd_vsu_number: Number(m.dinner),
+            });
+        }
+    });
 
     return meal_expense_collection;
 }
 
 function getCRMChildcareExpenseCollection(data: iReimbursementForm) {
     let child_care_expense_collection: iCRMInvoiceLineDetail[] = [];
+    let enums = new EnumHelper();
 
     data.TravelInformation.children.forEach(c => {
         child_care_expense_collection.push({
-            vsd_vsu_expensetype: c.age,
-            vsd_vsu_childage: c.age,
+            vsd_vsu_expensetype: enums.TravelExpenseType.Childcare.val,
+            vsd_vsu_childage: Number(c.age),
             vsd_vsu_childcarestartdate: c.startDate,
             vsd_vsu_childcareenddate: c.endDate,
             vsd_vsu_childcareproviderfirstname: c.firstName,
             vsd_childcareproviderlastname: c.lastName,
             vsd_vsu_childcareproviderphoneno: c.phone,
-            vsd_amountsimple: c.amountPaid,
+            vsd_amountsimple: Number(c.amountPaid),
         });
-    })
+    });
 
     return child_care_expense_collection;
 }
 
 function getCRMOtherExpenseCollection(data: iReimbursementForm) {
     let other_expense_collection: iCRMInvoiceLineDetail[] = [];
+    let enums = new EnumHelper();
 
     data.TravelInformation.otherExpenses.forEach(o => {
         other_expense_collection.push({
-            vsd_vsu_expensetype: o.amount,
+            vsd_vsu_expensetype: enums.TravelExpenseType.Other.val,
             vsd_vsu_other: o.description,
-            vsd_amountsimple: o.amount,
+            vsd_amountsimple: Number(o.amount),
         });
-    })
+    });
 
     return other_expense_collection;
 }

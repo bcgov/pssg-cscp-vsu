@@ -78,21 +78,21 @@ export class TravelExpensesComponent extends FormBase implements OnInit {
     transportationTypeChange(index: number) {
         let transportationExpenses = this.form.get('transportationExpenses') as FormArray;
         let group = transportationExpenses.controls[index];
-        if (group.get('type').value === "vehicle") {
+        console.log(group.get('type').value);
+        if (group.get('type').value === this.enum.TransportationType.Mileage.val) {
             if (group.get("amount").enabled) {
                 //we went from non vehicle to vehicle -> clear the amount
-                group.get("amount").patchValue('');
-                group.get("mileage").patchValue('');
+                group.get("amount").patchValue(null);
+                group.get("mileage").patchValue(null);
                 this.updateTransportationTotals();
-
             }
             group.get("amount").disable();
         }
         else {
             if (group.get("amount").disabled) {
                 //we went from vehicle to non vehicle -> clear the amount
-                group.get("amount").patchValue('');
-                group.get("mileage").patchValue('');
+                group.get("amount").patchValue(null);
+                group.get("mileage").patchValue(null);
                 this.updateTransportationTotals();
             }
             group.get("amount").enable();
@@ -101,7 +101,7 @@ export class TravelExpensesComponent extends FormBase implements OnInit {
 
     updateMileageTotal(index: number) {
         let transportationExpenses = this.form.get('transportationExpenses') as FormArray;
-        let mileage = transportationExpenses.controls[index].get('mileage').value;
+        let mileage = parseFloat(transportationExpenses.controls[index].get('mileage').value);
         let total = mileage * this.lookupData.expenseRates.mileage;
         transportationExpenses.controls[index].get('amount').patchValue(total.toFixed(2));
         this.updateTransportationTotals();

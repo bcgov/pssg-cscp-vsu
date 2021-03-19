@@ -12,8 +12,6 @@ export class TravelExpensesHelper {
 
             travelDates: fb.array([this.addTravelDate(fb)]),
 
-            // mileage: ['', [Validators.required]],
-            // mileageExpenses: [{ value: 0, disabled: true }],
             transportationExpenses: fb.array([this.addTransportationExpense(fb)]),
             transportationTotal: [{ value: 0, disabled: true }],
             accommodationExpenses: fb.array([this.addAccommodationExpense(fb)]),
@@ -48,7 +46,7 @@ export class TravelExpensesHelper {
 
     addTransportationExpense(fb: FormBuilder) {
         let group = {
-            type: [''],
+            type: [0],
             amount: [''],
             mileage: [''],
         };

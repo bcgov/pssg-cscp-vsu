@@ -48,7 +48,7 @@ export interface iTravelExpense {
 }
 
 export interface iAccommodationExpense {
-    type: number;
+    type: string;
     numberOfNights: number;
     totalExpenses: number;
 }

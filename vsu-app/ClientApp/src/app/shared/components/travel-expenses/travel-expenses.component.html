@@ -99,18 +99,18 @@
                 <div class="col">
                     <app-field label="Type" [required]="false" [valid]="isMyControlValid(item.get('type'))" errorMessage="Please select a value" [disabled]="isDisabled">
                         <select formControlName="type" class="form-control ml-2" (change)="transportationTypeChange(i)">
-                            <!-- update the values based on the crm option set -->
-                            <option value="vehicle">Personal Vehicle use</option>
-                            <option value="air">Air</option>
-                            <option value="bus">Bus</option>
-                            <option value="taxi">Taxi</option>
-                            <option value="ferry">Ferry</option>
-                            <option value="parking">Parking</option>
-                            <option value="other">Other</option>
+                            <option [value]="0">Select One</option>
+                            <option [value]="enum.TransportationType.Mileage.val">Personal Vehicle use</option>
+                            <option [value]="enum.TransportationType.Air.val">Air</option>
+                            <option [value]="enum.TransportationType.Bus.val">Bus</option>
+                            <option [value]="enum.TransportationType.Taxi.val">Taxi</option>
+                            <option [value]="enum.TransportationType.Ferry.val">Ferry</option>
+                            <option [value]="enum.TransportationType.Parking.val">Parking</option>
+                            <option [value]="enum.TransportationType.Other.val">Other</option>
                         </select>
                     </app-field>
                 </div>
-                <ng-container *ngIf="item.get('type').value === 'vehicle'">
+                <ng-container *ngIf="item.get('type').value == enum.TransportationType.Mileage.val">
                     <div class="col">
                         <app-field label="Mileage (in km)" [required]="false" [valid]="isMyControlValid(item.get('mileage'))" errorMessage="Please enter mileage" [disabled]="isDisabled">
                             <input class="form-control" type="text" mask="separator.2" formControlName="mileage" maxlength="100" (input)="updateMileageTotal(i)">
@@ -122,7 +122,7 @@
                         </app-field>
                     </div>
                 </ng-container>
-                <ng-container *ngIf="item.get('type').value !== 'vehicle'">
+                <ng-container *ngIf="item.get('type').value != enum.TransportationType.Mileage.val">
                     <div class="col">
                         <app-field label="Expenses" [required]="false" [valid]="isMyControlValid(item.get('amount'))" errorMessage="Please enter mileage expenses" [disabled]="isDisabled">
                             <input class="form-control" type="text" mask="separator.2" formControlName="amount" maxlength="100" (input)="updateTransportationTotals()">
