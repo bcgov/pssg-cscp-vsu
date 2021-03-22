@@ -371,6 +371,9 @@
                         <li class="nav-item">
                             <a id="tab-state-transition" class="nav-link nav-tab-table is-disabled" onclick="showTabContent(event, 'state-transitions-container')">State Transitions</a>
                         </li>
+                        <li class="nav-item">
+                            <a id="tab-key-dates" class="nav-link nav-tab-table is-disabled" onclick="showTabContent(event, 'key-dates-container')">Key Dates</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -732,6 +735,30 @@
                 </div>
             </div>
 
+            <div id="key-dates-container" class="hidden">
+                <div class="row mt-4">
+                    <div class="col">
+                        <p><strong>Key Dates</strong></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <table class="table table-striped" id="key-dates-table">
+                            <thead class="thead">
+                                <th>Date</th>
+                                <th>Activity Description</th>
+                                <th>Key Date Type Code</th>
+                                <th>Sentence Type Code </th>
+                                <th>Description</th>
+                            </thead>
+
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
             <div class="row mt-5">
                 <div class="col hidden" id="return-to-search">
                     <button onclick="clearOffenderDetails(); showSearch();" class="btn btn-secondary">Return to Search</button>
@@ -766,6 +793,7 @@
             "hearings-container",
             "victim-information-container",
             "state-transitions-container",
+            "key-dates-container",
         ];
 
         const GenderOptionSet = {
@@ -1541,6 +1569,7 @@
                         key_dates.sort((a, b) => {
                             return new Date(b.activityDate).getTime() - new Date(a.activityDate).getTime();
                         });
+                        $("#tab-key-dates").removeClass("is-disabled");
                         populateKeyDates();
                     }
 
@@ -1662,6 +1691,7 @@
             $("#tab-hearings").addClass("is-disabled");
             $("#tab-victim-info").addClass("is-disabled");
             $("#tab-state-transition").addClass("is-disabled");
+            $("#tab-key-dates").addClass("is-disabled");
             //empty all tables/key dates
             $("#key-dates").find("div:gt(0)").remove();
             $("#offences-table").find("tr:gt(0)").remove();
@@ -1669,6 +1699,7 @@
             $("#hearings-table").find("tr:gt(0)").remove();
             $("#victim-information-table").find("tr:gt(0)").remove();
             $("#sate-transitions-table").find("tr:gt(0)").remove();
+            $("#key-dates-table").find("tr:gt(0)").remove();
             //set subject info as selected tab - show/hide as needed
             let tab = "subject-information-container";
             let toHide = TABS.filter(t => t != tab);
@@ -1723,14 +1754,24 @@
 
         function populateKeyDates() {
             $("#key-dates").find("div:gt(0)").remove();
+            $("#key-dates-table").find("tr:gt(0)").remove();
 
             key_dates.forEach((keyDate, i) => {
                 let div = `<div class="col-4">
-                                <label for="offenderKeyDate${i}" class="offenderKeyDate${i}">${keyDate.activityCategory.description}</label>
+                                <label for="offenderKeyDate${i}" class="offenderKeyDate${i}">${keyDate.activityCategory.description || ''}</label>
                                 <br>
-                                <input class="form-control offenderKeyDate read-only" type="text" id="offenderKeyDate${i}" name="offenderKeyDate${i}" value="${keyDate.activityDate}">
+                                <input class="form-control offenderKeyDate read-only" type="text" id="offenderKeyDate${i}" name="offenderKeyDate${i}" value="${keyDate.activityDate || ''}">
                             </div>`;
                 $("#key-dates").append(div);
+
+                let tr = `<tr>
+                            <td>${keyDate.activityDate ? new Date(keyDate.activityDate).toLocaleString('en-us', { month: "short", day: 'numeric', year: 'numeric' }) : ''}</td>
+                            <td>${keyDate.activityCategory.description || ''}</td>
+                            <td>${keyDate.activityCategory.code || ''}</td>
+                            <td>${keyDate.sentenceCalcTypeCd || ''}</td>
+                            <td>${keyDate.activityDescription || ''}</td>
+                        </tr>`;
+                $("#key-dates-table").append(tr);
             });
         }
 
@@ -1740,14 +1781,14 @@
             offences.forEach((offence, i) => {
                 offence.chargeCounts.forEach((charge, j) => {
                     let tr = `<tr>
-                            <td>${charge.fileNumber}</td>
-                            <td>${charge.countSeqNo}</td>
-                            <td>${offence.courtLocationDescription}</td>
-                            <td>${charge.statuteAct}</td>
-                            <td>${charge.statuteSectionNo}</td>
+                            <td>${charge.fileNumber || ''}</td>
+                            <td>${charge.countSeqNo || ''}</td>
+                            <td>${offence.courtLocationDescription || ''}</td>
+                            <td>${charge.statuteAct || ''}</td>
+                            <td>${charge.statuteSectionNo || ''}</td>
                             <td>${charge.statuteSubsectionParagraph || ''}</td>
-                            <td>${charge.statuteDescription}</td>
-                            <td>${offence.documentTypeCode}</td>
+                            <td>${charge.statuteDescription || ''}</td>
+                            <td>${offence.documentTypeCode || ''}</td>
                             <td>${offence.expiryDate ? new Date(offence.expiryDate).toLocaleString('en-us', { month: "short", day: 'numeric', year: 'numeric' }) : ''}</td>
                         </tr>`;
                     $("#offences-table").append(tr);
@@ -1762,9 +1803,9 @@
                 let tr = `<tr>
                             <td>${movement.activityDate.val.toLocaleString('en-us', { month: "short", day: 'numeric', year: 'numeric' })}</td>
                             <td>${movement.activityDate.val.toLocaleTimeString()}</td>
-                            <td>${movement.activityCategory.description}</td>
-                            <td>${movement.activitySubCategory.code}</td>
-                            <td>${movement.activityReason.description}</td>
+                            <td>${movement.activityCategory.description || ''}</td>
+                            <td>${movement.activitySubCategory.code || ''}</td>
+                            <td>${movement.activityReason.description || ''}</td>
                             <td>${movement.supervisionFacility.to || ''}</td>
                             <td>${movement.activityDescription || ''}</td>
                         </tr>`;
@@ -1793,8 +1834,8 @@
 
             victim_information.forEach((victim, i) => {
                 let tr = `<tr>
-                            <td>${victim.personFullName}</td>
-                            <td>${victim.victimToPersonRelationship}</td>
+                            <td>${victim.personFullName || ''}</td>
+                            <td>${victim.victimToPersonRelationship || ''}</td>
                             <td>${'<button onclick="showVictimDetails(' + i + ')" class="btn btn-secondary">View Details</button>'}</td>
                         </tr>`;
                 $("#victim-information-table").append(tr);
@@ -1806,10 +1847,10 @@
 
             state_transitions.forEach((transition, i) => {
                 let tr = `<tr>
-                            <td>${transition.eventDate}</td>
-                            <td>${transition.activityType.code}</td>
-                            <td>${transition.activitySubType.code}</td>
-                            <td>${transition.activityReason.description}</td>
+                            <td>${transition.eventDate || ''}</td>
+                            <td>${transition.activityType.code || ''}</td>
+                            <td>${transition.activitySubType.code || ''}</td>
+                            <td>${transition.activityReason.description || ''}</td>
                         </tr>`;
                 $("#state-transitions-table").append(tr);
             });
@@ -1819,20 +1860,20 @@
             let victim = victim_information[index];
             $(".victim-details-container").removeClass("hidden");
 
-            $("#victimName").val(victim.personFullName);
-            $("#victimComment").val(victim.victimContactComment);
-            $("#victimEffectiveDate").val(victim.victimContactDate.effective);
-            $("#victimExpiryDate").val(victim.victimContactDate.expiry);
-            $("#victimPrimaryAddress").val(victim.primaryAddressFull);
-            $("#victimSecondaryAddress").val(victim.secondaryAddressFull);
-            $("#victimMailingAddress").val(victim.mailingAddressFull);
-            $("#victimBusinessAddress").val(victim.businessAddressFull);
-            $("#victimTelephone").val(victim.telephoneNumberType.number);
-            $("#victimTelephoneEffectiveDate").val(victim.telephoneNumberType.effectiveDate);
-            $("#victimMobile").val(victim.cellNumberType.number);
-            $("#victimMobileEffectiveDate").val(victim.cellNumberType.effectiveDate);
-            $("#victimEmail").val(victim.emailType.emailAddress);
-            $("#victimEmailEffectiveDate").val(victim.emailType.effectiveDate);
+            $("#victimName").val(victim.personFullName || '');
+            $("#victimComment").val(victim.victimContactComment || '');
+            $("#victimEffectiveDate").val(victim.victimContactDate.effective || '');
+            $("#victimExpiryDate").val(victim.victimContactDate.expiry || '');
+            $("#victimPrimaryAddress").val(victim.primaryAddressFull || '');
+            $("#victimSecondaryAddress").val(victim.secondaryAddressFull || '');
+            $("#victimMailingAddress").val(victim.mailingAddressFull || '');
+            $("#victimBusinessAddress").val(victim.businessAddressFull || '');
+            $("#victimTelephone").val(victim.telephoneNumberType.number || '');
+            $("#victimTelephoneEffectiveDate").val(victim.telephoneNumberType.effectiveDate || '');
+            $("#victimMobile").val(victim.cellNumberType.number || '');
+            $("#victimMobileEffectiveDate").val(victim.cellNumberType.effectiveDate || '');
+            $("#victimEmail").val(victim.emailType.emailAddress || '');
+            $("#victimEmailEffectiveDate").val(victim.emailType.effectiveDate || '');
 
             if (victim.telephoneNumberType.isPrimary) {
                 $("label.victimTelephone").addClass("is-primary-contact");
