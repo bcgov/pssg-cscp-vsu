@@ -30,6 +30,7 @@ export interface iCRMInvoiceLineDetail {
 
     vsd_vsu_other?: string;
     vsd_vsu_number?: number;
+    vsd_vsu_dailyroomrate?: number;
 
     vsd_vsu_childage?: number;
     vsd_vsu_childcarestartdate?: Date;

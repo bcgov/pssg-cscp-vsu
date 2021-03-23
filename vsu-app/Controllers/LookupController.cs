@@ -183,9 +183,8 @@ namespace Gov.Cscp.Victims.Public.Controllers
                 string lunchId = "25934686-fd76-eb11-b823-00505683fbf4";
                 string dinnerId = "89d4ae92-fd76-eb11-b823-00505683fbf4";
                 string mileageId = "92351edf-2a7d-eb11-b824-00505683fbf4";
-                string roomId = "22b35a3f-7987-eb11-b825-00505683fbf4";
 
-                string endpointUrl = $"vsd_configs?$select=vsd_value,vsd_key&$filter=statecode eq 0 and (vsd_configid eq {breakfastId} or vsd_configid eq {lunchId} or vsd_configid eq {dinnerId} or vsd_configid eq {mileageId} or vsd_configid eq {roomId})";
+                string endpointUrl = $"vsd_configs?$select=vsd_value,vsd_key&$filter=statecode eq 0 and (vsd_configid eq {breakfastId} or vsd_configid eq {lunchId} or vsd_configid eq {dinnerId} or vsd_configid eq {mileageId})";
                 DynamicsResult result = await _dynamicsResultService.Get(endpointUrl);
                 return StatusCode((int)result.statusCode, result.result.ToString());
             }

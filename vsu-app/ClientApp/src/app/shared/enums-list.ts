@@ -111,6 +111,7 @@ export class EnumHelper {
     }
 
     public TransportationType = {
+        NONE:       <IOptionSetVal> { val: 0, name: ""},
         Mileage:    <IOptionSetVal> { val: 100000000, name: "Mileage"},
         Air:        <IOptionSetVal> { val: 100000001, name: "Air"},
         Bus:        <IOptionSetVal> { val: 100000002, name: "Bus"},

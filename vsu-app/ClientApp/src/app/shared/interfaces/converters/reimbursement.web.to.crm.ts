@@ -12,13 +12,25 @@ export function convertReimbursementFormToCRM(data: iReimbursementForm) {
         CaseId: getCRMCase(data),
         ContactInfoComments: data.TravelInformation.contactInfoComments,
         Invoice: getInvoice(data),
-        TravelInfoCollection: getCRMTravelInfoCollection(data),
-        TransportationExpenseCollection: getCRMTravelExpenseCollection(data),
-        AccommodationExpenseCollection: getCRMAccommodationExpenseCollection(data),
-        MealExpenseCollection: getCRMMealExpenseCollection(data),
-        ChildcareExpenseCollection: getCRMChildcareExpenseCollection(data),
-        OtherExpenseCollection: getCRMOtherExpenseCollection(data),
     }
+
+    let travelInfo = getCRMTravelInfoCollection(data);
+    if (travelInfo.length > 0) crm_application.TravelInfoCollection = travelInfo;
+
+    let travelExpenseInfo = getCRMTravelExpenseCollection(data);
+    if (travelExpenseInfo.length > 0) crm_application.TransportationExpenseCollection = travelExpenseInfo;
+
+    let accommodationInfo = getCRMAccommodationExpenseCollection(data);
+    if (accommodationInfo.length > 0) crm_application.AccommodationExpenseCollection = accommodationInfo;
+
+    let mealInfo = getCRMMealExpenseCollection(data);
+    if (mealInfo.length > 0) crm_application.MealExpenseCollection = mealInfo;
+
+    let childInfo = getCRMChildcareExpenseCollection(data);
+    if (childInfo.length > 0) crm_application.ChildcareExpenseCollection = childInfo;
+
+    let otherInfo = getCRMOtherExpenseCollection(data);
+    if (otherInfo.length > 0) crm_application.OtherExpenseCollection = otherInfo;
 
     return crm_application;
 }
@@ -57,17 +69,20 @@ function getCRMTravelExpenseCollection(data: iReimbursementForm) {
     let enums = new EnumHelper();
 
     data.TravelInformation.transportationExpenses.forEach(t => {
-        let expense: iCRMInvoiceLineDetail = {
-            vsd_vsu_expensetype: enums.TravelExpenseType.Transportation.val,
-            vsd_vsu_transportationtype: Number(t.type),
-        };
-        if (t.type == enums.TransportationType.Mileage.val) {
-            expense.vsd_vsu_mileage = Number(t.mileage);
+        //  not an empty obj       AND    Type has been selected                  AND  a valid amount is entered
+        if (checkObjectHasValue(t) && t.type != enums.TransportationType.NONE.val && (t.mileage || t.amount)) {
+            let expense: iCRMInvoiceLineDetail = {
+                vsd_vsu_expensetype: enums.TravelExpenseType.Transportation.val,
+                vsd_vsu_transportationtype: Number(t.type),
+            };
+            if (t.type == enums.TransportationType.Mileage.val) {
+                expense.vsd_vsu_mileage = Number(t.mileage);
+            }
+            else {
+                expense.vsd_amountsimple = Number(t.amount);
+            }
+            travel_expense_collection.push(expense);
         }
-        else {
-            expense.vsd_amountsimple = Number(t.amount);
-        }
-        travel_expense_collection.push(expense);
     });
 
     return travel_expense_collection;
@@ -78,11 +93,15 @@ function getCRMAccommodationExpenseCollection(data: iReimbursementForm) {
     let enums = new EnumHelper();
 
     data.TravelInformation.accommodationExpenses.forEach(a => {
-        accommodation_expense_collection.push({
-            vsd_vsu_expensetype: enums.TravelExpenseType.Accommodation.val,
-            vsd_vsu_other: a.type,
-            vsd_vsu_number: Number(a.numberOfNights)
-        });
+        if (checkObjectHasValue(a)) {
+            accommodation_expense_collection.push({
+                vsd_vsu_expensetype: enums.TravelExpenseType.Accommodation.val,
+                vsd_vsu_other: a.type,
+                vsd_vsu_number: Number(a.numberOfNights),
+                vsd_vsu_dailyroomrate: Number(a.roomRate),
+                vsd_amountsimple: Number(a.numberOfNights) * Number(a.roomRate),
+            });
+        }
     });
 
     return accommodation_expense_collection;
@@ -144,12 +163,18 @@ function getCRMOtherExpenseCollection(data: iReimbursementForm) {
     let enums = new EnumHelper();
 
     data.TravelInformation.otherExpenses.forEach(o => {
-        other_expense_collection.push({
-            vsd_vsu_expensetype: enums.TravelExpenseType.Other.val,
-            vsd_vsu_other: o.description,
-            vsd_amountsimple: Number(o.amount),
-        });
+        if (checkObjectHasValue(o)) {
+            other_expense_collection.push({
+                vsd_vsu_expensetype: enums.TravelExpenseType.Other.val,
+                vsd_vsu_other: o.description,
+                vsd_amountsimple: Number(o.amount),
+            });
+        }
     });
 
     return other_expense_collection;
+}
+
+function checkObjectHasValue(obj: any) {
+    return Object.values(obj).some(value => !!value);
 }

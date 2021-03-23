@@ -47,7 +47,7 @@
                             <mat-datepicker #travelPeriodStartPicker_i></mat-datepicker>
                         </app-field>
                     </div>
-                    <div class="time-div">
+                    <!-- <div class="time-div">
                         <app-field [valid]="isMyControlValid(item.get('startTime'))" errorMessage="Please enter a valid time" [disabled]="isDisabled">
                             <div class="time-app-field">
                                 <input formControlName="startTime" type="text" mask="00 : 00" class="form-control mr-2 time-input" placeholder="00 : 00" [pattern]="timeRegex" (change)="autoFormatTime(item.get('startTime'))">
@@ -57,7 +57,7 @@
                                 </select>
                             </div>
                         </app-field>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="col-md-6">
                     <div>
@@ -66,7 +66,7 @@
                             <mat-datepicker #travelPeriodEndPicker_i></mat-datepicker>
                         </app-field>
                     </div>
-                    <div class="time-div">
+                    <!-- <div class="time-div">
                         <app-field [valid]="isMyControlValid(item.get('endTime'))" errorMessage="Please enter a valid time" [disabled]="isDisabled">
                             <div class="time-app-field">
                                 <input formControlName="endTime" type="text" mask="00 : 00" class="form-control mr-2 time-input" placeholder="00 : 00" [pattern]="timeRegex" (change)="autoFormatTime(item.get('endTime'))">
@@ -76,7 +76,7 @@
                                 </select>
                             </div>
                         </app-field>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -99,7 +99,7 @@
                 <div class="col">
                     <app-field label="Type" [required]="false" [valid]="isMyControlValid(item.get('type'))" errorMessage="Please select a value" [disabled]="isDisabled">
                         <select formControlName="type" class="form-control ml-2" (change)="transportationTypeChange(i)">
-                            <option [value]="0">Select One</option>
+                            <option [value]="enum.TransportationType.NONE.val">Select One</option>
                             <option [value]="enum.TransportationType.Mileage.val">Personal Vehicle use</option>
                             <option [value]="enum.TransportationType.Air.val">Air</option>
                             <option [value]="enum.TransportationType.Bus.val">Bus</option>
@@ -152,7 +152,7 @@
 
     <h2 class="blue-header mt-0">Accommodation Expenses (receipts required)</h2>
 
-    <!-- <ng-template #roomRateTemplate>Daily room rate reimbursement claim should not exceed current government rate, unless prior approval granted.</ng-template> -->
+    <ng-template #roomRateTemplate>Daily room rate reimbursement claim should not exceed current government rate, unless prior approval granted.</ng-template>
 
     <div formArrayName="accommodationExpenses" *ngFor="let item of form.get('accommodationExpenses')['controls']; let i = index;">
         <div [formGroupName]="i" class="accommodation-expense-info">
@@ -167,11 +167,11 @@
                         <input class="form-control" type="text" mask="99" formControlName="numberOfNights" maxlength="100" (input)="updateAccommodationTotals()">
                     </app-field>
                 </div>
-                <!-- <div class="col">
-                    <app-field label="Daily room rate" [required]="false" [valid]="isMyControlValid(item.get('dailyRoomRate'))" errorMessage="Please enter daily room rate" [disabled]="isDisabled" [tooltipReference]="roomRateTemplate">
-                        <input class="form-control" type="text" mask="separator.2" formControlName="dailyRoomRate" maxlength="100" (input)="updateAccommodationTotals()">
+                <div class="col">
+                    <app-field label="Daily room rate" [required]="false" [valid]="isMyControlValid(item.get('roomRate'))" errorMessage="Please enter daily room rate" [disabled]="isDisabled" [tooltipReference]="roomRateTemplate">
+                        <input class="form-control" type="text" mask="separator.2" formControlName="roomRate" maxlength="100" (input)="updateAccommodationTotals()">
                     </app-field>
-                </div> -->
+                </div>
                 <div class="col">
                     <app-field label="Total" [required]="false" [disabled]="isDisabled">
                         <input class="form-control" type="text" mask="separator.2" prefix="$" formControlName="totalExpenses" maxlength="100">
@@ -312,14 +312,14 @@
                         </app-field>
                     </div>
                     <div class="col">
-                        <app-field label="Childcare start date/time" [required]="true" [valid]="isMyControlValid(item.get('startDate'))" errorMessage="Please enter the start date" [disabled]="isDisabled">
-                            <input type="text" [max]="today" class="form-control date-picker" formControlName="startDate" placeholder="yyyy/mm/dd" [matDatepicker]="childcareStartDatePicker_i" (focus)="childcareStartDatePicker_i.open()" (click)="childcareStartDatePicker_i.open()" readonly>
+                        <app-field label="Childcare start date" [required]="true" [valid]="isMyControlValid(item.get('startDate'))" errorMessage="Please enter the start date" [disabled]="isDisabled">
+                            <input type="text" [max]="today" class="form-control date-picker" formControlName="startDate" placeholder="yyyy/mm/dd" [matDatepicker]="childcareStartDatePicker_i" (focus)="childcareStartDatePicker_i.open()" (click)="childcareStartDatePicker_i.open()" readonly (dateChange)="childCareStartChange(i)">
                             <mat-datepicker #childcareStartDatePicker_i></mat-datepicker>
                         </app-field>
                     </div>
                     <div class="col">
-                        <app-field label="Childcare end date/time" [required]="true" [valid]="isMyControlValid(item.get('endDate'))" errorMessage="Please enter the start date" [disabled]="isDisabled">
-                            <input type="text" [max]="today" class="form-control date-picker" formControlName="endDate" placeholder="yyyy/mm/dd" [matDatepicker]="childcareEndDatePicker_i" (focus)="childcareEndDatePicker_i.open()" (click)="childcareEndDatePicker_i.open()" readonly>
+                        <app-field label="Childcare end date" [required]="true" [valid]="isMyControlValid(item.get('endDate'))" errorMessage="Please enter the start date" [disabled]="isDisabled">
+                            <input type="text" [max]="today" [min]="childCareStartDates[i]" class="form-control date-picker" formControlName="endDate" placeholder="yyyy/mm/dd" [matDatepicker]="childcareEndDatePicker_i" (focus)="childcareEndDatePicker_i.open()" (click)="childcareEndDatePicker_i.open()" readonly>
                             <mat-datepicker #childcareEndDatePicker_i></mat-datepicker>
                         </app-field>
                     </div>

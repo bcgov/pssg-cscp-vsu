@@ -58,6 +58,7 @@ export class TravelExpensesHelper {
         let group = {
             type: [''],
             numberOfNights: [''],
+            roomRate: [''],
             totalExpenses: [{ value: 0, disabled: true }],
         };
 

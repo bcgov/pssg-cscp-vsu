@@ -50,6 +50,7 @@ export interface iTravelExpense {
 export interface iAccommodationExpense {
     type: string;
     numberOfNights: number;
+    roomRate: number;
     totalExpenses: number;
 }
 

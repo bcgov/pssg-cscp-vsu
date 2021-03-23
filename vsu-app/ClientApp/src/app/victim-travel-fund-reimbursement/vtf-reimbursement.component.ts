@@ -26,7 +26,6 @@ const BREAKFAST_RATE_ID = "bbebd045-fd76-eb11-b823-00505683fbf4";
 const LUNCH_RATE_ID = "25934686-fd76-eb11-b823-00505683fbf4";
 const DINNER_RATE_ID = "89d4ae92-fd76-eb11-b823-00505683fbf4";
 const MILEAGE_RATE_ID = "92351edf-2a7d-eb11-b824-00505683fbf4";
-const ROOM_RATE_ID = "22b35a3f-7987-eb11-b825-00505683fbf4";
 
 @Component({
     selector: 'app-vtf-reimbursement',
@@ -53,7 +52,7 @@ export class VictimTravelFundReimbursementComponent extends FormBase implements 
         cities: [],
         courts: [],
         offences: [],
-        expenseRates: { breakfast: 0, lunch: 0, dinner: 0, mileage: 0, room: 0 },
+        expenseRates: { breakfast: 0, lunch: 0, dinner: 0, mileage: 0 },
     };
 
     showConfirmation: boolean = false;
@@ -133,9 +132,6 @@ export class VictimTravelFundReimbursementComponent extends FormBase implements 
 
                 let mileage = rates.find(r => r.vsd_configid == MILEAGE_RATE_ID);
                 this.lookupData.expenseRates.mileage = mileage ? parseFloat(mileage.vsd_value) : 0;
-
-                let room = rates.find(r => r.vsd_configid == ROOM_RATE_ID);
-                this.lookupData.expenseRates.room = room ? parseFloat(room.vsd_value) : 0;
                 resolve();
             }, (err) => {
                 this.notify.addNotification("Encountered an error getting country information.", "warning", 3000);

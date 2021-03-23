@@ -13,7 +13,8 @@ namespace Gov.Cscp.Victims.Public.Models
 
         public string vsd_vsu_other { get; set; }
         public int? vsd_vsu_number { get; set; }
-        
+        public int? vsd_vsu_dailyroomrate { get; set; }
+
         public int? vsd_vsu_childage { get; set; }
         public DateTime? vsd_vsu_childcarestartdate { get; set; }
         public DateTime? vsd_vsu_childcareenddate { get; set; }
