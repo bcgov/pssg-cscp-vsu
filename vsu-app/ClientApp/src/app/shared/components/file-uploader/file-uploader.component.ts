@@ -11,6 +11,7 @@ export class FileUploaderComponent {
   @ViewChild('files', {static: true}) myInputVariable: ElementRef;
   @Input() formType: number;
   @Input() documents: FormArray;
+  @Input() isDisabled: boolean;
 
 
   constructor(private fb: FormBuilder) { }

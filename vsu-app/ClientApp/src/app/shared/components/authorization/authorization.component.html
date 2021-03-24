@@ -49,7 +49,7 @@
     <ng-container *ngIf="formType === ApplicationType.TRAVEL_REIMBURSEMENT">
       <ng-template #receiptsTemplate>If you are missing any receipts, contact VSU to request the appropriate form for you to complete.</ng-template>
       <label>Add receipts<span class='tooltip-icon' data-placement="right" data-animation="true" data-show="true" [tooltip]="receiptsTemplate"><i class='fa fa-info-circle'> </i></span></label>
-      <app-file-uploader [formGroup]="form" [formType]="formType" [documents]="form.get('documents')"></app-file-uploader>
+      <app-file-uploader [formGroup]="form" [formType]="formType" [documents]="form.get('documents')" [isDisabled]="isDisabled"></app-file-uploader>
 
       <ng-container>
         <div class="row">
