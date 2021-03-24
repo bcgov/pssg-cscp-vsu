@@ -173,7 +173,7 @@ namespace Gov.Cscp.Victims.Public.Controllers
             finally { }
         }
 
-        [HttpGet("meal_rates")]
+        [HttpGet("rates")]
         public async Task<IActionResult> GetMealRates()
         {
             try

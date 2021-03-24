@@ -148,21 +148,19 @@ export interface iCRMParticipant {
 }
 
 export interface iCRMTravelInfo {
-    vsd_courtdate: Date;
-    vsd_courtfilenumber_text: string;
+    vsd_courtdate?: Date;
+    vsd_courtfilenumber_text?: string;
     vsd_purposeoftravel: string;
     vsd_travelperiodfrom: Date;
     vsd_travelperiodto: Date;
 }
 
 export interface iCRMDocument {
-    // fortunecookietype: string;
     filename: string;
     body: string;
     subject: string;
 }
 
 export interface iCRMOffence {
-    // fortunecookietype: string;
     vsd_offenseid: string;
 }

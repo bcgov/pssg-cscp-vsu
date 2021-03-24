@@ -4,6 +4,7 @@ import { ApplicationType } from "../../enums-list";
 import { FormBase } from "../../form-base";
 import { iLookupData } from "../../interfaces/lookup-data.interface";
 import * as _ from 'lodash';
+import { ReimbursementService } from "../../../services/reimbursement.service";
 
 @Component({
     selector: 'app-vtf-case-information',
@@ -20,6 +21,7 @@ export class VTFCaseInformationComponent extends FormBase implements OnInit {
     didCheck: boolean = false;
 
     constructor(private controlContainer: ControlContainer,
+        private reimbursementService: ReimbursementService,
     ) {
         super();
     }
@@ -44,12 +46,22 @@ export class VTFCaseInformationComponent extends FormBase implements OnInit {
 
         if (info && info.caseNumber && info.birthDate && info.firstName && info.lastName) {
             //validate
-            console.log("TODO - validate info here!");
-            this.isValid = true;
-            this.didCheck = true;
-
-            this.form.get('isValid').patchValue(this.isValid);
-            this.form.get('didCheck').patchValue(this.didCheck);
+            this.reimbursementService.checkCase(info).subscribe((res) => {
+                console.log(res);
+                this.didCheck = true;
+                this.form.get('didCheck').patchValue(this.didCheck);
+                this.isValid = res.IsSuccess;
+                if (res.IsSuccess) {
+                    this.form.get('isValid').patchValue(this.isValid);
+                    this.form.get('incidentid').patchValue(res.CaseId.incidentid);
+                }
+                else {
+                    this.form.get('isValid').patchValue(this.isValid);
+                    this.form.get('incidentid').patchValue('');
+                }
+            }, (err) => {
+                console.log(err);
+            });
         }
         else {
             //haven't filled in all fields

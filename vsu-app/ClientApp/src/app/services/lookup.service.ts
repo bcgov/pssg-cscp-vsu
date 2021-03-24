@@ -72,8 +72,8 @@ export class LookupService {
     );
   }
 
-  getMealRates(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/meal_rates`, { headers: this.headers }).pipe(
+  getRates(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/rates`, { headers: this.headers }).pipe(
       retry(3),
       catchError(this.handleError)
     );

@@ -12,8 +12,6 @@ export class TravelExpensesHelper {
 
             travelDates: fb.array([this.addTravelDate(fb)]),
 
-            // mileage: ['', [Validators.required]],
-            // mileageExpenses: [{ value: 0, disabled: true }],
             transportationExpenses: fb.array([this.addTransportationExpense(fb)]),
             transportationTotal: [{ value: 0, disabled: true }],
             accommodationExpenses: fb.array([this.addAccommodationExpense(fb)]),
@@ -48,7 +46,7 @@ export class TravelExpensesHelper {
 
     addTransportationExpense(fb: FormBuilder) {
         let group = {
-            type: [''],
+            type: [0],
             amount: [''],
             mileage: [''],
         };
@@ -60,7 +58,7 @@ export class TravelExpensesHelper {
         let group = {
             type: [''],
             numberOfNights: [''],
-            dailyRoomRate: [''],
+            roomRate: [''],
             totalExpenses: [{ value: 0, disabled: true }],
         };
 
@@ -69,10 +67,10 @@ export class TravelExpensesHelper {
 
     addMealExpense(fb: FormBuilder) {
         let group = {
-            date: ['', [Validators.required]],
-            breakfast: ['', [Validators.required]],
-            lunch: ['', [Validators.required]],
-            dinner: ['', [Validators.required]],
+            date: [''],
+            breakfast: [''],
+            lunch: [''],
+            dinner: [''],
             total: [{ value: 0, disabled: true }],
         };
 
@@ -90,7 +88,7 @@ export class TravelExpensesHelper {
 
     addChild(fb: FormBuilder) {
         let group = {
-            age: [''],
+            age: ['', [Validators.required]],
             startDate: [''],
             endDate: [''],
             firstName: ['', [Validators.required]],

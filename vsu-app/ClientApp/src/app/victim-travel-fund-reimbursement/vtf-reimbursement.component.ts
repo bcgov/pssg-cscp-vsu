@@ -1,4 +1,3 @@
-import { ApplicationService } from "../services/application.service";
 import { AuthInfoHelper } from "../shared/components/authorization/authorization.helper";
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { FORM_TITLES, FORM_TYPES } from "../shared/enums-list";
@@ -12,6 +11,9 @@ import { Title } from "@angular/platform-browser";
 import { VTFCaseInfoHelper } from "../shared/components/vtf-case-information/vtf-case-information.helper";
 import { iLookupData } from "../shared/interfaces/lookup-data.interface";
 import { TravelExpensesHelper } from "../shared/components/travel-expenses/travel-expenses.helper";
+import { ReimbursementService } from "../services/reimbursement.service";
+import { iAuthorizationInformation, iReimbursementForm, iCaseInformation, iTravelInformation } from "../shared/interfaces/reimbursement.interface";
+import { convertReimbursementFormToCRM } from "../shared/interfaces/converters/reimbursement.web.to.crm";
 
 enum PAGES {
     CASE_INFORMATION,
@@ -65,7 +67,7 @@ export class VictimTravelFundReimbursementComponent extends FormBase implements 
         private router: Router,
         private lookupService: LookupService,
         private titleService: Title,
-        private applicationService: ApplicationService,
+        private reimbursementService: ReimbursementService,
         private notify: NotificationQueueService
     ) {
         super();
@@ -116,18 +118,18 @@ export class VictimTravelFundReimbursementComponent extends FormBase implements 
         }));
 
         promise_array.push(new Promise<void>((resolve, reject) => {
-            this.lookupService.getMealRates().subscribe((res) => {
+            this.lookupService.getRates().subscribe((res) => {
                 console.log(res);
                 let rates = res.value;
                 let breakfast = rates.find(r => r.vsd_configid == BREAKFAST_RATE_ID);
                 this.lookupData.expenseRates.breakfast = breakfast ? parseFloat(breakfast.vsd_value) : 0;
-                
+
                 let lunch = rates.find(r => r.vsd_configid == LUNCH_RATE_ID);
                 this.lookupData.expenseRates.lunch = lunch ? parseFloat(lunch.vsd_value) : 0;
-                
+
                 let dinner = rates.find(r => r.vsd_configid == DINNER_RATE_ID);
                 this.lookupData.expenseRates.dinner = dinner ? parseFloat(dinner.vsd_value) : 0;
-                
+
                 let mileage = rates.find(r => r.vsd_configid == MILEAGE_RATE_ID);
                 this.lookupData.expenseRates.mileage = mileage ? parseFloat(mileage.vsd_value) : 0;
                 resolve();
@@ -159,32 +161,25 @@ export class VictimTravelFundReimbursementComponent extends FormBase implements 
     }
 
     harvestForm() {
-        console.log("TODO - update harvest form!");
-        return {};
-        // let data = {
-        //     CaseInformation: this.form.get('caseInformation').value as iCaseInformation,
-        //     TravelInformation: this.form.get('travelExpenses').value as iTravelInformation,
-        //     AuthorizationInformation: this.form.get('authorizationInformation').value as iAuthorizationInformation,
-        // } as iTravelFundApplication;
+        let data = {
+            CaseInformation: this.form.get('caseInformation').value as iCaseInformation,
+            TravelInformation: this.form.get('travelExpenses').value as iTravelInformation,
+            AuthorizationInformation: this.form.get('authorizationInformation').value as iAuthorizationInformation,
+        } as iReimbursementForm;
 
-        // return data;
+        return data;
     }
 
     submit() {
-        console.log("TODO -submit");
-        // this.applicationService.testSplunk().subscribe((res) => {
-        //     console.log(res);
-        // }, (err) => {
-        //     console.log(err);
-        // });
+        console.log("submit");
         console.log(this.form);
         if (this.form.valid) {
             this.submitting = true;
             console.log("form is valid - submit");
             let application = this.harvestForm();
-            let data = {};
+            let data = convertReimbursementFormToCRM(application);
             console.log(data);
-            this.applicationService.submitTEST(data).subscribe((res) => {
+            this.reimbursementService.submit(data).subscribe((res) => {
                 this.submitting = false;
                 console.log(res);
                 if (res.IsSuccess) {

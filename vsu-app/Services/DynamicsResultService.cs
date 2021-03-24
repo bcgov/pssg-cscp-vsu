@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Rest;
 using Serilog;
 using System.Net.Http;
+using System;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -44,8 +45,8 @@ namespace Gov.Cscp.Victims.Public.Services
             string fullEndpoint = _configuration["DYNAMICS_ODATA_URI"] + endpointUrl;
             requestJson = requestJson.Replace("fortunecookie", "@odata.");
 
-            // Console.WriteLine(fullEndpoint);
-            // Console.WriteLine(requestJson);
+            Console.WriteLine(fullEndpoint);
+            Console.WriteLine(requestJson);
 
             HttpRequestMessage _httpRequest = new HttpRequestMessage(method, fullEndpoint);
             _httpRequest.Content = new StringContent(requestJson, System.Text.Encoding.UTF8, "application/json");
@@ -65,7 +66,7 @@ namespace Gov.Cscp.Victims.Public.Services
             {
                 _logger.Information(new HttpOperationException($"Received a fail response from {endpointUrl}. Source = VSU"), $"Error calling API function {endpointUrl}. \nSource = VSU. \nError is:\n{result.result}\n\nJSON sent:{requestJson}", result.result, requestJson);
             }
-            
+
             if (_statusCode == HttpStatusCode.InternalServerError)
             {
                 _logger.Error(new HttpOperationException($"Error calling API function {endpointUrl}. Source = VSU"), $"Error calling API function {endpointUrl}. \nSource = VSU. \nError is:\n{result.result}\n\nJSON sent:{requestJson}", result.result, requestJson);

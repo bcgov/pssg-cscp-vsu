@@ -28,9 +28,10 @@ export class TravelExpensesComponent extends FormBase implements OnInit {
 
     showContactInfoComments: boolean = false;
 
-    travelPeriodStartDate: Date = null;
     travelPeriodStartDates: Date[] = [];
     travelExpenseHelper: TravelExpensesHelper = new TravelExpensesHelper();
+
+    childCareStartDates: Date[] = [];
 
     constructor(private controlContainer: ControlContainer,
         private fb: FormBuilder) {
@@ -51,10 +52,8 @@ export class TravelExpensesComponent extends FormBase implements OnInit {
     }
 
     travelPeriodStartChange(index: number) {
-        console.log(index);
         let travelDate = this.form.get('travelDates')['controls'][index];
         this.travelPeriodStartDates[index] = moment(travelDate.get('travelPeriodStart').value).toDate();
-        console.log(this.travelPeriodStartDates[index]);
         let startDate = moment(travelDate.get('travelPeriodStart').value);
 
         let endDate = travelDate.get('travelPeriodEnd').value;
@@ -78,30 +77,37 @@ export class TravelExpensesComponent extends FormBase implements OnInit {
     transportationTypeChange(index: number) {
         let transportationExpenses = this.form.get('transportationExpenses') as FormArray;
         let group = transportationExpenses.controls[index];
-        if (group.get('type').value === "vehicle") {
+        if (group.get('type').value == this.enum.TransportationType.Mileage.val) {
             if (group.get("amount").enabled) {
                 //we went from non vehicle to vehicle -> clear the amount
-                group.get("amount").patchValue('');
-                group.get("mileage").patchValue('');
+                group.get("amount").patchValue(null);
+                group.get("mileage").patchValue(null);
                 this.updateTransportationTotals();
-
             }
             group.get("amount").disable();
         }
         else {
             if (group.get("amount").disabled) {
                 //we went from vehicle to non vehicle -> clear the amount
-                group.get("amount").patchValue('');
-                group.get("mileage").patchValue('');
+                group.get("amount").patchValue(null);
+                group.get("mileage").patchValue(null);
                 this.updateTransportationTotals();
             }
             group.get("amount").enable();
+        }
+
+        let amount = group.get('amount').value || 0;
+        if (group.get('type').value == this.enum.TransportationType.NONE.val && amount > 0) {
+            group.get('type').setErrors({ 'incorrect': true });
+        }
+        else {
+            group.get('type').setErrors(null);
         }
     }
 
     updateMileageTotal(index: number) {
         let transportationExpenses = this.form.get('transportationExpenses') as FormArray;
-        let mileage = transportationExpenses.controls[index].get('mileage').value;
+        let mileage = parseFloat(transportationExpenses.controls[index].get('mileage').value);
         let total = mileage * this.lookupData.expenseRates.mileage;
         transportationExpenses.controls[index].get('amount').patchValue(total.toFixed(2));
         this.updateTransportationTotals();
@@ -125,6 +131,15 @@ export class TravelExpensesComponent extends FormBase implements OnInit {
         transportationExpenses.controls.forEach(expense => {
             let amount = expense.get('amount').value || 0;
             total += parseFloat(amount);
+
+            //Transportation Type validation:
+            if (expense.get('type').value == this.enum.TransportationType.NONE.val && amount > 0) {
+                expense.get('type').markAsTouched();
+                expense.get('type').setErrors({ 'incorrect': true });
+            }
+            else {
+                expense.get('type').setErrors(null);
+            }
         });
         this.form.get('transportationTotal').patchValue((Math.round(total * 100 + Number.EPSILON) / 100).toFixed(2));
         this.updateSubTotal();
@@ -147,8 +162,8 @@ export class TravelExpensesComponent extends FormBase implements OnInit {
         let total = 0;
         accommodationExpenses.controls.forEach(accommodation => {
             let numberOfNights = accommodation.get('numberOfNights').value || 0;
-            let dailyRoomRate = accommodation.get('dailyRoomRate').value || 0;
-            let this_total = numberOfNights * dailyRoomRate;
+            let room_rate = accommodation.get('roomRate').value || 0;
+            let this_total = numberOfNights * room_rate;
             accommodation.get('totalExpenses').patchValue(this_total.toFixed(2));
             total += this_total;
         });
@@ -219,15 +234,28 @@ export class TravelExpensesComponent extends FormBase implements OnInit {
         }
     }
 
+    childCareStartChange(index: number) {
+        let childInfo = this.form.get('children')['controls'][index];
+        this.childCareStartDates[index] = moment(childInfo.get('startDate').value).toDate();
+        let startDate = moment(childInfo.get('startDate').value);
+
+        let endDate = childInfo.get('endDate').value;
+        if (endDate && moment(endDate).isBefore(startDate)) {
+            childInfo.get('endDate').patchValue(null);
+        }
+    }
+
     addChild() {
         let children = this.form.get('children') as FormArray;
         children.push(this.travelExpenseHelper.addChild(this.fb));
+        this.childCareStartDates.push(null);
     }
 
     removeChild(index: number) {
         let children = this.form.get('children') as FormArray;
         children.removeAt(index);
         this.updateSubTotal();
+        this.childCareStartDates.splice(index, 1);
     }
 
     updateSubTotal() {

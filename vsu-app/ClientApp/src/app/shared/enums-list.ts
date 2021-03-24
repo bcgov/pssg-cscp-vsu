@@ -87,6 +87,7 @@ export class EnumHelper {
         Unset:      <IOptionSetVal> { val: null, name: ""},
     }
 
+    //for Application Requested Expenses
     public TravelExpenses = {
         Accommodation:          <IOptionSetVal> { val: 100000006, name: "Accommodation"},
         TransportationBus:      <IOptionSetVal> { val: 100000000, name: "Transportation - Bus"},
@@ -96,6 +97,28 @@ export class EnumHelper {
         TransportationOther:    <IOptionSetVal> { val: 100000004, name: "Transportation - Other"},
         Meals:                  <IOptionSetVal> { val: 100000005, name: "Meals"},
         Other:                  <IOptionSetVal> { val: 100000007, name: "Other"},
+    }
+
+    //For Travel Expense Type on Invoice Line Detail
+    public TravelExpenseType = {
+        Accommodation:  <IOptionSetVal> { val: 100000001, name: "Accommodation"},
+        Childcare:      <IOptionSetVal> { val: 100000006, name: "Childcare"},
+        Meal_Breakfast: <IOptionSetVal> { val: 100000002, name: "Meal - Breakfast"},
+        Meal_Dinner:    <IOptionSetVal> { val: 100000005, name: "Meal - Dinner"},
+        Meal_Lunch:     <IOptionSetVal> { val: 100000004, name: "Meal - Lunch"},
+        Transportation: <IOptionSetVal> { val: 100000000, name: "Transportation"},
+        Other:          <IOptionSetVal> { val: 100000003, name: "Other"},
+    }
+
+    public TransportationType = {
+        NONE:       <IOptionSetVal> { val: 0, name: ""},
+        Mileage:    <IOptionSetVal> { val: 100000000, name: "Mileage"},
+        Air:        <IOptionSetVal> { val: 100000001, name: "Air"},
+        Bus:        <IOptionSetVal> { val: 100000002, name: "Bus"},
+        Taxi:       <IOptionSetVal> { val: 100000003, name: "Taxi"},
+        Ferry:      <IOptionSetVal> { val: 100000004, name: "Ferry"},
+        Parking:    <IOptionSetVal> { val: 100000005, name: "Parking"},
+        Other:      <IOptionSetVal> { val: 100000006, name: "Other"},
     }
 }
 

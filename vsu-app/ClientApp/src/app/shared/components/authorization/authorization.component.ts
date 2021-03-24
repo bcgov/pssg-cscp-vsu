@@ -41,9 +41,7 @@ export class AuthorizationComponent extends FormBase implements OnInit {
         if (this.formType === ApplicationType.TRAVEL_REIMBURSEMENT) {
             let subTotal = this.form.parent.get('travelExpenses.subTotal').value || 0;
             this.form.get('subTotal').patchValue(subTotal);
-            if (this.form.get('inLieuOfReceipt').value) {
-                this.updateTotalClaim();
-            }
+            this.updateTotalClaim();
         }
     }
 
@@ -63,16 +61,6 @@ export class AuthorizationComponent extends FormBase implements OnInit {
             },
             err => console.log(err)
         );
-    }
-
-    inLieuOfReceiptChange(val: boolean) {
-        if (val) {
-            this.updateTotalClaim();
-        }
-        else {
-            this.form.get('travelAdvanceAlreadyPaid').patchValue('');
-            this.form.get('totalReimbursementClaim').patchValue('');
-        }
     }
 
     updateTotalClaim() {

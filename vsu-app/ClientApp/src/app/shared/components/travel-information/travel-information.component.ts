@@ -24,7 +24,6 @@ export class TravelInformationComponent extends FormBase implements OnInit {
     public form: FormGroup;
 
     today = new Date();
-    travelPeriodStartDate: Date = null;
     travelPeriodStartDates: Date[] = [];
 
     travelInfoHelper = new TravelInfoHelper();

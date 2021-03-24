@@ -4,6 +4,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ApplicantInformationComponent } from './shared/components/applicant-information/applicant-information.component';
 import { ApplicationService } from './services/application.service';
+import { ReimbursementService } from './services/reimbursement.service';
 import { AuthorizationComponent } from './shared/components/authorization/authorization.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
@@ -96,6 +97,7 @@ import { VictimTravelFundReimbursementComponent } from './victim-travel-fund-rei
   providers: [
     LookupService,
     ApplicationService,
+    ReimbursementService,
     {
       provide: STEPPER_GLOBAL_OPTIONS,
       useValue: { showError: true }

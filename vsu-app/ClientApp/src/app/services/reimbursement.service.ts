@@ -1,19 +1,26 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError, of } from 'rxjs';
-import { iApplicationFormCRM } from '../shared/interfaces/dynamics/crm-application';
 import { retry, catchError } from 'rxjs/operators';
+import { iReimbursementFormCRM } from '../shared/interfaces/dynamics/crm-reimbursement';
 
 @Injectable({
     providedIn: 'root'
 })
-export class ApplicationService {
-    apiUrl = 'api/Application';
+export class ReimbursementService {
+    apiUrl = 'api/Reimbursement';
 
     constructor(private http: HttpClient) { }
 
-    submit(application: iApplicationFormCRM): Observable<any> {
-        return this.http.post<any>(`${this.apiUrl}`, application, { headers: this.headers }).pipe(
+    submit(data: iReimbursementFormCRM): Observable<any> {
+        return this.http.post<any>(`${this.apiUrl}`, data, { headers: this.headers }).pipe(
+            retry(3),
+            catchError(this.handleError)
+        );
+    }
+
+    checkCase(info: any): Observable<any> {
+        return this.http.post<any>(`${this.apiUrl}/check_case`, info, { headers: this.headers }).pipe(
             retry(3),
             catchError(this.handleError)
         );
