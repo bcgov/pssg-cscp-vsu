@@ -156,13 +156,11 @@ export interface iCRMTravelInfo {
 }
 
 export interface iCRMDocument {
-    // fortunecookietype: string;
     filename: string;
     body: string;
     subject: string;
 }
 
 export interface iCRMOffence {
-    // fortunecookietype: string;
     vsd_offenseid: string;
 }

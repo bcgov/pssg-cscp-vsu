@@ -1,4 +1,4 @@
-import { iCRMTravelInfo } from "./crm-application";
+import { iCRMDocument, iCRMTravelInfo } from "./crm-application";
 
 export interface iReimbursementFormCRM {
     CaseId: iCase;
@@ -10,6 +10,7 @@ export interface iReimbursementFormCRM {
     MealExpenseCollection?: iCRMInvoiceLineDetail[];
     ChildcareExpenseCollection?: iCRMInvoiceLineDetail[];
     OtherExpenseCollection?: iCRMInvoiceLineDetail[];
+    DocumentCollection?: iCRMDocument[];
 }
 
 export interface iCase {

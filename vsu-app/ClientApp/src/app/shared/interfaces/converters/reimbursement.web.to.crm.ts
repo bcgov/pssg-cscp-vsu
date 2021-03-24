@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { EnumHelper } from '../../enums-list';
-import { iCRMTravelInfo } from '../dynamics/crm-application';
+import { iCRMDocument, iCRMTravelInfo } from '../dynamics/crm-application';
 import { iCRMInvoiceLineDetail, iInvoice, iReimbursementFormCRM } from "../dynamics/crm-reimbursement";
 import { iReimbursementForm } from "../reimbursement.interface";
 
@@ -31,6 +31,9 @@ export function convertReimbursementFormToCRM(data: iReimbursementForm) {
 
     let otherInfo = getCRMOtherExpenseCollection(data);
     if (otherInfo.length > 0) crm_application.OtherExpenseCollection = otherInfo;
+
+    let documents = getCRMDocuments(data);
+    if (documents.length > 0) crm_application.DocumentCollection = documents;
 
     return crm_application;
 }
@@ -173,6 +176,22 @@ function getCRMOtherExpenseCollection(data: iReimbursementForm) {
     });
 
     return other_expense_collection;
+}
+
+function getCRMDocuments(data: iReimbursementForm) {
+    let documents: iCRMDocument[] = [];
+
+    data.AuthorizationInformation.documents.forEach(d => {
+        if (checkObjectHasValue(d)) {
+            documents.push({
+                filename: d.filename,
+                body: d.body,
+                subject: d.subject,
+            });
+        }
+    });
+
+    return documents;
 }
 
 function checkObjectHasValue(obj: any) {

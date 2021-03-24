@@ -1,4 +1,5 @@
 import { iAddress } from "./address.interface";
+import { iCRMDocument } from "./dynamics/crm-application";
 
 export interface iReimbursementForm {
     CaseInformation: iCaseInformation;
@@ -87,4 +88,10 @@ export interface iAuthorizationInformation {
     fullName: string;
     date: Date;
     signature: string;
+
+    //extra fields on the Reimbursement form
+    documents?: iCRMDocument[];
+    subTotal?: number;
+    travelAdvanceAlreadyPaid?: number;
+    totalReimbursementClaim?: number;
 }

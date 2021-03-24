@@ -13,5 +13,6 @@ namespace Gov.Cscp.Victims.Public.Models
         public InvoiceLineDetail[] MealExpenseCollection { get; set; }
         public InvoiceLineDetail[] ChildcareExpenseCollection { get; set; }
         public InvoiceLineDetail[] OtherExpenseCollection { get; set; }
+        public DocumentCollection[] DocumentCollection { get; set; }
     }
 }
