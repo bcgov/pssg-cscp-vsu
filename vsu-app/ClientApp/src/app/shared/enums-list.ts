@@ -57,6 +57,15 @@ export class EnumHelper {
         Designate_And_Victim_Service_Worker:    <IOptionSetVal> { val: 100000005, name: "Other Family Member" },
     };
 
+    public IndigenousStatus = {
+        BLANK:                  <IOptionSetVal> { val: 0, name: "--" },
+        First_Nations:          <IOptionSetVal> { val: 100000000, name: "First Nations" },
+        Metis:                  <IOptionSetVal> { val: 100000001, name: "Métis" },
+        Inuit:                  <IOptionSetVal> { val: 100000002, name: "Inuit" },
+        Prefere_Not_To_Answer:  <IOptionSetVal> { val: 100000003, name: "Prefer Not to Answer" },
+        Not_Applicable:         <IOptionSetVal> { val: 100000004, name: "Not Applicable" },
+      }
+
     public Gender = {
         Male:   <IOptionSetVal> { val: 100000000, name: "M" },
         Female: <IOptionSetVal> { val: 100000001, name: "F" },

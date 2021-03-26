@@ -46,6 +46,7 @@ namespace Gov.Cscp.Victims.Public.Models
         public string vsd_applicantslastname { get; set; }
         public int vsd_applicantsgendercode { get; set; }
         public DateTime? vsd_applicantsbirthdate { get; set; }
+        public int? vsd_indigenous { get; set; }
 
         public string vsd_applicantspreferredlanguage { get; set; }
         public int? vsd_applicantsinterpreterneeded { get; set; }

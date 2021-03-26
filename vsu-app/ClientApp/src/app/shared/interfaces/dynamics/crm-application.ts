@@ -24,6 +24,7 @@ export interface iCRMApplication {
     vsd_cvap_victimlastname: string;
     vsd_cvap_victimbirthdate: Date;
     vsd_cvap_victimgendercode: number;
+    vsd_indigenous: number;
 
     vsd_vsu_applicanttype: number;
     vsd_vsuapplicanttypeother?: string;

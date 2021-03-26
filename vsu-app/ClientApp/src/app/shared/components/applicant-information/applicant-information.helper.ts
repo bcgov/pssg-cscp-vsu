@@ -19,6 +19,7 @@ export class ApplicantInfoHelper {
             birthDate: ['', [Validators.required]],
             gender: ['', [Validators.required]],
             genderOther: [''],
+            indigenousStatus: [0, [Validators.required, Validators.min(100000000), Validators.max(100000004)]],
 
             preferredLanguage: ['English'],
             interpreterNeeded: [this.enum.Boolean.False.val],
