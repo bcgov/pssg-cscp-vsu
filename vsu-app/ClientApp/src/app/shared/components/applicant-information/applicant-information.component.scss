@@ -4,3 +4,8 @@
         margin-left: 10px;
     }
 }
+
+::ng-deep .long-label section label {
+    max-width: 300% !important;
+    width: 300% !important;
+}

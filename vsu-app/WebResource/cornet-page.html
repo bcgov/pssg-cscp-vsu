@@ -1479,8 +1479,8 @@
                                     if (res) {
                                         res.activityDate.actualVal = '';
                                         res.activityDate.scheduledVal = '';
-                                        if (res.activityDate.actual != null) res.activityDate.actualVal = new Date(res.activityDate.actual);
-                                        if (res.activityDate.scheduled != null) res.activityDate.scheduledVal = new Date(res.activityDate.scheduled);
+                                        if (res.activityDate.actual != null) res.activityDate.actualVal = new Date(res.activityDate.actual + "T00:00:00");
+                                        if (res.activityDate.scheduled != null) res.activityDate.scheduledVal = new Date(res.activityDate.scheduled + "T00:00:00");
                                         hearings.push(res);
                                     }
                                     resolve();
@@ -1509,8 +1509,8 @@
 
                                 getEvent(parameters).then(res => {
                                     if (res) {
-                                        if (res.activityDate.actual != null) res.activityDate.val = new Date(res.activityDate.actual);
-                                        else if (res.activityDate.scheduled != null) res.activityDate.val = new Date(res.activityDate.scheduled);
+                                        if (res.activityDate.actual != null) res.activityDate.val = new Date(res.activityDate.actual + "T00:00:00");
+                                        else if (res.activityDate.scheduled != null) res.activityDate.val = new Date(res.activityDate.scheduled + "T00:00:00");
                                         movements.push(res);
                                     }
                                     resolve();
@@ -1765,7 +1765,7 @@
                 $("#key-dates").append(div);
 
                 let tr = `<tr>
-                            <td>${keyDate.activityDate ? new Date(keyDate.activityDate).toLocaleString('en-us', { month: "short", day: 'numeric', year: 'numeric' }) : ''}</td>
+                            <td>${keyDate.activityDate ? new Date(keyDate.activityDate + "T00:00:00").toLocaleString('en-us', { month: "short", day: 'numeric', year: 'numeric' }) : ''}</td>
                             <td>${keyDate.activityCategory.description || ''}</td>
                             <td>${keyDate.activityCategory.code || ''}</td>
                             <td>${keyDate.sentenceCalcTypeCd || ''}</td>
@@ -1789,7 +1789,7 @@
                             <td>${charge.statuteSubsectionParagraph || ''}</td>
                             <td>${charge.statuteDescription || ''}</td>
                             <td>${offence.documentTypeCode || ''}</td>
-                            <td>${offence.expiryDate ? new Date(offence.expiryDate).toLocaleString('en-us', { month: "short", day: 'numeric', year: 'numeric' }) : ''}</td>
+                            <td>${offence.expiryDate ? new Date(offence.expiryDate + "T00:00:00").toLocaleString('en-us', { month: "short", day: 'numeric', year: 'numeric' }) : ''}</td>
                         </tr>`;
                     $("#offences-table").append(tr);
                 });

@@ -56,7 +56,7 @@
                 </div>
 
                 <div class="pagebreak"> </div>
-                <app-confirmation [formType]="formType" [confirmationNumber]="form.get('confirmation.confirmationNumber').value" (showPrintView)="showPrintView = $event" *ngIf="stepper.selectedIndex == 5"></app-confirmation>
+                <app-confirmation [formType]="formType.val" [confirmationNumber]="form.get('confirmation.confirmationNumber').value" (showPrintView)="showPrintView = $event" *ngIf="stepper.selectedIndex == 5"></app-confirmation>
 
                 <section class="button-container" *ngIf="!showPrintView" [class.disabled-wrapper]="submitting">
                     <span class="right-buttons">

@@ -65,6 +65,7 @@ export interface iApplicantInformation {
     birthDate: Date;
     gender: number;
     genderOther: string;
+    indigenousStatus: number;
     preferredLanguage: string;
     interpreterNeeded: number;
     address: iAddress;

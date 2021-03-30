@@ -26,6 +26,7 @@ function getCRMApplication(application: iNotificationApplication) {
         vsd_cvap_victimlastname: application.CaseInformation.lastName,
         vsd_cvap_victimbirthdate: application.CaseInformation.birthDate,
         vsd_cvap_victimgendercode: application.CaseInformation.gender,
+        
 
         vsd_vsu_applicanttype: application.ApplicantInformation.applicantType,
         vsd_vsuapplicanttypeother: application.ApplicantInformation.applicantTypeOther,
@@ -37,6 +38,7 @@ function getCRMApplication(application: iNotificationApplication) {
         vsd_dateofnamechange: null,
         vsd_applicantsgendercode: application.ApplicantInformation.gender,
         vsd_applicantsbirthdate: application.ApplicantInformation.birthDate,
+        vsd_indigenous: application.ApplicantInformation.indigenousStatus,
         vsd_applicantsmaritalstatus: 0,
 
         vsd_applicantspreferredlanguage: application.ApplicantInformation.preferredLanguage,

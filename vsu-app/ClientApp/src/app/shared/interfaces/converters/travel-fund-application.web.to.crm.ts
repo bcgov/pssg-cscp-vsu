@@ -64,6 +64,7 @@ function getCRMApplication(application: iTravelFundApplication) {
         vsd_dateofnamechange: null,
         vsd_applicantsgendercode: application.ApplicantInformation.gender,
         vsd_applicantsbirthdate: application.ApplicantInformation.birthDate,
+        vsd_indigenous: application.ApplicantInformation.indigenousStatus,
         vsd_applicantsmaritalstatus: 0,
 
         vsd_applicantspreferredlanguage: application.ApplicantInformation.preferredLanguage,

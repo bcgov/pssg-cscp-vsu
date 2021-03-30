@@ -7,7 +7,7 @@ import { ApplicationType } from '../../enums-list';
     styleUrls: ['./confirmation.component.scss']
 })
 export class ConfirmationComponent implements OnInit {
-    @Input() formType: any;
+    @Input() formType: ApplicationType;
     @Input() confirmationNumber: string;
     @Output() showPrintView: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -17,13 +17,17 @@ export class ConfirmationComponent implements OnInit {
     constructor() { }
 
     ngOnInit() {
-        if (this.formType.val === ApplicationType.NOTIFICATION) {
+        if (this.formType === ApplicationType.NOTIFICATION) {
             // Please write down the following number for future reference:
             this.confirmationMessage = "Thank you for for submitting a Victim Safety Unit Notification Application."
         }
-        else if (this.formType.val === ApplicationType.TRAVEL_FUNDS) {
+        else if (this.formType === ApplicationType.TRAVEL_FUNDS) {
             //Please write down the following number for future reference:
             this.confirmationMessage = "Thank you for for submitting a Victim Travel Funds Application to the Victim Safety Unit."
+        }
+        else if (this.formType === ApplicationType.TRAVEL_REIMBURSEMENT) {
+            //Please write down the following number for future reference:
+            this.confirmationMessage = "Thank you for submitting a Victim Travel Fund Reimbursement Form to the Victim Safety Unit."
         }
     }
 
