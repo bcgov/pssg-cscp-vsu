@@ -242,7 +242,7 @@
 
     <div class="row">
         <div class="col-md-4">
-            <app-field label="Do you identify as an Indigenous person?" [required]="true" [valid]="isMyControlValid(form.get('indigenousStatus'))" errorMessage="Please select an option" class="long-label">
+            <app-field label="Do you identify as an Indigenous person?" [required]="true" [valid]="isMyControlValid(form.get('indigenousStatus'))" errorMessage="Please select an option" class="long-label" [disabled]="isDisabled">
                 <select class="form-control" formControlName="indigenousStatus">
                     <option [value]="enum.IndigenousStatus.BLANK.val">Select...</option>
                     <option [value]="enum.IndigenousStatus.First_Nations.val">First Nations</option>
