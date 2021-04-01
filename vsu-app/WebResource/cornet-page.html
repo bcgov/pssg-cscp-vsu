@@ -1574,7 +1574,6 @@
                     }
 
                     if (offences.length > 0) {
-                        console.log(offences);
                         offences.sort((a, b) => {
                             return b.chargeCounts[0].fileNumber.localeCompare(a.chargeCounts[0].fileNumber) || new Date(b.expiryDate).getTime() - new Date(a.expiryDate).getTime();
                         });
