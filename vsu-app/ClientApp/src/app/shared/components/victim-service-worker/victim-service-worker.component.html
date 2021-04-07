@@ -45,7 +45,7 @@
             </app-field>
         </div>
         <div class="col-md-8" *ngIf="formType === ApplicationType.TRAVEL_FUNDS">
-            <app-field label="Is it okay to discuss your travel fund application with this victim service program?" [required]="true" [valid]="isMyControlValid(form.get('okToDiscussTravel'))" errorMessage="Please select one" [disabled]="isDisabled">
+            <app-field label="Is it okay to discuss your travel fund application with this victim service program?" [required]="false" [valid]="isMyControlValid(form.get('okToDiscussTravel'))" errorMessage="Please select one" [disabled]="isDisabled">
                 <label class="inline-label">
                     <input type="radio" [value]="enum.Boolean.True.val" name="okToDiscussTravel" formControlName="okToDiscussTravel">
                     <span>Yes</span>
