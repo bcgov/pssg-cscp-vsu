@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="./Bootstrap.css" />
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js" integrity="sha512-WFN04846sdKMIP5LKNphMaWzU7YpMyCU245etK3g/2ARYbPK9Ub18eG+ljU96qKRCWh+quCY7yefSmlkQw1ANQ==" crossorigin="anonymous"></script>
     <title>VSU Cornet</title>
     <meta charset="utf-8">
     <style type="text/css">
@@ -1463,6 +1464,8 @@
 
                                 getEvent(parameters).then(res => {
                                     if (res) {
+                                        res.expiryDateVal = '';
+                                        if (res.expiryDate != null) res.expiryDateVal = new Date(res.expiryDate);
                                         offences.push(res);
                                     }
                                     resolve();
@@ -1479,8 +1482,8 @@
                                     if (res) {
                                         res.activityDate.actualVal = '';
                                         res.activityDate.scheduledVal = '';
-                                        if (res.activityDate.actual != null) res.activityDate.actualVal = new Date(res.activityDate.actual + "T00:00:00");
-                                        if (res.activityDate.scheduled != null) res.activityDate.scheduledVal = new Date(res.activityDate.scheduled + "T00:00:00");
+                                        if (res.activityDate.actual != null) res.activityDate.actualVal = new Date(res.activityDate.actual.slice(0, 10) + "T00:00:00");
+                                        if (res.activityDate.scheduled != null) res.activityDate.scheduledVal = new Date(res.activityDate.scheduled.slice(0, 10) + "T00:00:00");
                                         hearings.push(res);
                                     }
                                     resolve();
@@ -1509,8 +1512,8 @@
 
                                 getEvent(parameters).then(res => {
                                     if (res) {
-                                        if (res.activityDate.actual != null) res.activityDate.val = new Date(res.activityDate.actual + "T00:00:00");
-                                        else if (res.activityDate.scheduled != null) res.activityDate.val = new Date(res.activityDate.scheduled + "T00:00:00");
+                                        if (res.activityDate.actual != null) res.activityDate.val = new Date(res.activityDate.actual);
+                                        else if (res.activityDate.scheduled != null) res.activityDate.val = new Date(res.activityDate.scheduled);
                                         movements.push(res);
                                     }
                                     resolve();
@@ -1527,10 +1530,11 @@
                                     if (res) {
                                         //cornet doesn't include the event date in it's results, but we can get that from the crm notification
                                         //so we combine it up
-                                        let notification = events.find(n => n.eventReferenceId == res.activityId);
+                                        let notification = events.find(n => n.vsd_eventreferenceid == res.activityId);
                                         if (notification) {
-                                            res.eventDate = notification.eventDate;
+                                            res.eventDate = new Date(notification.vsd_eventdate);
                                         }
+
                                         state_transitions.push(res);
                                     }
                                     resolve();
@@ -1574,11 +1578,45 @@
                     }
 
                     if (offences.length > 0) {
-                        offences.forEach(offence => {
-                            offence.chargeCounts.sort((a, b) => {
-                                return (a.countSeqNo > b.countSeqNo) ? 1 : -1;
+
+                        //flatten out offences/charge counts for sorting purposes
+                        let temp = [];
+                        offences.forEach((offence, i) => {
+                            offence.chargeCounts.forEach((charge, j) => {
+                                let o = _.cloneDeep(offence);
+                                delete o.chargeCounts;
+                                temp.push({ ...o, ...charge });
                             });
                         });
+
+                        console.log(temp);
+
+                        //sort by file number descending - then by sequence number ascending - then by expiry date descending
+                        temp.sort((a, b) => {
+                            if (b.fileNumber == a.fileNumber) {
+                                // if (a.expiryDate && b.expiryDate) {
+                                //     return new Date(b.expiryDate).getTime() - new Date(a.expiryDate).getTime();
+                                // }
+                                //also need to differentiate same file number but diff doc id...
+                                if (a.authorityDocumentId == b.authorityDocumentId) {
+                                    if (a.countSeqNo == b.countSeqNo) {
+                                        return new Date(b.expiryDate).getTime() - new Date(a.expiryDate).getTime();
+                                    }
+                                    else {
+                                        return (a.countSeqNo > b.countSeqNo) ? 1 : -1;
+                                    }
+                                }
+                                else {
+                                    return b.authorityDocumentId.localeCompare(a.authorityDocumentId);
+                                }
+                            }
+                            else {
+                                return b.fileNumber.localeCompare(a.fileNumber);
+                            }
+                        });
+
+                        offences = temp;
+
                         $("#tab-offences").removeClass("is-disabled");
                         populateOffences();
                     }
@@ -1779,20 +1817,20 @@
             $("#offences-table").find("tr:gt(0)").remove();
 
             offences.forEach((offence, i) => {
-                offence.chargeCounts.forEach((charge, j) => {
-                    let tr = `<tr>
-                            <td>${charge.fileNumber || ''}</td>
-                            <td>${charge.countSeqNo || ''}</td>
-                            <td>${offence.courtLocationDescription || ''}</td>
-                            <td>${charge.statuteAct || ''}</td>
-                            <td>${charge.statuteSectionNo || ''}</td>
-                            <td>${charge.statuteSubsectionParagraph || ''}</td>
-                            <td>${charge.statuteDescription || ''}</td>
-                            <td>${offence.documentTypeCode || ''}</td>
-                            <td>${offence.expiryDate ? new Date(offence.expiryDate + "T00:00:00").toLocaleString('en-us', { month: "short", day: 'numeric', year: 'numeric' }) : ''}</td>
+                // offence.forEach((charge, j) => {
+                let tr = `<tr>
+                        <td>${offence.fileNumber || ''}</td>
+                        <td>${offence.countSeqNo || ''}</td>
+                        <td>${offence.courtLocationDescription || ''}</td>
+                        <td>${offence.statuteAct || ''}</td>
+                        <td>${offence.statuteSectionNo || ''}</td>
+                        <td>${offence.statuteSubsectionParagraph || ''}</td>
+                        <td>${offence.statuteDescription || ''}</td>
+                        <td>${offence.documentTypeCode || ''}</td>
+                        <td>${offence.expiryDateVal.toLocaleString('en-us', { month: "short", day: 'numeric', year: 'numeric' })}</td>
                         </tr>`;
-                    $("#offences-table").append(tr);
-                });
+                $("#offences-table").append(tr);
+                // });
             });
         }
 
@@ -1847,7 +1885,7 @@
 
             state_transitions.forEach((transition, i) => {
                 let tr = `<tr>
-                            <td>${transition.eventDate || ''}</td>
+                            <td>${transition.eventDate ? transition.eventDate.toLocaleString('en-us', { month: "short", day: 'numeric', year: 'numeric' }) : ''}</td>
                             <td>${transition.activityType.code || ''}</td>
                             <td>${transition.activitySubType.code || ''}</td>
                             <td>${transition.activityReason.description || ''}</td>

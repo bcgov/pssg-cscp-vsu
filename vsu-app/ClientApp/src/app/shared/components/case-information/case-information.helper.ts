@@ -69,7 +69,7 @@ export class CaseInfoInfoHelper {
             extension: [''],
             email: [''],
             city: [''],
-            okToDiscussTravel: ['', Validators.required]
+            okToDiscussTravel: ['']
         });
     }
 
