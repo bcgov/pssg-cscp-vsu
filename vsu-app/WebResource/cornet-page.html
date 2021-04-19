@@ -767,6 +767,9 @@
                 <div class="col hidden" id="link-offender">
                     <button onclick="linkOffenderClick()" class="btn btn-secondary btn-link-offender">Link</button>
                 </div>
+                <!-- <div class="col" id="TEST">
+                    <button onclick="postLinkCreateCOASTOffences()" class="btn btn-secondary btn-test">TEST Create Offences</button>
+                </div> -->
             </div>
         </div>
         <!-- END of client details section -->
@@ -825,6 +828,11 @@
         const OffenderIdType = {
             ID: 0,
             CS_NUMBER: 1
+        }
+
+        const StatusCode = {
+            Active: 1,
+            Inactive: 2,
         }
 
         const OffenderDetailsFields = [
@@ -1960,8 +1968,11 @@
             parent.Xrm.Page.data.entity.save();
 
             //small delay to let the crm page save so that when we reload we get accurate info
-            setTimeout(() => {
+            setTimeout(async () => {
                 OFFENDER_EXISTS_IN_COAST = true;
+                //TODO
+                //if any offences, we need to add them in coast as well
+                await postLinkCreateCOASTOffences();
                 loadOffender(client_details.clientNumber, OffenderIdType.CS_NUMBER);
             }, 2000);
         }
@@ -1982,9 +1993,12 @@
                 parent.Xrm.Page.data.entity.save();
 
                 //small delay to let the crm page save so that when we reload we get accurate info
-                setTimeout(() => {
+                setTimeout(async () => {
+                    //TODO
+                    //if any offences, we need to add them in coast as well
+                    await postLinkCreateCOASTOffences();
                     loadOffender(client_details.clientNumber, OffenderIdType.CS_NUMBER);
-                    hideLoadingSpinner();
+                    // hideLoadingSpinner();
                 }, 2000);
             }
             else {
@@ -2001,10 +2015,13 @@
                             parent.Xrm.Page.data.entity.save();
 
                             //small delay to let the crm page save so that when we reload we get accurate info
-                            setTimeout(() => {
+                            setTimeout(async () => {
                                 OFFENDER_EXISTS_IN_COAST = true;
+                                //TODO
+                                //if any offences, we need to add them in coast as well
+                                await postLinkCreateCOASTOffences();
                                 loadOffender(client_details.clientNumber, OffenderIdType.CS_NUMBER);
-                                hideLoadingSpinner();
+                                // hideLoadingSpinner();
                             }, 2000);
                         }
                         else {
@@ -2019,6 +2036,79 @@
                     hideLoadingSpinner();
                 });
             }
+        }
+
+        function postLinkCreateCOASTOffences() {
+            return new Promise((resolve, reject) => {
+
+                console.log("create offences in coast");
+                console.log(offences);
+
+                var myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
+
+                let endpoint = parent.Xrm.Page.context.getClientUrl();
+                endpoint += "/api/data/v9.0/vsd_cornetoffences";
+
+                let today = new Date();
+
+                getCOASTOffender(client_details.clientNumber, OffenderIdType.CS_NUMBER).then(offender => {
+                    let promise_array = [];
+
+                    offences.forEach((offence, i) => {
+                        let isExpired = offence.expiryDateVal > today
+                        let expiryVal = offence.expiryDateVal;
+                        if (expiryVal) expiryVal = expiryVal.toISOString();
+
+                        let data = {
+                            "vsd_OffenderId@odata.bind": `/vsd_offenders(${offender.vsd_offenderid})`,
+                            vsd_authoritydocumentid: offence.authorityDocumentId,
+                            vsd_clientnumber: client_details.clientNumber,
+
+                            vsd_courtlocationcode: offence.courtLocationCode,
+                            vsd_courtlocationdescription: offence.courtLocationDescription,
+                            vsd_documenttypecode: offence.documentTypeCode || '',
+                            vsd_documenttypedescription: offence.documentTypeDescription || '',
+                            vsd_filenumber: offence.fileNumber || '',
+                            vsd_statutesubsectionparagraph: offence.statuteSubsectionParagraph || '',
+                            vsd_statutesectionno: offence.statuteSectionNo || '',
+                            vsd_countseqno: offence.countSeqNo ? offence.countSeqNo.toString() : '',
+                            vsd_statuteact: offence.statuteAct || '',
+                            statuscode: isExpired ? StatusCode.Inactive : StatusCode.Active,
+                        }
+
+                        if (expiryVal) data['vsd_expirydate'] = expiryVal;
+
+                        var requestOptions = {
+                            method: 'POST',
+                            headers: myHeaders,
+                            body: JSON.stringify(data),
+                            credentials: "same-origin"
+                        };
+
+                        promise_array.push(new Promise((resolve, reject) => {
+                            fetch(endpoint, requestOptions)
+                                .then(response => response.text())
+                                .then(res => {
+                                    resolve();
+                                })
+                                .catch(error => {
+                                    console.log('error', error);
+                                    reject(error)
+                                });
+                        }));
+                    });
+
+                    Promise.all(promise_array).then((res) => {
+                        console.log("created offences...");
+                        resolve();
+                    }).catch((err) => {
+                        hideLoadingSpinner();
+                        reject(err);
+                    });
+                });
+            });
+
         }
 
         function createCOASTOffender() {
