@@ -9,7 +9,6 @@
     <link rel="stylesheet" type="text/css" href="./Bootstrap.css" />
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js" integrity="sha512-WFN04846sdKMIP5LKNphMaWzU7YpMyCU245etK3g/2ARYbPK9Ub18eG+ljU96qKRCWh+quCY7yefSmlkQw1ANQ==" crossorigin="anonymous"></script>
     <title>VSU Cornet</title>
     <meta charset="utf-8">
     <style type="text/css">
@@ -473,6 +472,12 @@
                 </div>
 
                 <div class="row offender-coast-info hidden">
+                    <div class="col-4 community-location hidden">
+                        <label for="offenderCommunityLocation" class="offenderCommunityLocation">Community Location</label>
+                        <br>
+                        <input class="form-control offenderCommunityLocation read-only" type="text" id="offenderCommunityLocation" name="offenderCommunityLocation">
+                    </div>
+
                     <div class="col-4">
                         <label for="offenderCommunityStatus" class="offenderCommunityStatus read-only-checkbox">Community Status</label>
                         <input type="checkbox" class="offenderCommunityStatus read-only" id="offenderCommunityStatus" name="offenderCommunityStatus">
@@ -1076,6 +1081,7 @@
             "offenderAliases",
             "offenderCS",
             "offenderCustodyLocation",
+            "offenderCommunityLocation",
             "offenderProbationOfficer",
             "offenderPoliceFileNumber",
         ];
@@ -1850,7 +1856,9 @@
                         let temp = [];
                         offences.forEach((offence, i) => {
                             offence.chargeCounts.forEach((charge, j) => {
-                                let o = _.cloneDeep(offence);
+                                let o = JSON.parse(JSON.stringify(offence));
+                                o.expiryDateVal = '';
+                                if (o.expiryDate != null) o.expiryDateVal = new Date(o.expiryDate);
                                 delete o.chargeCounts;
                                 temp.push({ ...o, ...charge });
                             });
@@ -1981,7 +1989,9 @@
                             offence.expiryDateVal = '';
                             if (offence.expiryDate != null) offence.expiryDateVal = new Date(offence.expiryDate);
                             offence.chargeCounts.forEach((charge, j) => {
-                                let o = _.cloneDeep(offence);
+                                let o = JSON.parse(JSON.stringify(offence));
+                                o.expiryDateVal = '';
+                                if (o.expiryDate != null) o.expiryDateVal = new Date(o.expiryDate);
                                 delete o.chargeCounts;
                                 temp.push({ ...o, ...charge });
                             });
@@ -2013,9 +2023,8 @@
                         more_offences = temp;
                         populateMoreOffences();
                     }
-                    else {
-                        $(".no-more-offences").removeClass("hidden");
-                    }
+                } else {
+                    $(".no-more-offences").removeClass("hidden");
                 }
             }).catch(err => {
                 hideLoadingSpinner();
@@ -2132,16 +2141,29 @@
             });
         }
 
+        function pad(num, size) {
+            num = num.toString();
+            while (num.length < size) num = "0" + num;
+            return num;
+        }
+
         function getHistoricalEvents(eventType) {
             return new Promise((resolve, reject) => {
+                let today = new Date();
+                let year = today.getFullYear() - 2;
+                let month = pad(today.getMonth() + 1, 2);
+                let day = pad(today.getDate(), 2);
+
+                let startDate = `${year}-${month}-${day}T07:00:00.000Z`;
+
                 let parameters = {
                     EventType: eventType,
                     IsHistory: true,
                     UserName: "Test",
                     FullName: "Test",
                     Client: client_details.clientNumber, //"03377256", //cs number with state transitions...
-                    StartDate: "1990-01-01T07:00:00.000Z",
-                    EndDate: "2020-01-01T07:00:00.000Z"
+                    StartDate: startDate,
+                    EndDate: "2020-05-01T07:00:00.000Z"
                 };
 
                 getEvent(parameters).then(res => {
@@ -2297,6 +2319,7 @@
             //hide sections that are dependant on the existence of certain offender data
             $(".offender-coast-info").addClass("hidden");
             $(".custody-location").addClass("hidden");
+            $(".community-location").addClass("hidden");
             $(".victim-details-container").addClass("hidden");
             //disabled all tabs
             // $("#tab-offences").addClass("is-disabled");
@@ -2382,6 +2405,11 @@
             if (client_details.locationTypeCode.custody) {
                 $(".custody-location").removeClass("hidden");
                 $("#offenderCustodyLocation").val(client_details.locationTypeCode.custody);
+            }
+            if (client_details.locationTypeCode.community) {
+                $(".offender-coast-info").removeClass("hidden");
+                $(".community-location").removeClass("hidden");
+                $("#offenderCommunityLocation").val(client_details.locationTypeCode.community);
             }
         }
 
@@ -2564,8 +2592,6 @@
             //small delay to let the crm page save so that when we reload we get accurate info
             setTimeout(async () => {
                 OFFENDER_EXISTS_IN_COAST = true;
-                //TODO
-                //if any offences, we need to add them in coast as well
                 await postLinkCreateCOASTOffences();
                 loadOffender(client_details.clientNumber, OffenderIdType.CS_NUMBER);
             }, 2000);
@@ -2588,8 +2614,6 @@
 
                 //small delay to let the crm page save so that when we reload we get accurate info
                 setTimeout(async () => {
-                    //TODO
-                    //if any offences, we need to add them in coast as well
                     await postLinkCreateCOASTOffences();
                     loadOffender(client_details.clientNumber, OffenderIdType.CS_NUMBER);
                     // hideLoadingSpinner();
@@ -2611,8 +2635,6 @@
                             //small delay to let the crm page save so that when we reload we get accurate info
                             setTimeout(async () => {
                                 OFFENDER_EXISTS_IN_COAST = true;
-                                //TODO
-                                //if any offences, we need to add them in coast as well
                                 await postLinkCreateCOASTOffences();
                                 loadOffender(client_details.clientNumber, OffenderIdType.CS_NUMBER);
                                 // hideLoadingSpinner();
