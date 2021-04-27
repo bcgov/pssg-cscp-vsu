@@ -9,7 +9,6 @@
     <link rel="stylesheet" type="text/css" href="./Bootstrap.css" />
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js" integrity="sha512-WFN04846sdKMIP5LKNphMaWzU7YpMyCU245etK3g/2ARYbPK9Ub18eG+ljU96qKRCWh+quCY7yefSmlkQw1ANQ==" crossorigin="anonymous"></script>
     <title>VSU Cornet</title>
     <meta charset="utf-8">
     <style type="text/css">
@@ -358,22 +357,22 @@
                             <a id="tab-subject-info" class="nav-link nav-tab-table active-page" onclick="showTabContent(event, 'subject-information-container')">Subject Information</a>
                         </li>
                         <li class="nav-item">
-                            <a id="tab-offences" class="nav-link nav-tab-table is-disabled" onclick="showTabContent(event, 'offences-container')">Offences</a>
+                            <a id="tab-offences" class="nav-link nav-tab-table" onclick="showTabContent(event, 'offences-container')">Offences</a>
                         </li>
                         <li class="nav-item">
-                            <a id="tab-movements" class="nav-link nav-tab-table is-disabled" onclick="showTabContent(event, 'movements-container')">Movements</a>
+                            <a id="tab-movements" class="nav-link nav-tab-table" onclick="showTabContent(event, 'movements-container')">Movements</a>
                         </li>
                         <li class="nav-item">
-                            <a id="tab-hearings" class="nav-link nav-tab-table is-disabled" onclick="showTabContent(event, 'hearings-container')">Hearings</a>
+                            <a id="tab-hearings" class="nav-link nav-tab-table" onclick="showTabContent(event, 'hearings-container')">Hearings</a>
                         </li>
                         <li class="nav-item">
-                            <a id="tab-victim-info" class="nav-link nav-tab-table is-disabled" onclick="showTabContent(event, 'victim-information-container')">Victim Information</a>
+                            <a id="tab-victim-info" class="nav-link nav-tab-table" onclick="showTabContent(event, 'victim-information-container')">Victim Information</a>
                         </li>
                         <li class="nav-item">
-                            <a id="tab-state-transition" class="nav-link nav-tab-table is-disabled" onclick="showTabContent(event, 'state-transitions-container')">State Transitions</a>
+                            <a id="tab-state-transition" class="nav-link nav-tab-table" onclick="showTabContent(event, 'state-transitions-container')">State Transitions</a>
                         </li>
                         <li class="nav-item">
-                            <a id="tab-key-dates" class="nav-link nav-tab-table is-disabled" onclick="showTabContent(event, 'key-dates-container')">Key Dates</a>
+                            <a id="tab-key-dates" class="nav-link nav-tab-table" onclick="showTabContent(event, 'key-dates-container')">Key Dates</a>
                         </li>
                     </ul>
                 </div>
@@ -423,12 +422,6 @@
                     </div>
                 </div>
 
-                <!-- <div class="row bc-corrections-info mt-4">
-                    <div class="col">
-                        <p><strong>BC Corrections</strong></p>
-                    </div>
-                </div> -->
-
                 <div class="row">
                     <div class="col-4">
                         <label for="offenderCS" class="offenderCS">CS#</label>
@@ -468,6 +461,10 @@
                     </div>
                 </div>
 
+                <div class="row more-key-date-container flex-container hidden" id="more-key-dates">
+
+                </div>
+
                 <div class="row community-info offender-coast-info hidden mt-4">
                     <div class="col">
                         <p><strong>Community Information</strong></p>
@@ -475,6 +472,12 @@
                 </div>
 
                 <div class="row offender-coast-info hidden">
+                    <div class="col-4 community-location hidden">
+                        <label for="offenderCommunityLocation" class="offenderCommunityLocation">Community Location</label>
+                        <br>
+                        <input class="form-control offenderCommunityLocation read-only" type="text" id="offenderCommunityLocation" name="offenderCommunityLocation">
+                    </div>
+
                     <div class="col-4">
                         <label for="offenderCommunityStatus" class="offenderCommunityStatus read-only-checkbox">Community Status</label>
                         <input type="checkbox" class="offenderCommunityStatus read-only" id="offenderCommunityStatus" name="offenderCommunityStatus">
@@ -534,6 +537,49 @@
                         </table>
                     </div>
                 </div>
+
+                <div class="row mt-4 load-more-offences-row">
+                    <div class="col" id="load-more-offences">
+                        <button onclick="loadMoreOffencesClick()" class="btn btn-secondary btn-load-more-offences">Load More</button>
+                    </div>
+                </div>
+
+                <div class="more-offences-container hidden">
+                    <div class="row mt-4">
+                        <div class="col">
+                            <p><strong>Additional Offences</strong></p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <table class="table table-striped" id="more-offences-table">
+                                <thead class="thead">
+                                    <th>File #</th>
+                                    <th>Count #</th>
+                                    <th>Court Location</th>
+                                    <th>Act</th>
+                                    <th>Section</th>
+                                    <th>Sub.</th>
+                                    <th>Description</th>
+                                    <th>Doc. Type</th>
+                                    <th>Expiry</th>
+                                </thead>
+
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="no-more-offences hidden">
+                    <div class="row mt-4">
+                        <div class="col">
+                            <p><strong>No Additional Offences</strong></p>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div id="movements-container" class="hidden">
@@ -558,6 +604,46 @@
                             <tbody>
                             </tbody>
                         </table>
+                    </div>
+                </div>
+
+                <div class="row mt-4 load-more-movements-row">
+                    <div class="col" id="load-more-movements">
+                        <button onclick="loadMoreMovementsClick()" class="btn btn-secondary btn-load-more-movements">Load More</button>
+                    </div>
+                </div>
+
+                <div class="more-movements-container hidden">
+                    <div class="row mt-4">
+                        <div class="col">
+                            <p><strong>Additional Movements</strong></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <table class="table table-striped" id="more-movements-table">
+                                <thead class="thead">
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Type</th>
+                                    <th>In/Out</th>
+                                    <th>Movement Reason</th>
+                                    <th>To</th>
+                                    <th>Comment</th>
+                                </thead>
+
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="no-more-movements hidden">
+                    <div class="row mt-4">
+                        <div class="col">
+                            <p><strong>No Additional Movements</strong></p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -585,6 +671,45 @@
                         </table>
                     </div>
                 </div>
+
+                <div class="row mt-4 load-more-hearings-row">
+                    <div class="col" id="load-more-hearings">
+                        <button onclick="loadMoreHearingsClick()" class="btn btn-secondary btn-load-more-hearings">Load More</button>
+                    </div>
+                </div>
+
+                <div class="more-hearings-container hidden">
+                    <div class="row mt-4">
+                        <div class="col">
+                            <p><strong>Additional Hearings</strong></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <table class="table table-striped" id="more-hearings-table">
+                                <thead class="thead">
+                                    <th>Date</th>
+                                    <th>Hearing Purpose</th>
+                                    <th>Hearing Scheduled Date</th>
+                                    <th>Hearing Type Description</th>
+                                    <th>Hearing Purpose Type Description</th>
+                                    <th>Hearing Outcome Type Description</th>
+                                </thead>
+
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="no-more-hearings hidden">
+                    <div class="row mt-4">
+                        <div class="col">
+                            <p><strong>No Additional Hearings</strong></p>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div id="victim-information-container" class="hidden">
@@ -605,6 +730,42 @@
                             <tbody>
                             </tbody>
                         </table>
+                    </div>
+                </div>
+
+                <div class="row mt-4 load-more-victims-row">
+                    <div class="col" id="load-more-victims">
+                        <button onclick="loadMoreVictimsClick()" class="btn btn-secondary btn-load-more-victims">Load More</button>
+                    </div>
+                </div>
+
+                <div class="more-victims-container hidden">
+                    <div class="row mt-4">
+                        <div class="col">
+                            <p><strong>Additional Victim Information</strong></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <table class="table table-striped" id="more-victim-information-table">
+                                <thead class="thead">
+                                    <th>Name</th>
+                                    <th>Relationship</th>
+                                    <th>View Victim Details</th>
+                                </thead>
+
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="no-more-victims hidden">
+                    <div class="row mt-4">
+                        <div class="col">
+                            <p><strong>No Additional Victim Information</strong></p>
+                        </div>
                     </div>
                 </div>
 
@@ -734,6 +895,43 @@
                         </table>
                     </div>
                 </div>
+
+                <div class="row mt-4 load-more-state-transitions-row">
+                    <div class="col" id="load-more-state-transitions">
+                        <button onclick="loadMoreStateTransitionsClick()" class="btn btn-secondary btn-load-more-state-transitions">Load More</button>
+                    </div>
+                </div>
+
+                <div class="more-state-transitions-container hidden">
+                    <div class="row mt-4">
+                        <div class="col">
+                            <p><strong>Additional State Transitions</strong></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <table class="table table-striped" id="more-state-transitions-table">
+                                <thead class="thead">
+                                    <th>Date</th>
+                                    <th>Type</th>
+                                    <th>Sub-Type</th>
+                                    <th>Description</th>
+                                </thead>
+
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="no-more-state-transitions hidden">
+                    <div class="row mt-4">
+                        <div class="col">
+                            <p><strong>No Additional State Transitions</strong></p>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div id="key-dates-container" class="hidden">
@@ -756,6 +954,44 @@
                             <tbody>
                             </tbody>
                         </table>
+                    </div>
+                </div>
+
+                <div class="row mt-4 load-more-key-dates-row">
+                    <div class="col" id="load-more-key-dates">
+                        <button onclick="loadMoreKeyDatesClick()" class="btn btn-secondary btn-load-more-key-dates">Load More</button>
+                    </div>
+                </div>
+
+                <div class="more-key-dates-container hidden">
+                    <div class="row mt-4">
+                        <div class="col">
+                            <p><strong>Additional Key Dates</strong></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <table class="table table-striped" id="more-key-dates-table">
+                                <thead class="thead">
+                                    <th>Date</th>
+                                    <th>Activity Description</th>
+                                    <th>Key Date Type Code</th>
+                                    <th>Sentence Type Code </th>
+                                    <th>Description</th>
+                                </thead>
+
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="no-more-key-dates hidden">
+                    <div class="row mt-4">
+                        <div class="col">
+                            <p><strong>No Additional Key Dates</strong></p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -827,6 +1063,16 @@
             CS_NUMBER: 1
         }
 
+        const StatusCode = {
+            Active: 1,
+            Inactive: 2,
+        }
+
+        const StateCode = {
+            Active: 0,
+            Inactive: 1,
+        }
+
         const OffenderDetailsFields = [
             "offenderLastName",
             "offenderGivenNames",
@@ -835,6 +1081,7 @@
             "offenderAliases",
             "offenderCS",
             "offenderCustodyLocation",
+            "offenderCommunityLocation",
             "offenderProbationOfficer",
             "offenderPoliceFileNumber",
         ];
@@ -890,6 +1137,12 @@
         let victim_information = [];
         let state_transitions = [];
         let key_dates = [];
+        let more_offences = [];
+        let more_movements = [];
+        let more_hearings = [];
+        let more_victim_information = [];
+        let more_state_transitions = [];
+        let more_key_dates = [];
 
         //var to show how many cornet notifications returned no content - for debuggind
         let no_content = [];
@@ -1036,7 +1289,11 @@
                         addResultsToSearchTable(data.clients);
                     }
                 })
-                .catch(error => console.log('error', error));
+                .catch(error => {
+                    alert("Encountered an issue getting search results");
+                    hideLoadingSpinner();
+                    console.log('error', error);
+                });
         }
 
         function addResultsToSearchTable(clients) {
@@ -1211,6 +1468,12 @@
             victim_information = [];
             state_transitions = [];
             key_dates = [];
+            more_offences = [];
+            more_movements = [];
+            more_hearings = [];
+            more_victim_information = [];
+            more_state_transitions = [];
+            more_key_dates = [];
 
             getCOASTOffender(id, id_type).then(offender => {
                 let promise_array = [];
@@ -1267,6 +1530,8 @@
                             populateSubjectInformation();
                             resolve();
                         }).catch((err) => {
+                            alert("Encountered an issue loading information");
+                            hideLoadingSpinner();
                             reject(err);
                         });
                     }));
@@ -1322,10 +1587,13 @@
                         }
                     })
                     .catch(err => {
+                        alert("Encountered an issue loading information");
+                        hideLoadingSpinner();
                         console.log('error', err)
                         reject(err);
                     });
             }).catch(err => {
+                hideLoadingSpinner();
                 reject(err);
             });
         }
@@ -1364,10 +1632,13 @@
                         }
                     })
                     .catch(error => {
+                        alert("Encountered an issue loading information");
+                        hideLoadingSpinner();
                         console.log('error', error);
                         reject(error);
                     });
             }).catch(err => {
+                hideLoadingSpinner();
                 reject(err);
             });
         }
@@ -1402,6 +1673,8 @@
                         }
                     })
                     .catch(error => {
+                        alert("Encountered an issue loading notification information");
+                        hideLoadingSpinner();
                         console.log('error', error);
                         reject(error);
                     });
@@ -1534,6 +1807,7 @@
                                         if (notification) {
                                             res.eventDate = new Date(notification.vsd_eventdate);
                                         }
+                                        else res.eventDate = '';
 
                                         state_transitions.push(res);
                                     }
@@ -1578,26 +1852,21 @@
                     }
 
                     if (offences.length > 0) {
-
                         //flatten out offences/charge counts for sorting purposes
                         let temp = [];
                         offences.forEach((offence, i) => {
                             offence.chargeCounts.forEach((charge, j) => {
-                                let o = _.cloneDeep(offence);
+                                let o = JSON.parse(JSON.stringify(offence));
+                                o.expiryDateVal = '';
+                                if (o.expiryDate != null) o.expiryDateVal = new Date(o.expiryDate);
                                 delete o.chargeCounts;
                                 temp.push({ ...o, ...charge });
                             });
                         });
 
-                        console.log(temp);
-
                         //sort by file number descending - then by sequence number ascending - then by expiry date descending
                         temp.sort((a, b) => {
                             if (b.fileNumber == a.fileNumber) {
-                                // if (a.expiryDate && b.expiryDate) {
-                                //     return new Date(b.expiryDate).getTime() - new Date(a.expiryDate).getTime();
-                                // }
-                                //also need to differentiate same file number but diff doc id...
                                 if (a.authorityDocumentId == b.authorityDocumentId) {
                                     if (a.countSeqNo == b.countSeqNo) {
                                         return new Date(b.expiryDate).getTime() - new Date(a.expiryDate).getTime();
@@ -1611,13 +1880,15 @@
                                 }
                             }
                             else {
-                                return b.fileNumber.localeCompare(a.fileNumber);
+                                let fileB = b.fileNumber || "";
+                                let fileA = a.fileNumber || "";
+                                return fileB.localeCompare(fileA);
                             }
                         });
 
                         offences = temp;
 
-                        $("#tab-offences").removeClass("is-disabled");
+                        // $("#tab-offences").removeClass("is-disabled");
                         populateOffences();
                     }
 
@@ -1625,22 +1896,31 @@
                         movements.sort((a, b) => {
                             return b.activityDate.val.getTime() - a.activityDate.val.getTime();
                         });
-                        $("#tab-movements").removeClass("is-disabled");
+                        // $("#tab-movements").removeClass("is-disabled");
                         populateMovements();
                     }
 
                     if (hearings.length > 0) {
-                        $("#tab-hearings").removeClass("is-disabled");
+                        // $("#tab-hearings").removeClass("is-disabled");
+                        hearings.sort((a, b) => {
+                            return b.activityDate.actualVal > a.activityDate.actualVal ? 1 : -1;
+                        });
                         populateHearings();
                     }
 
                     if (victim_information.length > 0) {
-                        $("#tab-victim-info").removeClass("is-disabled");
+                        // $("#tab-victim-info").removeClass("is-disabled");
+                        victim_information.sort((a, b) => {
+                            return a.personFullName.localeCompare(b.personFullName);
+                        });
                         populateVictimInformation();
                     }
 
                     if (state_transitions.length > 0) {
-                        $("#tab-state-transition").removeClass("is-disabled");
+                        // $("#tab-state-transition").removeClass("is-disabled");
+                        state_transitions.sort((a, b) => {
+                            return b.eventDate > a.eventDate ? 1 : -1;
+                        });
                         populateStateTransitions();
                     }
 
@@ -1684,11 +1964,322 @@
                         }
                     })
                     .catch(error => {
+                        alert("Encountered an issue loading event info");
+                        hideLoadingSpinner();
                         console.log('error', error);
                         reject(error);
                     });
             }).catch(err => {
+                hideLoadingSpinner();
                 reject(err);
+            });
+        }
+
+        function loadMoreOffencesClick() {
+            showLoadingSpinner();
+            getHistoricalEvents(EventType.AUTH_DOCM.val).then((res) => {
+                hideLoadMoreOffencesButton();
+                hideLoadingSpinner();
+                if (res && res.authorityDocuments && res.authorityDocuments.length > 0) {
+                    more_offences = res.authorityDocuments;
+                    if (more_offences.length > 0) {
+                        //flatten out offences/charge counts for sorting purposes
+                        let temp = [];
+                        more_offences.forEach((offence, i) => {
+                            offence.expiryDateVal = '';
+                            if (offence.expiryDate != null) offence.expiryDateVal = new Date(offence.expiryDate);
+                            offence.chargeCounts.forEach((charge, j) => {
+                                let o = JSON.parse(JSON.stringify(offence));
+                                o.expiryDateVal = '';
+                                if (o.expiryDate != null) o.expiryDateVal = new Date(o.expiryDate);
+                                delete o.chargeCounts;
+                                temp.push({ ...o, ...charge });
+                            });
+                        });
+
+                        //sort by file number descending - then by sequence number ascending - then by expiry date descending
+                        temp.sort((a, b) => {
+                            if (b.fileNumber == a.fileNumber) {
+                                if (a.authorityDocumentId == b.authorityDocumentId) {
+                                    if (a.countSeqNo == b.countSeqNo) {
+                                        return new Date(b.expiryDate).getTime() - new Date(a.expiryDate).getTime();
+                                    }
+                                    else {
+                                        return (a.countSeqNo > b.countSeqNo) ? 1 : -1;
+                                    }
+                                }
+                                else {
+                                    // return b.authorityDocumentId.localeCompare(a.authorityDocumentId);
+                                    return new Date(b.expiryDate).getTime() - new Date(a.expiryDate).getTime();
+                                }
+                            }
+                            else {
+                                let fileB = b.fileNumber || "";
+                                let fileA = a.fileNumber || "";
+                                return fileB.localeCompare(fileA);
+                            }
+                        });
+
+                        more_offences = temp;
+                        populateMoreOffences();
+                    }
+                } else {
+                    $(".no-more-offences").removeClass("hidden");
+                }
+            }).catch(err => {
+                hideLoadingSpinner();
+                console.log(err);
+            });
+        }
+
+        function loadMoreMovementsClick() {
+            showLoadingSpinner();
+            getHistoricalEvents(EventType.MOVEMENT.val).then((res) => {
+                hideLoadMoreMovementsButton();
+                hideLoadingSpinner();
+                if (res && res.movements && res.movements.length > 0) {
+                    more_movements = res.movements;
+                    more_movements.forEach(movement => {
+                        if (movement.activityDate.actual != null) movement.activityDate.val = new Date(movement.activityDate.actual);
+                        else if (movement.activityDate.scheduled != null) movement.activityDate.val = new Date(movement.activityDate.scheduled);
+                    });
+                    more_movements.sort((a, b) => {
+                        return b.activityDate.val.getTime() - a.activityDate.val.getTime();
+                    });
+                    populateMoreMovements();
+                }
+                else {
+                    $(".no-more-movements").removeClass("hidden");
+                }
+            }).catch(err => {
+                hideLoadingSpinner();
+                console.log(err);
+            });
+        }
+
+        function loadMoreHearingsClick() {
+            showLoadingSpinner();
+            getHistoricalEvents(EventType.HEARING.val).then((res) => {
+                hideLoadMoreHearingsButton()
+                hideLoadingSpinner();
+                if (res && res.hearings && res.hearings.length > 0) {
+                    more_hearings = res.hearings;
+                    more_hearings.forEach(hearing => {
+                        hearing.activityDate.actualVal = '';
+                        hearing.activityDate.scheduledVal = '';
+                        if (hearing.activityDate.actual != null) hearing.activityDate.actualVal = new Date(hearing.activityDate.actual.slice(0, 10) + "T00:00:00");
+                        if (hearing.activityDate.scheduled != null) hearing.activityDate.scheduledVal = new Date(hearing.activityDate.scheduled.slice(0, 10) + "T00:00:00");
+                    });
+                    populateMoreHearings();
+                }
+                else {
+                    $(".no-more-hearings").removeClass("hidden");
+                }
+            }).catch(err => {
+                hideLoadingSpinner();
+                console.log(err);
+            });
+        }
+
+        function loadMoreVictimsClick() {
+            showLoadingSpinner();
+            getHistoricalEvents(EventType.VICT_CNTCT.val).then((res) => {
+                hideLoadMoreVictimsButton();
+                hideLoadingSpinner();
+                if (res && res.victimContacts && res.victimContacts.length > 0) {
+                    more_victim_information = res.victimContacts;
+                    populateMoreVictimInformation();
+                }
+                else {
+                    $(".no-more-victims").removeClass("hidden");
+                }
+            }).catch(err => {
+                hideLoadingSpinner();
+                console.log(err);
+            });
+        }
+
+        function loadMoreStateTransitionsClick() {
+            showLoadingSpinner();
+            getHistoricalEvents(EventType.STATE_TRAN.val).then((res) => {
+                hideLoadMoreStateTransitionsButton();
+                hideLoadingSpinner();
+                if (res && res.stateTransitions && res.stateTransitions.length > 0) {
+                    more_state_transitions = res.stateTransitions;
+                    more_state_transitions.forEach(state_transition => {
+                        state_transition.eventDate = "";
+                    });
+                    populateMoreStateTransitions();
+                }
+                else {
+                    $(".no-more-state-transitions").removeClass("hidden");
+                }
+            }).catch(err => {
+                hideLoadingSpinner();
+                console.log(err);
+            });
+        }
+
+        function loadMoreKeyDatesClick() {
+            showLoadingSpinner();
+            getHistoricalEvents(EventType.KEY_DATE.val).then((res) => {
+                hideLoadMoreKeyDatesButton();
+                hideLoadingSpinner();
+                if (res && res.keyDates && res.keyDates.length > 0) {
+                    more_key_dates = res.keyDates;
+                    more_key_dates.sort((a, b) => {
+                        return new Date(b.activityDate).getTime() - new Date(a.activityDate).getTime();
+                    });
+                    populateMoreKeyDates();
+                }
+                else {
+                    $(".no-more-key-dates").removeClass("hidden");
+                }
+            }).catch(err => {
+                hideLoadingSpinner();
+                console.log(err);
+            });
+        }
+
+        function pad(num, size) {
+            num = num.toString();
+            while (num.length < size) num = "0" + num;
+            return num;
+        }
+
+        function getHistoricalEvents(eventType) {
+            return new Promise((resolve, reject) => {
+                let today = new Date();
+                let year = today.getFullYear() - 2;
+                let month = pad(today.getMonth() + 1, 2);
+                let day = pad(today.getDate(), 2);
+
+                let startDate = `${year}-${month}-${day}T07:00:00.000Z`;
+
+                let parameters = {
+                    EventType: eventType,
+                    IsHistory: true,
+                    UserName: "Test",
+                    FullName: "Test",
+                    Client: client_details.clientNumber, //"03377256", //cs number with state transitions...
+                    StartDate: startDate,
+                    EndDate: "2020-05-01T07:00:00.000Z"
+                };
+
+                getEvent(parameters).then(res => {
+                    resolve(res);
+                }).catch((err) => {
+                    console.log(err);
+                    hideLoadingSpinner();
+                });
+            });
+        }
+
+        function populateMoreKeyDates() {
+            $("#more-key-dates").find("div:gt(0)").remove();
+            $("#more-key-dates-table").find("tr:gt(0)").remove();
+            $(".more-key-dates-container").removeClass("hidden");
+
+            more_key_dates.forEach((keyDate, i) => {
+                // let div = `<div class="col-4">
+                //                 <label for="offenderKeyDate${i}" class="offenderKeyDate${i}">${keyDate.activityCategory.description || ''}</label>
+                //                 <br>
+                //                 <input class="form-control offenderKeyDate read-only" type="text" id="offenderKeyDate${i}" name="offenderKeyDate${i}" value="${keyDate.activityDate || ''}">
+                //             </div>`;
+                // $("#key-dates").append(div);
+
+                let tr = `<tr>
+                            <td>${keyDate.activityDate ? new Date(keyDate.activityDate + "T00:00:00").toLocaleString('en-us', { month: "short", day: 'numeric', year: 'numeric' }) : ''}</td>
+                            <td>${keyDate.activityCategory.description || ''}</td>
+                            <td>${keyDate.activityCategory.code || ''}</td>
+                            <td>${keyDate.sentenceCalcTypeCd || ''}</td>
+                            <td>${keyDate.activityDescription || ''}</td>
+                        </tr>`;
+                $("#more-key-dates-table").append(tr);
+            });
+        }
+
+        function populateMoreOffences() {
+            $("#more-offences-table").find("tr:gt(0)").remove();
+            $(".more-offences-container").removeClass("hidden");
+
+            more_offences.forEach((offence, i) => {
+                let tr = `<tr>
+                        <td>${offence.fileNumber || ''}</td>
+                        <td>${offence.countSeqNo || ''}</td>
+                        <td>${offence.courtLocationDescription || ''}</td>
+                        <td>${offence.statuteAct || ''}</td>
+                        <td>${offence.statuteSectionNo || ''}</td>
+                        <td>${offence.statuteSubsectionParagraph || ''}</td>
+                        <td>${offence.statuteDescription || ''}</td>
+                        <td>${offence.documentTypeCode || ''}</td>
+                        <td>${offence.expiryDateVal.toLocaleString('en-us', { month: "short", day: 'numeric', year: 'numeric' })}</td>
+                        </tr>`;
+                $("#more-offences-table").append(tr);
+            });
+        }
+
+        function populateMoreMovements() {
+            $("#more-movements-table").find("tr:gt(0)").remove();
+            $(".more-movements-container").removeClass("hidden");
+
+            more_movements.forEach((movement, i) => {
+                let tr = `<tr>
+                            <td>${movement.activityDate.val.toLocaleString('en-us', { month: "short", day: 'numeric', year: 'numeric' })}</td>
+                            <td>${movement.activityDate.val.toLocaleTimeString()}</td>
+                            <td>${movement.activityCategory.description || ''}</td>
+                            <td>${movement.activitySubCategory.code || ''}</td>
+                            <td>${movement.activityReason.description || ''}</td>
+                            <td>${movement.supervisionFacility.to || ''}</td>
+                            <td>${movement.activityDescription || ''}</td>
+                        </tr>`;
+                $("#more-movements-table").append(tr);
+            });
+        }
+
+        function populateMoreHearings() {
+            $("#more-hearings-table").find("tr:gt(0)").remove();
+            $(".more-hearings-container").removeClass("hidden");
+
+            more_hearings.forEach((hearing, i) => {
+                let tr = `<tr>
+                            <td>${hearing.activityDate.actualVal ? hearing.activityDate.actualVal.toLocaleString('en-us', { month: "short", day: 'numeric', year: 'numeric' }) : ''}</td>
+                            <td>${hearing.hearingCategory.description || ''}</td>
+                            <td>${hearing.activityDate.scheduledVal ? hearing.activityDate.scheduledVal.toLocaleString('en-us', { month: "short", day: 'numeric', year: 'numeric' }) : ''}</td>
+                            <td>${hearing.activityType.description || ''}</td>
+                            <td>${hearing.hearingRequestType.description || ''}</td>
+                            <td>${hearing.hearingDecision.description || ''}</td>
+                        </tr>`;
+                $("#more-hearings-table").append(tr);
+            });
+        }
+
+        function populateMoreVictimInformation() {
+            $("#more-victim-information-table").find("tr:gt(0)").remove();
+            $(".more-victims-container").removeClass("hidden");
+
+            more_victim_information.forEach((victim, i) => {
+                let tr = `<tr>
+                            <td>${victim.personFullName || ''}</td>
+                            <td>${victim.victimToPersonRelationship || ''}</td>
+                            <td>${'<button onclick="showMoreVictimDetailsClick(' + i + ')" class="btn btn-secondary">View Details</button>'}</td>
+                        </tr>`;
+                $("#more-victim-information-table").append(tr);
+            });
+        }
+
+        function populateMoreStateTransitions() {
+            $("#more-state-transitions-table").find("tr:gt(0)").remove();
+            $(".more-state-transitions-container").removeClass("hidden");
+
+            more_state_transitions.forEach((transition, i) => {
+                let tr = `<tr>
+                            <td>${transition.eventDate ? transition.eventDate.toLocaleString('en-us', { month: "short", day: 'numeric', year: 'numeric' }) : ''}</td>
+                            <td>${transition.activityType.code || ''}</td>
+                            <td>${transition.activitySubType.code || ''}</td>
+                            <td>${transition.activityReason.description || ''}</td>
+                        </tr>`;
+                $("#more-state-transitions-table").append(tr);
             });
         }
 
@@ -1705,6 +2296,12 @@
             victim_information = [];
             state_transitions = [];
             key_dates = [];
+            more_offences = [];
+            more_movements = [];
+            more_hearings = [];
+            more_victim_information = [];
+            more_state_transitions = [];
+            more_key_dates = [];
             //clear subject information inputs and victim details inputs
             OffenderDetailsFields.forEach(field => {
                 $(`#${field}`).val('');
@@ -1722,14 +2319,35 @@
             //hide sections that are dependant on the existence of certain offender data
             $(".offender-coast-info").addClass("hidden");
             $(".custody-location").addClass("hidden");
+            $(".community-location").addClass("hidden");
             $(".victim-details-container").addClass("hidden");
             //disabled all tabs
-            $("#tab-offences").addClass("is-disabled");
-            $("#tab-movements").addClass("is-disabled");
-            $("#tab-hearings").addClass("is-disabled");
-            $("#tab-victim-info").addClass("is-disabled");
-            $("#tab-state-transition").addClass("is-disabled");
-            $("#tab-key-dates").addClass("is-disabled");
+            // $("#tab-offences").addClass("is-disabled");
+            // $("#tab-movements").addClass("is-disabled");
+            // $("#tab-hearings").addClass("is-disabled");
+            // $("#tab-victim-info").addClass("is-disabled");
+            // $("#tab-state-transition").addClass("is-disabled");
+            // $("#tab-key-dates").addClass("is-disabled");
+            //hide historical data tables
+            $(".more-offences-container").addClass("hidden");
+            $(".no-more-offences").addClass("hidden");
+            $(".more-movements-container").addClass("hidden");
+            $(".no-more-movements").addClass("hidden");
+            $(".more-hearings-container").addClass("hidden");
+            $(".no-more-hearings").addClass("hidden");
+            $(".more-victims-container").addClass("hidden");
+            $(".no-more-victims").addClass("hidden");
+            $(".more-state-transitions-container").addClass("hidden");
+            $(".no-more-state-transitions").addClass("hidden");
+            $(".more-key-dates-container").addClass("hidden");
+            $(".no-more-key-dates").addClass("hidden");
+            //show all load more buttons
+            showLoadMoreOffencesButton();
+            showLoadMoreMovementsButton();
+            showLoadMoreHearingsButton();
+            showLoadMoreVictimsButton();
+            showLoadMoreStateTransitionsButton();
+            showLoadMoreKeyDatesButton();
             //empty all tables/key dates
             $("#key-dates").find("div:gt(0)").remove();
             $("#offences-table").find("tr:gt(0)").remove();
@@ -1788,6 +2406,11 @@
                 $(".custody-location").removeClass("hidden");
                 $("#offenderCustodyLocation").val(client_details.locationTypeCode.custody);
             }
+            if (client_details.locationTypeCode.community) {
+                $(".offender-coast-info").removeClass("hidden");
+                $(".community-location").removeClass("hidden");
+                $("#offenderCommunityLocation").val(client_details.locationTypeCode.community);
+            }
         }
 
         function populateKeyDates() {
@@ -1817,7 +2440,6 @@
             $("#offences-table").find("tr:gt(0)").remove();
 
             offences.forEach((offence, i) => {
-                // offence.forEach((charge, j) => {
                 let tr = `<tr>
                         <td>${offence.fileNumber || ''}</td>
                         <td>${offence.countSeqNo || ''}</td>
@@ -1830,7 +2452,6 @@
                         <td>${offence.expiryDateVal.toLocaleString('en-us', { month: "short", day: 'numeric', year: 'numeric' })}</td>
                         </tr>`;
                 $("#offences-table").append(tr);
-                // });
             });
         }
 
@@ -1874,7 +2495,7 @@
                 let tr = `<tr>
                             <td>${victim.personFullName || ''}</td>
                             <td>${victim.victimToPersonRelationship || ''}</td>
-                            <td>${'<button onclick="showVictimDetails(' + i + ')" class="btn btn-secondary">View Details</button>'}</td>
+                            <td>${'<button onclick="showVictimDetailsClick(' + i + ')" class="btn btn-secondary">View Details</button>'}</td>
                         </tr>`;
                 $("#victim-information-table").append(tr);
             });
@@ -1894,8 +2515,17 @@
             });
         }
 
-        function showVictimDetails(index) {
+        function showMoreVictimDetailsClick(index) {
+            let victim = more_victim_information[index];
+            displayVictimDetails(victim);
+        }
+
+        function showVictimDetailsClick(index) {
             let victim = victim_information[index];
+            displayVictimDetails(victim);
+        }
+
+        function displayVictimDetails(victim) {
             $(".victim-details-container").removeClass("hidden");
 
             $("#victimName").val(victim.personFullName || '');
@@ -1913,19 +2543,19 @@
             $("#victimEmail").val(victim.emailType.emailAddress || '');
             $("#victimEmailEffectiveDate").val(victim.emailType.effectiveDate || '');
 
-            if (victim.telephoneNumberType.isPrimary) {
+            if (victim.telephoneNumberType.isPrimary == "Y") {
                 $("label.victimTelephone").addClass("is-primary-contact");
             }
             else {
                 $("label.victimTelephone").removeClass("is-primary-contact");
             }
-            if (victim.cellNumberType.isPrimary) {
+            if (victim.cellNumberType.isPrimary == "Y") {
                 $("label.victimMobile").addClass("is-primary-contact");
             }
             else {
                 $("label.victimMobile").removeClass("is-primary-contact");
             }
-            if (victim.emailType.isPrimary) {
+            if (victim.emailType.isPrimary == "Y") {
                 $("label.victimEmail").addClass("is-primary-contact");
             }
             else {
@@ -1960,8 +2590,9 @@
             parent.Xrm.Page.data.entity.save();
 
             //small delay to let the crm page save so that when we reload we get accurate info
-            setTimeout(() => {
+            setTimeout(async () => {
                 OFFENDER_EXISTS_IN_COAST = true;
+                await postLinkCreateCOASTOffences();
                 loadOffender(client_details.clientNumber, OffenderIdType.CS_NUMBER);
             }, 2000);
         }
@@ -1982,9 +2613,10 @@
                 parent.Xrm.Page.data.entity.save();
 
                 //small delay to let the crm page save so that when we reload we get accurate info
-                setTimeout(() => {
+                setTimeout(async () => {
+                    await postLinkCreateCOASTOffences();
                     loadOffender(client_details.clientNumber, OffenderIdType.CS_NUMBER);
-                    hideLoadingSpinner();
+                    // hideLoadingSpinner();
                 }, 2000);
             }
             else {
@@ -2001,24 +2633,133 @@
                             parent.Xrm.Page.data.entity.save();
 
                             //small delay to let the crm page save so that when we reload we get accurate info
-                            setTimeout(() => {
+                            setTimeout(async () => {
                                 OFFENDER_EXISTS_IN_COAST = true;
+                                await postLinkCreateCOASTOffences();
                                 loadOffender(client_details.clientNumber, OffenderIdType.CS_NUMBER);
-                                hideLoadingSpinner();
+                                // hideLoadingSpinner();
                             }, 2000);
                         }
                         else {
                             hideLoadingSpinner();
                         }
                     }).catch((err) => {
+                        hideLoadingSpinner();
                         console.log(err);
                         hideLoadingSpinner();
                     });
                 }).catch((err) => {
+                    hideLoadingSpinner();
                     console.log(err);
                     hideLoadingSpinner();
                 });
             }
+        }
+
+        function postLinkCreateCOASTOffences() {
+            return new Promise((resolve, reject) => {
+                var myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
+
+                let endpoint = parent.Xrm.Page.context.getClientUrl();
+                endpoint += "/api/data/v9.0/vsd_cornetoffences";
+
+                let today = new Date();
+
+                getCOASTOffender(client_details.clientNumber, OffenderIdType.CS_NUMBER).then(offender => {
+                    let promise_array = [];
+
+                    offences.forEach((offence, i) => {
+                        let isExpired = false;
+                        if (offence.expiryDateVal instanceof Date) isExpired = today > offence.expiryDateVal;
+                        let expiryVal = offence.expiryDateVal;
+                        if (expiryVal) expiryVal = expiryVal.toISOString();
+
+                        let data = {
+                            "vsd_OffenderId@odata.bind": `/vsd_offenders(${offender.vsd_offenderid})`,
+                            vsd_authoritydocumentid: offence.authorityDocumentId,
+                            vsd_clientnumber: client_details.clientNumber,
+
+                            vsd_courtlocationcode: offence.courtLocationCode,
+                            vsd_courtlocationdescription: offence.courtLocationDescription,
+                            vsd_documenttypecode: offence.documentTypeCode || '',
+                            vsd_documenttypedescription: offence.documentTypeDescription || '',
+                            vsd_filenumber: offence.fileNumber || '',
+                            vsd_statutesubsectionparagraph: offence.statuteSubsectionParagraph || '',
+                            vsd_statutedescription: offence.statuteDescription || '',
+                            vsd_statutesectionno: offence.statuteSectionNo || '',
+                            vsd_countseqno: offence.countSeqNo ? offence.countSeqNo.toString() : '',
+                            vsd_statuteact: offence.statuteAct || '',
+                        }
+
+                        if (expiryVal) data['vsd_expirydate'] = expiryVal;
+
+                        var requestOptions = {
+                            method: 'POST',
+                            headers: myHeaders,
+                            body: JSON.stringify(data),
+                            credentials: "same-origin"
+                        };
+
+                        promise_array.push(new Promise((resolve, reject) => {
+                            fetch(endpoint, requestOptions)
+                                .then(response => {
+                                    let uri = response.headers.get("odata-entityid");
+                                    let regExp = /\(([^)]+)\)/;
+                                    let matches = regExp.exec(uri);
+                                    let newEntityId = matches[1];
+                                    return newEntityId;
+                                })
+                                .then(async (id) => {
+                                    if (isExpired) await setOffenceAsInactive(id);
+                                    resolve();
+                                })
+                                .catch(error => {
+                                    hideLoadingSpinner();
+                                    console.log('error', error);
+                                    reject(error)
+                                });
+                        }));
+                    });
+
+                    Promise.all(promise_array).then((res) => {
+                        resolve();
+                    }).catch((err) => {
+                        hideLoadingSpinner();
+                        reject(err);
+                    });
+                });
+            });
+        }
+
+        function setOffenceAsInactive(id) {
+            return new Promise((resolve, reject) => {
+                var myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
+
+                let endpoint = parent.Xrm.Page.context.getClientUrl();
+                endpoint += `/api/data/v9.0/vsd_cornetoffences(${id})`;
+
+                let data = { statuscode: StatusCode.Inactive, statecode: StateCode.Inactive };
+
+                var requestOptions = {
+                    method: 'PATCH',
+                    headers: myHeaders,
+                    body: JSON.stringify(data),
+                    credentials: "same-origin"
+                };
+
+                fetch(endpoint, requestOptions)
+                    .then(response => response.text())
+                    .then(res => {
+                        resolve();
+                    })
+                    .catch(error => {
+                        hideLoadingSpinner();
+                        console.log('error', error);
+                        reject();
+                    });
+            });
         }
 
         function createCOASTOffender() {
@@ -2054,10 +2795,13 @@
                         resolve();
                     })
                     .catch(error => {
+                        alert("Encountered an issue trying to create an Offender in COAST.");
+                        hideLoadingSpinner();
                         console.log('error', error);
                         reject(error)
                     });
             }).catch(err => {
+                hideLoadingSpinner();
                 reject(err);
             });
         }
@@ -2088,10 +2832,12 @@
                         }
                     })
                     .catch(error => {
+                        hideLoadingSpinner();
                         console.log('error', error);
                         reject(error)
                     });
             }).catch(err => {
+                hideLoadingSpinner();
                 reject(err);
             });
         }
@@ -2167,6 +2913,54 @@
 
         function emptySearchResultsTable() {
             $("#client-table").find("tr:gt(0)").remove();
+        }
+
+        function hideLoadMoreOffencesButton() {
+            $(".load-more-offences-row").addClass("hidden");
+        }
+
+        function showLoadMoreOffencesButton() {
+            $(".load-more-offences-row").removeClass("hidden");
+        }
+
+        function hideLoadMoreMovementsButton() {
+            $(".load-more-movements-row").addClass("hidden");
+        }
+
+        function showLoadMoreMovementsButton() {
+            $(".load-more-movements-row").removeClass("hidden");
+        }
+
+        function hideLoadMoreHearingsButton() {
+            $(".load-more-hearings-row").addClass("hidden");
+        }
+
+        function showLoadMoreHearingsButton() {
+            $(".load-more-hearings-row").removeClass("hidden");
+        }
+
+        function hideLoadMoreVictimsButton() {
+            $(".load-more-victims-row").addClass("hidden");
+        }
+
+        function showLoadMoreVictimsButton() {
+            $(".load-more-victims-row").removeClass("hidden");
+        }
+
+        function hideLoadMoreStateTransitionsButton() {
+            $(".load-more-state-transitions-row").addClass("hidden");
+        }
+
+        function showLoadMoreStateTransitionsButton() {
+            $(".load-more-state-transitions-row").removeClass("hidden");
+        }
+
+        function hideLoadMoreKeyDatesButton() {
+            $(".load-more-key-dates-row").addClass("hidden");
+        }
+
+        function showLoadMoreKeyDatesButton() {
+            $(".load-more-key-dates-row").removeClass("hidden");
         }
 
         function scrollPageToTop() {
