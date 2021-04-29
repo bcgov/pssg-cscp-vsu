@@ -2149,20 +2149,13 @@
 
         function getHistoricalEvents(eventType) {
             return new Promise((resolve, reject) => {
-                let today = new Date();
-                let year = today.getFullYear() - 2;
-                let month = pad(today.getMonth() + 1, 2);
-                let day = pad(today.getDate(), 2);
-
-                let startDate = `${year}-${month}-${day}T07:00:00.000Z`;
-
                 let parameters = {
                     EventType: eventType,
                     IsHistory: true,
                     UserName: "Test",
                     FullName: "Test",
                     Client: client_details.clientNumber, //"03377256", //cs number with state transitions...
-                    StartDate: startDate,
+                    StartDate: "2018-05-01T07:00:00.000Z",
                     EndDate: "2020-05-01T07:00:00.000Z"
                 };
 
