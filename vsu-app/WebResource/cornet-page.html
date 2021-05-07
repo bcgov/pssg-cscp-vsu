@@ -2578,7 +2578,7 @@
             parent.Xrm.Page.getAttribute("vsd_firstname").setValue(client_details.givenNames);
             parent.Xrm.Page.getAttribute("vsd_lastname").setValue(client_details.lastName);
             parent.Xrm.Page.getAttribute("vsd_birthdate").setValue(birthdate);
-            parent.Xrm.Page.getAttribute("vsd_gender").setValue(gender.val);
+            if (gender && gender.val) parent.Xrm.Page.getAttribute("vsd_gender").setValue(gender.val);
             parent.Xrm.Page.getAttribute("vsd_aliasnames").setValue(client_details.aliasesForCRM);
             parent.Xrm.Page.data.entity.save();
 
@@ -2662,65 +2662,133 @@
                 getCOASTOffender(client_details.clientNumber, OffenderIdType.CS_NUMBER).then(offender => {
                     let promise_array = [];
 
-                    offences.forEach((offence, i) => {
-                        let isExpired = false;
-                        if (offence.expiryDateVal instanceof Date) isExpired = today > offence.expiryDateVal;
-                        let expiryVal = offence.expiryDateVal;
-                        if (expiryVal) expiryVal = expiryVal.toISOString();
+                    getHistoricalOffences().then((historical_offences) => {
+                        let active_offences = [];
+                        offences.forEach((offence, i) => {
+                            let isExpired = false;
+                            if (offence.expiryDateVal instanceof Date) isExpired = today > offence.expiryDateVal;
 
-                        let data = {
-                            "vsd_OffenderId@odata.bind": `/vsd_offenders(${offender.vsd_offenderid})`,
-                            vsd_authoritydocumentid: offence.authorityDocumentId,
-                            vsd_clientnumber: client_details.clientNumber,
+                            if (!isExpired) active_offences.push(offence);
+                        });
+                        historical_offences.forEach((offence, i) => {
+                            let isExpired = false;
+                            if (offence.expiryDateVal instanceof Date) isExpired = today > offence.expiryDateVal;
 
-                            vsd_courtlocationcode: offence.courtLocationCode,
-                            vsd_courtlocationdescription: offence.courtLocationDescription,
-                            vsd_documenttypecode: offence.documentTypeCode || '',
-                            vsd_documenttypedescription: offence.documentTypeDescription || '',
-                            vsd_filenumber: offence.fileNumber || '',
-                            vsd_statutesubsectionparagraph: offence.statuteSubsectionParagraph || '',
-                            vsd_statutedescription: offence.statuteDescription || '',
-                            vsd_statutesectionno: offence.statuteSectionNo || '',
-                            vsd_countseqno: offence.countSeqNo ? offence.countSeqNo.toString() : '',
-                            vsd_statuteact: offence.statuteAct || '',
-                        }
+                            if (!isExpired) active_offences.push(offence);
+                        });
 
-                        if (expiryVal) data['vsd_expirydate'] = expiryVal;
+                        active_offences.forEach((offence, i) => {
+                            let expiryVal = offence.expiryDateVal;
+                            if (expiryVal) expiryVal = expiryVal.toISOString();
 
-                        var requestOptions = {
-                            method: 'POST',
-                            headers: myHeaders,
-                            body: JSON.stringify(data),
-                            credentials: "same-origin"
-                        };
+                            let data = {
+                                "vsd_OffenderId@odata.bind": `/vsd_offenders(${offender.vsd_offenderid})`,
+                                vsd_authoritydocumentid: offence.authorityDocumentId,
+                                vsd_clientnumber: client_details.clientNumber,
 
-                        promise_array.push(new Promise((resolve, reject) => {
-                            fetch(endpoint, requestOptions)
-                                .then(response => {
-                                    let uri = response.headers.get("odata-entityid");
-                                    let regExp = /\(([^)]+)\)/;
-                                    let matches = regExp.exec(uri);
-                                    let newEntityId = matches[1];
-                                    return newEntityId;
-                                })
-                                .then(async (id) => {
-                                    if (isExpired) await setOffenceAsInactive(id);
-                                    resolve();
-                                })
-                                .catch(error => {
-                                    hideLoadingSpinner();
-                                    console.log('error', error);
-                                    reject(error)
-                                });
-                        }));
-                    });
+                                vsd_courtlocationcode: offence.courtLocationCode,
+                                vsd_courtlocationdescription: offence.courtLocationDescription,
+                                vsd_documenttypecode: offence.documentTypeCode || '',
+                                vsd_documenttypedescription: offence.documentTypeDescription || '',
+                                vsd_filenumber: offence.fileNumber || '',
+                                vsd_statutesubsectionparagraph: offence.statuteSubsectionParagraph || '',
+                                vsd_statutedescription: offence.statuteDescription || '',
+                                vsd_statutesectionno: offence.statuteSectionNo || '',
+                                vsd_countseqno: offence.countSeqNo ? offence.countSeqNo.toString() : '',
+                                vsd_statuteact: offence.statuteAct || '',
+                            }
 
-                    Promise.all(promise_array).then((res) => {
-                        resolve();
+                            if (expiryVal) data['vsd_expirydate'] = expiryVal;
+
+                            var requestOptions = {
+                                method: 'POST',
+                                headers: myHeaders,
+                                body: JSON.stringify(data),
+                                credentials: "same-origin"
+                            };
+
+                            promise_array.push(new Promise((resolve, reject) => {
+                                fetch(endpoint, requestOptions)
+                                    .then(response => {
+                                        resolve();
+                                    })
+                                    .catch(error => {
+                                        hideLoadingSpinner();
+                                        console.log('error', error);
+                                        reject(error)
+                                    });
+                            }));
+                        });
+
+                        Promise.all(promise_array).then((res) => {
+                            resolve();
+                        }).catch((err) => {
+                            hideLoadingSpinner();
+                            reject(err);
+                        });
+
                     }).catch((err) => {
                         hideLoadingSpinner();
                         reject(err);
                     });
+                });
+            });
+        }
+
+        function getHistoricalOffences() {
+            return new Promise((resolve, reject) => {
+                let ret = [];
+                getHistoricalEvents(EventType.AUTH_DOCM.val).then((res) => {
+                    if (res && res.authorityDocuments && res.authorityDocuments.length > 0) {
+                        ret = res.authorityDocuments;
+                        if (ret.length > 0) {
+                            //flatten out offences/charge counts for sorting purposes
+                            let temp = [];
+                            ret.forEach((offence, i) => {
+                                offence.expiryDateVal = '';
+                                if (offence.expiryDate != null) offence.expiryDateVal = new Date(offence.expiryDate);
+                                offence.chargeCounts.forEach((charge, j) => {
+                                    let o = JSON.parse(JSON.stringify(offence));
+                                    o.expiryDateVal = '';
+                                    if (o.expiryDate != null) o.expiryDateVal = new Date(o.expiryDate);
+                                    delete o.chargeCounts;
+                                    temp.push({ ...o, ...charge });
+                                });
+                            });
+
+                            //sort by file number descending - then by sequence number ascending - then by expiry date descending
+                            temp.sort((a, b) => {
+                                if (b.fileNumber == a.fileNumber) {
+                                    if (a.authorityDocumentId == b.authorityDocumentId) {
+                                        if (a.countSeqNo == b.countSeqNo) {
+                                            return new Date(b.expiryDate).getTime() - new Date(a.expiryDate).getTime();
+                                        }
+                                        else {
+                                            return (a.countSeqNo > b.countSeqNo) ? 1 : -1;
+                                        }
+                                    }
+                                    else {
+                                        // return b.authorityDocumentId.localeCompare(a.authorityDocumentId);
+                                        return new Date(b.expiryDate).getTime() - new Date(a.expiryDate).getTime();
+                                    }
+                                }
+                                else {
+                                    let fileB = b.fileNumber || "";
+                                    let fileA = a.fileNumber || "";
+                                    return fileB.localeCompare(fileA);
+                                }
+                            });
+
+                            ret = temp;
+                            resolve(ret);
+                        }
+                    } else {
+                        resolve(ret);
+                    }
+                }).catch(err => {
+                    hideLoadingSpinner();
+                    console.log(err);
+                    resolve([]);
                 });
             });
         }
