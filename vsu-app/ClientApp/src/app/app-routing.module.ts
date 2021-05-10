@@ -10,18 +10,18 @@ const routes: Routes = [
     path: '', component: HomeComponent, pathMatch: 'full'
   },
   // {
-  //   path: '', redirectTo: 'notification_applicaiton', pathMatch: 'full'
+  //   path: '', redirectTo: 'notification_application', pathMatch: 'full'
   // },
   {
-    path: 'notification_applicaiton',
+    path: 'notification_application',
     component: NotificationApplicationComponent
   },
   {
-    path: 'victim_travel_fund_applicaiton',
+    path: 'vtf_application',
     component: VictimTravelFundApplicationComponent
   },
   {
-    path: 'victim_travel_fund_reimbursement',
+    path: 'vtf_reimbursement',
     component: VictimTravelFundReimbursementComponent
   },
 ];

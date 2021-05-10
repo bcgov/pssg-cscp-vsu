@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit {
       this.isLocalHost = true;
     }
     else {
-      this.router.navigate(['notification_applicaiton']);
+      this.router.navigate(['notification_application']);
     }
   }
 }
