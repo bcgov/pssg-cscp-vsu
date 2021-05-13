@@ -52,6 +52,12 @@ namespace Gov.Cscp.Victims.Public
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            string pathBase = Configuration["BASE_PATH"];
+
+            if (!string.IsNullOrEmpty(pathBase))
+            {
+                app.UsePathBase(pathBase);
+            }
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
