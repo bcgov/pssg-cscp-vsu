@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --extract-css --base-href /vsuwebforms/ --deploy-url /vsuwebforms/",
     "build:ssr": "ng run vsu_app:server:dev",
     "test": "ng test",
     "lint": "ng lint",

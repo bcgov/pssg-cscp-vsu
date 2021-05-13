@@ -2658,12 +2658,15 @@
                 endpoint += "/api/data/v9.0/vsd_cornetoffences";
 
                 let today = new Date();
+                today.setHours(0, 0, 0, 0); //set time to start of day so that when considering which offences are expired, expiry date of today issn't considered expired
 
                 getCOASTOffender(client_details.clientNumber, OffenderIdType.CS_NUMBER).then(offender => {
                     let promise_array = [];
 
                     getHistoricalOffences().then((historical_offences) => {
                         let active_offences = [];
+
+                        //update isExpired to check to include the creation of offences that expire Today
                         offences.forEach((offence, i) => {
                             let isExpired = false;
                             if (offence.expiryDateVal instanceof Date) isExpired = today > offence.expiryDateVal;
