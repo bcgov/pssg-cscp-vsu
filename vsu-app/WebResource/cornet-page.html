@@ -1486,7 +1486,6 @@
                     coastInfo = offender;
                     cs_number = offender.vsd_csnumber;
 
-
                     if (FORM_TYPE === FormTypes.OFFENDER) {
                         disableLinkOffenderButton();
                     }
@@ -1523,7 +1522,7 @@
                             let curr_client = res.find(c => c.isCurrentName == "Y");
                             Object.assign(client_details, curr_client);
                             client_details.lastName = client_details.personName.split(',')[0];
-                            client_details.givenNames = client_details.personName.split(',').splice(1).join(',');
+                            client_details.givenNames = client_details.personName.split(',').splice(1).join(',').trim();
                             if (!$.isEmptyObject(coastInfo)) {
                                 client_details.coastInfo = coastInfo;
                             }
@@ -2586,6 +2585,7 @@
             setTimeout(async () => {
                 OFFENDER_EXISTS_IN_COAST = true;
                 await postLinkCreateCOASTOffences();
+                await linkOffenderToContact();
                 loadOffender(client_details.clientNumber, OffenderIdType.CS_NUMBER);
             }, 2000);
         }
@@ -2595,19 +2595,21 @@
             hideLinkOffenderButton();
             hideReturnToSearchButton();
             showLoadingSpinner();
+
             if (OFFENDER_EXISTS_IN_COAST) {
                 //link only
                 let link_data = [{
                     entityType: "vsd_offender",
                     id: coastInfo.vsd_offenderid,
                     name: client_details.clientNumber,
-                }]
+                }];
                 parent.Xrm.Page.getAttribute("vsd_offender").setValue(link_data);
                 parent.Xrm.Page.data.entity.save();
 
                 //small delay to let the crm page save so that when we reload we get accurate info
                 setTimeout(async () => {
                     await postLinkCreateCOASTOffences();
+                    await linkOffenderToContact();
                     loadOffender(client_details.clientNumber, OffenderIdType.CS_NUMBER);
                     // hideLoadingSpinner();
                 }, 2000);
@@ -2629,6 +2631,7 @@
                             setTimeout(async () => {
                                 OFFENDER_EXISTS_IN_COAST = true;
                                 await postLinkCreateCOASTOffences();
+                                await linkOffenderToContact();
                                 loadOffender(client_details.clientNumber, OffenderIdType.CS_NUMBER);
                                 // hideLoadingSpinner();
                             }, 2000);
@@ -2647,6 +2650,151 @@
                     hideLoadingSpinner();
                 });
             }
+        }
+
+        function linkOffenderToContact() {
+            return new Promise((resolve, reject) => {
+                getCOASTOffender(client_details.clientNumber, OffenderIdType.CS_NUMBER).then(offender => {
+                    console.log(JSON.parse(JSON.stringify(offender)));
+                    if (offender._vsd_contactid_value) {
+                        //already linked
+                        resolve();
+                        return;
+                    }
+                    else {
+                        searchCOASTContacts(client_details.lastName, client_details.givenNames, client_details.personBirthDate).then(async (contact) => {
+                            let contactId = "";
+                            if ($.isEmptyObject(contact)) {
+                                contactId = await createCOASTContact(client_details, offender);
+                            }
+                            else {
+                                contactId = contact.contactid;
+                            }
+
+                            let data = {
+                                "vsd_ContactId@odata.bind": `/contacts(${contactId})`,
+                            }
+
+                            var myHeaders = new Headers();
+                            myHeaders.append("Content-Type", "application/json");
+
+                            let endpoint = parent.Xrm.Page.context.getClientUrl();
+                            endpoint += `/api/data/v9.0/vsd_offenders(${offender.vsd_offenderid})`;
+
+                            var requestOptions = {
+                                method: 'PATCH',
+                                headers: myHeaders,
+                                body: JSON.stringify(data),
+                                credentials: "same-origin"
+                            };
+
+                            fetch(endpoint, requestOptions)
+                                .then(response => {
+                                    resolve();
+                                })
+                                .catch(error => {
+                                    alert("Encountered an issue trying to link Offender to Contact in COAST.");
+                                    hideLoadingSpinner();
+                                    console.log('error', error);
+                                    reject(error)
+                                });
+                        })
+                    }
+
+
+                }).catch(error => {
+                    hideLoadingSpinner();
+                    console.log('error', error);
+                    reject(error);
+                });
+            });
+        }
+
+        function createCOASTContact(client_details, offender) {
+            return new Promise((resolve, reject) => {
+                let birthdate = new Date(client_details.personBirthDate + "T00:00:00");
+
+                let data = {
+                    firstname: client_details.givenNames,
+                    lastname: client_details.lastName,
+                    birthdate: client_details.personBirthDate,
+                    vsd_contactrole: 100000000, //Client Role
+                }
+
+                var myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
+
+                let endpoint = parent.Xrm.Page.context.getClientUrl();
+                endpoint += "/api/data/v9.0/contacts";
+
+                var requestOptions = {
+                    method: 'POST',
+                    headers: myHeaders,
+                    body: JSON.stringify(data),
+                    credentials: "same-origin"
+                };
+
+                fetch(endpoint, requestOptions)
+                    .then(response => {
+                        let uri = response.headers.get("odata-entityid");
+                        let regExp = /\(([^)]+)\)/;
+                        let matches = regExp.exec(uri);
+                        let newEntityId = matches[1];
+                        return newEntityId;
+                    })
+                    .then(id => {
+                        resolve(id);
+                    })
+                    .catch(error => {
+                        alert("Encountered an issue trying to create an Offender in COAST.");
+                        hideLoadingSpinner();
+                        console.log('error', error);
+                        reject(error)
+                    });
+            }).catch(err => {
+                hideLoadingSpinner();
+                reject(err);
+            });
+        }
+
+        function searchCOASTContacts(lastName, givenNames, birthdate) {
+            return new Promise((resolve, reject) => {
+                var myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
+
+                var requestOptions = {
+                    method: 'GET',
+                    headers: myHeaders,
+                    credentials: "same-origin"
+                };
+
+                let endpoint = parent.Xrm.Page.context.getClientUrl();
+                endpoint += `/api/data/v9.0/contacts?$filter=lastname eq '${lastName}' and firstname eq '${givenNames}' and birthdate eq ${birthdate}`;
+
+                fetch(endpoint, requestOptions)
+                    .then(response => response.text())
+                    .then(res => {
+                        let data = JSON.parse(res);
+                        if (data && data.value && data.value.length > 0) {
+                            if (data.value.length > 1) {
+                                alert("Found multiple Contacts in COAST with the same name and birthdate information.");
+                            }
+                            resolve(data.value[0]);
+                        }
+                        else {
+                            resolve({});
+                        }
+                    })
+                    .catch(error => {
+                        alert("Encountered an issue loading information");
+                        hideLoadingSpinner();
+                        console.log('error', error);
+                        reject(error);
+                    });
+            }).catch(err => {
+                hideLoadingSpinner();
+                reject(err);
+            });
         }
 
         function postLinkCreateCOASTOffences() {
