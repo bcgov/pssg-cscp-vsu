@@ -15,14 +15,10 @@ export class AppComponent {
   }
 
   isIE10orLower() {
-    let result, jscriptVersion;
-    result = false;
-
-    jscriptVersion = new Function('/*@cc_on return @_jscript_version; @*/')();
-
-    if (jscriptVersion !== undefined) {
-      result = true;
+    if (window.document["documentMode"]) {
+      return true;
     }
-    return result;
+
+    return false;
   }
 }
