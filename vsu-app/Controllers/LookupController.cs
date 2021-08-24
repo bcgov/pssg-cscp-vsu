@@ -1,22 +1,45 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Gov.Cscp.Victims.Public.Services;
 using Gov.Cscp.Victims.Public.Models;
 using Serilog;
 using System;
+using System.Net;
 
 namespace Gov.Cscp.Victims.Public.Controllers
 {
     [Route("api/[controller]")]
     public class LookupController : Controller
     {
+        private readonly IConfiguration configuration;
         private readonly IDynamicsResultService _dynamicsResultService;
         private readonly ILogger _logger;
 
-        public LookupController(IDynamicsResultService dynamicsResultService)
+        public LookupController(IConfiguration configuration, IDynamicsResultService dynamicsResultService)
         {
+            this.configuration = configuration;
             this._dynamicsResultService = dynamicsResultService;
             _logger = Log.Logger;
+        }
+
+        [HttpGet("contact-email")]
+        public async Task<IActionResult> GetContactEmail()
+        {
+            try
+            {
+                ContactEmailResult res = new ContactEmailResult
+                {
+                    ContactEmail = configuration["CONTACT_EMAIL"]
+                };
+                return await Task.FromResult(StatusCode((int)HttpStatusCode.OK, res));
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e, "Unexpected error while looking up contact email. Source = VSU");
+                return BadRequest();
+            }
+            finally { }
         }
 
         [HttpGet("countries")]
@@ -195,5 +218,10 @@ namespace Gov.Cscp.Victims.Public.Controllers
             }
             finally { }
         }
+    }
+
+    public class ContactEmailResult
+    {
+        public string ContactEmail { get; set; }
     }
 }
