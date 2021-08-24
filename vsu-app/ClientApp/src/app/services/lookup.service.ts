@@ -14,6 +14,13 @@ export class LookupService {
     private http: HttpClient,
   ) { }
 
+  getContactEmail(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/contact-email`, { headers: this.headers }).pipe(
+      retry(3),
+      catchError(this.handleError)
+    );
+  }
+
   getCountries(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/countries`, { headers: this.headers }).pipe(
       retry(3),
