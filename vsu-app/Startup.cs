@@ -18,6 +18,7 @@ using Serilog;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace Gov.Cscp.Victims.Public
 {
@@ -35,11 +36,16 @@ namespace Gov.Cscp.Victims.Public
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<TokenHandler>();
 
             services.AddHttpClient<ICOASTAuthService, COASTAuthService>();
             services.AddHttpClient<IDynamicsResultService, DynamicsResultService>().AddHttpMessageHandler<TokenHandler>();
 
+            // Add a memory cache
+            services.AddMemoryCache();
+
+            // for security reasons, the following headers are set.
             services.AddMvc(opts =>
             {
                 // default deny
@@ -58,17 +64,30 @@ namespace Gov.Cscp.Victims.Public
                 opts.Filters.Add(typeof(CspReportOnlyAttribute));
                 opts.Filters.Add(new CspScriptSrcReportOnlyAttribute { None = true });
 
-                if (CurrentEnvironment.IsDevelopment())
+                opts.Filters.Add(new AllowAnonymousFilter()); // Allow anonymous for dev
+            })
+            .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+            .AddJsonOptions(
+                opts =>
                 {
-                    opts.Filters.Add(new AllowAnonymousFilter()); // Allow anonymous for dev
-                }
+                    opts.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
+                    opts.SerializerSettings.DateFormatHandling = Newtonsoft.Json.DateFormatHandling.IsoDateFormat;
+                    opts.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc;
 
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+                    // ReferenceLoopHandling is set to Ignore to prevent JSON parser issues with the user / roles model.
+                    opts.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                });
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/dist";
+            });
+
+            // allow for large files to be uploaded
+            services.Configure<FormOptions>(options =>
+            {
+                options.MultipartBodyLengthLimit = 1073741824; // 1 GB
             });
 
             // health checks
@@ -102,6 +121,8 @@ namespace Gov.Cscp.Victims.Public
 
             app.Use(async (ctx, next) =>
             {
+                ctx.Response.Headers.Add("Content-Security-Policy",
+                                         "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://apis.google.com https://maxcdn.bootstrapcdn.com https://cdnjs.cloudflare.com https://code.jquery.com https://stackpath.bootstrapcdn.com https://fonts.googleapis.com");
                 ctx.Response.Headers.Add("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload");
                 await next();
             });
