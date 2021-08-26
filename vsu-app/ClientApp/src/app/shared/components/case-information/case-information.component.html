@@ -36,14 +36,14 @@
         </div>
 
         <div class="col flex-col">
-            <app-field label="Gender" [required]="true" [valid]="isMyControlValid(form.get('gender'))" errorMessage="Please select your gender" [disabled]="isDisabled">
+            <app-field label="Gender" [required]="false" [valid]="isMyControlValid(form.get('gender'))" errorMessage="Please select your gender" [disabled]="isDisabled">
                 <label class="inline-label">
                     <input type="radio" [value]="enum.Gender.Male.val" name="gender" formControlName="gender" (change)="setApplicantInfoSameAsVictim(form.parent)">
-                    <span>M</span>
+                    <span>M <app-tool-tip [trigger]="genderMToolTip"></app-tool-tip></span>
                 </label>
                 <label class="inline-label">
                     <input type="radio" [value]="enum.Gender.Female.val" name="gender" formControlName="gender" (change)="setApplicantInfoSameAsVictim(form.parent)">
-                    <span>F</span>
+                    <span>F <app-tool-tip [trigger]="genderFToolTip"></app-tool-tip></span>
                 </label>
                 <label class="inline-label">
                     <input type="radio" [value]="enum.Gender.X.val" name="gender" formControlName="gender" (change)="setApplicantInfoSameAsVictim(form.parent)">
@@ -52,7 +52,9 @@
             </app-field>
         </div>
     </div>
-    <ng-template #genderXToolTip>Use this category if you do not wish to report gender as exclusively male or female.</ng-template>
+    <ng-template #genderMToolTip>Persons whose current gender is male. This includes cisgender and transgender persons who are male.</ng-template>
+    <ng-template #genderFToolTip>Persons whose current gender is female. This includes cisgender and transgender persons who are female.</ng-template>
+    <ng-template #genderXToolTip>Persons whose current gender is not exclusively male or female. It includes people who are unsure of their gender, do not have one gender, have no gender, are gender fluid, or are Two-Spirit.</ng-template>
 
     <h2 class="blue-header">Court Information</h2>
 
@@ -132,11 +134,15 @@
             <app-field label="Gender" [valid]="isMyControlValid(form.get('accusedGender'))" [disabled]="isDisabled">
                 <label class="inline-label">
                     <input type="radio" [value]="enum.Gender.Male.val" name="accusedGender" formControlName="accusedGender">
-                    <span>M</span>
+                    <span>M <app-tool-tip [trigger]="genderMToolTip"></app-tool-tip></span>
                 </label>
                 <label class="inline-label">
                     <input type="radio" [value]="enum.Gender.Female.val" name="accusedGender" formControlName="accusedGender">
-                    <span>F</span>
+                    <span>F <app-tool-tip [trigger]="genderFToolTip"></app-tool-tip></span>
+                </label>
+                <label class="inline-label">
+                    <input type="radio" [value]="enum.Gender.X.val" name="accusedGender" formControlName="accusedGender">
+                    <span>X <app-tool-tip [trigger]="genderXToolTip"></app-tool-tip></span>
                 </label>
             </app-field>
         </div>
@@ -172,11 +178,15 @@
                     <app-field label="Gender" [disabled]="isDisabled">
                         <label class="inline-label">
                             <input type="radio" [value]="enum.Gender.Male.val" formControlName="gender">
-                            <span>M</span>
+                            <span>M <app-tool-tip [trigger]="genderMToolTip"></app-tool-tip></span>
                         </label>
                         <label class="inline-label">
                             <input type="radio" [value]="enum.Gender.Female.val" formControlName="gender">
-                            <span>F</span>
+                            <span>F <app-tool-tip [trigger]="genderFToolTip"></app-tool-tip></span>
+                        </label>
+                        <label class="inline-label">
+                            <input type="radio" [value]="enum.Gender.X.val" formControlName="gender">
+                            <span>X <app-tool-tip [trigger]="genderXToolTip"></app-tool-tip></span>
                         </label>
                     </app-field>
                 </div>

@@ -214,3 +214,17 @@ a:active {
     background-color: #337ab7;
     color: #fff;
 }
+
+::ng-deep .attention {
+    background-color: #f1f4fa;
+    margin: 20px 0;
+    padding: 1em;
+  
+    h3 {
+      margin-top: 10px !important;
+    }
+  
+    p {
+      margin-bottom: 0 !important;
+    }
+  }

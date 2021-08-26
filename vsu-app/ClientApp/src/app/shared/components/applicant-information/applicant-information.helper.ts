@@ -17,7 +17,7 @@ export class ApplicantInfoHelper {
             lastName: ['', Validators.required],
 
             birthDate: ['', [Validators.required]],
-            gender: ['', [Validators.required]],
+            gender: [null],
             genderOther: [''],
             indigenousStatus: [0, [Validators.required, Validators.min(100000000), Validators.max(100000004)]],
 

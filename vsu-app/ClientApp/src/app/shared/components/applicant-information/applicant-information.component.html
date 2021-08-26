@@ -220,16 +220,22 @@
                 <app-date-field [control]="form.get('birthDate')" [max]="today" [disabled]="form.get('applicantInfoSameAsVictim').value"></app-date-field>
             </app-field>
         </div>
+    </div>
 
-        <div class="col flex-col">
-            <app-field label="Gender" [required]="true" [valid]="isMyControlValid(form.get('gender'))" errorMessage="Please select your gender" [disabled]="isDisabled">
+    <div class="attention">
+        <p>Please note that your answers to questions about demographic information (e.g. gender, Indigenous identity) allow the Community Safety and Crime Prevention branch to better understand who accesses our programs so we may continue to improve our service delivery. Your response is voluntary and the information you provide does not impact your ability to access these services.</p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <app-field label="Gender" [required]="false" [valid]="isMyControlValid(form.get('gender'))" errorMessage="Please select your gender" [disabled]="isDisabled">
                 <label class="inline-label">
                     <input type="radio" [value]="enum.Gender.Male.val" name="gender" formControlName="gender" (change)="setVictimInfoSameAsApplicant(form.parent)">
-                    <span>M</span>
+                    <span>M <app-tool-tip [trigger]="genderMToolTip"></app-tool-tip></span>
                 </label>
                 <label class="inline-label">
                     <input type="radio" [value]="enum.Gender.Female.val" name="gender" formControlName="gender" (change)="setVictimInfoSameAsApplicant(form.parent)">
-                    <span>F</span>
+                    <span>F <app-tool-tip [trigger]="genderFToolTip"></app-tool-tip></span>
                 </label>
                 <label class="inline-label">
                     <input type="radio" [value]="enum.Gender.X.val" name="gender" formControlName="gender" (change)="setVictimInfoSameAsApplicant(form.parent)">
@@ -238,10 +244,14 @@
             </app-field>
         </div>
     </div>
-    <ng-template #genderXToolTip>Use this category if you do not wish to indicate your gender as exclusively male or female. It includes persons who report as being unsure of their gender, persons who report as both male and female, or neither male nor female.</ng-template>
+
+    <ng-template #genderMToolTip>Persons whose current gender is male. This includes cisgender and transgender persons who are male.</ng-template>
+    <ng-template #genderFToolTip>Persons whose current gender is female. This includes cisgender and transgender persons who are female.</ng-template>
+    <ng-template #genderXToolTip>Persons whose current gender is not exclusively male or female. It includes people who are unsure of their gender, do not have one gender, have no gender, are gender fluid, or are Two-Spirit.</ng-template>
+
 
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-6">
             <app-field label="Do you identify as an Indigenous person?" [required]="true" [valid]="isMyControlValid(form.get('indigenousStatus'))" errorMessage="Please select an option" class="long-label" [disabled]="isDisabled">
                 <select class="form-control" formControlName="indigenousStatus">
                     <option [value]="enum.IndigenousStatus.BLANK.val">Select...</option>
@@ -256,12 +266,12 @@
     </div>
 
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-6">
             <app-field label="Preferred Language" [required]="false" [valid]="isFieldValid('preferredLanguage')" errorMessage="" [disabled]="isDisabled">
                 <input class="form-control" type="text" formControlName="preferredLanguage" maxlength="100">
             </app-field>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
             <app-field label="Interpreter Needed" errorMessage="" [disabled]="isDisabled">
                 <label class="inline-label">
                     <input type="radio" [value]="enum.Boolean.True.val" name="interpreterNeeded" formControlName="interpreterNeeded">
