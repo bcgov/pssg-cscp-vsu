@@ -10,7 +10,7 @@ namespace Gov.Cscp.Victims.Public.Models
         public string vsd_cvap_victimmiddlename { get; set; }
         public string vsd_cvap_victimlastname { get; set; }
         public DateTime? vsd_cvap_victimbirthdate { get; set; }
-        public int vsd_cvap_victimgendercode { get; set; }
+        public int? vsd_cvap_victimgendercode { get; set; }
 
         public int vsd_vsu_applicanttype { get; set; }
         public string vsd_vsuapplicanttypeother { get; set; }
@@ -44,7 +44,7 @@ namespace Gov.Cscp.Victims.Public.Models
         public string vsd_applicantsfirstname { get; set; }
         public string vsd_applicantsmiddlename { get; set; }
         public string vsd_applicantslastname { get; set; }
-        public int vsd_applicantsgendercode { get; set; }
+        public int? vsd_applicantsgendercode { get; set; }
         public DateTime? vsd_applicantsbirthdate { get; set; }
         public int? vsd_indigenous { get; set; }
 

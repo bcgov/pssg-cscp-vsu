@@ -10,7 +10,7 @@ export class CaseInfoInfoHelper {
             lastName: ['', Validators.required],
 
             birthDate: ['', [Validators.required]],
-            gender: ['', [Validators.required]],
+            gender: [null],
             genderOther: [''],
             victimInfoSameAsApplicant: [''],
             courtInfo: fb.array([this.createCourtInfo(fb)]),
