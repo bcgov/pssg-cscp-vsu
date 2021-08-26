@@ -42,6 +42,12 @@ namespace Gov.Cscp.Victims.Public
 
             services.AddMvc(opts =>
             {
+                // default deny
+                var policy = new AuthorizationPolicyBuilder()
+                 .RequireAuthenticatedUser()
+                 .Build();
+                opts.Filters.Add(new AuthorizeFilter(policy));
+
                 opts.Filters.Add(typeof(NoCacheHttpHeadersAttribute));
                 opts.Filters.Add(new XRobotsTagAttribute() { NoIndex = true, NoFollow = true });
                 opts.Filters.Add(typeof(XContentTypeOptionsAttribute));
@@ -158,10 +164,7 @@ namespace Gov.Cscp.Victims.Public
                 MinimumSameSitePolicy = Microsoft.AspNetCore.Http.SameSiteMode.None
             });
 
-
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
-            app.UseSpaStaticFiles();
 
             app.UseMvc(routes =>
             {
