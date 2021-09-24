@@ -147,6 +147,21 @@
             </app-field>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-6">
+            <app-field label="Relationship to the Accused" [tooltipReference]="relationshipToAccusedToolTip" [disabled]="isDisabled">
+                <select class="form-control" formControlName="accusedRelationship">
+                    <option value="">Select...</option>
+                    <option value="Intimate Partner Relationship">Intimate Partner Relationship</option>
+                    <option value="Other Family Relationship">Other Family Relationship</option>
+                    <option value="Acquaintance">Acquaintance</option>
+                    <option value="Stranger">Stranger</option>
+                    <option value="Other Victim-Accused Relationship">Other Victim-Accused Relationship</option>
+                </select>
+            </app-field>
+        </div>
+    </div>
+
 
     <div class="additionalAccused" formArrayName="additionalAccused" *ngFor="let item of form.get('additionalAccused')['controls']; let i = index;">
         <div [formGroupName]="i" class="additional-offender-info">
@@ -174,7 +189,7 @@
                         <app-date-field [control]="item.get('birthDate')" [max]="today" [disabled]="isDisabled"></app-date-field>
                     </app-field>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-6">
                     <app-field label="Gender" [disabled]="isDisabled">
                         <label class="inline-label">
                             <input type="radio" [value]="enum.Gender.Male.val" formControlName="gender">
@@ -190,6 +205,22 @@
                         </label>
                     </app-field>
                 </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <app-field label="Relationship to the Accused" [tooltipReference]="relationshipToAccusedToolTip" [disabled]="isDisabled">
+                        <select class="form-control" formControlName="relationship">
+                            <option value="">Select...</option>
+                            <option value="Intimate Partner Relationship">Intimate Partner Relationship</option>
+                            <option value="Other Family Relationship">Other Family Relationship</option>
+                            <option value="Acquaintance">Acquaintance</option>
+                            <option value="Stranger">Stranger</option>
+                            <option value="Other Victim-Accused Relationship">Other Victim-Accused Relationship</option>
+                        </select>
+                    </app-field>
+                </div>
+
                 <div class="col">
                     <div class="remove-button">
                         <br>
@@ -237,3 +268,60 @@
         </div>
     </section>
 </div>
+
+<ng-template #relationshipToAccusedToolTip>
+    <table class="table relationship-table">
+        <thead>
+            <tr>
+                <th>Classification</th>
+                <th class="description-column">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    Intimate Partner Relationship
+                </td>
+                <td>
+                    Refers to current and former spouses (legally married, separated, divorced and common-law), and dating partners.
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    Other Family Relationship
+                </td>
+                <td>
+                    Refers to parents (biological, step, adoptive and foster), children (biological, step, adopted and foster), siblings (biological, step, half, adopted and foster) and extended family members (e.g., grandparents, uncles, aunts, cousins and in-laws).
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    Acquaintance
+                </td>
+                <td>
+                    Refers to friends, neighbours, authority figures, business relationships, casual acquaintances.
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    Stranger
+                </td>
+                <td>
+                    Refers to individuals who do not know one another.
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    Other Victim-Accused Relationship
+                </td>
+                <td>
+                    Refers to relationships that are other than the above categories, or is unknown.
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</ng-template>
