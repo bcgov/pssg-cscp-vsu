@@ -40,6 +40,7 @@ export interface iCaseInformation {
     accusedLastName: string;
     accusedBirthDate: Date;
     accusedGender: number;
+    accusedRelationship: string;
     additionalAccused: iAdditionalAccused[];
     offences?: iOffenceInformation[];
     crownCounsel?: iCrownCounsel[];
@@ -134,6 +135,7 @@ export interface iAdditionalAccused {
     lastName: string;
     birthDate: Date;
     gender: number;
+    relationship: string;
 }
 
 export interface iCourtInfo {

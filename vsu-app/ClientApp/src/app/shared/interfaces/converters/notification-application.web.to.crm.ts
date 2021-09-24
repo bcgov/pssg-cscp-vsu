@@ -108,6 +108,7 @@ function getCRMProviderCollection(application: iNotificationApplication) {
         vsd_birthdate: application.CaseInformation.accusedBirthDate,
         vsd_gender: application.CaseInformation.accusedGender,
         vsd_relationship1: PARTICIPANT_TYPES.ACCUSED,
+        vsd_relationship2: application.CaseInformation.accusedRelationship,
     });
 
     //CaseInformation Additional Accused
@@ -119,6 +120,7 @@ function getCRMProviderCollection(application: iNotificationApplication) {
             vsd_birthdate: accused.birthDate,
             vsd_gender: accused.gender,
             vsd_relationship1: PARTICIPANT_TYPES.ACCUSED,
+            vsd_relationship2: accused.relationship,
         });
     });
 

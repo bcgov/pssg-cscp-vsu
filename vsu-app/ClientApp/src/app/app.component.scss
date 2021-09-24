@@ -219,12 +219,17 @@ a:active {
     background-color: #f1f4fa;
     margin: 20px 0;
     padding: 1em;
-  
+
     h3 {
-      margin-top: 10px !important;
+        margin-top: 10px !important;
     }
-  
+
     p {
-      margin-bottom: 0 !important;
+        margin-bottom: 0 !important;
     }
-  }
+}
+
+::ng-deep .tooltip.in {
+    opacity: 1;
+    filter: alpha(opacity=100);
+}
