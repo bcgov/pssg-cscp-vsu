@@ -20,7 +20,7 @@ export class CaseInfoInfoHelper {
             accusedLastName: ['', Validators.required],
             accusedBirthDate: [''],
             accusedGender: [''],
-            accusedRelationship: [''],
+            accusedRelationship: ['', Validators.required],
 
             additionalAccused: fb.array([]),//fb.array([this.createAdditionalAccused(fb)]),
         }
@@ -43,7 +43,7 @@ export class CaseInfoInfoHelper {
             lastName: ['', [Validators.required]],
             birthDate: [''],
             gender: [''],
-            relationship: [''],
+            relationship: ['', Validators.required],
         });
     }
 
