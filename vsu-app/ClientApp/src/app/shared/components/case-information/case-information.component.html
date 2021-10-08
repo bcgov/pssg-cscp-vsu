@@ -149,7 +149,7 @@
     </div>
     <div class="row">
         <div class="col-md-6">
-            <app-field label="Relationship to the Accused" [tooltipReference]="relationshipToAccusedToolTip" [disabled]="isDisabled">
+            <app-field label="Relationship to the Accused" [required]="true" [tooltipReference]="relationshipToAccusedToolTip" [disabled]="isDisabled">
                 <select class="form-control" formControlName="accusedRelationship">
                     <option value="">Select...</option>
                     <option value="Intimate Partner Relationship">Intimate Partner Relationship</option>
@@ -209,7 +209,7 @@
 
             <div class="row">
                 <div class="col-md-6">
-                    <app-field label="Relationship to the Accused" [tooltipReference]="relationshipToAccusedToolTip" [disabled]="isDisabled">
+                    <app-field label="Relationship to the Accused" [required]="true" [tooltipReference]="relationshipToAccusedToolTip" [disabled]="isDisabled">
                         <select class="form-control" formControlName="relationship">
                             <option value="">Select...</option>
                             <option value="Intimate Partner Relationship">Intimate Partner Relationship</option>
