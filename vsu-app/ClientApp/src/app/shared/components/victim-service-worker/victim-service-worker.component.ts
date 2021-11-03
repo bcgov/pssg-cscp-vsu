@@ -4,6 +4,7 @@ import { ControlContainer, FormGroup } from "@angular/forms";
 import { noop, Observable, Observer, of, throwError } from 'rxjs';
 import { retry, catchError, map, switchMap, tap } from 'rxjs/operators';
 import { config } from "../../../../config";
+import { LookupService } from "../../../services/lookup.service";
 import { ApplicationType } from "../../enums-list";
 import { FormBase } from "../../form-base";
 import { CitiesSearchResponse, iCity, iLookupData } from "../../interfaces/lookup-data.interface";
@@ -32,6 +33,7 @@ export class VSWComponent extends FormBase implements OnInit {
     ApplicationType = ApplicationType;
 
     constructor(private controlContainer: ControlContainer,
+        private lookupService: LookupService,
         private http: HttpClient) {
         super();
     }
@@ -59,12 +61,7 @@ export class VSWComponent extends FormBase implements OnInit {
             switchMap((query: string) => {
                 if (query) {
                     let searchVal = this.form.get('city').value.toString();
-                    let limit = 15;
-                    // return this.http.get<any>(`${this.apiUrl}/cities/search?searchVal=${searchVal}&limit=${limit}`, { headers: this.headers }).pipe(
-                    return this.http.get<any>(`${this.apiUrl}/cities/search?country=${this.countryVal}&province=${this.provinceVal}&searchVal=${searchVal}&limit=${limit}`, { headers: this.headers }).pipe(
-                        retry(3),
-                        catchError(this.handleError)
-                    ).pipe(
+                    return this.lookupService.searchCities(this.countryVal, this.provinceVal, searchVal).pipe(
                         map((data: CitiesSearchResponse) => {
                             if (data && data.CityCollection) {
                                 data.CityCollection.sort((a, b) => a.vsd_name.localeCompare(b.vsd_name));

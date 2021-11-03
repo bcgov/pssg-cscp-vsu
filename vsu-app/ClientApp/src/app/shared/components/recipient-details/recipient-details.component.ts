@@ -10,6 +10,7 @@ import { CitiesSearchResponse, iCity, iLookupData } from "../../interfaces/looku
 import { ApplicationType, MY_FORMATS, } from "../../enums-list";
 import { FormBase } from "../../form-base";
 import { RecipientDetailsHelper } from "./recipient-details.helper";
+import { LookupService } from "../../../services/lookup.service";
 
 @Component({
     selector: 'app-recipient-details',
@@ -43,7 +44,9 @@ export class RecipientDetailsComponent extends FormBase implements OnInit {
 
     apiUrl = 'api/Lookup';
 
-    constructor(private controlContainer: ControlContainer,
+    constructor(
+        private lookupService: LookupService,
+        private controlContainer: ControlContainer,
         private http: HttpClient,
         private fb: FormBuilder,) {
         super();
@@ -87,12 +90,7 @@ export class RecipientDetailsComponent extends FormBase implements OnInit {
             switchMap((query: string) => {
                 if (query) {
                     let searchVal = this.form.get('victimServiceWorker')['controls'][0].get('city').value.toString();
-                    let limit = 15;
-                    // return this.http.get<any>(`${this.apiUrl}/cities/search?searchVal=${searchVal}&limit=${limit}`, { headers: this.headers }).pipe(
-                    return this.http.get<any>(`${this.apiUrl}/cities/search?country=${this.countryVal}&province=${this.provinceVal}&searchVal=${searchVal}&limit=${limit}`, { headers: this.headers }).pipe(
-                        retry(3),
-                        catchError(this.handleError)
-                    ).pipe(
+                    return this.lookupService.searchCities(this.countryVal, this.provinceVal, searchVal).pipe(
                         map((data: CitiesSearchResponse) => {
                             if (data && data.CityCollection) {
                                 data.CityCollection.sort((a, b) => a.vsd_name.localeCompare(b.vsd_name));
