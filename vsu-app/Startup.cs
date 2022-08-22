@@ -19,13 +19,14 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.Extensions.Hosting;
 
 namespace Gov.Cscp.Victims.Public
 {
     public class Startup
     {
-        private IHostingEnvironment CurrentEnvironment { get; set; }
-        public Startup(IConfiguration configuration, IHostingEnvironment env)
+        private IWebHostEnvironment CurrentEnvironment { get; set; }
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
             CurrentEnvironment = env;
@@ -48,6 +49,7 @@ namespace Gov.Cscp.Victims.Public
             // for security reasons, the following headers are set.
             services.AddMvc(opts =>
             {
+                opts.EnableEndpointRouting = false;
                 // default deny
                 var policy = new AuthorizationPolicyBuilder()
                  .RequireAuthenticatedUser()
@@ -66,8 +68,8 @@ namespace Gov.Cscp.Victims.Public
 
                 opts.Filters.Add(new AllowAnonymousFilter()); // Allow anonymous for dev
             })
-            .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-            .AddJsonOptions(
+            .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+            .AddNewtonsoftJson(
                 opts =>
                 {
                     opts.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
@@ -101,7 +103,7 @@ namespace Gov.Cscp.Victims.Public
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             string pathBase = Configuration["BASE_PATH"];
 
