@@ -1,4 +1,4 @@
-name: Trivy Scanner
+name: Trivy Scanner vsu-app
 
 on:
   push:
