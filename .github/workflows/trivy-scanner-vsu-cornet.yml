@@ -1,6 +1,8 @@
 name: Trivy Scanner vsu-cornet
 
 on:
+  schedule:
+    - cron: '0 15 */14 * *'  # 15:00 UTC = 7:00 AM PST, 8:00 AM PDT
   push:
     branches: ["**"]
   pull_request:
@@ -26,33 +28,36 @@ jobs:
 
 
       - name: Trivy FS scan - frontend (Angular)
+        continue-on-error: true
         run: |
           trivy fs vsu-cornet/ClientApp \
             --scanners vuln,secret \
             --severity HIGH,CRITICAL \
             --ignore-unfixed \
-            --exit-code 0 \
+            --exit-code 1 \
             --timeout 10m \
             --format sarif \
             --output trivy-frontend.sarif    
 
 
       - name: Trivy FS scan - backend (.NET Web API)
+        continue-on-error: true
         run: |
           trivy fs vsu-cornet/ \
             --scanners vuln,secret \
             --severity HIGH,CRITICAL \
             --ignore-unfixed \
-            --exit-code 0 \
+            --exit-code 1 \
             --timeout 10m \
             --format sarif \
             --output trivy-backend.sarif
 
       - name: Trivy config scan - frontend & Backend Dockerfile
+        continue-on-error: true
         run: |
           trivy config vsu-cornet/Dockerfile \
             --severity MEDIUM,HIGH,CRITICAL \
-            --exit-code 0 \
+            --exit-code 1 \
             --format table
 
 
