@@ -64,7 +64,7 @@ jobs:
 
       - name: Save image as tarball for Trivy
         run: |
-          docker save "$IMAGE_REGISTRY/$APP_NAME-$IMAGE_NAME:dev" -o "$APP_NAME-$IMAGE_NAME.tar"
+          docker save "$IMAGE_REGISTRY/$IMAGE_NAME:dev" -o "$IMAGE_NAME.tar"
 
       - name: Install Trivy
         run: |
@@ -74,15 +74,15 @@ jobs:
       - name: Trivy scan for vsu-app image
         continue-on-error: true
         run: |
-          trivy image --input "$APP_NAME-$IMAGE_NAME.tar" \
+          trivy image --input "$IMAGE_NAME.tar" \
             --severity HIGH,CRITICAL \
             --ignore-unfixed \
             --exit-code 1 \
             --format sarif \
-            --output trivy-$APP_NAME-$IMAGE_NAME-image-scan.sarif
+            --output trivy-$IMAGE_NAME-image-scan.sarif
 
       - name: Upload scan results
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: trivy-${{ env.APP_NAME }}-${{ env.IMAGE_NAME }}-image-scan.sarif
+          sarif_file: trivy-${{ env.IMAGE_NAME }}-image-scan.sarif
           category: trivy-built-image-scan-results
