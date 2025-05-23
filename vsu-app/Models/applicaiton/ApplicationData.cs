@@ -1,4 +1,3 @@
-
 namespace Gov.Cscp.Victims.Public.Models
 {
     public class ApplicationData

@@ -1,9 +1,9 @@
+using System;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 using Gov.Cscp.Victims.Public.Models;
 using Microsoft.Extensions.Configuration;
-using System.Net.Http;
-using System.Net;
-using System.Threading.Tasks;
-using System;
 
 namespace Gov.Cscp.Victims.Public.Services
 {
@@ -13,7 +13,6 @@ namespace Gov.Cscp.Victims.Public.Services
         public string fullname { get; set; }
         public string client { get; set; }
     }
-
 
     public interface ICornetResultService
     {
@@ -44,12 +43,14 @@ namespace Gov.Cscp.Victims.Public.Services
             return blob;
         }
 
-        private async Task<HttpClientResult> CornetResultAsync(HttpMethod method, string endpointUrl, string requestJson, CornetHeaderInfo headers)
+        private async Task<HttpClientResult> CornetResultAsync(
+            HttpMethod method,
+            string endpointUrl,
+            string requestJson,
+            CornetHeaderInfo headers
+        )
         {
             endpointUrl = _configuration["CORNET_URI"] + endpointUrl;
-
-            Console.WriteLine(endpointUrl);
-            Console.WriteLine(requestJson);
 
             HttpRequestMessage _httpRequest = new HttpRequestMessage(method, endpointUrl);
             _httpRequest.Headers.Add("username", headers.username);
@@ -70,8 +71,6 @@ namespace Gov.Cscp.Victims.Public.Services
             {
                 result.result = Newtonsoft.Json.Linq.JObject.Parse(_responseContent);
             }
-
-            Console.WriteLine(result.result);
 
             return result;
         }

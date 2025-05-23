@@ -1,31 +1,32 @@
+using System;
+using System.Net.Http;
+using System.Threading.Tasks;
 using Gov.Cscp.Victims.Public.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Net.Http.Headers;
 using NWebsec.AspNetCore.Mvc;
 using NWebsec.AspNetCore.Mvc.Csp;
-using Serilog.Exceptions;
 using Serilog;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System;
-using Microsoft.AspNetCore.Http.Features;
-using Microsoft.Extensions.Hosting;
+using Serilog.Exceptions;
 
 namespace Gov.Cscp.Victims.Public
 {
     public class Startup
     {
         private IWebHostEnvironment CurrentEnvironment { get; set; }
+
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
@@ -41,36 +42,35 @@ namespace Gov.Cscp.Victims.Public
             services.AddTransient<TokenHandler>();
 
             services.AddHttpClient<ICOASTAuthService, COASTAuthService>();
-            services.AddHttpClient<IDynamicsResultService, DynamicsResultService>().AddHttpMessageHandler<TokenHandler>();
+            services
+                .AddHttpClient<IDynamicsResultService, DynamicsResultService>()
+                .AddHttpMessageHandler<TokenHandler>();
 
             // Add a memory cache
             services.AddMemoryCache();
 
             // for security reasons, the following headers are set.
-            services.AddMvc(opts =>
-            {
-                opts.EnableEndpointRouting = false;
-                // default deny
-                var policy = new AuthorizationPolicyBuilder()
-                 .RequireAuthenticatedUser()
-                 .Build();
-                opts.Filters.Add(new AuthorizeFilter(policy));
+            services
+                .AddMvc(opts =>
+                {
+                    opts.EnableEndpointRouting = false;
+                    // default deny
+                    var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                    opts.Filters.Add(new AuthorizeFilter(policy));
 
-                opts.Filters.Add(typeof(NoCacheHttpHeadersAttribute));
-                opts.Filters.Add(new XRobotsTagAttribute() { NoIndex = true, NoFollow = true });
-                opts.Filters.Add(typeof(XContentTypeOptionsAttribute));
-                opts.Filters.Add(typeof(XDownloadOptionsAttribute));
-                opts.Filters.Add(typeof(XFrameOptionsAttribute));
-                opts.Filters.Add(typeof(XXssProtectionAttribute));
-                //CSPReportOnly
-                opts.Filters.Add(typeof(CspReportOnlyAttribute));
-                opts.Filters.Add(new CspScriptSrcReportOnlyAttribute { None = true });
+                    opts.Filters.Add(typeof(NoCacheHttpHeadersAttribute));
+                    opts.Filters.Add(new XRobotsTagAttribute() { NoIndex = true, NoFollow = true });
+                    opts.Filters.Add(typeof(XContentTypeOptionsAttribute));
+                    opts.Filters.Add(typeof(XDownloadOptionsAttribute));
+                    opts.Filters.Add(typeof(XFrameOptionsAttribute));
+                    opts.Filters.Add(typeof(XXssProtectionAttribute));
+                    //CSPReportOnly
+                    opts.Filters.Add(typeof(CspReportOnlyAttribute));
+                    opts.Filters.Add(new CspScriptSrcReportOnlyAttribute { None = true });
 
-                opts.Filters.Add(new AllowAnonymousFilter()); // Allow anonymous for dev
-            })
-            .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
-            .AddNewtonsoftJson(
-                opts =>
+                    opts.Filters.Add(new AllowAnonymousFilter()); // Allow anonymous for dev
+                })
+                .AddNewtonsoftJson(opts =>
                 {
                     opts.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
                     opts.SerializerSettings.DateFormatHandling = Newtonsoft.Json.DateFormatHandling.IsoDateFormat;
@@ -93,11 +93,7 @@ namespace Gov.Cscp.Victims.Public
             });
 
             // health checks
-            services.AddHealthChecks(checks =>
-            {
-                checks.AddValueTaskCheck("HTTP Endpoint", () => new ValueTask<IHealthCheckResult>(HealthCheckResult.Healthy("Ok")));
-
-            });
+            services.AddHealthChecks().AddCheck("HTTP Endpoint", () => HealthCheckResult.Healthy("Ok"));
 
             services.AddSession();
         }
@@ -121,43 +117,64 @@ namespace Gov.Cscp.Victims.Public
                 app.UseHsts();
             }
 
-            app.Use(async (ctx, next) =>
-            {
-                ctx.Response.Headers.Add("Content-Security-Policy",
-                                         "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://apis.google.com https://maxcdn.bootstrapcdn.com https://cdnjs.cloudflare.com https://code.jquery.com https://stackpath.bootstrapcdn.com https://fonts.googleapis.com");
-                ctx.Response.Headers.Add("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload");
-                await next();
-            });
+            // health checks
+            app.UseHealthChecks("/hc");
+
+            app.Use(
+                async (ctx, next) =>
+                {
+                    ctx.Response.Headers.Append(
+                        "Content-Security-Policy",
+                        "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://apis.google.com https://maxcdn.bootstrapcdn.com https://cdnjs.cloudflare.com https://code.jquery.com https://stackpath.bootstrapcdn.com https://fonts.googleapis.com"
+                    );
+                    ctx.Response.Headers.Append(
+                        "Strict-Transport-Security",
+                        "max-age=31536000; includeSubDomains; preload"
+                    );
+                    await next();
+                }
+            );
 
             app.UseXContentTypeOptions();
             app.UseReferrerPolicy(opts => opts.NoReferrer());
             app.UseXXssProtection(options => options.EnabledWithBlockMode());
             app.UseXfo(options => options.Deny());
 
-            if (!env.IsDevelopment())  // when running locally we can't have a strict CSP
+            if (!env.IsDevelopment()) // when running locally we can't have a strict CSP
             {
                 // Content-Security-Policy header
                 app.UseCsp(opts =>
                 {
-                    opts
-                        .BlockAllMixedContent()
-                        .StyleSources(s => s.Self().UnsafeInline().CustomSources("https://use.fontawesome.com",
-                        "https://stackpath.bootstrapcdn.com",
-                        "https://fonts.googleapis.com"))
-                        .FontSources(s => s.Self().CustomSources("https://use.fontawesome.com", "https://fonts.gstatic.com"))
+                    opts.BlockAllMixedContent()
+                        .StyleSources(s =>
+                            s.Self()
+                                .UnsafeInline()
+                                .CustomSources(
+                                    "https://use.fontawesome.com",
+                                    "https://stackpath.bootstrapcdn.com",
+                                    "https://fonts.googleapis.com"
+                                )
+                        )
+                        .FontSources(s =>
+                            s.Self().CustomSources("https://use.fontawesome.com", "https://fonts.gstatic.com")
+                        )
                         .FormActions(s => s.Self())
                         .FrameAncestors(s => s.Self())
                         .ImageSources(s => s.Self().CustomSources("data:"))
                         .DefaultSources(s => s.Self())
                         .ObjectSources(s => s.Self().CustomSources("data:"))
                         .FrameSources(s => s.Self().CustomSources("data:"))
-                        .ScriptSources(s => s.Self().CustomSources("https://apis.google.com",
-                        "https://maxcdn.bootstrapcdn.com",
-                        "https://cdnjs.cloudflare.com",
-                        "https://code.jquery.com",
-                        "https://stackpath.bootstrapcdn.com",
-                        "https://fonts.googleapis.com"));
-
+                        .ScriptSources(s =>
+                            s.Self()
+                                .CustomSources(
+                                    "https://apis.google.com",
+                                    "https://maxcdn.bootstrapcdn.com",
+                                    "https://cdnjs.cloudflare.com",
+                                    "https://code.jquery.com",
+                                    "https://stackpath.bootstrapcdn.com",
+                                    "https://fonts.googleapis.com"
+                                )
+                        );
                 });
             }
 
@@ -165,12 +182,13 @@ namespace Gov.Cscp.Victims.Public
             {
                 OnPrepareResponse = ctx =>
                 {
-                    ctx.Context.Response.Headers[HeaderNames.CacheControl] = "no-cache, no-store, must-revalidate, private";
+                    ctx.Context.Response.Headers[HeaderNames.CacheControl] =
+                        "no-cache, no-store, must-revalidate, private";
                     ctx.Context.Response.Headers[HeaderNames.Pragma] = "no-cache";
                     ctx.Context.Response.Headers["X-Frame-Options"] = "SAMEORIGIN";
                     ctx.Context.Response.Headers["X-XSS-Protection"] = "1; mode=block";
                     ctx.Context.Response.Headers["X-Content-Type-Options"] = "nosniff";
-                }
+                },
             };
 
             app.UseStaticFiles(staticFileOptions);
@@ -180,59 +198,65 @@ namespace Gov.Cscp.Victims.Public
 
             app.UseSession();
 
-            app.UseCookiePolicy(new CookiePolicyOptions
-            {
-                HttpOnly = HttpOnlyPolicy.Always,
-                Secure = CookieSecurePolicy.Always,
-                MinimumSameSitePolicy = Microsoft.AspNetCore.Http.SameSiteMode.None
-            });
+            app.UseCookiePolicy(
+                new CookiePolicyOptions
+                {
+                    HttpOnly = HttpOnlyPolicy.Always,
+                    Secure = CookieSecurePolicy.Always,
+                    MinimumSameSitePolicy = Microsoft.AspNetCore.Http.SameSiteMode.None,
+                }
+            );
 
             app.UseHttpsRedirection();
 
             app.UseMvc(routes =>
             {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller}/{action=Index}/{id?}");
+                routes.MapRoute(name: "default", template: "{controller}/{action=Index}/{id?}");
             });
 
             //splunk setup
-            if (!string.IsNullOrEmpty(Configuration["SPLUNK_COLLECTOR_URL"]) &&
-                !string.IsNullOrEmpty(Configuration["SPLUNK_TOKEN"])
-                )
+            if (
+                !string.IsNullOrEmpty(Configuration["SPLUNK_COLLECTOR_URL"])
+                && !string.IsNullOrEmpty(Configuration["SPLUNK_TOKEN"])
+            )
             {
-
                 Serilog.Sinks.Splunk.CustomFields fields = new Serilog.Sinks.Splunk.CustomFields();
                 if (!string.IsNullOrEmpty(Configuration["SPLUNK_CHANNEL"]))
                 {
-                    fields.CustomFieldList.Add(new Serilog.Sinks.Splunk.CustomField("channel", Configuration["SPLUNK_CHANNEL"]));
+                    fields.CustomFieldList.Add(
+                        new Serilog.Sinks.Splunk.CustomField("channel", Configuration["SPLUNK_CHANNEL"])
+                    );
                 }
                 var splunkUri = new Uri(Configuration["SPLUNK_COLLECTOR_URL"]);
                 var upperSplunkHost = splunkUri.Host?.ToUpperInvariant() ?? string.Empty;
 
-                // Fix for bad SSL issues 
+                // Fix for bad SSL issues
 
                 Log.Logger = new LoggerConfiguration()
                     .Enrich.FromLogContext()
                     .Enrich.WithExceptionDetails()
                     .WriteTo.Console()
                     // .WriteTo.EventCollector(Configuration["SPLUNK_COLLECTOR_URL"], Configuration["SPLUNK_TOKEN"])
-                    .WriteTo.EventCollector(splunkHost: Configuration["SPLUNK_COLLECTOR_URL"],
-                                           eventCollectorToken: Configuration["SPLUNK_TOKEN"], sourceType: "portal",
-                                           restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Information,
+                    .WriteTo.EventCollector(
+                        splunkHost: Configuration["SPLUNK_COLLECTOR_URL"],
+                        eventCollectorToken: Configuration["SPLUNK_TOKEN"],
+                        sourceType: "portal",
+                        restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Information,
 #pragma warning disable CA2000 // Dispose objects before losing scope
-                                                        messageHandler: new HttpClientHandler()
-                                                        {
-                                                            ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; }
-                                                        }
+                        messageHandler: new HttpClientHandler()
+                        {
+                            ServerCertificateCustomValidationCallback = (message, cert, chain, errors) =>
+                            {
+                                return true;
+                            },
+                        }
 #pragma warning restore CA2000 // Dispose objects before losing scope
-                                                      )
+                    )
                     .CreateLogger();
 
                 Serilog.Debugging.SelfLog.Enable(Console.Error);
 
                 Log.Logger.Information("VSU Webforms Started");
-
             }
             else
             {

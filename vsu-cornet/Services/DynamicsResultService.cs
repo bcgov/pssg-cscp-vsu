@@ -1,9 +1,9 @@
-﻿using Gov.Cscp.Victims.Public.Models;
-using Microsoft.Extensions.Configuration;
-using System.Net.Http;
+﻿using System;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
-using System;
+using Gov.Cscp.Victims.Public.Models;
+using Microsoft.Extensions.Configuration;
 
 namespace Gov.Cscp.Victims.Public.Services
 {
@@ -36,13 +36,14 @@ namespace Gov.Cscp.Victims.Public.Services
             return blob;
         }
 
-        private async Task<HttpClientResult> DynamicsResultAsync(HttpMethod method, string endpointUrl, string requestJson)
+        private async Task<HttpClientResult> DynamicsResultAsync(
+            HttpMethod method,
+            string endpointUrl,
+            string requestJson
+        )
         {
             endpointUrl = _configuration["DYNAMICS_ODATA_URI"] + endpointUrl;
             requestJson = requestJson.Replace("fortunecookie", "@odata.");
-
-            Console.WriteLine(endpointUrl);
-            Console.WriteLine(requestJson);
 
             HttpRequestMessage _httpRequest = new HttpRequestMessage(method, endpointUrl);
             _httpRequest.Content = new StringContent(requestJson, System.Text.Encoding.UTF8, "application/json");
@@ -61,8 +62,6 @@ namespace Gov.Cscp.Victims.Public.Services
                 string clean = _responseContent.Replace("@odata.", "fortunecookie");
                 result.result = Newtonsoft.Json.Linq.JObject.Parse(clean);
             }
-
-            Console.WriteLine(result.result);
 
             return result;
         }
