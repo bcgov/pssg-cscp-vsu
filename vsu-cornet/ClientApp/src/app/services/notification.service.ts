@@ -3,35 +3,30 @@ import { Observable, throwError } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class NotificationService {
-    apiUrl = 'api/Notification';
+  apiUrl = 'api/Notification';
 
-    constructor(
-        private http: HttpClient,
-    ) { }
+  constructor(private http: HttpClient) {}
 
-    getNotificationsForClient(clientId: string): Observable<any> {
-        return this.http.get<any>(`${this.apiUrl}/client/${clientId}`, { headers: this.headers }).pipe(
-            retry(3),
-            catchError(this.handleError)
-        );
+  getNotificationsForClient(clientId: string): Observable<any> {
+    return this.http
+      .get<any>(`${this.apiUrl}/client/${clientId}`, { headers: this.headers })
+      .pipe(retry(3), catchError(this.handleError));
+  }
+
+  get headers(): HttpHeaders {
+    return new HttpHeaders({ 'Content-Type': 'application/json' });
+  }
+  protected handleError(err): Observable<never> {
+    let errorMessage = '';
+    if (err.error instanceof ErrorEvent) {
+      errorMessage = err.error.message;
+    } else {
+      errorMessage = `Backend returned code ${err.status}, body was: ${err.message}`;
     }
-
-
-    get headers(): HttpHeaders {
-        return new HttpHeaders({ 'Content-Type': 'application/json' });
-    }
-    protected handleError(err): Observable<never> {
-        let errorMessage = '';
-        if (err.error instanceof ErrorEvent) {
-            errorMessage = err.error.message;
-        } else {
-            errorMessage = `Backend returned code ${err.status}, body was: ${err.message}`;
-        }
-        return throwError(errorMessage);
-    }
+    return throwError(errorMessage);
+  }
 }

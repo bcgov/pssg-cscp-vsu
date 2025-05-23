@@ -7,21 +7,20 @@ import { Configuration } from '../shared/interfaces/configuration.interface';
 @Injectable({
   providedIn: 'root'
 })
-export class ConfigService{
+export class ConfigService {
   headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json'
   });
   apiUrl = 'api/Configuration';
 
-  constructor(
-    private http: HttpClient,
-  ) { }
+  constructor(private http: HttpClient) {}
 
   public async load(): Promise<Configuration> {
     try {
-      return await
-        this.http.get<Configuration>(this.apiUrl, { headers: this.headers })
-          .pipe(catchError(this.handleError)).toPromise();
+      return await this.http
+        .get<Configuration>(this.apiUrl, { headers: this.headers })
+        .pipe(catchError(this.handleError))
+        .toPromise();
     } catch (error) {
       this.handleError(error);
       throw error;

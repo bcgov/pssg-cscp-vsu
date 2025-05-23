@@ -1,53 +1,52 @@
 export interface iLookupData {
-    countries: iCountry[];
-    provinces: iProvince[];
-    cities: iCity[];
-    courts: iCourt[];
-    offences?: iOffence[];
-    expenseRates?: iExpenseRates;
+  countries: iCountry[];
+  provinces: iProvince[];
+  cities: iCity[];
+  courts: iCourt[];
+  offences?: iOffence[];
+  expenseRates?: iExpenseRates;
 }
 
 export interface iCountry {
-    vsd_name: string;
-    vsd_countryid: string;
+  vsd_name: string;
+  vsd_countryid: string;
 }
 
 export interface iProvince {
-    vsd_code: string;
-    _vsd_countryid_value: string;
-    vsd_name: string;
-    vsd_provinceid: string;
+  vsd_code: string;
+  _vsd_countryid_value: string;
+  vsd_name: string;
+  vsd_provinceid: string;
 }
 
 export interface CitiesSearchResponse {
-    Result: string;
-    CityCollection: iCity[];
-    CountryCollection: iCountry[];
-    ProvinceCollection: iProvince[];
+  Result: string;
+  CityCollection: iCity[];
+  CountryCollection: iCountry[];
+  ProvinceCollection: iProvince[];
 }
 
-
 export interface iCity {
-    _vsd_countryid_value: string;
-    vsd_name: string;
-    _vsd_stateid_value: string;
-    vsd_cityid: string;
+  _vsd_countryid_value: string;
+  vsd_name: string;
+  _vsd_stateid_value: string;
+  vsd_cityid: string;
 }
 
 export interface iCourt {
-    vsd_name: string;
-    vsd_courtid: string;
+  vsd_name: string;
+  vsd_courtid: string;
 }
 
 export interface iOffence {
-    vsd_offenseid: string;
-    vsd_name: string;
-    vsd_criminalcode: string;
+  vsd_offenseid: string;
+  vsd_name: string;
+  vsd_criminalcode: string;
 }
 
 export interface iExpenseRates {
-    breakfast: number;
-    lunch: number;
-    dinner: number;
-    mileage: number;
+  breakfast: number;
+  lunch: number;
+  dinner: number;
+  mileage: number;
 }

@@ -38,7 +38,7 @@ import { OffencesComponent } from './shared/offences/offences.component';
     StateTransitionsComponent,
     FieldComponent,
     HomeComponent,
-    NgbdSortableHeader,
+    NgbdSortableHeader
   ],
   imports: [
     AppRoutingModule,
@@ -54,14 +54,10 @@ import { OffencesComponent } from './shared/offences/offences.component';
     NgxMaskModule.forRoot(),
     ReactiveFormsModule,
     TooltipModule.forRoot(),
-    TypeaheadModule.forRoot(),
+    TypeaheadModule.forRoot()
   ],
-  exports: [
-    AppRoutingModule,
-    MatDatepickerModule,
-    MatProgressSpinnerModule,
-  ],
+  exports: [AppRoutingModule, MatDatepickerModule, MatProgressSpinnerModule],
   providers: [DecimalPipe],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

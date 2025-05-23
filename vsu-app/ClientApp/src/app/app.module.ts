@@ -19,7 +19,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomeComponent } from './home/home.component';
 import { HttpClientModule } from '@angular/common/http';
 import { LookupService } from './services/lookup.service';
-import { MatButtonModule, MatChipsModule, MatDatepickerModule, MatDialogModule, MatIconModule, MatProgressSpinnerModule, MatStepperModule } from '@angular/material';
+import {
+  MatButtonModule,
+  MatChipsModule,
+  MatDatepickerModule,
+  MatDialogModule,
+  MatIconModule,
+  MatProgressSpinnerModule,
+  MatStepperModule
+} from '@angular/material';
 import { NgModule } from '@angular/core';
 import { NgxMaskModule } from 'ngx-mask';
 import { NotificationApplicationComponent } from './notification-application/notification-application.component';
@@ -67,7 +75,7 @@ import { VictimTravelFundReimbursementComponent } from './victim-travel-fund-rei
     VSWComponent,
     VTFCaseInformationComponent,
     VictimTravelFundApplicationComponent,
-    VictimTravelFundReimbursementComponent,
+    VictimTravelFundReimbursementComponent
   ],
   imports: [
     AppRoutingModule,
@@ -86,14 +94,9 @@ import { VictimTravelFundReimbursementComponent } from './victim-travel-fund-rei
     ReactiveFormsModule,
     SignaturePadModule,
     TooltipModule.forRoot(),
-    TypeaheadModule.forRoot(),
+    TypeaheadModule.forRoot()
   ],
-  exports: [
-    AppRoutingModule,
-    MatDatepickerModule,
-    MatProgressSpinnerModule,
-    NotificationBannerComponent,
-  ],
+  exports: [AppRoutingModule, MatDatepickerModule, MatProgressSpinnerModule, NotificationBannerComponent],
   providers: [
     LookupService,
     ApplicationService,
@@ -101,11 +104,9 @@ import { VictimTravelFundReimbursementComponent } from './victim-travel-fund-rei
     {
       provide: STEPPER_GLOBAL_OPTIONS,
       useValue: { showError: true }
-    },
+    }
   ],
-  entryComponents: [
-    SignPadDialog,
-  ],
+  entryComponents: [SignPadDialog],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

@@ -1,13 +1,13 @@
-import { Component, Input, OnInit } from "@angular/core";
-import { ControlContainer, FormArray, FormBuilder, FormGroup } from "@angular/forms";
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/material";
-import { MomentDateAdapter } from "@angular/material-moment-adapter";
-import { iLookupData, iOffence } from "../../interfaces/lookup-data.interface";
-import { LookupService } from "../../../services/lookup.service";
-import { ApplicationType, MY_FORMATS } from "../../enums-list";
-import { FormBase } from "../../form-base";
-import { CaseInfoInfoHelper } from "./case-information.helper";
-import { NotificationQueueService } from "../../../services/notification-queue.service";
+import { Component, Input, OnInit } from '@angular/core';
+import { ControlContainer, FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import { iLookupData, iOffence } from '../../interfaces/lookup-data.interface';
+import { LookupService } from '../../../services/lookup.service';
+import { ApplicationType, MY_FORMATS } from '../../enums-list';
+import { FormBase } from '../../form-base';
+import { CaseInfoInfoHelper } from './case-information.helper';
+import { NotificationQueueService } from '../../../services/notification-queue.service';
 
 @Component({
   selector: 'app-case-information',
@@ -15,8 +15,8 @@ import { NotificationQueueService } from "../../../services/notification-queue.s
   styleUrls: ['./case-information.component.scss'],
   providers: [
     { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
-    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
-  ],
+    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS }
+  ]
 })
 export class CaseInformationComponent extends FormBase implements OnInit {
   @Input() formType: ApplicationType;
@@ -30,52 +30,58 @@ export class CaseInformationComponent extends FormBase implements OnInit {
   caseInfoHelper = new CaseInfoInfoHelper();
   ApplicationType = ApplicationType;
 
-  constructor(private controlContainer: ControlContainer,
+  constructor(
+    private controlContainer: ControlContainer,
     private lookupService: LookupService,
     private fb: FormBuilder,
-    private notify: NotificationQueueService,
+    private notify: NotificationQueueService
   ) {
     super();
   }
   ngOnInit() {
     this.form = <FormGroup>this.controlContainer.control;
-    setTimeout(() => { this.form.markAsTouched(); }, 0);
-    console.log("case info component");
+    setTimeout(() => {
+      this.form.markAsTouched();
+    }, 0);
+    console.log('case info component');
     console.log(this.form);
     console.log(this.isDisabled);
 
     if (this.lookupData.courts && this.lookupData.courts.length > 0) {
-      this.courtList = this.lookupData.courts.map(c => c.vsd_name);
-    }
-    else {
-      this.lookupService.getCourts().subscribe((res) => {
-        this.lookupData.courts = res.value;
-        if (this.lookupData.courts) {
-          this.lookupData.courts.sort((a, b) => a.vsd_name.localeCompare(b.vsd_name));
+      this.courtList = this.lookupData.courts.map((c) => c.vsd_name);
+    } else {
+      this.lookupService.getCourts().subscribe(
+        (res) => {
+          this.lookupData.courts = res.value;
+          if (this.lookupData.courts) {
+            this.lookupData.courts.sort((a, b) => a.vsd_name.localeCompare(b.vsd_name));
+          }
+          this.courtList = this.lookupData.courts.map((c) => c.vsd_name);
+        },
+        (err) => {
+          this.notify.addNotification('Encountered an error getting court information.', 'warning', 3000);
         }
-        this.courtList = this.lookupData.courts.map(c => c.vsd_name);
-      }, (err) => {
-        this.notify.addNotification("Encountered an error getting court information.", "warning", 3000);
-      });
+      );
     }
 
     if (this.formType === ApplicationType.TRAVEL_FUNDS) {
-
       if (this.lookupData.offences && this.lookupData.offences.length > 0) {
         this.offenceList = this.lookupData.offences;
         this.populateOffences();
-      }
-      else {
-        this.lookupService.getOffences().subscribe((res) => {
-          this.lookupData.offences = res.value;
-          if (this.lookupData.offences) {
-            this.lookupData.offences.sort((a, b) => a.vsd_name.localeCompare(b.vsd_name));
+      } else {
+        this.lookupService.getOffences().subscribe(
+          (res) => {
+            this.lookupData.offences = res.value;
+            if (this.lookupData.offences) {
+              this.lookupData.offences.sort((a, b) => a.vsd_name.localeCompare(b.vsd_name));
+            }
+            this.offenceList = this.lookupData.offences;
+            this.populateOffences();
+          },
+          (err) => {
+            this.notify.addNotification('Encountered an error getting offence information.', 'warning', 3000);
           }
-          this.offenceList = this.lookupData.offences;
-          this.populateOffences();
-        }, (err) => {
-          this.notify.addNotification("Encountered an error getting offence information.", "warning", 3000);
-        });
+        );
       }
     }
   }
@@ -83,7 +89,7 @@ export class CaseInformationComponent extends FormBase implements OnInit {
   victimInfoSameAsApplicantChange(val) {
     this.setVictimInfoSameAsApplicant(this.form.parent);
     if (!val) {
-      console.log("clear");
+      console.log('clear');
       this.form.get('firstName').patchValue('');
       this.form.get('middleName').patchValue('');
       this.form.get('lastName').patchValue('');
@@ -94,12 +100,12 @@ export class CaseInformationComponent extends FormBase implements OnInit {
 
   populateOffences() {
     this.offenceList.sort((a, b) => {
-      return (parseFloat(a.vsd_criminalcode) - parseFloat(b.vsd_criminalcode));
+      return parseFloat(a.vsd_criminalcode) - parseFloat(b.vsd_criminalcode);
     });
 
     let offences = this.form.get('offences') as FormArray;
     if (offences.length > 0) return;
-    this.offenceList.forEach(offence => {
+    this.offenceList.forEach((offence) => {
       offences.push(this.caseInfoHelper.createOffence(this.fb, offence));
     });
   }
@@ -111,7 +117,7 @@ export class CaseInformationComponent extends FormBase implements OnInit {
     while (target.controls.length > 0) {
       target.removeAt(0);
     }
-    source.controls.forEach(offence => {
+    source.controls.forEach((offence) => {
       target.push(offence);
     });
   }
