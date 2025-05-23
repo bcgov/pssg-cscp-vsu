@@ -61,3 +61,24 @@ jobs:
           push: true
           tags: |
             ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:dev
+
+      - name: Install Trivy
+        run: |
+          wget -qO- https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | bash
+          echo "$(pwd)/bin" >> $GITHUB_PATH
+
+      - name: Trivy scan for vsu image
+        continue-on-error: true
+        run: |
+          trivy image ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:dev \
+            --severity HIGH,CRITICAL \
+            --ignore-unfixed \
+            --exit-code 1 \
+            --format sarif \
+            --output trivy-vsu-image-scan.sarif
+
+      - name: Upload scan results
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: trivy-vsu-image-scan.sarif
+          category: trivy-GitHub-Actions-scan-results
