@@ -1,0 +1,81 @@
+name: ZAP vsu UI Scan
+
+on:
+  workflow_dispatch:
+
+jobs:
+  zap-vsu-ui-scan:
+    name: ZAP vsu UI Scan
+    runs-on: [self-hosted, linux]
+    timeout-minutes: 30
+
+    env:
+      ZAP_API: http://zaproxy:8080
+      ZAP_API_KEY: ${{ secrets.ZAP_API_KEY }}
+      ZAP_TARGET: https://coast-vsu-dev.silver.devops.bcgov
+
+    steps:
+      - name: Wait for ZAP to be ready
+        run: |
+          set -e
+          for i in {1..30}; do
+            if curl -sk "${ZAP_API}/JSON/core/view/version/?apikey=${ZAP_API_KEY}" | grep version; then
+              echo "ZAP is ready!"
+              exit 0
+            fi
+            echo "Waiting for ZAP..."
+            sleep 10
+          done
+          echo "ZAP did not become ready in time"
+          exit 1
+
+
+      - name: Start spider scan
+        run: |
+          set -e
+          SPIDER_ID=$(curl -sk "${ZAP_API}/JSON/spider/action/scan/?apikey=${ZAP_API_KEY}&url=${ZAP_TARGET}" | jq -r .scan)
+          echo "Spider scan started: $SPIDER_ID"
+          for i in {1..60}; do
+            STATUS=$(curl -sk "${ZAP_API}/JSON/spider/view/status/?apikey=${ZAP_API_KEY}&scanId=$SPIDER_ID" | jq -r .status)
+            echo "Spider progress: $STATUS%"
+            if [ "$STATUS" = "100" ]; then
+              echo "Spider scan completed"
+              break
+            fi
+            sleep 5
+          done
+
+      - name: Start active scan
+        run: |
+          set -e
+          SCAN_ID=$(curl -sk "${ZAP_API}/JSON/ascan/action/scan/?apikey=${ZAP_API_KEY}&url=${ZAP_TARGET}" | jq -r .scan)
+          echo "Active scan started: $SCAN_ID"
+          for i in {1..60}; do
+            STATUS=$(curl -sk "${ZAP_API}/JSON/ascan/view/status/?apikey=${ZAP_API_KEY}&scanId=$SCAN_ID" | jq -r .status)
+            echo "Active scan progress: $STATUS%"
+            if [ "$STATUS" = "100" ]; then
+              echo "Active scan completed"
+              break
+            fi
+            sleep 10
+          done
+
+      - name: Download ZAP report (JSON)
+        run: |
+          set -e
+          curl -sk "${ZAP_API}/OTHER/core/other/jsonreport/?apikey=${ZAP_API_KEY}" -o zap_report.json
+          # Check file exists and is not empty
+          if [ ! -s zap_report.json ]; then
+            echo "Download failed or zap_report.json is empty!"
+            ls -lh zap_report.json || true
+            head zap_report.json || true
+            exit 1
+          fi
+          ls -lh zap_report.json
+          head zap_report.json
+
+      - name: Upload ZAP JSON as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: zap-json-report
+          path: zap_report.json
