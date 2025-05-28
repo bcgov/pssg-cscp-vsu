@@ -8,7 +8,6 @@ import { SignaturePad } from 'angular2-signaturepad/signature-pad';
   styleUrls: ['./sign-dialog.component.scss']
 })
 export class SignPadDialog implements OnInit {
-
   public signatureImage: any;
   wasSigned: boolean = false;
   signatureData: string;
@@ -18,16 +17,15 @@ export class SignPadDialog implements OnInit {
   @ViewChild(SignaturePad, { static: false }) signaturePad: SignaturePad;
 
   signaturePadOptions: Object = {
-    'minWidth': 0.3,
-    'maxWidth': 2.5,
-    'canvasWidth': 600,
-    'canvasHeight': 200,
-    'penColor': '#000',
-    'backgroundColor': 'rgba(255, 255, 255, 0)'
+    minWidth: 0.3,
+    maxWidth: 2.5,
+    canvasWidth: 600,
+    canvasHeight: 200,
+    penColor: '#000',
+    backgroundColor: 'rgba(255, 255, 255, 0)'
   };
 
-  constructor(public dialogRef: MatDialogRef<SignPadDialog>) {
-  }
+  constructor(public dialogRef: MatDialogRef<SignPadDialog>) {}
 
   clearSignature() {
     this.wasSigned = false;
@@ -37,18 +35,17 @@ export class SignPadDialog implements OnInit {
 
   acceptSignature() {
     if (this.wasSigned) {
-      var resizedCanvas = document.createElement("canvas");
-      var resizedContext = resizedCanvas.getContext("2d");
+      var resizedCanvas = document.createElement('canvas');
+      var resizedContext = resizedCanvas.getContext('2d');
       resizedCanvas.height = this.CRM_HEIGHT;
       resizedCanvas.width = this.CRM_WIDTH;
-      var canvas = document.querySelectorAll(".signature-pad > signature-pad > canvas")[0] as CanvasImageSource;
+      var canvas = document.querySelectorAll('.signature-pad > signature-pad > canvas')[0] as CanvasImageSource;
       resizedContext.drawImage(canvas, 0, 0, this.CRM_WIDTH, this.CRM_HEIGHT);
-      let signatureData = resizedCanvas.toDataURL();;
-      
+      let signatureData = resizedCanvas.toDataURL();
+
       this.signatureData = signatureData;
       this.dialogRef.close(signatureData);
-    }
-    else {
+    } else {
       this.dialogRef.close();
     }
   }
@@ -62,7 +59,5 @@ export class SignPadDialog implements OnInit {
     this.wasSigned = true;
   }
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

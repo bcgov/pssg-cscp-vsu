@@ -8,7 +8,9 @@
     "build:ssr": "ng run vsu_cornet:server:dev",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "format": "prettier --loglevel=warn --check \"./src/**/*.{js,jsx,ts,tsx,css,scss}\"",
+    "format-fix": "prettier --loglevel=warn --write \"./src/**/*.{js,jsx,ts,tsx,json,css,scss}\""
   },
   "private": true,
   "dependencies": {
@@ -57,6 +59,8 @@
     "karma-jasmine": "~2.0.1",
     "karma-jasmine-html-reporter": "^1.4.2",
     "mygovbc-bootstrap-theme": "^0.4.1",
+    "prettier": "^2.8.8",
+    "prettier-plugin-organize-imports": "^4.1.0",
     "typescript": "3.5.3"
   },
   "optionalDependencies": {

@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import "~@angular/material/theming";
-@import "~mygovbc-bootstrap-theme/dist/mygovbc-bootstrap-theme.min.css";
+@import '~@angular/material/theming';
+@import '~mygovbc-bootstrap-theme/dist/mygovbc-bootstrap-theme.min.css';
 // @import "~bootstrap/scss/bootstrap";
 @include mat-core();
 $primary: mat-palette($mat-grey, 400);
@@ -16,7 +16,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #494949;
-  font: MyriadWebPro, Calibri, Arial, "sans serif";
+  font: MyriadWebPro, Calibri, Arial, 'sans serif';
   /*width: 99%;*/
 }
 

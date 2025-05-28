@@ -9,20 +9,30 @@ const routes: Routes = [
   //   path: '', component: HomeComponent, pathMatch: 'full'
   // },
   {
-    path: '', redirectTo: 'client-search', pathMatch: 'full'
+    path: '',
+    redirectTo: 'client-search',
+    pathMatch: 'full'
   },
   {
-    path: 'cornet-info', component: CornetInfoLoadingHandler, pathMatch: 'full'
+    path: 'cornet-info',
+    component: CornetInfoLoadingHandler,
+    pathMatch: 'full'
   },
   {
-    path: 'cornet-info/:vsd_offenderid', component: CornetInfoLoadingHandler, pathMatch: 'full'
+    path: 'cornet-info/:vsd_offenderid',
+    component: CornetInfoLoadingHandler,
+    pathMatch: 'full'
   },
   {
-    path: 'client-search', component: ClientSearchComponent, pathMatch: 'full'
+    path: 'client-search',
+    component: ClientSearchComponent,
+    pathMatch: 'full'
   },
   {
-    path: 'client-details/:clientNumber', component: ClientDetailsComponent, pathMatch: 'full'
-  },
+    path: 'client-details/:clientNumber',
+    component: ClientDetailsComponent,
+    pathMatch: 'full'
+  }
 ];
 
 @NgModule({
@@ -30,4 +40,4 @@ const routes: Routes = [
   exports: [RouterModule],
   providers: []
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

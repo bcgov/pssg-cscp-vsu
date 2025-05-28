@@ -6,7 +6,16 @@ import { NotificationService } from '../services/notification.service';
 import { OffenderService } from '../services/offender.service';
 import { EnumHelper } from '../shared/enums-list';
 import { FormBase } from '../shared/form-base';
-import { IAuthorityDocument, IClientDetails, ICoastOffender, IHearing, IKeyDate, IMovement, IStateTransition, IVictimContact } from '../shared/interfaces/client-details.interface';
+import {
+  IAuthorityDocument,
+  IClientDetails,
+  ICoastOffender,
+  IHearing,
+  IKeyDate,
+  IMovement,
+  IStateTransition,
+  IVictimContact
+} from '../shared/interfaces/client-details.interface';
 import { IClientParameters, ICornetParameters } from '../shared/interfaces/cornet-api-parameters.interface';
 
 enum PAGES {
@@ -16,7 +25,7 @@ enum PAGES {
   Hearings,
   VictimInformation,
   StateTransitions
-};
+}
 
 @Component({
   selector: 'app-client-details',
@@ -30,9 +39,9 @@ export class ClientDetailsComponent extends FormBase implements OnInit {
 
   coastOffenderDoesNotExist: boolean = false;
 
-  username: string = "";
-  fullname: string = "";
-  client: string = "";
+  username: string = '';
+  fullname: string = '';
+  client: string = '';
 
   enums: EnumHelper = new EnumHelper();
 
@@ -40,31 +49,31 @@ export class ClientDetailsComponent extends FormBase implements OnInit {
 
   PAGES = PAGES;
 
-
-  constructor(public fb: FormBuilder,
+  constructor(
+    public fb: FormBuilder,
     private route: ActivatedRoute,
     private notificationService: NotificationService,
     private cornetService: CornetService,
-    private offenderService: OffenderService,
+    private offenderService: OffenderService
   ) {
     super();
   }
 
   ngOnInit() {
-    this.username = this.route.snapshot.paramMap.get('username') || "test";
-    this.fullname = this.route.snapshot.paramMap.get('fullname') || "test";
-    this.client = this.route.snapshot.paramMap.get('client') || "test";
+    this.username = this.route.snapshot.paramMap.get('username') || 'test';
+    this.fullname = this.route.snapshot.paramMap.get('fullname') || 'test';
+    this.client = this.route.snapshot.paramMap.get('client') || 'test';
 
     this.client_details = {
-      clientNumber: "",
-      isCurrentName: "",
+      clientNumber: '',
+      isCurrentName: '',
       locationTypeCode: {
-        community: "",
-        custody: "",
+        community: '',
+        custody: ''
       },
-      personBirthDate: "",
-      personGenderIdentityCodeType: "",
-      personName: "",
+      personBirthDate: '',
+      personGenderIdentityCodeType: '',
+      personName: '',
 
       authorityDocuments: [],
       hearings: [],
@@ -72,17 +81,17 @@ export class ClientDetailsComponent extends FormBase implements OnInit {
       movements: [],
       notifications: [],
       stateTransitions: [],
-      victimContacts: [],
-    }
+      victimContacts: []
+    };
 
     this.form = this.fb.group({
-      lastName: [""],
-      middleName: [""],
-      firstName: [""],
-      isCurrentName: [""],
+      lastName: [''],
+      middleName: [''],
+      firstName: [''],
+      isCurrentName: ['']
     });
 
-    this.route.params.subscribe(q => {
+    this.route.params.subscribe((q) => {
       if (q && q.clientNumber) {
         this.getClientDetails(q.clientNumber);
       }
@@ -90,7 +99,6 @@ export class ClientDetailsComponent extends FormBase implements OnInit {
   }
 
   getClientDetails(clientNumber) {
-
     this.isLoading = true;
 
     this.loadOffenderFromCoast(clientNumber);
@@ -106,54 +114,59 @@ export class ClientDetailsComponent extends FormBase implements OnInit {
 
       username: this.username,
       fullname: this.fullname,
-      client: this.client,
+      client: this.client
     };
 
-    this.cornetService.getClients(parameters).subscribe((res) => {
-      if (res && res.clients) {
-        if (res.clients.length > 1) {
-          let aliases = res.clients.filter(c => c.isCurrentName == "N");
-          console.log("aliases");
-          console.log(aliases.map(a => a.personName));
-          // aliases.push({ personName: "Test, McTest" });
-          this.client_details.aliases = aliases.map(a => a.personName).join(', ');
+    this.cornetService.getClients(parameters).subscribe(
+      (res) => {
+        if (res && res.clients) {
+          if (res.clients.length > 1) {
+            let aliases = res.clients.filter((c) => c.isCurrentName == 'N');
+            console.log('aliases');
+            console.log(aliases.map((a) => a.personName));
+            // aliases.push({ personName: "Test, McTest" });
+            this.client_details.aliases = aliases.map((a) => a.personName).join(', ');
+          }
+          let curr_client = res.clients.find((c) => c.isCurrentName == 'Y');
+          Object.assign(this.client_details, curr_client);
+          this.client_details.lastName = this.client_details.personName.split(',')[0];
+          this.client_details.givenNames = this.client_details.personName.split(',').splice(1).join(',');
         }
-        let curr_client = res.clients.find(c => c.isCurrentName == "Y");
-        Object.assign(this.client_details, curr_client);
-        this.client_details.lastName = this.client_details.personName.split(',')[0];
-        this.client_details.givenNames = this.client_details.personName.split(',').splice(1).join(',');
+      },
+      (err) => {
+        this.isLoading = false;
+        alert('Error retrieving cornet info');
+        console.log(err);
       }
-    }, (err) => {
-      this.isLoading = false;
-      alert("Error retrieving cornet info");
-      console.log(err);
-    });
+    );
   }
 
   loadNotifications(clientNumber: string) {
-    this.notificationService.getNotificationsForClient(clientNumber).subscribe((res) => {
-      if (res && res.value && res.value.length) {
-        res.value.forEach((n: any) => {
-          this.client_details.notifications.push({
-            notificationId: n.vsd_cornetnotificationid,
-            eventId: n.vsd_event_id,
-            eventDate: new Date(n.vsd_eventdate),
-            eventReferenceId: n.vsd_eventreferenceid,
-            eventType: n.vsd_eventtype,
-            id: n.vsd_guid,
+    this.notificationService.getNotificationsForClient(clientNumber).subscribe(
+      (res) => {
+        if (res && res.value && res.value.length) {
+          res.value.forEach((n: any) => {
+            this.client_details.notifications.push({
+              notificationId: n.vsd_cornetnotificationid,
+              eventId: n.vsd_event_id,
+              eventDate: new Date(n.vsd_eventdate),
+              eventReferenceId: n.vsd_eventreferenceid,
+              eventType: n.vsd_eventtype,
+              id: n.vsd_guid
+            });
           });
-        });
 
-        this.getClientNotifications();
+          this.getClientNotifications();
+        } else {
+          this.isLoading = false;
+          console.log('no notifications to load');
+          console.log(this.client_details);
+        }
+      },
+      (err) => {
+        console.log(err);
       }
-      else {
-        this.isLoading = false;
-        console.log("no notifications to load");
-        console.log(this.client_details);
-      }
-    }, (err) => {
-      console.log(err);
-    });
+    );
   }
 
   getClientNotifications() {
@@ -170,112 +183,144 @@ export class ClientDetailsComponent extends FormBase implements OnInit {
 
         username: this.username,
         fullname: this.fullname,
-        client: this.client,
+        client: this.client
       };
 
       switch (event_type) {
         case this.enums.EventType.AUTH_DOCM: {
-          promise_array.push(new Promise<void>((resolve, reject) => {
-            parameters.event_type = "authorityDocument";
-            parameters.id_name = "authority_document_id";
-            this.cornetService.getEvent(parameters).subscribe((res: IAuthorityDocument) => {
-              if (res) {
-                this.client_details.authorityDocuments.push(res);
-              }
-              resolve();
-            }, (err) => {
-              reject();
-              console.log(err);
-            });
-          }));
+          promise_array.push(
+            new Promise<void>((resolve, reject) => {
+              parameters.event_type = 'authorityDocument';
+              parameters.id_name = 'authority_document_id';
+              this.cornetService.getEvent(parameters).subscribe(
+                (res: IAuthorityDocument) => {
+                  if (res) {
+                    this.client_details.authorityDocuments.push(res);
+                  }
+                  resolve();
+                },
+                (err) => {
+                  reject();
+                  console.log(err);
+                }
+              );
+            })
+          );
           break;
         }
         case this.enums.EventType.HEARING: {
-          promise_array.push(new Promise<void>((resolve, reject) => {
-            parameters.event_type = "hearing";
-            parameters.id_name = "hearing_id";
-            this.cornetService.getEvent(parameters).subscribe((res: IHearing) => {
-              if (res) {
-                this.client_details.hearings.push(res);
-              }
-              resolve();
-            }, (err) => {
-              reject();
-              console.log(err);
-            });
-          }));
+          promise_array.push(
+            new Promise<void>((resolve, reject) => {
+              parameters.event_type = 'hearing';
+              parameters.id_name = 'hearing_id';
+              this.cornetService.getEvent(parameters).subscribe(
+                (res: IHearing) => {
+                  if (res) {
+                    this.client_details.hearings.push(res);
+                  }
+                  resolve();
+                },
+                (err) => {
+                  reject();
+                  console.log(err);
+                }
+              );
+            })
+          );
           break;
         }
         case this.enums.EventType.KEY_DATE: {
-          promise_array.push(new Promise<void>((resolve, reject) => {
-            parameters.event_type = "keyDate";
-            parameters.id_name = "key_date_id";
-            this.cornetService.getEvent(parameters).subscribe((res: IKeyDate) => {
-              if (res) {
-                this.client_details.keyDates.push(res);
-              }
-              resolve();
-            }, (err) => {
-              reject();
-              console.log(err);
-            });
-          }));
+          promise_array.push(
+            new Promise<void>((resolve, reject) => {
+              parameters.event_type = 'keyDate';
+              parameters.id_name = 'key_date_id';
+              this.cornetService.getEvent(parameters).subscribe(
+                (res: IKeyDate) => {
+                  if (res) {
+                    this.client_details.keyDates.push(res);
+                  }
+                  resolve();
+                },
+                (err) => {
+                  reject();
+                  console.log(err);
+                }
+              );
+            })
+          );
           break;
         }
         case this.enums.EventType.MOVEMENT: {
-          promise_array.push(new Promise<void>((resolve, reject) => {
-            parameters.event_type = "movement";
-            parameters.id_name = "movement_id";
-            this.cornetService.getEvent(parameters).subscribe((res: IMovement) => {
-              if (res) {
-                if (res.activityDate.actual != null) res.activityDate.val = res.activityDate.actual;
-                else if (res.activityDate.scheduled != null) res.activityDate.val = res.activityDate.scheduled;
-                this.client_details.movements.push(res);
-              }
-              resolve();
-            }, (err) => {
-              reject();
-              console.log(err);
-            });
-          }));
+          promise_array.push(
+            new Promise<void>((resolve, reject) => {
+              parameters.event_type = 'movement';
+              parameters.id_name = 'movement_id';
+              this.cornetService.getEvent(parameters).subscribe(
+                (res: IMovement) => {
+                  if (res) {
+                    if (res.activityDate.actual != null) res.activityDate.val = res.activityDate.actual;
+                    else if (res.activityDate.scheduled != null) res.activityDate.val = res.activityDate.scheduled;
+                    this.client_details.movements.push(res);
+                  }
+                  resolve();
+                },
+                (err) => {
+                  reject();
+                  console.log(err);
+                }
+              );
+            })
+          );
           break;
         }
         case this.enums.EventType.STATE_TRAN: {
-          promise_array.push(new Promise<void>((resolve, reject) => {
-            parameters.event_type = "stateTransition";
-            parameters.id_name = "state_transition_id";
-            this.cornetService.getEvent(parameters).subscribe((res: IStateTransition) => {
-              if (res) {
-                //cornet doesn't include the event date in it's results, but we can get that from the crm notification
-                //so we combine it up
-                let notification = this.client_details.notifications.find(n => n.eventReferenceId == res.activityId);
-                if (notification) {
-                  res.eventDate = notification.eventDate;
+          promise_array.push(
+            new Promise<void>((resolve, reject) => {
+              parameters.event_type = 'stateTransition';
+              parameters.id_name = 'state_transition_id';
+              this.cornetService.getEvent(parameters).subscribe(
+                (res: IStateTransition) => {
+                  if (res) {
+                    //cornet doesn't include the event date in it's results, but we can get that from the crm notification
+                    //so we combine it up
+                    let notification = this.client_details.notifications.find(
+                      (n) => n.eventReferenceId == res.activityId
+                    );
+                    if (notification) {
+                      res.eventDate = notification.eventDate;
+                    }
+                    this.client_details.stateTransitions.push(res);
+                  }
+                  resolve();
+                },
+                (err) => {
+                  reject();
+                  console.log(err);
                 }
-                this.client_details.stateTransitions.push(res);
-              }
-              resolve();
-            }, (err) => {
-              reject();
-              console.log(err);
-            });
-          }));
+              );
+            })
+          );
           break;
         }
         case this.enums.EventType.VICT_CNTCT: {
-          promise_array.push(new Promise<void>((resolve, reject) => {
-            parameters.event_type = "victimContact";
-            parameters.id_name = "individual_id";
-            this.cornetService.getEvent(parameters).subscribe((res: IVictimContact) => {
-              if (res) {
-                this.client_details.victimContacts.push(res);
-              }
-              resolve();
-            }, (err) => {
-              reject();
-              console.log(err);
-            });
-          }));
+          promise_array.push(
+            new Promise<void>((resolve, reject) => {
+              parameters.event_type = 'victimContact';
+              parameters.id_name = 'individual_id';
+              this.cornetService.getEvent(parameters).subscribe(
+                (res: IVictimContact) => {
+                  if (res) {
+                    this.client_details.victimContacts.push(res);
+                  }
+                  resolve();
+                },
+                (err) => {
+                  reject();
+                  console.log(err);
+                }
+              );
+            })
+          );
           break;
         }
       }
@@ -296,30 +341,31 @@ export class ClientDetailsComponent extends FormBase implements OnInit {
         return new Date(b.issueDate).getTime() - new Date(a.issueDate).getTime();
       });
 
-      this.client_details.authorityDocuments.forEach(auth => {
+      this.client_details.authorityDocuments.forEach((auth) => {
         auth.chargeCounts.sort((a, b) => {
-          return (a.countSeqNo > b.countSeqNo) ? 1 : -1;
+          return a.countSeqNo > b.countSeqNo ? 1 : -1;
         });
       });
 
       // console.log(this.client_details);
     });
-
   }
 
   loadOffenderFromCoast(clientNumber: string) {
-    this.offenderService.getOffenderByCSNumber(clientNumber).subscribe((res) => {
-      console.log("coast offender");
-      console.log(res);
-      if (res && res.value && res.value.length == 1) {
-        this.client_details.coastInfo = res.value[0];
+    this.offenderService.getOffenderByCSNumber(clientNumber).subscribe(
+      (res) => {
+        console.log('coast offender');
+        console.log(res);
+        if (res && res.value && res.value.length == 1) {
+          this.client_details.coastInfo = res.value[0];
+        } else {
+          this.coastOffenderDoesNotExist = true;
+        }
+      },
+      (err) => {
+        console.log(err);
       }
-      else {
-        this.coastOffenderDoesNotExist = true;
-      }
-    }, (err) => {
-      console.log(err);
-    });
+    );
   }
 
   createOffender() {
@@ -328,20 +374,26 @@ export class ClientDetailsComponent extends FormBase implements OnInit {
       vsd_firstname: this.client_details.givenNames,
       vsd_lastname: this.client_details.lastName,
       vsd_csnumber: this.client_details.clientNumber,
-      vsd_gender: this.enums.getOptionsSetValFromName(this.enums.Gender, this.client_details.personGenderIdentityCodeType).val
-    }
+      vsd_gender: this.enums.getOptionsSetValFromName(
+        this.enums.Gender,
+        this.client_details.personGenderIdentityCodeType
+      ).val
+    };
     this.isLoading = true;
-    this.offenderService.createOffender(offender).subscribe((res) => {
-      console.log(res);
-      console.log("offender created");
-      this.coastOffenderDoesNotExist = false;
-      this.loadOffenderFromCoast(this.client_details.clientNumber);
-      this.loadNotifications(this.client_details.clientNumber);
-      // this.isLoading = false;
-    }, (err) => {
-      console.log(err);
-      this.isLoading = false;
-    });;
+    this.offenderService.createOffender(offender).subscribe(
+      (res) => {
+        console.log(res);
+        console.log('offender created');
+        this.coastOffenderDoesNotExist = false;
+        this.loadOffenderFromCoast(this.client_details.clientNumber);
+        this.loadNotifications(this.client_details.clientNumber);
+        // this.isLoading = false;
+      },
+      (err) => {
+        console.log(err);
+        this.isLoading = false;
+      }
+    );
   }
 
   setPage(page: PAGES) {

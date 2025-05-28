@@ -24,19 +24,20 @@ export class ClientSearchComponent extends FormBase implements OnInit {
   clients$: Observable<IClient[]>;
   total$: Observable<number>;
 
-  username: string = "";
-  fullname: string = "";
-  client: string = "";
+  username: string = '';
+  fullname: string = '';
+  client: string = '';
 
   showSearchFields: boolean = true;
 
   enums = new EnumHelper();
 
-  constructor(private fb: FormBuilder,
+  constructor(
+    private fb: FormBuilder,
     public clientService: ClientService,
     private route: ActivatedRoute,
     private router: Router,
-    private notificationService: NotificationService,
+    private notificationService: NotificationService
   ) {
     super();
     this.clients$ = clientService.clients$;
@@ -44,34 +45,32 @@ export class ClientSearchComponent extends FormBase implements OnInit {
   }
 
   ngOnInit() {
-    this.username = this.route.snapshot.paramMap.get('username') || "test";
-    this.fullname = this.route.snapshot.paramMap.get('fullname') || "test";
-    this.client = this.route.snapshot.paramMap.get('client') || "test";
-
-
+    this.username = this.route.snapshot.paramMap.get('username') || 'test';
+    this.fullname = this.route.snapshot.paramMap.get('fullname') || 'test';
+    this.client = this.route.snapshot.paramMap.get('client') || 'test';
 
     this.form = this.fb.group({
-      search_type: ["Exact"],
-      surname: ["", Validators.required],
-      given_name: [""],
-      second_name: [""],
-      current_name: [""],
-      gender: [""],
-      birth_year: [""],
-      show_date_range: [""],
-      year_range: [""],
-      cs: [""],
-      fps: [""],
+      search_type: ['Exact'],
+      surname: ['', Validators.required],
+      given_name: [''],
+      second_name: [''],
+      current_name: [''],
+      gender: [''],
+      birth_year: [''],
+      show_date_range: [''],
+      year_range: [''],
+      cs: [''],
+      fps: ['']
     });
 
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params) => {
       console.log(params);
       let dosearch = params.dosearch || false;
 
       if (dosearch) {
         let surname = params.surname || false;
         let given = params.givenName || false;
-        let genderString = params.gender || "";
+        let genderString = params.gender || '';
         let birthyear = params.birthyear || false;
 
         if (surname) {
@@ -81,16 +80,16 @@ export class ClientSearchComponent extends FormBase implements OnInit {
           this.form.get('given_name').patchValue(given);
         }
         if (genderString) {
-          this.form.get('gender').patchValue(this.enums.getOptionsSetVal(this.enums.Gender, parseInt(genderString)).name);
+          this.form
+            .get('gender')
+            .patchValue(this.enums.getOptionsSetVal(this.enums.Gender, parseInt(genderString)).name);
         }
         if (birthyear) {
           this.form.get('birth_year').patchValue(birthyear);
         }
         this.search();
         this.showSearchFields = false;
-
       }
-
     });
 
     let this_year = new Date().getFullYear();
@@ -108,8 +107,7 @@ export class ClientSearchComponent extends FormBase implements OnInit {
       this.form.get('gender').enable();
       this.form.get('birth_year').enable();
       this.form.get('year_range').enable();
-    }
-    else if (type === this.enums.SearchType.PARTIAL || type === this.enums.SearchType.SOUNDEX) {
+    } else if (type === this.enums.SearchType.PARTIAL || type === this.enums.SearchType.SOUNDEX) {
       this.form.get('given_name').patchValue('');
       this.form.get('second_name').patchValue('');
       this.form.get('current_name').patchValue('');
@@ -153,8 +151,7 @@ export class ClientSearchComponent extends FormBase implements OnInit {
       this.form.get('birth_year').patchValue('');
       this.form.get('year_range').patchValue('');
       this.form.get('fps').patchValue('');
-    }
-    else {
+    } else {
       this.setControlValidators(this.form.get('surname'), Validators.required);
     }
   }
@@ -170,8 +167,7 @@ export class ClientSearchComponent extends FormBase implements OnInit {
       this.form.get('birth_year').patchValue('');
       this.form.get('year_range').patchValue('');
       this.form.get('cs').patchValue('');
-    }
-    else {
+    } else {
       this.setControlValidators(this.form.get('surname'), Validators.required);
     }
   }
@@ -188,20 +184,20 @@ export class ClientSearchComponent extends FormBase implements OnInit {
 
       username: this.username,
       fullname: this.fullname,
-      client: this.client,
+      client: this.client
     };
 
-    let type = "";
-    let text = "";
+    let type = '';
+    let text = '';
     if (this.form.get('cs').value) {
-      type = "CSNO";
+      type = 'CSNO';
       text = this.form.get('cs').value;
-      parameters.search_type = "ID";
+      parameters.search_type = 'ID';
     }
     if (this.form.get('fps').value) {
-      type = "FPS";
+      type = 'FPS';
       text = this.form.get('fps').value;
-      parameters.search_type = "ID";
+      parameters.search_type = 'ID';
     }
 
     if (type) parameters.identifier_type = type;
@@ -214,7 +210,7 @@ export class ClientSearchComponent extends FormBase implements OnInit {
 
   onSort({ column, direction }: SortEvent) {
     // resetting other headers
-    this.headers.forEach(header => {
+    this.headers.forEach((header) => {
       if (header.sortable !== column) {
         header.direction = '';
       }
@@ -235,7 +231,5 @@ export class ClientSearchComponent extends FormBase implements OnInit {
 
   showOffender(clientNumber: string) {
     this.router.navigate([`client-details/${clientNumber}`]);
-
   }
-
 }

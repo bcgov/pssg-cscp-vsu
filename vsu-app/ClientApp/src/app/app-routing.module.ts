@@ -7,7 +7,9 @@ import { VictimTravelFundReimbursementComponent } from './victim-travel-fund-rei
 
 const routes: Routes = [
   {
-    path: '', component: HomeComponent, pathMatch: 'full'
+    path: '',
+    component: HomeComponent,
+    pathMatch: 'full'
   },
   // {
   //   path: '', redirectTo: 'notification_application', pathMatch: 'full'
@@ -23,7 +25,7 @@ const routes: Routes = [
   {
     path: 'vtf_reimbursement',
     component: VictimTravelFundReimbursementComponent
-  },
+  }
 ];
 
 @NgModule({
@@ -31,4 +33,4 @@ const routes: Routes = [
   exports: [RouterModule],
   providers: []
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
