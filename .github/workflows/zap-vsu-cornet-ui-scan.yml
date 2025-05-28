@@ -1,4 +1,4 @@
-name: ZAP vsu UI Scan
+name: ZAP cornet UI Scan
 
 on:
   workflow_dispatch:
