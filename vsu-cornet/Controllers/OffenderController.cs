@@ -1,8 +1,9 @@
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Gov.Cscp.Victims.Public.Services;
-using Gov.Cscp.Victims.Public.Models;
 using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Threading.Tasks;
+using Gov.Cscp.Victims.Public.Models;
+using Gov.Cscp.Victims.Public.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Gov.Cscp.Victims.Public.Controllers
 {
@@ -54,8 +55,10 @@ namespace Gov.Cscp.Victims.Public.Controllers
 
                 string endpointUrl = $"vsd_offenders";
 
-                JsonSerializerOptions options = new JsonSerializerOptions();
-                options.IgnoreNullValues = true;
+                JsonSerializerOptions options = new JsonSerializerOptions
+                {
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+                };
                 string modelString = System.Text.Json.JsonSerializer.Serialize(model, options);
                 HttpClientResult result = await _dynamicsResultService.Post(endpointUrl, modelString);
                 return StatusCode((int)result.statusCode, result.result.ToString());

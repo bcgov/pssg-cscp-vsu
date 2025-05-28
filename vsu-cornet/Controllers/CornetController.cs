@@ -1,9 +1,9 @@
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Gov.Cscp.Victims.Public.Services;
-using Gov.Cscp.Victims.Public.Models;
 using System;
 using System.Collections;
+using System.Threading.Tasks;
+using Gov.Cscp.Victims.Public.Models;
+using Gov.Cscp.Victims.Public.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Gov.Cscp.Victims.Public.Controllers
 {
@@ -18,9 +18,20 @@ namespace Gov.Cscp.Victims.Public.Controllers
         }
 
         [HttpGet("clients")]
-        public async Task<IActionResult> GetClients(string search_type, string surname, string given1, string given2,
-        string birth_year, string birth_year_range, string gender, string identifier_type, string identifier_text,
-        string username, string fullname, string client)
+        public async Task<IActionResult> GetClients(
+            string search_type,
+            string surname,
+            string given1,
+            string given2,
+            string birth_year,
+            string birth_year_range,
+            string gender,
+            string identifier_type,
+            string identifier_text,
+            string username,
+            string fullname,
+            string client
+        )
         {
             try
             {
@@ -76,7 +87,7 @@ namespace Gov.Cscp.Victims.Public.Controllers
                 {
                     username = username,
                     fullname = fullname,
-                    client = client
+                    client = client,
                 };
 
                 HttpClientResult result = await _cornetResultService.Get(endpointUrl, headers);
@@ -86,7 +97,15 @@ namespace Gov.Cscp.Victims.Public.Controllers
         }
 
         [HttpGet("event")]
-        public async Task<IActionResult> GetEvent(string event_type, string id_name, string event_id, string guid, string username, string fullname, string client)
+        public async Task<IActionResult> GetEvent(
+            string event_type,
+            string id_name,
+            string event_id,
+            string guid,
+            string username,
+            string fullname,
+            string client
+        )
         {
             try
             {
@@ -95,7 +114,7 @@ namespace Gov.Cscp.Victims.Public.Controllers
                 {
                     username = username,
                     fullname = fullname,
-                    client = client
+                    client = client,
                 };
 
                 HttpClientResult result = await _cornetResultService.Get(endpointUrl, headers);

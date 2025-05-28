@@ -4,7 +4,10 @@ namespace Gov.Cscp.Victims.Public.Models
 {
     public class Participant
     {
-        public string fortunecookietype { get { return "Microsoft.Dynamics.CRM.vsd_participant"; } }
+        public string fortunecookietype
+        {
+            get { return "Microsoft.Dynamics.CRM.vsd_participant"; }
+        }
         public string vsd_firstname { get; set; }
         public string vsd_middlename { get; set; }
         public string vsd_lastname { get; set; }

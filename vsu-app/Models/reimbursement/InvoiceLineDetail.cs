@@ -4,7 +4,10 @@ namespace Gov.Cscp.Victims.Public.Models
 {
     public class InvoiceLineDetail
     {
-        public string fortunecookietype { get { return "#Microsoft.Dynamics.CRM.vsd_invoicelinedetail"; } }
+        public string fortunecookietype
+        {
+            get { return "#Microsoft.Dynamics.CRM.vsd_invoicelinedetail"; }
+        }
         public int vsd_vsu_expensetype { get; set; }
 
         public int? vsd_vsu_transportationtype { get; set; }

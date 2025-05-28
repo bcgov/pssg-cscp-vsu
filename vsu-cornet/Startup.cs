@@ -1,10 +1,10 @@
+using Gov.Cscp.Victims.Public.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Gov.Cscp.Victims.Public.Services;
 using Microsoft.Extensions.Hosting;
 
 namespace Gov.Cscp.Victims.Public
@@ -25,12 +25,16 @@ namespace Gov.Cscp.Victims.Public
             services.AddTransient<CornetAuthHandler>();
 
             services.AddHttpClient<ICOASTAuthService, COASTAuthService>();
-            services.AddHttpClient<IDynamicsResultService, DynamicsResultService>().AddHttpMessageHandler<TokenHandler>();
-            services.AddHttpClient<ICornetResultService, CornetResultService>().AddHttpMessageHandler<CornetAuthHandler>();
+            services
+                .AddHttpClient<IDynamicsResultService, DynamicsResultService>()
+                .AddHttpMessageHandler<TokenHandler>();
+            services
+                .AddHttpClient<ICornetResultService, CornetResultService>()
+                .AddHttpMessageHandler<CornetAuthHandler>();
             services.AddMvc(opts =>
             {
                 opts.EnableEndpointRouting = false;
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            });
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -58,9 +62,7 @@ namespace Gov.Cscp.Victims.Public
 
             app.UseMvc(routes =>
             {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller}/{action=Index}/{id?}");
+                routes.MapRoute(name: "default", template: "{controller}/{action=Index}/{id?}");
             });
 
             app.UseSpa(spa =>
