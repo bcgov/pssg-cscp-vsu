@@ -1,4 +1,4 @@
-name: ZAP coast vsu dev Full Scan
+name: ZAP coast vsu dev Scan
 
 on:
   workflow_dispatch:
@@ -29,11 +29,40 @@ jobs:
           echo "ZAP did not become ready in time"
           exit 1
 
-      - name: Prime ZAP site tree
+      - name: Prime ZAP site tree with all important UI and API paths
+        env:
+          PROXY: http://zaproxy:8080
         run: |
+          # UI paths
           curl -sk "${ZAP_API}/JSON/core/action/accessUrl/?apikey=${ZAP_API_KEY}&url=${ZAP_TARGET}&followRedirects=true"
+          curl -sk "${ZAP_API}/JSON/core/action/accessUrl/?apikey=${ZAP_API_KEY}&url=${ZAP_TARGET}/vsuwebforms/&followRedirects=true"
 
-      - name: Start spider scan (from root, full site)
+          # API paths
+
+          # LookupController GET endpoints
+          curl -x $PROXY -sk "${ZAP_TARGET}/api/lookup/contact-email"
+          curl -x $PROXY -sk "${ZAP_TARGET}/api/lookup/countries"
+          curl -x $PROXY -sk "${ZAP_TARGET}/api/lookup/provinces"
+          curl -x $PROXY -sk "${ZAP_TARGET}/api/lookup/cities"
+          curl -x $PROXY -sk "${ZAP_TARGET}/api/lookup/cities/search?country=CA&province=BC&searchVal=test&limit=10"
+          curl -x $PROXY -sk "${ZAP_TARGET}/api/lookup/country/CA/cities"
+          curl -x $PROXY -sk "${ZAP_TARGET}/api/lookup/country/1/province/1/cities"
+          curl -x $PROXY -sk "${ZAP_TARGET}/api/lookup/courts"
+          curl -x $PROXY -sk "${ZAP_TARGET}/api/lookup/offences"
+          curl -x $PROXY -sk "${ZAP_TARGET}/api/lookup/rates"
+
+          # ApplicationController POST endpoint (replace '{}' with valid ApplicationData if available)
+          curl -x $PROXY -sk -H "Content-Type: application/json" -d '{}' "${ZAP_TARGET}/api/application"
+
+          # ReimbursementController POST endpoints (replace '{}' with valid ReimbursementData and CheckCase if available)
+          curl -x $PROXY -sk -H "Content-Type: application/json" -d '{}' "${ZAP_TARGET}/api/reimbursement"
+          curl -x $PROXY -sk -H "Content-Type: application/json" -d '{}' "${ZAP_TARGET}/api/reimbursement/check_case"
+
+          # CornetController GET endpoints (sample params, replace with realistic test data if possible)
+          curl -x $PROXY -sk "${ZAP_TARGET}/api/cornet/clients?search_type=basic&surname=Smith&given1=John"
+          curl -x $PROXY -sk "${ZAP_TARGET}/api/cornet/event?event_type=test&id_name=testid&event_id=123"
+
+      - name: Start classic spider scan (broad crawl)
         run: |
           set -e
           SPIDER_ID=$(curl -sk "${ZAP_API}/JSON/spider/action/scan/?apikey=${ZAP_API_KEY}&url=${ZAP_TARGET}" | jq -r .scan)
@@ -52,7 +81,23 @@ jobs:
             sleep 5
           done
 
-      - name: Start active scan (from root, full site)
+      - name: Start AJAX spider scan (for JS-heavy/SPAs)
+        run: |
+          set -e
+          AJAX_SCAN_ID=$(curl -sk "${ZAP_API}/JSON/ajaxSpider/action/scan/?apikey=${ZAP_API_KEY}&url=${ZAP_TARGET}" | jq -r .scan)
+          echo "AJAX spider scan started: $AJAX_SCAN_ID"
+          # Poll for AJAX spider completion
+          for i in {1..60}; do
+            STATUS=$(curl -sk "${ZAP_API}/JSON/ajaxSpider/view/status/?apikey=${ZAP_API_KEY}" | jq -r .status)
+            echo "AJAX spider progress: $STATUS"
+            if [ "$STATUS" = "stopped" ]; then
+              echo "AJAX spider scan completed"
+              break
+            fi
+            sleep 5
+          done
+
+      - name: Start active scan (full site)
         run: |
           set -e
           SCAN_ID=$(curl -sk "${ZAP_API}/JSON/ascan/action/scan/?apikey=${ZAP_API_KEY}&url=${ZAP_TARGET}" | jq -r .scan)
@@ -71,19 +116,19 @@ jobs:
             sleep 10
           done
 
-      - name: Download ZAP full scan report
+      - name: Download ZAP scan report
         run: |
           set -e
-          curl -sk "${ZAP_API}/OTHER/core/other/jsonreport/?apikey=${ZAP_API_KEY}" -o zap_cost_vsu_dev_full_report.json
-          if [ ! -s zap_cost_vsu_dev_full_report.json ]; then
-            echo "Download failed or zap_cost_vsu_dev_full_report.json is empty!"
+          curl -sk "${ZAP_API}/OTHER/core/other/jsonreport/?apikey=${ZAP_API_KEY}" -o zap_cost_vsu_dev_report.json
+          if [ ! -s zap_cost_vsu_dev_report.json ]; then
+            echo "Download failed or zap_cost_vsu_dev_report.json is empty!"
             exit 1
           fi
-          ls -lh zap_cost_vsu_dev_full_report.json
-          head zap_cost_vsu_dev_full_report.json
+          ls -lh zap_cost_vsu_dev_report.json
+          head zap_cost_vsu_dev_report.json
 
       - name: Upload ZAP full scan report as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: zap-vsu-full-report
-          path: zap_cost_vsu_dev_full_report.json
+          name: zap-vsu-report
+          path: zap_cost_vsu_dev_report.json
