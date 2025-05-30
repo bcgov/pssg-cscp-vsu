@@ -8,16 +8,15 @@ export function getBaseUrl() {
   return document.getElementsByTagName('base')[0].href;
 }
 
-const providers = [
-  { provide: 'BASE_URL', useFactory: getBaseUrl, deps: [] }
-];
+const providers = [{ provide: 'BASE_URL', useFactory: getBaseUrl, deps: [] }];
 
 if (environment.production) {
   enableProdMode();
   if (window) {
-    window.console.log = function () { };
+    window.console.log = function () {};
   }
 }
 
-platformBrowserDynamic(providers).bootstrapModule(AppModule)
-  .catch(err => console.log(err));
+platformBrowserDynamic(providers)
+  .bootstrapModule(AppModule)
+  .catch((err) => console.log(err));

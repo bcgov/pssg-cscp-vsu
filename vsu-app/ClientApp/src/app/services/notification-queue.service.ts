@@ -16,7 +16,7 @@ export class NotificationQueueService {
   public notificationQueue: BehaviorSubject<Notification[]> = new BehaviorSubject<Notification[]>([]);
 
   /**
-   * 
+   *
    * @param message Notification message
    * @param type 'success' || 'warning' || 'danger'
    * @param timeoutMs How long to disaply the message
@@ -29,7 +29,6 @@ export class NotificationQueueService {
     setTimeout(() => {
       this.expireNotification(notification.identifier);
     }, timeoutMs);
-
   }
 
   expireNotification(identifier: string) {

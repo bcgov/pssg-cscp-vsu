@@ -1,11 +1,12 @@
+using System;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 using Gov.Cscp.Victims.Public.Models;
 using Gov.Cscp.Victims.Public.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Serilog;
-using System.Text.Json;
-using System.Threading.Tasks;
-using System;
 
 namespace Gov.Cscp.Victims.Public.Controllers
 {
@@ -28,13 +29,17 @@ namespace Gov.Cscp.Victims.Public.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    _logger.Error($"API call to 'SubmitReimbursementInvoice' made with invalid model state. Error is:\n{ModelState}. Source = VSU");
+                    _logger.Error(
+                        $"API call to 'SubmitReimbursementInvoice' made with invalid model state. Error is:\n{ModelState}. Source = VSU"
+                    );
                     return BadRequest(ModelState);
                 }
 
                 string endpointUrl = "vsd_SubmitReimbursementInvoice";
-                JsonSerializerOptions options = new JsonSerializerOptions();
-                options.IgnoreNullValues = true;
+                JsonSerializerOptions options = new JsonSerializerOptions
+                {
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+                };
                 string modelString = System.Text.Json.JsonSerializer.Serialize(model, options);
                 DynamicsResult result = await _dynamicsResultService.Post(endpointUrl, modelString);
                 return StatusCode((int)result.statusCode, result.result.ToString());
@@ -54,13 +59,17 @@ namespace Gov.Cscp.Victims.Public.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    _logger.Error($"API call to 'CheckVSUCase' made with invalid model state. Error is:\n{ModelState}. Source = VSU");
+                    _logger.Error(
+                        $"API call to 'CheckVSUCase' made with invalid model state. Error is:\n{ModelState}. Source = VSU"
+                    );
                     return BadRequest(ModelState);
                 }
 
                 string endpointUrl = "vsd_CheckVSUCase";
-                JsonSerializerOptions options = new JsonSerializerOptions();
-                options.IgnoreNullValues = true;
+                JsonSerializerOptions options = new JsonSerializerOptions
+                {
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+                };
                 string modelString = System.Text.Json.JsonSerializer.Serialize(info, options);
                 DynamicsResult result = await _dynamicsResultService.Post(endpointUrl, modelString);
                 return StatusCode((int)result.statusCode, result.result.ToString());

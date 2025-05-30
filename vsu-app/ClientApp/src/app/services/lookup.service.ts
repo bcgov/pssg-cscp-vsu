@@ -3,89 +3,77 @@ import { Observable, throwError, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-
 @Injectable({
   providedIn: 'root'
 })
 export class LookupService {
   apiUrl = 'api/Lookup';
 
-  constructor(
-    private http: HttpClient,
-  ) { }
+  constructor(private http: HttpClient) {}
 
   getContactEmail(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/contact-email`, { headers: this.headers }).pipe(
-      retry(3),
-      catchError(this.handleError)
-    );
+    return this.http
+      .get<any>(`${this.apiUrl}/contact-email`, { headers: this.headers })
+      .pipe(retry(3), catchError(this.handleError));
   }
 
   getCountries(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/countries`, { headers: this.headers }).pipe(
-      retry(3),
-      catchError(this.handleError)
-    );
+    return this.http
+      .get<any>(`${this.apiUrl}/countries`, { headers: this.headers })
+      .pipe(retry(3), catchError(this.handleError));
   }
 
   getProvinces(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/provinces`, { headers: this.headers }).pipe(
-      retry(3),
-      catchError(this.handleError)
-    );
+    return this.http
+      .get<any>(`${this.apiUrl}/provinces`, { headers: this.headers })
+      .pipe(retry(3), catchError(this.handleError));
   }
 
   getCities(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/cities`, { headers: this.headers }).pipe(
-      retry(3),
-      catchError(this.handleError)
-    );
+    return this.http
+      .get<any>(`${this.apiUrl}/cities`, { headers: this.headers })
+      .pipe(retry(3), catchError(this.handleError));
   }
 
   searchCities(country: string, province: string, searchVal: string): Observable<any> {
     let limit = 15;
-    return this.http.get<any>(`${this.apiUrl}/cities/search?country=${country}&province=${province}&searchVal=${searchVal}&limit=${limit}`, { headers: this.headers }).pipe(
-      retry(3),
-      catchError(this.handleError)
-    );
+    return this.http
+      .get<any>(
+        `${this.apiUrl}/cities/search?country=${country}&province=${province}&searchVal=${searchVal}&limit=${limit}`,
+        { headers: this.headers }
+      )
+      .pipe(retry(3), catchError(this.handleError));
   }
 
-
   getCitiesByCountry(country: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/country/${country}/cities`, { headers: this.headers }).pipe(
-      retry(3),
-      catchError(this.handleError)
-    );
+    return this.http
+      .get<any>(`${this.apiUrl}/country/${country}/cities`, { headers: this.headers })
+      .pipe(retry(3), catchError(this.handleError));
   }
 
   getCitiesByProvince(country: string, province: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/country/${country}/province/${province}/cities`, { headers: this.headers }).pipe(
-      retry(3),
-      catchError(this.handleError)
-    );
+    return this.http
+      .get<any>(`${this.apiUrl}/country/${country}/province/${province}/cities`, { headers: this.headers })
+      .pipe(retry(3), catchError(this.handleError));
   }
 
   getCourts(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/courts`, { headers: this.headers }).pipe(
-      retry(3),
-      catchError(this.handleError)
-    );
+    return this.http
+      .get<any>(`${this.apiUrl}/courts`, { headers: this.headers })
+      .pipe(retry(3), catchError(this.handleError));
   }
 
   getOffences(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/offences`, { headers: this.headers }).pipe(
-      retry(3),
-      catchError(this.handleError)
-    );
+    return this.http
+      .get<any>(`${this.apiUrl}/offences`, { headers: this.headers })
+      .pipe(retry(3), catchError(this.handleError));
   }
 
   getRates(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/rates`, { headers: this.headers }).pipe(
-      retry(3),
-      catchError(this.handleError)
-    );
+    return this.http
+      .get<any>(`${this.apiUrl}/rates`, { headers: this.headers })
+      .pipe(retry(3), catchError(this.handleError));
   }
-
 
   get headers(): HttpHeaders {
     return new HttpHeaders({ 'Content-Type': 'application/json' });

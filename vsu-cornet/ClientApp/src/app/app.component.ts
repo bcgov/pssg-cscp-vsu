@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
   title = '';
@@ -11,8 +11,7 @@ export class AppComponent {
   public isNewUser: boolean;
   public isDevMode: boolean;
 
-  constructor() {
-  }
+  constructor() {}
 
   isIE10orLower() {
     let result, jscriptVersion;

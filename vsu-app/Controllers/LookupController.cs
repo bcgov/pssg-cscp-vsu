@@ -1,12 +1,13 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Gov.Cscp.Victims.Public.Services;
-using Gov.Cscp.Victims.Public.Models;
-using Serilog;
-using System;
+﻿using System;
 using System.Net;
 using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Threading.Tasks;
+using Gov.Cscp.Victims.Public.Models;
+using Gov.Cscp.Victims.Public.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Serilog;
 
 namespace Gov.Cscp.Victims.Public.Controllers
 {
@@ -29,10 +30,7 @@ namespace Gov.Cscp.Victims.Public.Controllers
         {
             try
             {
-                ContactEmailResult res = new ContactEmailResult
-                {
-                    ContactEmail = configuration["CONTACT_EMAIL"]
-                };
+                ContactEmailResult res = new ContactEmailResult { ContactEmail = configuration["CONTACT_EMAIL"] };
                 return await Task.FromResult(StatusCode((int)HttpStatusCode.OK, res));
             }
             catch (Exception e)
@@ -65,7 +63,8 @@ namespace Gov.Cscp.Victims.Public.Controllers
         {
             try
             {
-                string endpointUrl = "vsd_provinces?$select=vsd_code,_vsd_countryid_value,vsd_name&$filter=statecode eq 0";
+                string endpointUrl =
+                    "vsd_provinces?$select=vsd_code,_vsd_countryid_value,vsd_name&$filter=statecode eq 0";
                 DynamicsResult result = await _dynamicsResultService.Get(endpointUrl);
                 return StatusCode((int)result.statusCode, result.result.ToString());
             }
@@ -82,7 +81,8 @@ namespace Gov.Cscp.Victims.Public.Controllers
         {
             try
             {
-                string endpointUrl = "vsd_cities?$select=_vsd_countryid_value,vsd_name,_vsd_stateid_value&$filter=statecode eq 0";
+                string endpointUrl =
+                    "vsd_cities?$select=_vsd_countryid_value,vsd_name,_vsd_stateid_value&$filter=statecode eq 0";
                 DynamicsResult result = await _dynamicsResultService.Get(endpointUrl);
                 return StatusCode((int)result.statusCode, result.result.ToString());
             }
@@ -104,13 +104,15 @@ namespace Gov.Cscp.Victims.Public.Controllers
                     Country = country,
                     Province = province,
                     City = searchVal,
-                    TopCount = limit
+                    TopCount = limit,
                 };
-                
+
                 string endpointUrl = "vsd_GetCities";
 
-                JsonSerializerOptions options = new JsonSerializerOptions();
-                options.IgnoreNullValues = true;
+                JsonSerializerOptions options = new JsonSerializerOptions
+                {
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+                };
                 string requestJson = System.Text.Json.JsonSerializer.Serialize(searchParameters, options);
 
                 DynamicsResult result = await _dynamicsResultService.Post(endpointUrl, requestJson);
@@ -129,7 +131,8 @@ namespace Gov.Cscp.Victims.Public.Controllers
         {
             try
             {
-                string endpointUrl = $"vsd_cities?$select=_vsd_countryid_value,vsd_name,_vsd_stateid_value&$filter=statecode eq 0 and _vsd_countryid_value eq {country}";
+                string endpointUrl =
+                    $"vsd_cities?$select=_vsd_countryid_value,vsd_name,_vsd_stateid_value&$filter=statecode eq 0 and _vsd_countryid_value eq {country}";
                 DynamicsResult result = await _dynamicsResultService.Get(endpointUrl);
                 return StatusCode((int)result.statusCode, result.result.ToString());
             }
@@ -146,7 +149,8 @@ namespace Gov.Cscp.Victims.Public.Controllers
         {
             try
             {
-                string endpointUrl = $"vsd_cities?$select=_vsd_countryid_value,vsd_name,_vsd_stateid_value&$filter=statecode eq 0 and _vsd_countryid_value eq {countryId} and _vsd_stateid_value eq {provinceId}";
+                string endpointUrl =
+                    $"vsd_cities?$select=_vsd_countryid_value,vsd_name,_vsd_stateid_value&$filter=statecode eq 0 and _vsd_countryid_value eq {countryId} and _vsd_stateid_value eq {provinceId}";
                 DynamicsResult result = await _dynamicsResultService.Get(endpointUrl);
                 return StatusCode((int)result.statusCode, result.result.ToString());
             }
@@ -180,7 +184,8 @@ namespace Gov.Cscp.Victims.Public.Controllers
         {
             try
             {
-                string endpointUrl = "vsd_offenses?$select=vsd_name,vsd_offenseid,vsd_criminalcode&$filter=statecode eq 0 and vsd_vsu_travelfundoffences eq 100000001";
+                string endpointUrl =
+                    "vsd_offenses?$select=vsd_name,vsd_offenseid,vsd_criminalcode&$filter=statecode eq 0 and vsd_vsu_travelfundoffences eq 100000001";
                 DynamicsResult result = await _dynamicsResultService.Get(endpointUrl);
                 return StatusCode((int)result.statusCode, result.result.ToString());
             }
@@ -203,7 +208,8 @@ namespace Gov.Cscp.Victims.Public.Controllers
                 string dinnerId = "89d4ae92-fd76-eb11-b823-00505683fbf4";
                 string mileageId = "92351edf-2a7d-eb11-b824-00505683fbf4";
 
-                string endpointUrl = $"vsd_configs?$select=vsd_value,vsd_key&$filter=statecode eq 0 and (vsd_configid eq {breakfastId} or vsd_configid eq {lunchId} or vsd_configid eq {dinnerId} or vsd_configid eq {mileageId})";
+                string endpointUrl =
+                    $"vsd_configs?$select=vsd_value,vsd_key&$filter=statecode eq 0 and (vsd_configid eq {breakfastId} or vsd_configid eq {lunchId} or vsd_configid eq {dinnerId} or vsd_configid eq {mileageId})";
                 DynamicsResult result = await _dynamicsResultService.Get(endpointUrl);
                 return StatusCode((int)result.statusCode, result.result.ToString());
             }

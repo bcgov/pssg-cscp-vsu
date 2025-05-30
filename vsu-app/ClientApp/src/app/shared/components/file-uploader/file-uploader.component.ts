@@ -8,16 +8,15 @@ import { config } from '../../../../config';
   styleUrls: ['./file-uploader.component.scss']
 })
 export class FileUploaderComponent {
-  @ViewChild('files', {static: true}) myInputVariable: ElementRef;
+  @ViewChild('files', { static: true }) myInputVariable: ElementRef;
   @Input() formType: number;
   @Input() documents: FormArray;
   @Input() isDisabled: boolean;
 
-
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder) {}
 
   fakeBrowseClick(): void {
-    this.myInputVariable.nativeElement.value = "";
+    this.myInputVariable.nativeElement.value = '';
     // the UI element for the native element style doesn't match so we hide it and fake the user click.
     this.myInputVariable.nativeElement.click();
   }
@@ -30,22 +29,23 @@ export class FileUploaderComponent {
       reader.onload = () => {
         let body = reader.result.toString();
         body = body.split(',').slice(-1)[0];
-        let fileIndex = this.documents.controls.findIndex(doc => doc.get('filename').value === files.item(i).name);
+        let fileIndex = this.documents.controls.findIndex((doc) => doc.get('filename').value === files.item(i).name);
         if (fileIndex >= 0) {
           this.documents.controls[fileIndex].get('body').patchValue(body);
-        }
-        else {
+        } else {
           let file_extenstion = files.item(i).name.trim().split('.').pop();
           if (config.accepted_file_extensions[file_extenstion]) {
-            this.documents.push(this.fb.group({
-              filename: [files.item(i).name],
-              body: [body],
-              subject: ['']
-            }));
+            this.documents.push(
+              this.fb.group({
+                filename: [files.item(i).name],
+                body: [body],
+                subject: ['']
+              })
+            );
           }
         }
       };
-      reader.onerror = error => console.log('Error: ', error);
+      reader.onerror = (error) => console.log('Error: ', error);
     }
   }
   removeItem(index: number): void {

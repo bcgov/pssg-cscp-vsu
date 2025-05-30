@@ -1,11 +1,11 @@
-﻿using Gov.Cscp.Victims.Public.Models;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Rest;
-using Serilog;
-using System.Net.Http;
-using System;
+﻿using System;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
+using Azure;
+using Gov.Cscp.Victims.Public.Models;
+using Microsoft.Extensions.Configuration;
+using Serilog;
 
 namespace Gov.Cscp.Victims.Public.Services
 {
@@ -40,13 +40,14 @@ namespace Gov.Cscp.Victims.Public.Services
             return blob;
         }
 
-        private async Task<DynamicsResult> DynamicsResultAsync(HttpMethod method, string endpointUrl, string requestJson)
+        private async Task<DynamicsResult> DynamicsResultAsync(
+            HttpMethod method,
+            string endpointUrl,
+            string requestJson
+        )
         {
             string fullEndpoint = _configuration["DYNAMICS_ODATA_URI"] + endpointUrl;
             requestJson = requestJson.Replace("fortunecookie", "@odata.");
-
-            Console.WriteLine(fullEndpoint);
-            Console.WriteLine(requestJson);
 
             HttpRequestMessage _httpRequest = new HttpRequestMessage(method, fullEndpoint);
             _httpRequest.Content = new StringContent(requestJson, System.Text.Encoding.UTF8, "application/json");
@@ -64,15 +65,23 @@ namespace Gov.Cscp.Victims.Public.Services
 
             if (result.result.ContainsKey("IsSuccess") && result.result["IsSuccess"].ToString().Equals("False"))
             {
-                _logger.Information(new HttpOperationException($"Received a fail response from {endpointUrl}. Source = VSU"), $"Error calling API function {endpointUrl}. \nSource = VSU. \nError is:\n{result.result}\n\nJSON sent:{requestJson}", result.result, requestJson);
+                _logger.Information(
+                    new RequestFailedException($"Received a fail response from {endpointUrl}. Source = VSU"),
+                    $"Error calling API function {endpointUrl}. \nSource = VSU. \nError is:\n{result.result}\n\nJSON sent:{requestJson}",
+                    result.result,
+                    requestJson
+                );
             }
 
             if (!(new HttpResponseMessage((HttpStatusCode)_statusCode).IsSuccessStatusCode))
             {
-                _logger.Error(new HttpOperationException($"Error calling API function {endpointUrl}. Source = VSU"), $"Error calling API function {endpointUrl}. \nSource = VSU. \nError is:\n{result.result}\n\nJSON sent:{requestJson}", result.result, requestJson);
+                _logger.Error(
+                    new RequestFailedException($"Error calling API function {endpointUrl}. Source = VSU"),
+                    $"Error calling API function {endpointUrl}. \nSource = VSU. \nError is:\n{result.result}\n\nJSON sent:{requestJson}",
+                    result.result,
+                    requestJson
+                );
             }
-
-            // Console.WriteLine(result.result);
 
             return result;
         }

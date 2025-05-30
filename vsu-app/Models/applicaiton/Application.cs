@@ -4,7 +4,10 @@ namespace Gov.Cscp.Victims.Public.Models
 {
     public class Application
     {
-        public string fortunecookietype { get { return "Microsoft.Dynamics.CRM.vsd_application"; } }
+        public string fortunecookietype
+        {
+            get { return "Microsoft.Dynamics.CRM.vsd_application"; }
+        }
         public int vsd_vsu_applicationtype { get; set; }
         public string vsd_cvap_victimfirstname { get; set; }
         public string vsd_cvap_victimmiddlename { get; set; }
