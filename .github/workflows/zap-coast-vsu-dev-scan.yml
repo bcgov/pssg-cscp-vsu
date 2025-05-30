@@ -29,23 +29,13 @@ jobs:
           echo "ZAP did not become ready in time"
           exit 1
 
-      - name: New ZAP session and context
-        run: |
-          curl -sk "${ZAP_API}/JSON/core/action/newSession/?apikey=${ZAP_API_KEY}&name=vsu-full-scan&overwrite=true"
-          curl -sk "${ZAP_API}/JSON/context/action/removeContext/?apikey=${ZAP_API_KEY}&contextName=vsu" || true
-          curl -sk "${ZAP_API}/JSON/context/action/newContext/?apikey=${ZAP_API_KEY}&contextName=vsu"
-
-      - name: Add target to context
-        run: |
-          curl -sk "${ZAP_API}/JSON/context/action/includeInContext/?apikey=${ZAP_API_KEY}&contextName=vsu&regex=https://coast-vsu-dev.silver.devops.bcgov/.*"
-
       - name: Start spider scan (from root, full site)
         run: |
           set -e
-          SPIDER_ID=$(curl -sk "${ZAP_API}/JSON/spider/action/scan/?apikey=${ZAP_API_KEY}&url=${ZAP_TARGET}&contextName=vsu" | jq -r .scan)
+          SPIDER_ID=$(curl -sk "${ZAP_API}/JSON/spider/action/scan/?apikey=${ZAP_API_KEY}&url=${ZAP_TARGET}&contextName=default" | jq -r .scan)
           echo "Spider scan started: $SPIDER_ID"
           for i in {1..90}; do
-            STATUS=$(curl -sk "${ZAP_API}/JSON/spider/view/status/?apikey=${ZAP_API_KEY}&scanId=$SPIDER_ID&contextName=vsu" | jq -r .status)
+            STATUS=$(curl -sk "${ZAP_API}/JSON/spider/view/status/?apikey=${ZAP_API_KEY}&scanId=$SPIDER_ID&contextName=default" | jq -r .status)
             echo "Spider progress: $STATUS%"
             if [ "$STATUS" = "100" ]; then
               echo "Spider scan completed"
@@ -57,10 +47,10 @@ jobs:
       - name: Start active scan (from root, full site)
         run: |
           set -e
-          SCAN_ID=$(curl -sk "${ZAP_API}/JSON/ascan/action/scan/?apikey=${ZAP_API_KEY}&url=${ZAP_TARGET}&contextName=vsu" | jq -r .scan)
+          SCAN_ID=$(curl -sk "${ZAP_API}/JSON/ascan/action/scan/?apikey=${ZAP_API_KEY}&url=${ZAP_TARGET}&contextName=default" | jq -r .scan)
           echo "Active scan started: $SCAN_ID"
           for i in {1..120}; do
-            STATUS=$(curl -sk "${ZAP_API}/JSON/ascan/view/status/?apikey=${ZAP_API_KEY}&scanId=$SCAN_ID&contextName=vsu" | jq -r .status)
+            STATUS=$(curl -sk "${ZAP_API}/JSON/ascan/view/status/?apikey=${ZAP_API_KEY}&scanId=$SCAN_ID&contextName=default" | jq -r .status)
             echo "Active scan progress: $STATUS%"
             if [ "$STATUS" = "100" ]; then
               echo "Active scan completed"
@@ -73,7 +63,6 @@ jobs:
         run: |
           set -e
           curl -sk "${ZAP_API}/OTHER/core/other/jsonreport/?apikey=${ZAP_API_KEY}" -o zap_cost_vsu_dev_full_report.json
-          # Check file exists and is not empty
           if [ ! -s zap_cost_vsu_dev_full_report.json ]; then
             echo "Download failed or zap_cost_vsu_dev_full_report.json is empty!"
             exit 1
@@ -84,17 +73,14 @@ jobs:
       - name: Segregate report
         run: |
           set -e
-          # API endpoints: /api/
           jq '{
             site: [.site[] | {(.["@name"]): {alerts: [.alerts[]? | select((.instances[]?.uri // "") | test("/api/"))]}}]
           }' zap_cost_vsu_dev_full_report.json > zap_cost_vsu_dev_api_report.json
 
-          # Static resources: ends with static extensions (case-insensitive)
           jq '{
             site: [.site[] | {(.["@name"]): {alerts: [.alerts[]? | select((.instances[]?.uri // "") | test("\\.(js|css|png|svg|ico|jpg|jpeg|gif|webp)(\\?|$)"; "i"))]}}]
           }' zap_cost_vsu_dev_full_report.json > zap_cost_vsu_dev_static_report.json
 
-          # UI endpoints: not /api/ and not static
           jq '{
             site: [.site[] | {(.["@name"]): {alerts: [
               .alerts[]? |
@@ -105,7 +91,6 @@ jobs:
             ]}}]
           }' zap_cost_vsu_dev_full_report.json > zap_cost_vsu_dev_ui_report.json
 
-          # Show counts for quick check
           echo "API alerts:" $(jq '[.site[].[].alerts | length] | add' zap_cost_vsu_dev_api_report.json)
           echo "UI alerts:" $(jq '[.site[].[].alerts | length] | add' zap_cost_vsu_dev_ui_report.json)
           echo "Static alerts:" $(jq '[.site[].[].alerts | length] | add' zap_cost_vsu_dev_static_report.json)
