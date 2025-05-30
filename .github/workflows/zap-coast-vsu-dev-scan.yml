@@ -1,4 +1,4 @@
-name: ZAP vsu Full Scan
+name: ZAP coast vsu dev Full Scan
 
 on:
   workflow_dispatch:
@@ -29,14 +29,15 @@ jobs:
           echo "ZAP did not become ready in time"
           exit 1
 
-      # Optional: Clean session/context for a pure scan
       - name: New ZAP session and context
         run: |
           curl -sk "${ZAP_API}/JSON/core/action/newSession/?apikey=${ZAP_API_KEY}&name=vsu-full-scan&overwrite=true"
           curl -sk "${ZAP_API}/JSON/context/action/removeContext/?apikey=${ZAP_API_KEY}&contextName=vsu" || true
           curl -sk "${ZAP_API}/JSON/context/action/newContext/?apikey=${ZAP_API_KEY}&contextName=vsu"
 
-      # No include/exclude context: scan everything from root for full coverage
+      - name: Add target to context
+        run: |
+          curl -sk "${ZAP_API}/JSON/context/action/includeInContext/?apikey=${ZAP_API_KEY}&contextName=vsu&regex=https://coast-vsu-dev.silver.devops.bcgov/.*"
 
       - name: Start spider scan (from root, full site)
         run: |
@@ -71,44 +72,50 @@ jobs:
       - name: Download ZAP report (JSON)
         run: |
           set -e
-          curl -sk "${ZAP_API}/OTHER/core/other/jsonreport/?apikey=${ZAP_API_KEY}" -o zap_full_report.json
+          curl -sk "${ZAP_API}/OTHER/core/other/jsonreport/?apikey=${ZAP_API_KEY}" -o zap_cost_vsu_dev_full_report.json
           # Check file exists and is not empty
-          if [ ! -s zap_full_report.json ]; then
-            echo "Download failed or zap_full_report.json is empty!"
+          if [ ! -s zap_cost_vsu_dev_full_report.json ]; then
+            echo "Download failed or zap_cost_vsu_dev_full_report.json is empty!"
             exit 1
           fi
-          ls -lh zap_full_report.json
-          head zap_full_report.json
+          ls -lh zap_cost_vsu_dev_full_report.json
+          head zap_cost_vsu_dev_full_report.json
 
       - name: Segregate report
         run: |
           set -e
           # API endpoints: /api/
           jq '{
-            site: [.site[] | {(.["@name"]): {alerts: [.alerts[] | select(.instances[].uri | test("/api/"))]}}]
-          }' zap_full_report.json > zap_api_report.json
+            site: [.site[] | {(.["@name"]): {alerts: [.alerts[]? | select((.instances[]?.uri // "") | test("/api/"))]}}]
+          }' zap_cost_vsu_dev_full_report.json > zap_cost_vsu_dev_api_report.json
 
-          # UI endpoints: not /api/, not static (js/css/png/svg/ico/jpg)
+          # Static resources: ends with static extensions (case-insensitive)
           jq '{
-            site: [.site[] | {(.["@name"]): {alerts: [.alerts[] | select(.instances[].uri | test("^((?!/api/|\\.js$|\\.css$|\\.png$|\\.svg$|\\.ico$|\\.jpg$).)*$"))]}}]
-          }' zap_full_report.json > zap_ui_report.json
+            site: [.site[] | {(.["@name"]): {alerts: [.alerts[]? | select((.instances[]?.uri // "") | test("\\.(js|css|png|svg|ico|jpg|jpeg|gif|webp)(\\?|$)"; "i"))]}}]
+          }' zap_cost_vsu_dev_full_report.json > zap_cost_vsu_dev_static_report.json
 
-          # Static resources only
+          # UI endpoints: not /api/ and not static
           jq '{
-            site: [.site[] | {(.["@name"]): {alerts: [.alerts[] | select(.instances[].uri | test("\\.(js|css|png|svg|ico|jpg)(\\?|$)"))]}}]
-          }' zap_full_report.json > zap_static_report.json
+            site: [.site[] | {(.["@name"]): {alerts: [
+              .alerts[]? |
+              select(
+                ((.instances[]?.uri // "") | test("/api/") | not) and
+                ((.instances[]?.uri // "") | test("\\.(js|css|png|svg|ico|jpg|jpeg|gif|webp)(\\?|$)"; "i") | not)
+              )
+            ]}}]
+          }' zap_cost_vsu_dev_full_report.json > zap_cost_vsu_dev_ui_report.json
 
           # Show counts for quick check
-          echo "API alerts:" $(jq '[.site[].[].alerts | length] | add' zap_api_report.json)
-          echo "UI alerts:" $(jq '[.site[].[].alerts | length] | add' zap_ui_report.json)
-          echo "Static alerts:" $(jq '[.site[].[].alerts | length] | add' zap_static_report.json)
+          echo "API alerts:" $(jq '[.site[].[].alerts | length] | add' zap_cost_vsu_dev_api_report.json)
+          echo "UI alerts:" $(jq '[.site[].[].alerts | length] | add' zap_cost_vsu_dev_ui_report.json)
+          echo "Static alerts:" $(jq '[.site[].[].alerts | length] | add' zap_cost_vsu_dev_static_report.json)
 
       - name: Upload all ZAP reports as artifacts
         uses: actions/upload-artifact@v4
         with:
           name: zap-vsu-full-reports
           path: |
-            zap_full_report.json
-            zap_api_report.json
-            zap_ui_report.json
-            zap_static_report.json
+            zap_cost_vsu_dev_full_report.json
+            zap_cost_vsu_dev_api_report.json
+            zap_cost_vsu_dev_ui_report.json
+            zap_cost_vsu_dev_static_report.json
