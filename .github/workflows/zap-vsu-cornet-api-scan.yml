@@ -1,4 +1,4 @@
-name: ZAP cornet Scan
+name: ZAP vsu cornet API Scan
 
 on:
   workflow_dispatch:

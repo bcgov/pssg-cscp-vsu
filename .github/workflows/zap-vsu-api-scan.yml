@@ -1,4 +1,4 @@
-name: ZAP API Scan
+name: ZAP vsu API Scan
 
 on:
   workflow_dispatch:
