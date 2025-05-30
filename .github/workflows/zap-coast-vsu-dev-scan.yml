@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  zap-vsu-full-scan:
+  zap-coast-vsu-dev-full-scan:
     name: ZAP vsu Full Scan
     runs-on: [self-hosted, linux]
     timeout-minutes: 45
@@ -71,7 +71,7 @@ jobs:
             sleep 10
           done
 
-      - name: Download ZAP report (JSON)
+      - name: Download ZAP full scan report
         run: |
           set -e
           curl -sk "${ZAP_API}/OTHER/core/other/jsonreport/?apikey=${ZAP_API_KEY}" -o zap_cost_vsu_dev_full_report.json
@@ -82,34 +82,8 @@ jobs:
           ls -lh zap_cost_vsu_dev_full_report.json
           head zap_cost_vsu_dev_full_report.json
 
-      - name: Segregate report
-        run: |
-          set -e
-          jq '{
-            site: [.site[] | {(.["@name"]): {alerts: [.alerts[]? | select((.instances[]?.uri // "") | test("/api/"))]}}]
-          }' zap_cost_vsu_dev_full_report.json > zap_cost_vsu_dev_api_report.json
-          jq '{
-            site: [.site[] | {(.["@name"]): {alerts: [.alerts[]? | select((.instances[]?.uri // "") | test("\\.(js|css|png|svg|ico|jpg|jpeg|gif|webp)(\\?|$)"; "i"))]}}]
-          }' zap_cost_vsu_dev_full_report.json > zap_cost_vsu_dev_static_report.json
-          jq '{
-            site: [.site[] | {(.["@name"]): {alerts: [
-              .alerts[]? |
-              select(
-                ((.instances[]?.uri // "") | test("/api/") | not) and
-                ((.instances[]?.uri // "") | test("\\.(js|css|png|svg|ico|jpg|jpeg|gif|webp)(\\?|$)"; "i") | not)
-              )
-            ]}}]
-          }' zap_cost_vsu_dev_full_report.json > zap_cost_vsu_dev_ui_report.json
-          echo "API alerts:" $(jq '[.site[].[].alerts | length] | add' zap_cost_vsu_dev_api_report.json)
-          echo "UI alerts:" $(jq '[.site[].[].alerts | length] | add' zap_cost_vsu_dev_ui_report.json)
-          echo "Static alerts:" $(jq '[.site[].[].alerts | length] | add' zap_cost_vsu_dev_static_report.json)
-
-      - name: Upload all ZAP reports as artifacts
+      - name: Upload ZAP full scan report as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: zap-vsu-full-reports
-          path: |
-            zap_cost_vsu_dev_full_report.json
-            zap_cost_vsu_dev_api_report.json
-            zap_cost_vsu_dev_ui_report.json
-            zap_cost_vsu_dev_static_report.json
+          name: zap-vsu-full-report
+          path: zap_cost_vsu_dev_full_report.json
