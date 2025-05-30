@@ -29,6 +29,10 @@ jobs:
           echo "ZAP did not become ready in time"
           exit 1
 
+      - name: Prime ZAP site tree
+        run: |
+          curl -sk "${ZAP_API}/JSON/core/action/accessUrl/?apikey=${ZAP_API_KEY}&url=${ZAP_TARGET}&followRedirects=true"
+
       - name: Start spider scan (from root, full site)
         run: |
           set -e
@@ -76,11 +80,9 @@ jobs:
           jq '{
             site: [.site[] | {(.["@name"]): {alerts: [.alerts[]? | select((.instances[]?.uri // "") | test("/api/"))]}}]
           }' zap_cost_vsu_dev_full_report.json > zap_cost_vsu_dev_api_report.json
-
           jq '{
             site: [.site[] | {(.["@name"]): {alerts: [.alerts[]? | select((.instances[]?.uri // "") | test("\\.(js|css|png|svg|ico|jpg|jpeg|gif|webp)(\\?|$)"; "i"))]}}]
           }' zap_cost_vsu_dev_full_report.json > zap_cost_vsu_dev_static_report.json
-
           jq '{
             site: [.site[] | {(.["@name"]): {alerts: [
               .alerts[]? |
@@ -90,7 +92,6 @@ jobs:
               )
             ]}}]
           }' zap_cost_vsu_dev_full_report.json > zap_cost_vsu_dev_ui_report.json
-
           echo "API alerts:" $(jq '[.site[].[].alerts | length] | add' zap_cost_vsu_dev_api_report.json)
           echo "UI alerts:" $(jq '[.site[].[].alerts | length] | add' zap_cost_vsu_dev_ui_report.json)
           echo "Static alerts:" $(jq '[.site[].[].alerts | length] | add' zap_cost_vsu_dev_static_report.json)
