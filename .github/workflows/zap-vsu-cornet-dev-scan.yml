@@ -5,7 +5,7 @@ on:
 
 jobs:
   zap-cornet-vsu-dev-full-scan:
-    name: ZAP Cornet Interface Service Full Scan
+    name: ZAP Cornet vsu Full Scan
     runs-on: [self-hosted, linux]
     timeout-minutes: 45
 

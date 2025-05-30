@@ -5,7 +5,7 @@ on:
 
 jobs:
   zap-coast-vsu-dev-full-scan:
-    name: ZAP vsu Full Scan
+    name: ZAP coast vsu Full Scan
     runs-on: [self-hosted, linux]
     timeout-minutes: 45
 
