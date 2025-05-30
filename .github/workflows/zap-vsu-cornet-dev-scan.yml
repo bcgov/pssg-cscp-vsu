@@ -1,18 +1,18 @@
-name: ZAP coast vsu dev Scan
+name: ZAP cornet vsu dev Scan
 
 on:
   workflow_dispatch:
 
 jobs:
-  zap-coast-vsu-dev-full-scan:
-    name: ZAP vsu Full Scan
+  zap-cornet-vsu-dev-full-scan:
+    name: ZAP Cornet Interface Service Full Scan
     runs-on: [self-hosted, linux]
     timeout-minutes: 45
 
     env:
       ZAP_API: http://zaproxy:8080
       ZAP_API_KEY: ${{ secrets.ZAP_API_KEY }}
-      ZAP_TARGET: https://coast-vsu-dev.silver.devops.bcgov
+      ZAP_TARGET: https://cornet-interface-service-f9a9e6-dev.apps.silver.devops.gov.bc.ca
 
     steps:
       - name: Wait for ZAP to be ready
@@ -33,9 +33,13 @@ jobs:
         env:
           PROXY: http://zaproxy:8080
         run: |
-          # UI paths
+          # UI paths based on Angular routes
           curl -sk "${ZAP_API}/JSON/core/action/accessUrl/?apikey=${ZAP_API_KEY}&url=${ZAP_TARGET}&followRedirects=true"
-          curl -sk "${ZAP_API}/JSON/core/action/accessUrl/?apikey=${ZAP_API_KEY}&url=${ZAP_TARGET}/vsuwebforms/&followRedirects=true"
+          curl -sk "${ZAP_API}/JSON/core/action/accessUrl/?apikey=${ZAP_API_KEY}&url=${ZAP_TARGET}/client-search&followRedirects=true"
+          curl -sk "${ZAP_API}/JSON/core/action/accessUrl/?apikey=${ZAP_API_KEY}&url=${ZAP_TARGET}/cornet-info&followRedirects=true"
+          # dynamic params for /cornet-info/:vsd_offenderid and /client-details/:clientNumber
+          curl -sk "${ZAP_API}/JSON/core/action/accessUrl/?apikey=${ZAP_API_KEY}&url=${ZAP_TARGET}/cornet-info/123456&followRedirects=true"
+          curl -sk "${ZAP_API}/JSON/core/action/accessUrl/?apikey=${ZAP_API_KEY}&url=${ZAP_TARGET}/client-details/654321&followRedirects=true"
 
           # API paths
 
@@ -44,23 +48,19 @@ jobs:
           curl -x $PROXY -sk "${ZAP_TARGET}/api/lookup/countries"
           curl -x $PROXY -sk "${ZAP_TARGET}/api/lookup/provinces"
           curl -x $PROXY -sk "${ZAP_TARGET}/api/lookup/cities"
-          curl -x $PROXY -sk "${ZAP_TARGET}/api/lookup/cities/search?country=CA&province=BC&searchVal=test&limit=10"
+          curl -x $PROXY -sk "${ZAP_TARGET}/api/lookup/cities/search?country=CA&province=BC&searchVal=TestCity&limit=10"
           curl -x $PROXY -sk "${ZAP_TARGET}/api/lookup/country/CA/cities"
           curl -x $PROXY -sk "${ZAP_TARGET}/api/lookup/country/1/province/1/cities"
           curl -x $PROXY -sk "${ZAP_TARGET}/api/lookup/courts"
           curl -x $PROXY -sk "${ZAP_TARGET}/api/lookup/offences"
           curl -x $PROXY -sk "${ZAP_TARGET}/api/lookup/rates"
 
-          # ApplicationController POST endpoint
-          curl -x $PROXY -sk -H "Content-Type: application/json" -d '{}' "${ZAP_TARGET}/api/application"
-
-          # ReimbursementController POST endpoints
-          curl -x $PROXY -sk -H "Content-Type: application/json" -d '{}' "${ZAP_TARGET}/api/reimbursement"
-          curl -x $PROXY -sk -H "Content-Type: application/json" -d '{}' "${ZAP_TARGET}/api/reimbursement/check_case"
-
           # CornetController GET endpoints
           curl -x $PROXY -sk "${ZAP_TARGET}/api/cornet/clients?search_type=basic&surname=Smith&given1=John"
-          curl -x $PROXY -sk "${ZAP_TARGET}/api/cornet/event?event_type=test&id_name=testid&event_id=123"
+          curl -x $PROXY -sk "${ZAP_TARGET}/api/cornet/event?event_type=test_event&id_name=testid&event_id=123"
+
+          # ReimbursementController POST endpoint
+          curl -x $PROXY -sk -H "Content-Type: application/json" -d '{}' "${ZAP_TARGET}/api/reimbursement/check_case"
 
       - name: Start classic spider scan (broad crawl)
         run: |
@@ -119,16 +119,16 @@ jobs:
       - name: Download ZAP scan report
         run: |
           set -e
-          curl -sk "${ZAP_API}/OTHER/core/other/jsonreport/?apikey=${ZAP_API_KEY}" -o zap_coast_vsu_dev_report.json
-          if [ ! -s zap_coast_vsu_dev_report.json ]; then
-            echo "Download failed or zap_coast_vsu_dev_report.json is empty!"
+          curl -sk "${ZAP_API}/OTHER/core/other/jsonreport/?apikey=${ZAP_API_KEY}" -o zap_cornet_vsu_dev_report.json
+          if [ ! -s zap_cornet_vsu_dev_report.json ]; then
+            echo "Download failed or zap_cornet_vsu_dev_report.json is empty!"
             exit 1
           fi
-          ls -lh zap_coast_vsu_dev_report.json
-          head zap_coast_vsu_dev_report.json
+          ls -lh zap_cornet_vsu_dev_report.json
+          head zap_cornet_vsu_dev_report.json
 
       - name: Upload ZAP full scan report as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: zap-vsu-report
-          path: zap_coast_vsu_dev_report.json
+          name: zap-cornet-interface-service-dev-report
+          path: zap_cornet_vsu_dev_report.json
