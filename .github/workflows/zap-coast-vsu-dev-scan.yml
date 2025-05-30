@@ -130,5 +130,5 @@ jobs:
       - name: Upload ZAP full scan report as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: zap-vsu-report
+          name: zap-coast-vsu-dev-report
           path: zap_coast_vsu_dev_report.json
