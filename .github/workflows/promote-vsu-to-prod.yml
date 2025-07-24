@@ -1,0 +1,114 @@
+# ======================================================================================
+#  Last Updated: 2025-07-15
+#
+#  Description:
+#  Promotes an image by re-tagging it within the OpenShift ImageStream.
+#  This in-cluster promotion guarantees image digest is preserved.
+#
+# ======================================================================================
+
+name: Promote CPU-SPA to Prod
+
+# --- TRIGGERS -----------------------------------------------------------------------
+on:
+  # This workflow is triggered manually, requiring explicit user action.
+  workflow_dispatch:
+    inputs:
+      source_tag:
+        description: "The source tag to promote (e.g., test, or a specific version tag)"
+        required: false
+        default: "test"
+
+# --- ENVIRONMENT VARIABLES (Preserving original structure) -------------------------
+env:
+  # NOTE: IMAGE_REGISTRY is preserved for consistency but is not used by 'oc' commands.
+  IMAGE_REGISTRY: ${{ vars.OCP4_REGISTRY }}
+  # The OpenShift Namespace where the ImageStream is located.
+  NAMESPACE: ${{ secrets.OCP4_NAMESPACE }}
+  # The source tag for promotion, from user input.
+  SOURCE_TAG: ${{ github.event.inputs.source_tag }}
+  # The target tag for the 'prod' environment.
+  TARGET_TAG: "prod"
+  # The tag used to back up the previous 'prod' image.
+  BACKUP_TAG: "prod-backup"
+  # The name of the image to promote.
+  IMAGE_NAME: "cpu-spa"
+
+# --- JOBS ---------------------------------------------------------------------------
+jobs:
+  promote-image:
+    name: Promote cpu-spa to Prod
+    # This job runs in a controlled environment with protection rules.
+    environment: promote-environment
+    runs-on: ubuntu-latest
+
+    steps:
+      # ------------------------------------------------------------------------------------
+      #  Step 1: Install oc CLI
+      #  Purpose: Use the native OpenShift CLI for reliable in-cluster operations.
+      # ------------------------------------------------------------------------------------
+      - name: Install OpenShift CLI
+        run: |
+          curl -LO "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/openshift-client-linux.tar.gz"
+          tar -xzf openshift-client-linux.tar.gz
+          sudo mv oc /usr/local/bin/
+
+      # ------------------------------------------------------------------------------------
+      #  Step 2: Login to OpenShift
+      # ------------------------------------------------------------------------------------
+      - name: Login to OpenShift
+        run: |
+          oc login --token="${{ secrets.OCP4_PASSWORD }}" --server="${{ secrets.OPENSHIFT_SERVER }}"
+
+      # ------------------------------------------------------------------------------------
+      #  Step 3: Backup Current 'prod' Image
+      #  Purpose: Before promoting, we tag the current 'prod' as 'prod-backup'.
+      # ------------------------------------------------------------------------------------
+      - name: Backup Current 'prod' Image
+        run: |
+          # This check prevents an error if the 'prod' tag doesn't exist yet
+          if oc get imagestreamtag ${{ env.IMAGE_NAME }}:${{ env.TARGET_TAG }} -n ${{ env.NAMESPACE }} &>/dev/null; then
+            echo "Backing up current '${{ env.TARGET_TAG }}' image to '${{ env.BACKUP_TAG }}'..."
+            oc tag ${{ env.NAMESPACE }}/${{ env.IMAGE_NAME }}:${{ env.TARGET_TAG }} ${{ env.NAMESPACE }}/${{ env.IMAGE_NAME }}:${{ env.BACKUP_TAG }}
+            echo "Backup successful."
+          else
+            echo "No existing '${{ env.TARGET_TAG }}' tag found. Skipping backup."
+          fi
+
+      # ------------------------------------------------------------------------------------
+      #  Step 4: Promote by Tagging
+      #  Purpose: This is the core promotion step. It points the 'prod' tag to the
+      #           same image digest as the source tag.
+      # ------------------------------------------------------------------------------------
+      - name: Promote Source Image to 'prod'
+        run: |
+          echo "Promoting '${{ env.SOURCE_TAG }}' to '${{ env.TARGET_TAG }}' using 'oc tag'..."
+          oc tag ${{ env.NAMESPACE }}/${{ env.IMAGE_NAME }}:${{ env.SOURCE_TAG }} ${{ env.NAMESPACE }}/${{ env.IMAGE_NAME }}:${{ env.TARGET_TAG }}
+          echo "Promotion successful."
+
+      # ------------------------------------------------------------------------------------
+      #  Step 5: Validate Promotion by Comparing Image Digests
+      #  Purpose: Verify that the digests now match perfectly, which 'oc tag' guarantees.
+      # ------------------------------------------------------------------------------------
+      - name: Validate Promotion by Comparing Image Digests
+        run: |
+          echo "Validating promotion..."
+          sleep 5 # Giving the ImageStream a moment to update
+
+          SOURCE_SHA=$(oc get imagestreamtag ${{ env.IMAGE_NAME }}:${{ env.SOURCE_TAG }} -n ${{ env.NAMESPACE }} -o jsonpath='{.image.dockerImageReference}' | sed 's/.*@//')
+          PROD_SHA=$(oc get imagestreamtag ${{ env.IMAGE_NAME }}:${{ env.TARGET_TAG }} -n ${{ env.NAMESPACE }} -o jsonpath='{.image.dockerImageReference}' | sed 's/.*@//')
+
+          echo "Source Digest: $SOURCE_SHA"
+          echo "Prod Digest:   $PROD_SHA"
+
+          if [[ -z "$SOURCE_SHA" ]]; then
+            echo "::error::Could not find source digest for tag '${{ env.SOURCE_TAG }}'."
+            exit 1
+          fi
+
+          if [[ "$SOURCE_SHA" == "$PROD_SHA" ]]; then
+            echo "Validation successful! Digests match perfectly."
+          else
+            echo "::error::Image digests do not match after promotion."
+            exit 1
+          fi
