@@ -67,7 +67,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "12.x"
+          node-version: "22.x"
+          # app uses node 12, due to code ql version issue, scanning with 22, however application has to be updated to latest version.
 
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
