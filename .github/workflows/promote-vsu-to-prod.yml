@@ -1,5 +1,5 @@
 # ======================================================================================
-#  Last Updated: 2025-07-15
+#  Last Updated: 2025-07-23
 #
 #  Description:
 #  Promotes an image by re-tagging it within the OpenShift ImageStream.
@@ -7,7 +7,7 @@
 #
 # ======================================================================================
 
-name: Promote CPU-SPA to Prod
+name: Promote VSU-SPA to Prod
 
 # --- TRIGGERS -----------------------------------------------------------------------
 on:
@@ -32,12 +32,12 @@ env:
   # The tag used to back up the previous 'prod' image.
   BACKUP_TAG: "prod-backup"
   # The name of the image to promote.
-  IMAGE_NAME: "cpu-spa"
+  IMAGE_NAME: "vsu"
 
 # --- JOBS ---------------------------------------------------------------------------
 jobs:
   promote-image:
-    name: Promote cpu-spa to Prod
+    name: Promote vsu to Prod
     # This job runs in a controlled environment with protection rules.
     environment: promote-environment
     runs-on: ubuntu-latest
