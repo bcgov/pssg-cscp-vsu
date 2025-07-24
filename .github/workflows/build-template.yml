@@ -2,7 +2,7 @@
 #  Last Updated: 2025-07-14
 #
 #  Description:
-#  Reusable workflow for building, publishing, and scanning the CPU App Docker image.
+#  Reusable workflow for building, publishing, and scanning the App Docker image.
 #  It is designed to be called by other workflows.
 # ======================================================================================
 

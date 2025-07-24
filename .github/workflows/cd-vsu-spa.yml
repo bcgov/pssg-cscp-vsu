@@ -2,11 +2,11 @@
 #  Last Updated: 2025-07-23
 #
 #  Description:
-#  This is the main CD workflow for the VSU Application.
+#  This is the main CD workflow for the Application.
 #  It orchestrates the build and deployment process for the API and UI services.
 #
 #  Triggers:
-#  1. Automatic (`workflow_run`): Triggers automatically after the 'CI VSU SPA'
+#  1. Automatic (`workflow_run`): Triggers automatically after the 'CI job'
 #     workflow completes successfully on the 'development' branch.
 #  2. Manual (`workflow_dispatch`): Allows for manual deployments to the 'development'
 #     branch. Requires a 7-character commit SHA.
