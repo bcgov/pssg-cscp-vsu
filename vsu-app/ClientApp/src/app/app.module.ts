@@ -34,7 +34,7 @@ import { NotificationOverviewComponent } from './shared/components/notification-
 import { RecipientDetailsComponent } from './shared/components/recipient-details/recipient-details.component';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { SignPadDialog } from './shared/dialogs/sign-dialog/sign-dialog.component';
-import { AngularSignaturePadModule } from '@almothafar/angular-signature-pad';
+import { AngularSignaturePadModule as SignaturePadModule } from '@almothafar/angular-signature-pad';
 import { ToolTipTriggerComponent } from './shared/components/tool-tip/tool-tip.component';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TravelExpensesComponent } from './shared/components/travel-expenses/travel-expenses.component';
@@ -88,7 +88,7 @@ import { VictimTravelFundReimbursementComponent } from './victim-travel-fund-rei
     MatProgressSpinnerModule,
     MatStepperModule,
     ReactiveFormsModule,
-    AngularSignaturePadModule,
+    SignaturePadModule,
     TooltipModule.forRoot(),
     TypeaheadModule.forRoot(),
     NgxMaskDirective,
