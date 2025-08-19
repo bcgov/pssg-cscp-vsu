@@ -66,7 +66,7 @@ COPY . .
 # Install Node.js (required to install Angular) and build tools for node-sass
 RUN apt-get update -yq && \
   apt-get upgrade -yq && \
-  apt-get install -yq curl python3 build-essential && \
+  apt-get install -yq --no-install-recommends curl python3 build-essential && \
   ln -sf /usr/bin/python3 /usr/bin/python
 # Updated to Node.js 22.x for better compatibility and security
 RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
