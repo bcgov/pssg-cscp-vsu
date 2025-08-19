@@ -27,7 +27,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatStepperModule } from '@angular/material/stepper';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { provideNgxMask } from 'ngx-mask';
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { NotificationApplicationComponent } from './notification-application/notification-application.component';
 import { NotificationBannerComponent } from './shared/notification-banner/notification-banner.component';
 import { NotificationOverviewComponent } from './shared/components/notification-overview/overview.component';
@@ -87,11 +87,12 @@ import { VictimTravelFundReimbursementComponent } from './victim-travel-fund-rei
     MatIconModule,
     MatProgressSpinnerModule,
     MatStepperModule,
-    // NgxMaskModule removed for Angular 16+ compatibility
     ReactiveFormsModule,
-  AngularSignaturePadModule,
+    AngularSignaturePadModule,
     TooltipModule.forRoot(),
-    TypeaheadModule.forRoot()
+    TypeaheadModule.forRoot(),
+    NgxMaskDirective,
+    NgxMaskPipe
   ],
   exports: [AppRoutingModule, MatDatepickerModule, MatProgressSpinnerModule, NotificationBannerComponent],
   providers: [
