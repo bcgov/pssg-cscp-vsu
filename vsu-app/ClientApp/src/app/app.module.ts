@@ -19,24 +19,22 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomeComponent } from './home/home.component';
 import { HttpClientModule } from '@angular/common/http';
 import { LookupService } from './services/lookup.service';
-import {
-  MatButtonModule,
-  MatChipsModule,
-  MatDatepickerModule,
-  MatDialogModule,
-  MatIconModule,
-  MatProgressSpinnerModule,
-  MatStepperModule
-} from '@angular/material';
-import { NgModule } from '@angular/core';
-import { NgxMaskModule } from 'ngx-mask';
+import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatStepperModule } from '@angular/material/stepper';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { NotificationApplicationComponent } from './notification-application/notification-application.component';
 import { NotificationBannerComponent } from './shared/notification-banner/notification-banner.component';
 import { NotificationOverviewComponent } from './shared/components/notification-overview/overview.component';
 import { RecipientDetailsComponent } from './shared/components/recipient-details/recipient-details.component';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { SignPadDialog } from './shared/dialogs/sign-dialog/sign-dialog.component';
-import { SignaturePadModule } from 'angular2-signaturepad';
+import { AngularSignaturePadModule as SignaturePadModule } from '@almothafar/angular-signature-pad';
 import { ToolTipTriggerComponent } from './shared/components/tool-tip/tool-tip.component';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TravelExpensesComponent } from './shared/components/travel-expenses/travel-expenses.component';
@@ -84,20 +82,21 @@ import { VictimTravelFundReimbursementComponent } from './victim-travel-fund-rei
     FormsModule,
     HttpClientModule,
     MatButtonModule,
-    MatChipsModule,
     MatDatepickerModule,
     MatDialogModule,
     MatIconModule,
     MatProgressSpinnerModule,
     MatStepperModule,
-    NgxMaskModule.forRoot(),
     ReactiveFormsModule,
     SignaturePadModule,
     TooltipModule.forRoot(),
-    TypeaheadModule.forRoot()
+    TypeaheadModule.forRoot(),
+    NgxMaskDirective,
+    NgxMaskPipe
   ],
   exports: [AppRoutingModule, MatDatepickerModule, MatProgressSpinnerModule, NotificationBannerComponent],
   providers: [
+    provideNgxMask(),
     LookupService,
     ApplicationService,
     ReimbursementService,
@@ -106,7 +105,7 @@ import { VictimTravelFundReimbursementComponent } from './victim-travel-fund-rei
       useValue: { showError: true }
     }
   ],
-  entryComponents: [SignPadDialog],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

@@ -6,7 +6,7 @@ import { FORM_TITLES, FORM_TYPES } from '../shared/enums-list';
 import { FormBase } from '../shared/form-base';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { LookupService } from '../services/lookup.service';
-import { MatVerticalStepper } from '@angular/material';
+import { MatStepperModule, MatStepper } from '@angular/material/stepper';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { TravelOverviewInfoHelper } from '../shared/components/travel-overview/travel-overview.helper';
@@ -30,7 +30,7 @@ import { NotificationQueueService } from '../services/notification-queue.service
   styleUrls: ['./vtf-application.component.scss']
 })
 export class VictimTravelFundApplicationComponent extends FormBase implements OnInit {
-  @ViewChild('stepper', { static: true }) applicationStepper: MatVerticalStepper;
+  @ViewChild('stepper', { static: true }) applicationStepper: MatStepper;
   isIE: boolean = false;
   didLoad: boolean = false;
 

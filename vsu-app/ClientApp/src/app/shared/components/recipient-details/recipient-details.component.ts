@@ -9,7 +9,7 @@ import {
   FormGroup,
   Validators
 } from '@angular/forms';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { noop, Observable, Observer, of, throwError } from 'rxjs';
 import { retry, catchError, map, switchMap, tap } from 'rxjs/operators';

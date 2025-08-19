@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatStepper, MatVerticalStepper } from '@angular/material';
+import { MatStepper } from '@angular/material/stepper';
 import { Router } from '@angular/router';
 import {
   iNotificationApplication,
@@ -28,7 +28,7 @@ import { NotificationQueueService } from '../services/notification-queue.service
   styleUrls: ['./notification-application.component.scss']
 })
 export class NotificationApplicationComponent extends FormBase implements OnInit {
-  @ViewChild('stepper', { static: true }) applicationStepper: MatVerticalStepper;
+  @ViewChild('stepper', { static: true }) applicationStepper: MatStepper;
   isIE: boolean = false;
   didLoad: boolean = false;
   showValidationMessage: boolean;
