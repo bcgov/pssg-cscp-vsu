@@ -68,8 +68,9 @@ RUN apt-get update -yq && \
   apt-get upgrade -yq && \
   apt-get install -yq curl python3 build-essential && \
   ln -sf /usr/bin/python3 /usr/bin/python
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
-RUN apt-get install -yq nodejs=12.22.12-deb-1nodesource1
+# Updated to Node.js 22.x for better compatibility and security
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+RUN apt-get install -yq nodejs
 
 # Restore as distinct layers
 RUN dotnet restore "./vsu-app/vsu-app.csproj"
