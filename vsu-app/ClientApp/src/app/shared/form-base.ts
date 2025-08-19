@@ -1,5 +1,5 @@
 import { ValidatorFn, AbstractControl, FormControl, FormGroup, FormArray, Validators } from '@angular/forms';
-import { MatStepper } from '@angular/material';
+import { MatStepper } from '@angular/material/stepper';
 import * as moment from 'moment';
 import { ApplicationType, EnumHelper } from './enums-list';
 import * as _ from 'lodash';

@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS, MatDialog, MatDialogConfig } from '@angular/material';
+import { MatStepper } from '@angular/material/stepper';
+import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material/core';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { FormGroup, ControlContainer } from '@angular/forms';
 import { ApplicationType, MY_FORMATS } from '../../enums-list';

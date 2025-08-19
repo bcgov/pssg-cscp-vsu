@@ -2,7 +2,7 @@
 
 /* Controls Survey styles */
 
-@import '~@angular/material/theming';
+@import '@angular/material/theming';
 @import '~mygovbc-bootstrap-theme/dist/mygovbc-bootstrap-theme.min.css';
 @include mat-core();
 $primary: mat-palette($mat-grey, 400);

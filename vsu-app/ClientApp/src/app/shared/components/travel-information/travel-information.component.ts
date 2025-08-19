@@ -4,7 +4,7 @@ import { ApplicationType, MY_FORMATS } from '../../enums-list';
 import { FormBase } from '../../form-base';
 import { iLookupData } from '../../interfaces/lookup-data.interface';
 import { TravelInfoHelper } from './travel-information.helper';
-import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material';
+import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import * as moment from 'moment';
 

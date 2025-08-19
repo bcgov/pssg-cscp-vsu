@@ -4,7 +4,7 @@ import { FORM_TITLES, FORM_TYPES } from '../shared/enums-list';
 import { FormBase } from '../shared/form-base';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { LookupService } from '../services/lookup.service';
-import { MatVerticalStepper } from '@angular/material';
+import { MatStepperModule, MatStepper } from '@angular/material/stepper';
 import { NotificationQueueService } from '../services/notification-queue.service';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
@@ -38,7 +38,7 @@ const MILEAGE_RATE_ID = '92351edf-2a7d-eb11-b824-00505683fbf4';
   styleUrls: ['./vtf-reimbursement.component.scss']
 })
 export class VictimTravelFundReimbursementComponent extends FormBase implements OnInit {
-  @ViewChild('stepper', { static: true }) applicationStepper: MatVerticalStepper;
+  @ViewChild('stepper', { static: true }) applicationStepper: MatStepper;
   isIE: boolean = false;
   didLoad: boolean = false;
 
