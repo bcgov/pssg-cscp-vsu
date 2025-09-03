@@ -67,8 +67,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "22.x"
-          # app uses node 12, due to code ql version issue, scanning with 22, however application has to be updated to latest version.
+          node-version: "20.x"
 
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
@@ -106,6 +105,18 @@ jobs:
         uses: github/codeql-action/analyze@v3
         with:
           category: "/language:javascript-typescript"
+
+      - name: SonarCloud Scan
+        continue-on-error: true
+        uses: SonarSource/sonarqube-scan-action@v5.0.0
+        with:
+          projectBaseDir: .
+          args: >
+            -Dsonar.projectKey=bcgov_pssg-cscp-vsu
+            -Dsonar.organization=bcgov-sonarcloud
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   # ------------------------------------------------------------------------------------
   #  Job: trivy_scan
