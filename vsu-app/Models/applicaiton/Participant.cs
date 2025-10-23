@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Gov.Cscp.Victims.Public.Models
 {
@@ -8,35 +9,76 @@ namespace Gov.Cscp.Victims.Public.Models
         {
             get { return "Microsoft.Dynamics.CRM.vsd_participant"; }
         }
+
+        [StringLength(160)]
         public string vsd_firstname { get; set; }
+
+        [StringLength(100)]
         public string vsd_middlename { get; set; }
+
+        [StringLength(100)]
         public string vsd_lastname { get; set; }
+
+        [StringLength(100)]
         public string vsd_companyname { get; set; }
+
+        [StringLength(400)]
         public string vsd_name { get; set; }
         public DateTime? vsd_birthdate { get; set; }
         public int? vsd_gender { get; set; }
+
+        [StringLength(250)]
         public string vsd_phonenumber { get; set; }
+
+        [StringLength(100)]
         public string vsd_mainphoneextension { get; set; }
+
+        [StringLength(250)]
         public string vsd_addressline1 { get; set; }
+
+        [StringLength(250)]
         public string vsd_addressline2 { get; set; }
+
+        [StringLength(100)]
         public string vsd_city { get; set; }
+
+        [StringLength(100)]
         public string vsd_province { get; set; }
+
+        [StringLength(20)]
         public string vsd_postalcode { get; set; }
         public int? vsd_vsu_oktosendmail { get; set; }
-        public string vsd_email { get; set; }
-        public string vsd_relationship1 { get; set; }
-        public string vsd_relationship1other { get; set; }
-        public string vsd_relationship2 { get; set; }
-        public string vsd_relationship2other { get; set; }
 
+        [StringLength(100)]
+        public string vsd_email { get; set; }
+
+        [StringLength(150)]
+        public string vsd_relationship1 { get; set; }
+
+        [StringLength(100)]
+        public string vsd_relationship1other { get; set; }
+
+        [StringLength(150)]
+        public string vsd_relationship2 { get; set; }
+
+        [StringLength(100)]
+        public string vsd_relationship2other { get; set; }
         public int? vsd_vsu_methodofcontact1type { get; set; }
+
+        [StringLength(100)]
         public string vsd_vsu_methodofcontact1number { get; set; }
+
+        [StringLength(100)]
         public string vsd_vsu_methodofcontact1ext { get; set; }
         public int? vsd_vsu_methodofcontact1leavedetailedmessage { get; set; }
         public int? vsd_vsu_methodofcontact2type { get; set; }
+
+        [StringLength(100)]
         public string vsd_vsu_methodofcontact2number { get; set; }
         public int? vsd_vsu_methodofcontact2leavedetailedmessage { get; set; }
         public int? vsd_vsu_methodofcontact3type { get; set; }
+
+        [StringLength(100)]
         public string vsd_vsu_methodofcontact3number { get; set; }
         public int? vsd_vsu_methodofcontact3leavedetailedmessage { get; set; }
     }

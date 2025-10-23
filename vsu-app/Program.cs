@@ -41,6 +41,7 @@ namespace Gov.Cscp.Victims.Public
                         logging.AddSimpleConsole(opts =>
                         {
                             opts.IncludeScopes = true;
+                            opts.TimestampFormat = "[yyyy-MM-dd HH:mm:ss] ";
                         });
                         logging.SetMinimumLevel(LogLevel.Debug);
                         logging.AddDebug();
