@@ -24,7 +24,12 @@ export interface iCRMApplication {
   vsd_cvap_victimlastname: string;
   vsd_cvap_victimbirthdate: Date;
   vsd_cvap_victimgendercode: number;
-  vsd_indigenous: number;
+  vsd_victimgendertext?: string;
+  vsd_victimpronouns: number;
+  vsd_victimpronountext?: string;
+  vsd_victimprimaryraceethnicity?: number;
+  vsd_victimprimaryraceethnicitytext?: string;
+  vsd_victimindigenous?: number;
 
   vsd_vsu_applicanttype: number;
   vsd_vsuapplicanttypeother?: string;
@@ -54,6 +59,12 @@ export interface iCRMApplication {
   vsd_otherlastname?: string;
   vsd_dateofnamechange?: Date;
   vsd_applicantsgendercode: number;
+  vsd_genderidentitytext?: string;
+  vsd_pronouns?: number;
+  vsd_pronountext?: string;
+  vsd_primaryraceethnicity?: number;
+  vsd_primaryraceethnicitytext?: string;
+  vsd_indigenous: number;
   vsd_applicantsbirthdate: Date;
   vsd_applicantsmaritalstatus: number;
   vsd_applicantspreferredlanguage: string;
@@ -119,6 +130,11 @@ export interface iCRMParticipant {
   vsd_name?: string;
   vsd_birthdate?: Date;
   vsd_gender?: number;
+  vsd_genderidentitytext?: string;
+  vsd_pronouns?: number;
+  vsd_pronountext?: string;
+  vsd_primaryraceethnicity?: number;
+  vsd_primaryraceethnicitytext?: string;
   vsd_phonenumber?: string;
   vsd_mainphoneextension?: string;
   vsd_addressline1?: string;

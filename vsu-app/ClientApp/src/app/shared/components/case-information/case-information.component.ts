@@ -86,7 +86,7 @@ export class CaseInformationComponent extends FormBase implements OnInit {
     }
   }
 
-  victimInfoSameAsApplicantChange(val) {
+  onVictimInfoSameAsApplicantChange(val) {
     this.setVictimInfoSameAsApplicant(this.form.parent);
     if (!val) {
       console.log('clear');
@@ -94,7 +94,12 @@ export class CaseInformationComponent extends FormBase implements OnInit {
       this.form.get('middleName').patchValue('');
       this.form.get('lastName').patchValue('');
       this.form.get('birthDate').patchValue('');
-      this.form.get('gender').patchValue('');
+      this.form.get('gender').patchValue(null);
+      this.form.get('otherGender').patchValue('');
+      this.form.get('pronouns').patchValue(null);
+      this.form.get('otherPronouns').patchValue('');
+      this.form.get('raceEthnicity').patchValue(null);
+      this.form.get('otherRaceEthnicity').patchValue('');
     }
   }
 

@@ -11,7 +11,11 @@ export class CaseInfoInfoHelper {
 
       birthDate: ['', [Validators.required]],
       gender: [null],
-      genderOther: [''],
+      otherGender: [''],
+      pronouns: [null],
+      otherPronouns: [''],
+      raceEthnicity: [null],
+      otherRaceEthnicity: [''],
       victimInfoSameAsApplicant: [''],
       courtInfo: fb.array([this.createCourtInfo(fb)]),
 
@@ -19,14 +23,18 @@ export class CaseInfoInfoHelper {
       accusedMiddleName: [''],
       accusedLastName: ['', Validators.required],
       accusedBirthDate: [''],
-      accusedGender: [''],
+      accusedGender: [null],
+      accusedOtherGender: [''],
+      accusedPronouns: [null],
+      accusedOtherPronouns: [''],
+      accusedRaceEthnicity: [null],
+      accusedOtherRaceEthnicity: [''],
       accusedRelationship: ['', Validators.required],
 
-      additionalAccused: fb.array([]) //fb.array([this.createAdditionalAccused(fb)]),
+      additionalAccused: fb.array([])
     };
 
     if (form_type === ApplicationType.TRAVEL_FUNDS) {
-      // group['offence'] = ['', Validators.required];
       group['offence'] = [''];
       group['offences'] = fb.array([]);
       group['crownCounsel'] = fb.array([this.createCrownCounsel(fb)]);
@@ -42,7 +50,12 @@ export class CaseInfoInfoHelper {
       middleName: [''],
       lastName: ['', [Validators.required]],
       birthDate: [''],
-      gender: [''],
+      gender: [null],
+      otherGender: [''],
+      pronouns: [null],
+      otherPronouns: [''],
+      raceEthnicity: [null],
+      otherRaceEthnicity: [''],
       relationship: ['', Validators.required]
     });
   }

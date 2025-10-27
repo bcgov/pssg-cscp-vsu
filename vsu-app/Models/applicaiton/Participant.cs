@@ -27,6 +27,18 @@ namespace Gov.Cscp.Victims.Public.Models
         public DateTime? vsd_birthdate { get; set; }
         public int? vsd_gender { get; set; }
 
+        [StringLength(500)]
+        public string? vsd_genderidentitytext { get; set; }
+        public int? vsd_pronouns { get; set; }
+
+        [StringLength(500)]
+        public string? vsd_pronountext { get; set; }
+
+        public int? vsd_primaryraceethnicity { get; set; }
+
+        [StringLength(500)]
+        public string? vsd_primaryraceethnicitytext { get; set; }
+
         [StringLength(250)]
         public string vsd_phonenumber { get; set; }
 

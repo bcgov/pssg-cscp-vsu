@@ -22,6 +22,19 @@ namespace Gov.Cscp.Victims.Public.Models
         public DateTime? vsd_cvap_victimbirthdate { get; set; }
         public int? vsd_cvap_victimgendercode { get; set; }
 
+        [StringLength(500)]
+        public string? vsd_victimgendertext { get; set; }
+        public int? vsd_victimpronouns { get; set; }
+
+        [StringLength(500)]
+        public string? vsd_victimpronountext { get; set; }
+
+        public int? vsd_victimprimaryraceethnicity { get; set; }
+
+        [StringLength(500)]
+        public string? vsd_victimprimaryraceethnicitytext { get; set; }
+        public int? vsd_victimindigenous { get; set; }
+
         public int vsd_vsu_applicanttype { get; set; }
 
         [StringLength(100)]
@@ -87,7 +100,19 @@ namespace Gov.Cscp.Victims.Public.Models
         [StringLength(100)]
         public string vsd_applicantslastname { get; set; }
         public int? vsd_applicantsgendercode { get; set; }
+
+        [StringLength(100)]
+        public string? vsd_genderidentitytext { get; set; }
+        public int? vsd_pronouns { get; set; }
+
+        [StringLength(100)]
+        public string? vsd_pronountext { get; set; }
+
         public DateTime? vsd_applicantsbirthdate { get; set; }
+        public int? vsd_primaryraceethnicity { get; set; }
+
+        [StringLength(500)]
+        public string? vsd_primaryraceethnicitytext { get; set; }
         public int? vsd_indigenous { get; set; }
 
         [StringLength(100)]

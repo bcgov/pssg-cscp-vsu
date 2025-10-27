@@ -18,8 +18,12 @@ export class ApplicantInfoHelper {
 
       birthDate: ['', [Validators.required]],
       gender: [null],
-      genderOther: [''],
-      indigenousStatus: [0, [Validators.required, Validators.min(100000000), Validators.max(100000004)]],
+      otherGender: [''],
+      pronouns: [null],
+      otherPronouns: [''],
+      raceEthnicity: [null],
+      otherRaceEthnicity: [''],
+      indigenousStatus: [null],
 
       preferredLanguage: ['English'],
       interpreterNeeded: [this.enum.Boolean.False.val],

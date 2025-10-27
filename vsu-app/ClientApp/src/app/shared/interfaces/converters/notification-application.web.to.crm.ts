@@ -26,6 +26,12 @@ function getCRMApplication(application: iNotificationApplication) {
     vsd_cvap_victimlastname: application.CaseInformation.lastName,
     vsd_cvap_victimbirthdate: application.CaseInformation.birthDate,
     vsd_cvap_victimgendercode: application.CaseInformation.gender,
+    vsd_victimgendertext: application.CaseInformation.otherGender,
+    vsd_victimpronouns: application.CaseInformation.pronouns,
+    vsd_victimpronountext: application.CaseInformation.otherPronouns,
+    vsd_victimprimaryraceethnicity: application.CaseInformation.raceEthnicity,
+    vsd_victimprimaryraceethnicitytext: application.CaseInformation.otherRaceEthnicity,
+    vsd_victimindigenous: application.CaseInformation.indigenousStatus,
 
     vsd_vsu_applicanttype: application.ApplicantInformation.applicantType,
     vsd_vsuapplicanttypeother: application.ApplicantInformation.applicantTypeOther,
@@ -35,8 +41,13 @@ function getCRMApplication(application: iNotificationApplication) {
     vsd_otherfirstname: '',
     vsd_otherlastname: '',
     vsd_dateofnamechange: null,
-    vsd_applicantsgendercode: application.ApplicantInformation.gender,
     vsd_applicantsbirthdate: application.ApplicantInformation.birthDate,
+    vsd_applicantsgendercode: application.ApplicantInformation.gender,
+    vsd_genderidentitytext: application.ApplicantInformation.otherGender,
+    vsd_pronouns: application.ApplicantInformation.pronouns,
+    vsd_pronountext: application.ApplicantInformation.otherPronouns,
+    vsd_primaryraceethnicity: application.ApplicantInformation.raceEthnicity,
+    vsd_primaryraceethnicitytext: application.ApplicantInformation.otherRaceEthnicity,
     vsd_indigenous: application.ApplicantInformation.indigenousStatus,
     vsd_applicantsmaritalstatus: 0,
 
@@ -142,6 +153,11 @@ function getCRMProviderCollection(application: iNotificationApplication) {
     vsd_lastname: application.CaseInformation.accusedLastName,
     vsd_birthdate: application.CaseInformation.accusedBirthDate,
     vsd_gender: application.CaseInformation.accusedGender,
+    vsd_genderidentitytext: application.CaseInformation.accusedOtherGender,
+    vsd_pronouns: application.CaseInformation.accusedPronouns,
+    vsd_pronountext: application.CaseInformation.accusedOtherPronouns,
+    vsd_primaryraceethnicity: application.CaseInformation.accusedRaceEthnicity,
+    vsd_primaryraceethnicitytext: application.CaseInformation.accusedOtherRaceEthnicity,
     vsd_relationship1: PARTICIPANT_TYPES.ACCUSED,
     vsd_relationship2: application.CaseInformation.accusedRelationship
   });
@@ -154,6 +170,11 @@ function getCRMProviderCollection(application: iNotificationApplication) {
       vsd_lastname: accused.lastName,
       vsd_birthdate: accused.birthDate,
       vsd_gender: accused.gender,
+      vsd_genderidentitytext: accused.otherGender,
+      vsd_pronouns: accused.pronouns,
+      vsd_pronountext: accused.otherPronouns,
+      vsd_primaryraceethnicity: accused.raceEthnicity,
+      vsd_primaryraceethnicitytext: accused.otherRaceEthnicity,
       vsd_relationship1: PARTICIPANT_TYPES.ACCUSED,
       vsd_relationship2: accused.relationship
     });
