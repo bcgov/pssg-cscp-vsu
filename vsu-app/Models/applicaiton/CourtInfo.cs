@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Gov.Cscp.Victims.Public.Models
 {
@@ -8,7 +9,11 @@ namespace Gov.Cscp.Victims.Public.Models
         {
             get { return "Microsoft.Dynamics.CRM.vsd_applicationcourtinformation"; }
         }
+
+        [StringLength(100)]
         public string vsd_courtfilenumber { get; set; }
+
+        [StringLength(100)]
         public string vsd_courtlocation { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Gov.Cscp.Victims.Public.Models
 {
@@ -21,8 +22,14 @@ namespace Gov.Cscp.Victims.Public.Models
         public int? vsd_vsu_childage { get; set; }
         public DateTime? vsd_vsu_childcarestartdate { get; set; }
         public DateTime? vsd_vsu_childcareenddate { get; set; }
+
+        [StringLength(160)]
         public string vsd_vsu_childcareproviderfirstname { get; set; }
+
+        [StringLength(160)]
         public string vsd_childcareproviderlastname { get; set; }
+
+        [StringLength(20)]
         public string vsd_vsu_childcareproviderphoneno { get; set; }
     }
 }
