@@ -33,13 +33,23 @@ export interface iCaseInformation {
   lastName: string;
   birthDate: Date;
   gender: number;
-  genderOther: string;
+  otherGender: string;
+  pronouns: number;
+  otherPronouns: string;
+  raceEthnicity: number;
+  otherRaceEthnicity: string;
+  indigenousStatus: number;
   courtInfo: iCourtInfo[];
   accusedFirstName: string;
   accusedMiddleName: string;
   accusedLastName: string;
   accusedBirthDate: Date;
   accusedGender: number;
+  accusedOtherGender: string;
+  accusedPronouns: number;
+  accusedOtherPronouns: string;
+  accusedRaceEthnicity: number;
+  accusedOtherRaceEthnicity: string;
   accusedRelationship: string;
   additionalAccused: iAdditionalAccused[];
   offences?: iOffenceInformation[];
@@ -65,7 +75,11 @@ export interface iApplicantInformation {
   lastName: string;
   birthDate: Date;
   gender: number;
-  genderOther: string;
+  otherGender: string;
+  pronouns: number;
+  otherPronouns: string;
+  raceEthnicity: number;
+  otherRaceEthnicity: string;
   indigenousStatus: number;
   preferredLanguage: string;
   interpreterNeeded: number;
@@ -135,6 +149,11 @@ export interface iAdditionalAccused {
   lastName: string;
   birthDate: Date;
   gender: number;
+  otherGender: string;
+  pronouns: number;
+  otherPronouns: string;
+  raceEthnicity: number;
+  otherRaceEthnicity: string;
   relationship: string;
 }
 

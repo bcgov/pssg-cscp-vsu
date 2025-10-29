@@ -42,16 +42,6 @@ export class ApplicantInformationComponent extends FormBase implements OnInit {
     this.checkAtLeastOneContactMethod(this.form);
   }
 
-  showOtherGender(show: boolean) {
-    let genderOther = this.form.get('genderOther');
-    if (show) {
-      this.setControlValidators(genderOther, [Validators.required]);
-    } else {
-      this.clearControlValidators(genderOther);
-      genderOther.patchValue('');
-    }
-  }
-
   applicantTypeChange() {
     let type = this.form.get('applicantType').value;
 
@@ -112,6 +102,8 @@ export class ApplicantInformationComponent extends FormBase implements OnInit {
       this.form.get('lastName').patchValue('');
       this.form.get('birthDate').patchValue('');
       this.form.get('gender').patchValue('');
+      this.form.get('otherGender').patchValue('');
+      this.form.get('pronouns').patchValue('');
     }
   }
 

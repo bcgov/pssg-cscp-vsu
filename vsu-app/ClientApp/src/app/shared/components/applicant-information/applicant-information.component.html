@@ -226,7 +226,7 @@
         <p>Please note that your answers to questions about demographic information (e.g. gender, Indigenous identity) allow the Community Safety and Crime Prevention branch to better understand who accesses our programs so we may continue to improve our service delivery. Your response is voluntary and the information you provide does not impact your ability to access these services.</p>
     </div>
 
-    <div class="row">
+    <div class="row" featureEnabled="useUpdatedComplianceFields" [featureEnabledIf]="false">
         <div class="col-md-6">
             <app-field label="Gender" [required]="false" [valid]="isMyControlValid(form.get('gender'))" errorMessage="Please select your gender" [disabled]="isDisabled">
                 <label class="inline-label">
@@ -245,25 +245,55 @@
         </div>
     </div>
 
+    <app-gender-selector
+      [form]="form"
+      [isDisabled]="isDisabled"
+      genderFormControlName="gender"
+      otherGenderFormControlName="otherGender"
+      featureEnabled="useUpdatedComplianceFields"
+      [featureEnabledIf]="true" />
+
+    <app-pronoun-selector
+      [form]="form"
+      [isDisabled]="isDisabled"
+      pronounFormControlName="pronouns"
+      otherPronounFormControlName="otherPronouns"
+      featureEnabled="useUpdatedComplianceFields"
+      [featureEnabledIf]="true" />
+
     <ng-template #genderMToolTip>Persons whose current gender is male. This includes cisgender and transgender persons who are male.</ng-template>
     <ng-template #genderFToolTip>Persons whose current gender is female. This includes cisgender and transgender persons who are female.</ng-template>
     <ng-template #genderXToolTip>Persons whose current gender is not exclusively male or female. It includes people who are unsure of their gender, do not have one gender, have no gender, are gender fluid, or are Two-Spirit.</ng-template>
 
-
-    <div class="row">
+    <div class="row" featureEnabled="useUpdatedComplianceFields" [featureEnabledIf]="false">
         <div class="col-md-6">
             <app-field label="Do you identify as an Indigenous person?" [required]="true" [valid]="isMyControlValid(form.get('indigenousStatus'))" errorMessage="Please select an option" class="long-label" [disabled]="isDisabled">
                 <select class="form-control" formControlName="indigenousStatus">
-                    <option [value]="enum.IndigenousStatus.BLANK.val">Select...</option>
-                    <option [value]="enum.IndigenousStatus.First_Nations.val">First Nations</option>
-                    <option [value]="enum.IndigenousStatus.Metis.val">Métis</option>
-                    <option [value]="enum.IndigenousStatus.Inuit.val">Inuit</option>
-                    <option [value]="enum.IndigenousStatus.Prefere_Not_To_Answer.val">Prefer Not to Answer</option>
-                    <option [value]="enum.IndigenousStatus.Not_Applicable.val">Not Applicable</option>
+                    <option [value]="enum.IndigenousStatus.BLANK.val">{{ enum.IndigenousStatus.BLANK.name }}</option>
+                    <option [value]="enum.IndigenousStatus.First_Nations.val">
+                        {{ enum.IndigenousStatus.First_Nations.name }}
+                    </option>
+                    <option [value]="enum.IndigenousStatus.Metis.val">{{ enum.IndigenousStatus.Metis.name }}</option>
+                    <option [value]="enum.IndigenousStatus.Inuit.val">{{ enum.IndigenousStatus.Inuit.name }}</option>
+                    <option [value]="enum.IndigenousStatus.Prefer_Not_To_Answer.val">
+                        {{ enum.IndigenousStatus.Prefer_Not_To_Answer.name }}
+                    </option>
+                    <option [value]="enum.IndigenousStatus.Not_Applicable.val">
+                        {{ enum.IndigenousStatus.Not_Applicable.name }}
+                    </option>
                 </select>
             </app-field>
         </div>
     </div>
+
+    <app-race-selector
+      [form]="form"
+      [isDisabled]="isDisabled"
+      raceEthnicityFormControlName="raceEthnicity"
+      otherRaceEthnicityFormControlName="otherRaceEthnicity"
+      indigenousStatusFormControlName="indigenousStatus"
+      featureEnabled="useUpdatedComplianceFields"
+      [featureEnabledIf]="true" />
 
     <div class="row">
         <div class="col-md-6">

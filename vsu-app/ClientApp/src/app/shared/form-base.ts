@@ -270,24 +270,44 @@ export class FormBase {
       victimInfo.get('lastName').patchValue(applicantInfo.get('lastName').value);
       victimInfo.get('birthDate').patchValue(applicantInfo.get('birthDate').value);
       victimInfo.get('gender').patchValue(applicantInfo.get('gender').value);
+      victimInfo.get('otherGender').patchValue(applicantInfo.get('otherGender').value);
+      victimInfo.get('pronouns').patchValue(applicantInfo.get('pronouns').value);
+      victimInfo.get('otherPronouns').patchValue(applicantInfo.get('otherPronouns').value);
+      victimInfo.get('raceEthnicity').patchValue(applicantInfo.get('raceEthnicity').value);
+      victimInfo.get('otherRaceEthnicity').patchValue(applicantInfo.get('otherRaceEthnicity').value);
 
       victimInfo.get('firstName').setErrors(null, options);
       victimInfo.get('middleName').setErrors(null, options);
       victimInfo.get('lastName').setErrors(null, options);
       victimInfo.get('birthDate').setErrors(null, options);
       victimInfo.get('gender').setErrors(null, options);
+      victimInfo.get('otherGender').setErrors(null, options);
+      victimInfo.get('pronouns').setErrors(null, options);
+      victimInfo.get('otherPronouns').setErrors(null, options);
+      victimInfo.get('raceEthnicity').setErrors(null, options);
+      victimInfo.get('otherRaceEthnicity').setErrors(null, options);
 
       victimInfo.get('firstName').disable(options);
       victimInfo.get('middleName').disable(options);
       victimInfo.get('lastName').disable(options);
       victimInfo.get('birthDate').disable(options);
       victimInfo.get('gender').disable(options);
+      victimInfo.get('otherGender').disable(options);
+      victimInfo.get('pronouns').disable(options);
+      victimInfo.get('otherPronouns').disable(options);
+      victimInfo.get('raceEthnicity').disable(options);
+      victimInfo.get('otherRaceEthnicity').disable(options);
     } else {
       victimInfo.get('firstName').enable(options);
       victimInfo.get('middleName').enable(options);
       victimInfo.get('lastName').enable(options);
       victimInfo.get('birthDate').enable(options);
       victimInfo.get('gender').enable(options);
+      victimInfo.get('otherGender').enable(options);
+      victimInfo.get('pronouns').enable(options);
+      victimInfo.get('otherPronouns').enable(options);
+      victimInfo.get('raceEthnicity').enable(options);
+      victimInfo.get('otherRaceEthnicity').enable(options);
     }
 
     victimInfo.get('firstName').updateValueAndValidity(options);
@@ -295,6 +315,11 @@ export class FormBase {
     victimInfo.get('lastName').updateValueAndValidity(options);
     victimInfo.get('birthDate').updateValueAndValidity(options);
     victimInfo.get('gender').updateValueAndValidity(options);
+    victimInfo.get('otherGender').updateValueAndValidity(options);
+    victimInfo.get('pronouns').updateValueAndValidity(options);
+    victimInfo.get('otherPronouns').updateValueAndValidity(options);
+    victimInfo.get('raceEthnicity').updateValueAndValidity(options);
+    victimInfo.get('otherRaceEthnicity').updateValueAndValidity(options);
   }
 
   setApplicantInfoSameAsVictim(form: FormGroup | FormArray) {
@@ -308,24 +333,44 @@ export class FormBase {
       applicantInfo.get('lastName').patchValue(victimInfo.get('lastName').value);
       applicantInfo.get('birthDate').patchValue(victimInfo.get('birthDate').value);
       applicantInfo.get('gender').patchValue(victimInfo.get('gender').value);
+      applicantInfo.get('otherGender').patchValue(victimInfo.get('otherGender').value);
+      applicantInfo.get('pronouns').patchValue(victimInfo.get('pronouns').value);
+      applicantInfo.get('otherPronouns').patchValue(victimInfo.get('otherPronouns').value);
+      applicantInfo.get('raceEthnicity').patchValue(victimInfo.get('raceEthnicity').value);
+      applicantInfo.get('otherRaceEthnicity').patchValue(victimInfo.get('otherRaceEthnicity').value);
 
       applicantInfo.get('firstName').setErrors(null, options);
       applicantInfo.get('middleName').setErrors(null, options);
       applicantInfo.get('lastName').setErrors(null, options);
       applicantInfo.get('birthDate').setErrors(null, options);
       applicantInfo.get('gender').setErrors(null, options);
+      applicantInfo.get('otherGender').setErrors(null, options);
+      applicantInfo.get('pronouns').setErrors(null, options);
+      applicantInfo.get('otherPronouns').setErrors(null, options);
+      applicantInfo.get('raceEthnicity').setErrors(null, options);
+      applicantInfo.get('otherRaceEthnicity').setErrors(null, options);
 
       applicantInfo.get('firstName').disable(options);
       applicantInfo.get('middleName').disable(options);
       applicantInfo.get('lastName').disable(options);
       applicantInfo.get('birthDate').disable(options);
       applicantInfo.get('gender').disable(options);
+      applicantInfo.get('otherGender').disable(options);
+      applicantInfo.get('pronouns').disable(options);
+      applicantInfo.get('otherPronouns').disable(options);
+      applicantInfo.get('raceEthnicity').disable(options);
+      applicantInfo.get('otherRaceEthnicity').disable(options);
     } else {
       applicantInfo.get('firstName').enable(options);
       applicantInfo.get('middleName').enable(options);
       applicantInfo.get('lastName').enable(options);
       applicantInfo.get('birthDate').enable(options);
       applicantInfo.get('gender').enable(options);
+      applicantInfo.get('otherGender').enable(options);
+      applicantInfo.get('pronouns').enable(options);
+      applicantInfo.get('otherPronouns').enable(options);
+      applicantInfo.get('raceEthnicity').enable(options);
+      applicantInfo.get('otherRaceEthnicity').enable(options);
     }
 
     applicantInfo.get('firstName').updateValueAndValidity(options);
@@ -333,6 +378,11 @@ export class FormBase {
     applicantInfo.get('lastName').updateValueAndValidity(options);
     applicantInfo.get('birthDate').updateValueAndValidity(options);
     applicantInfo.get('gender').updateValueAndValidity(options);
+    applicantInfo.get('otherGender').updateValueAndValidity(options);
+    applicantInfo.get('pronouns').updateValueAndValidity(options);
+    applicantInfo.get('otherPronouns').updateValueAndValidity(options);
+    applicantInfo.get('raceEthnicity').updateValueAndValidity(options);
+    applicantInfo.get('otherRaceEthnicity').updateValueAndValidity(options);
   }
 
   checkFormGroupHasValue(form: FormGroup) {

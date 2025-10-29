@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { firstValueFrom, Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Configuration } from '../shared/interfaces/configuration.interface';
 
@@ -17,26 +17,20 @@ export class ConfigService {
 
   public async load(): Promise<Configuration> {
     try {
-      return await this.http
-        .get<Configuration>(this.apiUrl, { headers: this.headers })
-        .pipe(catchError(this.handleError))
-        .toPromise();
+      return await firstValueFrom(
+        this.http.get<Configuration>(this.apiUrl, { headers: this.headers }).pipe(catchError(this.handleError))
+      );
     } catch (error) {
       this.handleError(error);
       throw error;
     }
   }
 
-  protected handleError(err): Observable<never> {
-    let errorMessage = '';
-    if (err.error instanceof ErrorEvent) {
-      // A client-side or network error occurred. Handle it accordingly.
-      errorMessage = err.error.message;
-    } else {
-      // The backend returned an unsuccessful response code.
-      // The response body may contain clues as to what went wrong,
-      errorMessage = `Backend returned code ${err.status}, body was: ${err.message}`;
+  protected handleError(error): Observable<never> {
+    if (error.error instanceof ErrorEvent) {
+      return throwError(() => `Failed to load configuration: ${(<ErrorEvent>error.error).message}`);
     }
-    return throwError(errorMessage);
+
+    return throwError(() => `Failed to load configuration: ${(<HttpErrorResponse>error).message}`);
   }
 }

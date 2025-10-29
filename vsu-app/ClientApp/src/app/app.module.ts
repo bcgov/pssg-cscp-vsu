@@ -20,7 +20,6 @@ import { HomeComponent } from './home/home.component';
 import { HttpClientModule } from '@angular/common/http';
 import { LookupService } from './services/lookup.service';
 import { MatButtonModule } from '@angular/material/button';
-import { MatChipsModule } from '@angular/material/chips';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -45,6 +44,11 @@ import { VSWComponent } from './shared/components/victim-service-worker/victim-s
 import { VTFCaseInformationComponent } from './shared/components/vtf-case-information/vtf-case-information.component';
 import { VictimTravelFundApplicationComponent } from './victim-travel-fund-application/vtf-application.component';
 import { VictimTravelFundReimbursementComponent } from './victim-travel-fund-reimbursement/vtf-reimbursement.component';
+import { RaceSelectorComponent } from 'src/app/shared/components/race-selector/race-selector.component';
+import { GenderSelectorComponent } from 'src/app/shared/components/gender-selector/gender-selector.component';
+import { FeatureEnabledDirective } from 'src/app/shared/directives/feature-enabled.directive';
+import { A11yModule } from '@angular/cdk/a11y';
+import { PronounSelectorComponent } from 'src/app/shared/components/pronoun-selector/pronoun-selector.component';
 
 @NgModule({
   declarations: [
@@ -58,22 +62,26 @@ import { VictimTravelFundReimbursementComponent } from './victim-travel-fund-rei
     ContactMethodComponent,
     DateFieldComponent,
     DesignateComponent,
+    FeatureEnabledDirective,
     FieldComponent,
     FileUploaderComponent,
+    GenderSelectorComponent,
     HomeComponent,
     NotificationApplicationComponent,
     NotificationBannerComponent,
     NotificationOverviewComponent,
+    PronounSelectorComponent,
+    RaceSelectorComponent,
     RecipientDetailsComponent,
     SignPadDialog,
     ToolTipTriggerComponent,
     TravelExpensesComponent,
     TravelInformationComponent,
     TravelOverviewComponent,
-    VSWComponent,
-    VTFCaseInformationComponent,
     VictimTravelFundApplicationComponent,
-    VictimTravelFundReimbursementComponent
+    VictimTravelFundReimbursementComponent,
+    VSWComponent,
+    VTFCaseInformationComponent
   ],
   imports: [
     AppRoutingModule,
@@ -92,7 +100,8 @@ import { VictimTravelFundReimbursementComponent } from './victim-travel-fund-rei
     TooltipModule.forRoot(),
     TypeaheadModule.forRoot(),
     NgxMaskDirective,
-    NgxMaskPipe
+    NgxMaskPipe,
+    A11yModule
   ],
   exports: [AppRoutingModule, MatDatepickerModule, MatProgressSpinnerModule, NotificationBannerComponent],
   providers: [

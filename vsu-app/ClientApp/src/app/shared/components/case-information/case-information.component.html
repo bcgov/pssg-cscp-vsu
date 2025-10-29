@@ -6,7 +6,7 @@
 
     <div [class.is-disabled]="isDisabled" *ngIf="formType === ApplicationType.TRAVEL_FUNDS">
         <label class="inline-label inline-checkbox">
-            <input type="checkbox" [value]="true" name="victimInfoSameAsApplicant" formControlName="victimInfoSameAsApplicant" (change)="victimInfoSameAsApplicantChange($event.target.checked)">
+            <input type="checkbox" [value]="true" name="victimInfoSameAsApplicant" formControlName="victimInfoSameAsApplicant" (change)="onVictimInfoSameAsApplicantChange($event.target.checked)">
             <span>Select if the Victim's name is the same as Applicant in the previous section</span>
         </label>
     </div>
@@ -35,23 +35,49 @@
             </app-field>
         </div>
 
-        <div class="col flex-col">
+        <div class="col flex-col" featureEnabled="useUpdatedComplianceFields" [featureEnabledIf]="false">
             <app-field label="Gender" [required]="false" [valid]="isMyControlValid(form.get('gender'))" errorMessage="Please select your gender" [disabled]="isDisabled">
                 <label class="inline-label">
-                    <input type="radio" [value]="enum.Gender.Male.val" name="gender" formControlName="gender" (change)="setApplicantInfoSameAsVictim(form.parent)">
-                    <span>M <app-tool-tip [trigger]="genderMToolTip"></app-tool-tip></span>
+                    <input type="radio" [value]="enum.Gender.Male.val" name="gender" formControlName="gender" (change)="setApplicantInfoSameAsVictim(form.parent)" />
+                    <span>
+                        M
+                        <app-tool-tip [trigger]="genderMToolTip"></app-tool-tip>
+                    </span>
                 </label>
                 <label class="inline-label">
-                    <input type="radio" [value]="enum.Gender.Female.val" name="gender" formControlName="gender" (change)="setApplicantInfoSameAsVictim(form.parent)">
-                    <span>F <app-tool-tip [trigger]="genderFToolTip"></app-tool-tip></span>
+                    <input type="radio" [value]="enum.Gender.Female.val" name="gender" formControlName="gender" (change)="setApplicantInfoSameAsVictim(form.parent)" />
+                    <span>
+                        F
+                        <app-tool-tip [trigger]="genderFToolTip"></app-tool-tip>
+                    </span>
                 </label>
                 <label class="inline-label">
-                    <input type="radio" [value]="enum.Gender.X.val" name="gender" formControlName="gender" (change)="setApplicantInfoSameAsVictim(form.parent)">
-                    <span>X <app-tool-tip [trigger]="genderXToolTip"></app-tool-tip></span>
+                    <input type="radio" [value]="enum.Gender.X.val" name="gender" formControlName="gender" (change)="setApplicantInfoSameAsVictim(form.parent)" />
+                    <span>
+                        X
+                        <app-tool-tip [trigger]="genderXToolTip"></app-tool-tip>
+                    </span>
                 </label>
             </app-field>
         </div>
     </div>
+
+    <app-gender-selector
+      [form]="form"
+      [isDisabled]="isDisabled"
+      genderFormControlName="gender"
+      otherGenderFormControlName="otherGender"
+      featureEnabled="useUpdatedComplianceFields"
+      [featureEnabledIf]="true" />
+
+    <app-pronoun-selector
+      [form]="form"
+      [isDisabled]="isDisabled"
+      pronounFormControlName="pronouns"
+      otherPronounFormControlName="otherPronouns"
+      featureEnabled="useUpdatedComplianceFields"
+      [featureEnabledIf]="true" />
+
     <ng-template #genderMToolTip>Persons whose current gender is male. This includes cisgender and transgender persons who are male.</ng-template>
     <ng-template #genderFToolTip>Persons whose current gender is female. This includes cisgender and transgender persons who are female.</ng-template>
     <ng-template #genderXToolTip>Persons whose current gender is not exclusively male or female. It includes people who are unsure of their gender, do not have one gender, have no gender, are gender fluid, or are Two-Spirit.</ng-template>
@@ -130,23 +156,49 @@
                 <app-date-field [control]="form.get('accusedBirthDate')" [max]="today" [disabled]="isDisabled"></app-date-field>
             </app-field>
         </div>
-        <div class="col flex-col">
+        <div class="col flex-col" featureEnabled="useUpdatedComplianceFields" [featureEnabledIf]="false">
             <app-field label="Gender" [valid]="isMyControlValid(form.get('accusedGender'))" [disabled]="isDisabled">
                 <label class="inline-label">
-                    <input type="radio" [value]="enum.Gender.Male.val" name="accusedGender" formControlName="accusedGender">
-                    <span>M <app-tool-tip [trigger]="genderMToolTip"></app-tool-tip></span>
+                    <input type="radio" [value]="enum.Gender.Male.val" name="accusedGender" formControlName="accusedGender" />
+                    <span>
+                        M
+                        <app-tool-tip [trigger]="genderMToolTip"></app-tool-tip>
+                    </span>
                 </label>
                 <label class="inline-label">
-                    <input type="radio" [value]="enum.Gender.Female.val" name="accusedGender" formControlName="accusedGender">
-                    <span>F <app-tool-tip [trigger]="genderFToolTip"></app-tool-tip></span>
+                    <input type="radio" [value]="enum.Gender.Female.val" name="accusedGender" formControlName="accusedGender" />
+                    <span>
+                        F
+                        <app-tool-tip [trigger]="genderFToolTip"></app-tool-tip>
+                    </span>
                 </label>
                 <label class="inline-label">
-                    <input type="radio" [value]="enum.Gender.X.val" name="accusedGender" formControlName="accusedGender">
-                    <span>X <app-tool-tip [trigger]="genderXToolTip"></app-tool-tip></span>
+                    <input type="radio" [value]="enum.Gender.X.val" name="accusedGender" formControlName="accusedGender" />
+                    <span>
+                        X
+                        <app-tool-tip [trigger]="genderXToolTip"></app-tool-tip>
+                    </span>
                 </label>
             </app-field>
         </div>
     </div>
+
+    <app-gender-selector
+      [form]="form"
+      [isDisabled]="isDisabled"
+      genderFormControlName="accusedGender"
+      otherGenderFormControlName="accusedOtherGender"
+      featureEnabled="useUpdatedComplianceFields"
+      [featureEnabledIf]="true" />
+
+    <app-pronoun-selector
+      [form]="form"
+      [isDisabled]="isDisabled"
+      pronounFormControlName="accusedPronouns"
+      otherPronounFormControlName="accusedOtherPronouns"
+      featureEnabled="useUpdatedComplianceFields"
+      [featureEnabledIf]="true" />
+
     <div class="row">
         <div class="col-md-6">
             <app-field label="Relationship to the Accused" [required]="true" [valid]="isMyControlValid(form.get('accusedRelationship'))" [tooltipReference]="relationshipToAccusedToolTip" [disabled]="isDisabled" errorMessage="Please select an option">
@@ -189,7 +241,7 @@
                         <app-date-field [control]="item.get('birthDate')" [max]="today" [disabled]="isDisabled"></app-date-field>
                     </app-field>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6" featureEnabled="useUpdatedComplianceFields" [featureEnabledIf]="false">
                     <app-field label="Gender" [disabled]="isDisabled">
                         <label class="inline-label">
                             <input type="radio" [value]="enum.Gender.Male.val" formControlName="gender">
@@ -206,6 +258,22 @@
                     </app-field>
                 </div>
             </div>
+
+            <app-gender-selector
+              [form]="item"
+              [isDisabled]="isDisabled"
+              genderFormControlName="gender"
+              otherGenderFormControlName="otherGender"
+              featureEnabled="useUpdatedComplianceFields"
+              [featureEnabledIf]="true" />
+
+            <app-pronoun-selector
+              [form]="item"
+              [isDisabled]="isDisabled"
+              pronounFormControlName="pronouns"
+              otherPronounFormControlName="otherPronouns"
+              featureEnabled="useUpdatedComplianceFields"
+              [featureEnabledIf]="true" />
 
             <div class="row">
                 <div class="col-md-6">
