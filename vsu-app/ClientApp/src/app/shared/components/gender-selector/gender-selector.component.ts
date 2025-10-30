@@ -47,7 +47,7 @@ export class GenderSelectorComponent extends FormBase implements OnInit, OnDestr
    * @type {boolean}
    */
   public get showOtherGender(): boolean {
-    return this.form?.get(this.genderFormControlName)?.value === this.otherGenderValue;
+    return Number(this.form.get(this.genderFormControlName).value) === this.otherGenderValue;
   }
 
   constructor() {

@@ -48,7 +48,7 @@ export class RaceSelectorComponent extends FormBase implements OnInit, OnDestroy
    * @type {boolean}
    */
   public get showOtherRaceEthnicity(): boolean {
-    return this.form.get(this.raceEthnicityFormControlName).value === this.otherRaceEthnicityValue;
+    return Number(this.form.get(this.raceEthnicityFormControlName).value) === this.otherRaceEthnicityValue;
   }
 
   /**
@@ -58,7 +58,9 @@ export class RaceSelectorComponent extends FormBase implements OnInit, OnDestroy
    * @type {boolean}
    */
   public get isPersonIndigenous(): boolean {
-    return this.form.get(this.raceEthnicityFormControlName).value == this.enumHelper.RaceEthnicity_V2.Indigenous.val;
+    return (
+      Number(this.form.get(this.raceEthnicityFormControlName).value) === this.enumHelper.RaceEthnicity_V2.Indigenous.val
+    );
   }
 
   /**
