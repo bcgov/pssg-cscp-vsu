@@ -47,7 +47,7 @@ export class PronounSelectorComponent extends FormBase implements OnInit, OnDest
    * @type {boolean}
    */
   public get showOtherPronoun(): boolean {
-    return this.form?.get(this.pronounFormControlName)?.value === this.otherPronounValue;
+    return Number(this.form.get(this.pronounFormControlName).value) === this.otherPronounValue;
   }
 
   constructor() {
