@@ -124,10 +124,6 @@ namespace Gov.Cscp.Victims.Public
                 async (ctx, next) =>
                 {
                     ctx.Response.Headers.Append(
-                        "Content-Security-Policy",
-                        "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://apis.google.com https://cdn.jsdelivr.net https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://cdn.jsdelivr.net"
-                    );
-                    ctx.Response.Headers.Append(
                         "Strict-Transport-Security",
                         "max-age=31536000; includeSubDomains; preload"
                     );
@@ -150,10 +146,14 @@ namespace Gov.Cscp.Victims.Public
                         .StyleSources(s =>
                             s.Self()
                                 .UnsafeInline()
-                                .CustomSources("https://cdn.jsdelivr.net", "https://fonts.googleapis.com")
+                                .CustomSources(
+                                    "https://stackpath.bootstrapcdn.com",
+                                    "https://cdnjs.cloudflare.com",
+                                    "https://fonts.googleapis.com"
+                                )
                         )
                         .FontSources(s =>
-                            s.Self().CustomSources("https://cdn.jsdelivr.net", "https://fonts.gstatic.com")
+                            s.Self().CustomSources("https://cdnjs.cloudflare.com", "https://fonts.gstatic.com")
                         )
                         .FormActions(s => s.Self())
                         .FrameAncestors(s => s.Self())
@@ -161,14 +161,17 @@ namespace Gov.Cscp.Victims.Public
                         .DefaultSources(s => s.Self())
                         .ObjectSources(s => s.Self().CustomSources("data:"))
                         .FrameSources(s => s.Self().CustomSources("data:"))
-                        .ConnectSources(s => s.Self().CustomSources("https://cdn.jsdelivr.net"))
+                        .ConnectSources(s =>
+                            s.Self().CustomSources("https://stackpath.bootstrapcdn.com", "https://cdnjs.cloudflare.com")
+                        )
                         .ScriptSources(s =>
                             s.Self()
                                 .UnsafeInline()
                                 .UnsafeEval()
                                 .CustomSources(
                                     "https://apis.google.com",
-                                    "https://cdn.jsdelivr.net",
+                                    "https://stackpath.bootstrapcdn.com",
+                                    "https://cdnjs.cloudflare.com",
                                     "https://fonts.googleapis.com"
                                 )
                         );
