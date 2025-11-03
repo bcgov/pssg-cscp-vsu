@@ -125,7 +125,7 @@ namespace Gov.Cscp.Victims.Public
                 {
                     ctx.Response.Headers.Append(
                         "Content-Security-Policy",
-                        "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://apis.google.com https://code.jquery.com https://cdn.jsdelivr.net https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://cdn.jsdelivr.net"
+                        "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://apis.google.com https://cdn.jsdelivr.net https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://cdn.jsdelivr.net"
                     );
                     ctx.Response.Headers.Append(
                         "Strict-Transport-Security",
@@ -152,7 +152,9 @@ namespace Gov.Cscp.Victims.Public
                                 .UnsafeInline()
                                 .CustomSources("https://cdn.jsdelivr.net", "https://fonts.googleapis.com")
                         )
-                        .FontSources(s => s.Self().CustomSources("https://fonts.gstatic.com"))
+                        .FontSources(s =>
+                            s.Self().CustomSources("https://cdn.jsdelivr.net", "https://fonts.gstatic.com")
+                        )
                         .FormActions(s => s.Self())
                         .FrameAncestors(s => s.Self())
                         .ImageSources(s => s.Self().CustomSources("data:"))
@@ -166,7 +168,6 @@ namespace Gov.Cscp.Victims.Public
                                 .UnsafeEval()
                                 .CustomSources(
                                     "https://apis.google.com",
-                                    "https://code.jquery.com",
                                     "https://cdn.jsdelivr.net",
                                     "https://fonts.googleapis.com"
                                 )
