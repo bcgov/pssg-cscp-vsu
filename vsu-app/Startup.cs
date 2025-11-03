@@ -67,8 +67,8 @@ namespace Gov.Cscp.Victims.Public
                     //CSPReportOnly
                     opts.Filters.Add(typeof(CspReportOnlyAttribute));
                     opts.Filters.Add(new CspScriptSrcReportOnlyAttribute { None = true });
-
-                    opts.Filters.Add(new AllowAnonymousFilter()); // Allow anonymous for dev
+                    // Allow anonymous access - authentication not implemented yet
+                    opts.Filters.Add(new AllowAnonymousFilter());
                 })
                 .AddNewtonsoftJson(opts =>
                 {
@@ -147,13 +147,13 @@ namespace Gov.Cscp.Victims.Public
                             s.Self()
                                 .UnsafeInline()
                                 .CustomSources(
+                                    "https://use.fontawesome.com",
                                     "https://stackpath.bootstrapcdn.com",
-                                    "https://cdnjs.cloudflare.com",
                                     "https://fonts.googleapis.com"
                                 )
                         )
                         .FontSources(s =>
-                            s.Self().CustomSources("https://cdnjs.cloudflare.com", "https://fonts.gstatic.com")
+                            s.Self().CustomSources("https://use.fontawesome.com", "https://fonts.gstatic.com")
                         )
                         .FormActions(s => s.Self())
                         .FrameAncestors(s => s.Self())
@@ -162,7 +162,7 @@ namespace Gov.Cscp.Victims.Public
                         .ObjectSources(s => s.Self().CustomSources("data:"))
                         .FrameSources(s => s.Self().CustomSources("data:"))
                         .ConnectSources(s =>
-                            s.Self().CustomSources("https://stackpath.bootstrapcdn.com", "https://cdnjs.cloudflare.com")
+                            s.Self().CustomSources("https://use.fontawesome.com", "https://stackpath.bootstrapcdn.com")
                         )
                         .ScriptSources(s =>
                             s.Self()
@@ -170,8 +170,10 @@ namespace Gov.Cscp.Victims.Public
                                 .UnsafeEval()
                                 .CustomSources(
                                     "https://apis.google.com",
-                                    "https://stackpath.bootstrapcdn.com",
+                                    "https://maxcdn.bootstrapcdn.com",
                                     "https://cdnjs.cloudflare.com",
+                                    "https://code.jquery.com",
+                                    "https://stackpath.bootstrapcdn.com",
                                     "https://fonts.googleapis.com"
                                 )
                         );
