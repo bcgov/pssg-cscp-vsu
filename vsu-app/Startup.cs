@@ -99,7 +99,7 @@ namespace Gov.Cscp.Victims.Public
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             string pathBase = Configuration["BASE_PATH"];
 
@@ -107,7 +107,7 @@ namespace Gov.Cscp.Victims.Public
             {
                 app.UsePathBase(pathBase);
             }
-            if (CurrentEnvironment.IsDevelopment())
+            if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
@@ -140,7 +140,7 @@ namespace Gov.Cscp.Victims.Public
             app.UseXXssProtection(options => options.EnabledWithBlockMode());
             app.UseXfo(options => options.Deny());
 
-            if (!CurrentEnvironment.IsDevelopment()) // when running locally we can't have a strict CSP
+            if (!env.IsDevelopment()) // when running locally we can't have a strict CSP
             {
                 // Content-Security-Policy header
                 app.UseCsp(opts =>
@@ -280,7 +280,7 @@ namespace Gov.Cscp.Victims.Public
 
                 spa.Options.SourcePath = "ClientApp";
 
-                if (CurrentEnvironment.IsDevelopment())
+                if (env.IsDevelopment())
                 {
                     spa.UseAngularCliServer(npmScript: "start");
                 }
