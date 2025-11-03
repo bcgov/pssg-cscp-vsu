@@ -124,6 +124,10 @@ namespace Gov.Cscp.Victims.Public
                 async (ctx, next) =>
                 {
                     ctx.Response.Headers.Append(
+                        "Content-Security-Policy",
+                        "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://apis.google.com https://code.jquery.com https://cdn.jsdelivr.net https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://cdn.jsdelivr.net"
+                    );
+                    ctx.Response.Headers.Append(
                         "Strict-Transport-Security",
                         "max-age=31536000; includeSubDomains; preload"
                     );
@@ -136,7 +140,8 @@ namespace Gov.Cscp.Victims.Public
             app.UseXXssProtection(options => options.EnabledWithBlockMode());
             app.UseXfo(options => options.Deny());
 
-            if (!CurrentEnvironment.IsDevelopment()) // when running locally we can't have a strict CSP
+            // Define Content Security Policy when not running in development
+            if (!CurrentEnvironment.IsDevelopment())
             {
                 // Content-Security-Policy header
                 app.UseCsp(opts =>
@@ -145,32 +150,24 @@ namespace Gov.Cscp.Victims.Public
                         .StyleSources(s =>
                             s.Self()
                                 .UnsafeInline()
-                                .CustomSources(
-                                    "https://cdnjs.cloudflare.com",
-                                    "https://stackpath.bootstrapcdn.com",
-                                    "https://fonts.googleapis.com"
-                                )
+                                .CustomSources("https://cdn.jsdelivr.net", "https://fonts.googleapis.com")
                         )
-                        .FontSources(s =>
-                            s.Self().CustomSources("https://cdnjs.cloudflare.com", "https://fonts.gstatic.com")
-                        )
+                        .FontSources(s => s.Self().CustomSources("https://fonts.gstatic.com"))
                         .FormActions(s => s.Self())
                         .FrameAncestors(s => s.Self())
                         .ImageSources(s => s.Self().CustomSources("data:"))
                         .DefaultSources(s => s.Self())
                         .ObjectSources(s => s.Self().CustomSources("data:"))
                         .FrameSources(s => s.Self().CustomSources("data:"))
-                        .ConnectSources(s => s.Self().CustomSources("https://stackpath.bootstrapcdn.com"))
+                        .ConnectSources(s => s.Self().CustomSources("https://cdn.jsdelivr.net"))
                         .ScriptSources(s =>
                             s.Self()
                                 .UnsafeInline()
                                 .UnsafeEval()
                                 .CustomSources(
                                     "https://apis.google.com",
-                                    "https://maxcdn.bootstrapcdn.com",
-                                    "https://cdnjs.cloudflare.com",
                                     "https://code.jquery.com",
-                                    "https://stackpath.bootstrapcdn.com",
+                                    "https://cdn.jsdelivr.net",
                                     "https://fonts.googleapis.com"
                                 )
                         );
