@@ -124,10 +124,6 @@ namespace Gov.Cscp.Victims.Public
                 async (ctx, next) =>
                 {
                     ctx.Response.Headers.Append(
-                        "Content-Security-Policy",
-                        "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://apis.google.com https://maxcdn.bootstrapcdn.com https://cdnjs.cloudflare.com https://code.jquery.com https://stackpath.bootstrapcdn.com https://fonts.googleapis.com; connect-src 'self' https://stackpath.bootstrapcdn.com"
-                    );
-                    ctx.Response.Headers.Append(
                         "Strict-Transport-Security",
                         "max-age=31536000; includeSubDomains; preload"
                     );
@@ -150,24 +146,21 @@ namespace Gov.Cscp.Victims.Public
                             s.Self()
                                 .UnsafeInline()
                                 .CustomSources(
-                                    "https://use.fontawesome.com",
+                                    "https://cdnjs.cloudflare.com",
                                     "https://stackpath.bootstrapcdn.com",
                                     "https://fonts.googleapis.com"
                                 )
                         )
                         .FontSources(s =>
-                            s.Self().CustomSources("https://use.fontawesome.com", "https://fonts.gstatic.com")
+                            s.Self().CustomSources("https://cdnjs.cloudflare.com", "https://fonts.gstatic.com")
                         )
                         .FormActions(s => s.Self())
                         .FrameAncestors(s => s.Self())
-                        .ImageSources(s => s.Self().CustomSources("data:", "https://use.fontawesome.com"))
                         .ImageSources(s => s.Self().CustomSources("data:"))
                         .DefaultSources(s => s.Self())
                         .ObjectSources(s => s.Self().CustomSources("data:"))
                         .FrameSources(s => s.Self().CustomSources("data:"))
-                        .ConnectSources(s =>
-                            s.Self().CustomSources("https://use.fontawesome.com", "https://stackpath.bootstrapcdn.com")
-                        )
+                        .ConnectSources(s => s.Self().CustomSources("https://stackpath.bootstrapcdn.com"))
                         .ScriptSources(s =>
                             s.Self()
                                 .UnsafeInline()
