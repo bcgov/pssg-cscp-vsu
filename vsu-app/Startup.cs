@@ -125,7 +125,7 @@ namespace Gov.Cscp.Victims.Public
                 {
                     ctx.Response.Headers.Append(
                         "Content-Security-Policy",
-                        "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://apis.google.com https://maxcdn.bootstrapcdn.com https://cdnjs.cloudflare.com https://code.jquery.com https://stackpath.bootstrapcdn.com https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://use.fontawesome.com https://stackpath.bootstrapcdn.com https://fonts.googleapis.com; font-src 'self' https://use.fontawesome.com https://fonts.gstatic.com; connect-src 'self' https://stackpath.bootstrapcdn.com https://use.fontawesome.com; img-src 'self' data: https://use.fontawesome.com"
+                        "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://apis.google.com https://maxcdn.bootstrapcdn.com https://cdnjs.cloudflare.com https://code.jquery.com https://stackpath.bootstrapcdn.com https://fonts.googleapis.com; connect-src 'self' https://stackpath.bootstrapcdn.com"
                     );
                     ctx.Response.Headers.Append(
                         "Strict-Transport-Security",
@@ -170,6 +170,8 @@ namespace Gov.Cscp.Victims.Public
                         )
                         .ScriptSources(s =>
                             s.Self()
+                                .UnsafeInline()
+                                .UnsafeEval()
                                 .CustomSources(
                                     "https://apis.google.com",
                                     "https://maxcdn.bootstrapcdn.com",
