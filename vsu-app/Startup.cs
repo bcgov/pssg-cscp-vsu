@@ -67,8 +67,8 @@ namespace Gov.Cscp.Victims.Public
                     //CSPReportOnly
                     opts.Filters.Add(typeof(CspReportOnlyAttribute));
                     opts.Filters.Add(new CspScriptSrcReportOnlyAttribute { None = true });
-
-                    opts.Filters.Add(new AllowAnonymousFilter()); // Allow anonymous for dev
+                    // Allow anonymous access - authentication not implemented yet
+                    opts.Filters.Add(new AllowAnonymousFilter());
                 })
                 .AddNewtonsoftJson(opts =>
                 {
@@ -99,7 +99,7 @@ namespace Gov.Cscp.Victims.Public
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
             string pathBase = Configuration["BASE_PATH"];
 
@@ -107,7 +107,7 @@ namespace Gov.Cscp.Victims.Public
             {
                 app.UsePathBase(pathBase);
             }
-            if (env.IsDevelopment())
+            if (CurrentEnvironment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
@@ -124,10 +124,6 @@ namespace Gov.Cscp.Victims.Public
                 async (ctx, next) =>
                 {
                     ctx.Response.Headers.Append(
-                        "Content-Security-Policy",
-                        "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://apis.google.com https://maxcdn.bootstrapcdn.com https://cdnjs.cloudflare.com https://code.jquery.com https://stackpath.bootstrapcdn.com https://fonts.googleapis.com"
-                    );
-                    ctx.Response.Headers.Append(
                         "Strict-Transport-Security",
                         "max-age=31536000; includeSubDomains; preload"
                     );
@@ -140,7 +136,8 @@ namespace Gov.Cscp.Victims.Public
             app.UseXXssProtection(options => options.EnabledWithBlockMode());
             app.UseXfo(options => options.Deny());
 
-            if (!env.IsDevelopment()) // when running locally we can't have a strict CSP
+            // Define Content Security Policy when not running in development
+            if (!CurrentEnvironment.IsDevelopment())
             {
                 // Content-Security-Policy header
                 app.UseCsp(opts =>
@@ -164,8 +161,13 @@ namespace Gov.Cscp.Victims.Public
                         .DefaultSources(s => s.Self())
                         .ObjectSources(s => s.Self().CustomSources("data:"))
                         .FrameSources(s => s.Self().CustomSources("data:"))
+                        .ConnectSources(s =>
+                            s.Self().CustomSources("https://use.fontawesome.com", "https://stackpath.bootstrapcdn.com")
+                        )
                         .ScriptSources(s =>
                             s.Self()
+                                .UnsafeInline()
+                                .UnsafeEval()
                                 .CustomSources(
                                     "https://apis.google.com",
                                     "https://maxcdn.bootstrapcdn.com",
@@ -278,7 +280,7 @@ namespace Gov.Cscp.Victims.Public
 
                 spa.Options.SourcePath = "ClientApp";
 
-                if (env.IsDevelopment())
+                if (CurrentEnvironment.IsDevelopment())
                 {
                     spa.UseAngularCliServer(npmScript: "start");
                 }
