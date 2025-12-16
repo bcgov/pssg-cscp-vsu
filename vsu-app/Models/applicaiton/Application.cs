@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Gov.Cscp.Victims.Public.Models
 {
@@ -15,6 +16,7 @@ namespace Gov.Cscp.Victims.Public.Models
         public string vsd_cvap_victimfirstname { get; set; }
 
         [StringLength(100)]
+        [JsonConverter(typeof(EmptyStringToNullConverter))]
         public string vsd_cvap_victimmiddlename { get; set; }
 
         [StringLength(100)]
@@ -23,21 +25,25 @@ namespace Gov.Cscp.Victims.Public.Models
         public int? vsd_cvap_victimgendercode { get; set; }
 
         [StringLength(500)]
+        [JsonConverter(typeof(EmptyStringToNullConverter))]
         public string? vsd_victimgendertext { get; set; }
         public int? vsd_victimpronouns { get; set; }
 
         [StringLength(500)]
+        [JsonConverter(typeof(EmptyStringToNullConverter))]
         public string? vsd_victimpronountext { get; set; }
 
         public int? vsd_victimprimaryraceethnicity { get; set; }
 
         [StringLength(500)]
+        [JsonConverter(typeof(EmptyStringToNullConverter))]
         public string? vsd_victimprimaryraceethnicitytext { get; set; }
         public int? vsd_victimindigenous { get; set; }
 
         public int vsd_vsu_applicanttype { get; set; }
 
         [StringLength(100)]
+        [JsonConverter(typeof(EmptyStringToNullConverter))]
         public string vsd_vsuapplicanttypeother { get; set; }
 
         [StringLength(500)]
@@ -95,23 +101,27 @@ namespace Gov.Cscp.Victims.Public.Models
         public string vsd_applicantsfirstname { get; set; }
 
         [StringLength(100)]
-        public string vsd_applicantsmiddlename { get; set; }
+        [JsonConverter(typeof(EmptyStringToNullConverter))]
+        public string? vsd_applicantsmiddlename { get; set; }
 
         [StringLength(100)]
         public string vsd_applicantslastname { get; set; }
         public int? vsd_applicantsgendercode { get; set; }
 
         [StringLength(100)]
+        [JsonConverter(typeof(EmptyStringToNullConverter))]
         public string? vsd_genderidentitytext { get; set; }
         public int? vsd_pronouns { get; set; }
 
         [StringLength(100)]
+        [JsonConverter(typeof(EmptyStringToNullConverter))]
         public string? vsd_pronountext { get; set; }
 
         public DateTime? vsd_applicantsbirthdate { get; set; }
         public int? vsd_primaryraceethnicity { get; set; }
 
         [StringLength(500)]
+        [JsonConverter(typeof(EmptyStringToNullConverter))]
         public string? vsd_primaryraceethnicitytext { get; set; }
         public int? vsd_indigenous { get; set; }
 
@@ -123,7 +133,8 @@ namespace Gov.Cscp.Victims.Public.Models
         public string vsd_applicantsprimaryaddressline1 { get; set; }
 
         [StringLength(250)]
-        public string vsd_applicantsprimaryaddressline2 { get; set; }
+        [JsonConverter(typeof(EmptyStringToNullConverter))]
+        public string? vsd_applicantsprimaryaddressline2 { get; set; }
 
         [StringLength(100)]
         public string vsd_applicantsprimarycity { get; set; }
@@ -165,7 +176,8 @@ namespace Gov.Cscp.Victims.Public.Models
         public int? vsd_vsu_bccorrectionsinformation { get; set; }
 
         [StringLength(250)]
-        public string vsd_vsu_notificationadditionalcomments { get; set; }
+        [JsonConverter(typeof(EmptyStringToNullConverter))]
+        public string? vsd_vsu_notificationadditionalcomments { get; set; }
 
         public string vsd_vsu_travelexpenserequest_03 { get; set; }
 
