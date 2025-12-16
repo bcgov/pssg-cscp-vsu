@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Gov.Cscp.Victims.Public.Models
 {
@@ -14,7 +15,8 @@ namespace Gov.Cscp.Victims.Public.Models
         public string vsd_firstname { get; set; }
 
         [StringLength(100)]
-        public string vsd_middlename { get; set; }
+        [JsonConverter(typeof(EmptyStringToNullConverter))]
+        public string? vsd_middlename { get; set; }
 
         [StringLength(100)]
         public string vsd_lastname { get; set; }
@@ -28,15 +30,18 @@ namespace Gov.Cscp.Victims.Public.Models
         public int? vsd_gender { get; set; }
 
         [StringLength(500)]
+        [JsonConverter(typeof(EmptyStringToNullConverter))]
         public string? vsd_genderidentitytext { get; set; }
         public int? vsd_pronouns { get; set; }
 
         [StringLength(500)]
+        [JsonConverter(typeof(EmptyStringToNullConverter))]
         public string? vsd_pronountext { get; set; }
 
         public int? vsd_primaryraceethnicity { get; set; }
 
         [StringLength(500)]
+        [JsonConverter(typeof(EmptyStringToNullConverter))]
         public string? vsd_primaryraceethnicitytext { get; set; }
 
         [StringLength(250)]
