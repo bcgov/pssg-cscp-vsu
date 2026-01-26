@@ -66,9 +66,8 @@ namespace Gov.Cscp.Victims.Public.Services
             if (result.result.ContainsKey("IsSuccess") && result.result["IsSuccess"].ToString().Equals("False"))
             {
                 _logger.Information(
-                    new RequestFailedException($"Received a fail response from {endpointUrl}. Source = VSU"),
-                    $"Error calling API function {endpointUrl}. \nSource = VSU. \nError is:\n{result.result}\n\n",
-                    result.result
+                    new RequestFailedException("Received a fail response from Dynamics endpoint. Source = VSU"),
+                    "Error calling Dynamics endpoint. Source = VSU"
                 );
             }
 
