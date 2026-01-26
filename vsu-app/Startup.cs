@@ -1,5 +1,6 @@
 using System;
 using System.Net.Http;
+using System.Reflection;
 using System.Threading.Tasks;
 using Gov.Cscp.Victims.Public.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -19,6 +20,7 @@ using Microsoft.Net.Http.Headers;
 using NWebsec.AspNetCore.Mvc;
 using NWebsec.AspNetCore.Mvc.Csp;
 using Serilog;
+using Serilog.Enrichers.Span;
 using Serilog.Exceptions;
 
 namespace Gov.Cscp.Victims.Public
@@ -27,13 +29,13 @@ namespace Gov.Cscp.Victims.Public
     {
         private IWebHostEnvironment CurrentEnvironment { get; set; }
 
+        public IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
             CurrentEnvironment = env;
         }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -96,11 +98,29 @@ namespace Gov.Cscp.Victims.Public
             services.AddHealthChecks().AddCheck("HTTP Endpoint", () => HealthCheckResult.Healthy("Ok"));
 
             services.AddSession();
+
+            services.AddSerilog();
+
+            // Add Swagger services
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc(
+                    "v1",
+                    new Microsoft.OpenApi.OpenApiInfo
+                    {
+                        Title = "VSU API",
+                        Version = "v1",
+                        Description = "API for the Victim Services Unit Application (VSU) application",
+                    }
+                );
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            ConfigureLogging(env);
+
             string pathBase = Configuration["BASE_PATH"];
 
             if (!string.IsNullOrEmpty(pathBase))
@@ -116,6 +136,16 @@ namespace Gov.Cscp.Victims.Public
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
+
+            app.UseSerilogRequestLogging(options =>
+            {
+                options.EnrichDiagnosticContext = (diagnosticContext, httpContext) =>
+                {
+                    diagnosticContext.Set("RequestHost", httpContext.Request.Host.Value);
+                    diagnosticContext.Set("RequestScheme", httpContext.Request.Scheme);
+                    diagnosticContext.Set("UserAgent", httpContext.Request.Headers["User-Agent"].ToString());
+                };
+            });
 
             // health checks
             app.UseHealthChecks("/hc");
@@ -216,61 +246,14 @@ namespace Gov.Cscp.Victims.Public
                 routes.MapRoute(name: "default", template: "{controller}/{action=Index}/{id?}");
             });
 
-            //splunk setup
-            if (
-                !string.IsNullOrEmpty(Configuration["SPLUNK_COLLECTOR_URL"])
-                && !string.IsNullOrEmpty(Configuration["SPLUNK_TOKEN"])
-            )
+            // enable swagger only in development
+            if (env.IsDevelopment())
             {
-                Serilog.Sinks.Splunk.CustomFields fields = new Serilog.Sinks.Splunk.CustomFields();
-                if (!string.IsNullOrEmpty(Configuration["SPLUNK_CHANNEL"]))
+                app.UseSwagger();
+                app.UseSwaggerUI(c =>
                 {
-                    fields.CustomFieldList.Add(
-                        new Serilog.Sinks.Splunk.CustomField("channel", Configuration["SPLUNK_CHANNEL"])
-                    );
-                }
-                var splunkUri = new Uri(Configuration["SPLUNK_COLLECTOR_URL"]);
-                var upperSplunkHost = splunkUri.Host?.ToUpperInvariant() ?? string.Empty;
-
-                // Fix for bad SSL issues
-
-                Log.Logger = new LoggerConfiguration()
-                    .Enrich.FromLogContext()
-                    .Enrich.WithExceptionDetails()
-                    .WriteTo.Console(
-                        outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}"
-                    )
-                    // .WriteTo.EventCollector(Configuration["SPLUNK_COLLECTOR_URL"], Configuration["SPLUNK_TOKEN"])
-                    .WriteTo.EventCollector(
-                        splunkHost: Configuration["SPLUNK_COLLECTOR_URL"],
-                        eventCollectorToken: Configuration["SPLUNK_TOKEN"],
-                        sourceType: "portal",
-                        restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Information,
-#pragma warning disable CA2000 // Dispose objects before losing scope
-                        messageHandler: new HttpClientHandler()
-                        {
-                            ServerCertificateCustomValidationCallback = (message, cert, chain, errors) =>
-                            {
-                                return true;
-                            },
-                        }
-#pragma warning restore CA2000 // Dispose objects before losing scope
-                    )
-                    .CreateLogger();
-
-                Serilog.Debugging.SelfLog.Enable(Console.Error);
-
-                Log.Logger.Information("VSU Webforms Started");
-            }
-            else
-            {
-                Log.Logger = new LoggerConfiguration()
-                    .Enrich.FromLogContext()
-                    .Enrich.WithExceptionDetails()
-                    .WriteTo.Console(
-                        outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}"
-                    )
-                    .CreateLogger();
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "VSU API V1");
+                });
             }
 
             app.UseSpa(spa =>
@@ -285,6 +268,78 @@ namespace Gov.Cscp.Victims.Public
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
+        }
+
+        private void ConfigureLogging(IWebHostEnvironment env)
+        {
+            var loggerConfiguration = new LoggerConfiguration()
+                .Enrich.FromLogContext()
+                .Enrich.WithExceptionDetails()
+                .Enrich.WithMachineName()
+                .Enrich.WithProperty("app", "VSU")
+                .Enrich.WithProperty("environment", env.EnvironmentName)
+                .Enrich.WithEnvironmentUserName()
+                .Enrich.WithCorrelationId()
+                .Enrich.WithSpan()
+                .Enrich.WithProperty(
+                    "version",
+                    Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "Unknown"
+                )
+                .Enrich.WithProperty("UTC_Timestamp", DateTime.UtcNow.ToString("o"));
+
+            // Set minimum level based on environment
+            if (env.IsDevelopment())
+            {
+                loggerConfiguration.MinimumLevel.Debug();
+            }
+            else
+            {
+                loggerConfiguration.MinimumLevel.Information();
+            }
+
+            // Override for specific namespaces
+            loggerConfiguration
+                .MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Warning)
+                .MinimumLevel.Override("System", Serilog.Events.LogEventLevel.Warning);
+
+            loggerConfiguration.WriteTo.Console();
+
+            var splunkCollectorUrl = Configuration["SPLUNK_COLLECTOR_URL"];
+            var splunkToken = Configuration["SPLUNK_TOKEN"];
+
+            if (!string.IsNullOrEmpty(splunkCollectorUrl) && !string.IsNullOrEmpty(splunkToken))
+            {
+                // Use proper certificate validation or provide custom validator
+                HttpClientHandler? handler = null;
+
+                if (env.IsDevelopment())
+                {
+                    handler = new HttpClientHandler
+                    {
+                        ServerCertificateCustomValidationCallback =
+                            HttpClientHandler.DangerousAcceptAnyServerCertificateValidator,
+                    };
+                }
+
+                loggerConfiguration.WriteTo.EventCollector(
+                    splunkHost: splunkCollectorUrl,
+                    eventCollectorToken: splunkToken,
+                    sourceType: "coast:vsu:api",
+                    restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Information,
+                    messageHandler: handler,
+                    batchSizeLimit: 100,
+                    batchIntervalInSeconds: 2
+                );
+            }
+
+            Log.Logger = loggerConfiguration.CreateLogger();
+
+            Serilog.Debugging.SelfLog.Enable(msg =>
+            {
+                Console.Error.WriteLine($"Serilog Error: {msg}");
+            });
+
+            Log.Logger.Information("VSU API Started");
         }
     }
 }
