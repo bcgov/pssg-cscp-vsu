@@ -75,9 +75,8 @@ namespace Gov.Cscp.Victims.Public.Services
             if (!(new HttpResponseMessage((HttpStatusCode)_statusCode).IsSuccessStatusCode))
             {
                 _logger.Error(
-                    new RequestFailedException($"Error calling API function {endpointUrl}. Source = VSU"),
-                    $"Error calling API function {endpointUrl}. \nSource = VSU. \nError is:\n{result.result}\n\n",
-                    result.result
+                    new RequestFailedException("Error calling Dynamics endpoint. Source = VSU"),
+                    "Error calling Dynamics endpoint. Source = VSU"
                 );
             }
 
