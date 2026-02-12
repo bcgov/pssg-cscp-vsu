@@ -1,24 +1,26 @@
-import { AuthInfoHelper } from '../shared/components/authorization/authorization.helper';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatStepper } from '@angular/material/stepper';
+import { Title } from '@angular/platform-browser';
+import { Router } from '@angular/router';
+import { LookupService } from '../services/lookup.service';
+import { NotificationQueueService } from '../services/notification-queue.service';
+import { ReimbursementService } from '../services/reimbursement.service';
+import { AuthInfoHelper } from '../shared/components/authorization/authorization.helper';
+import { TravelExpensesHelper } from '../shared/components/travel-expenses/travel-expenses.helper';
+import { VTFCaseInfoHelper } from '../shared/components/vtf-case-information/vtf-case-information.helper';
 import { FORM_TITLES, FORM_TYPES } from '../shared/enums-list';
 import { FormBase } from '../shared/form-base';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { LookupService } from '../services/lookup.service';
-import { MatStepperModule, MatStepper } from '@angular/material/stepper';
-import { NotificationQueueService } from '../services/notification-queue.service';
-import { Router } from '@angular/router';
-import { Title } from '@angular/platform-browser';
-import { VTFCaseInfoHelper } from '../shared/components/vtf-case-information/vtf-case-information.helper';
+import { convertReimbursementFormToCRM } from '../shared/interfaces/converters/reimbursement.web.to.crm';
 import { iLookupData } from '../shared/interfaces/lookup-data.interface';
-import { TravelExpensesHelper } from '../shared/components/travel-expenses/travel-expenses.helper';
-import { ReimbursementService } from '../services/reimbursement.service';
 import {
   iAuthorizationInformation,
-  iReimbursementForm,
   iCaseInformation,
+  iReimbursementForm,
   iTravelInformation
 } from '../shared/interfaces/reimbursement.interface';
-import { convertReimbursementFormToCRM } from '../shared/interfaces/converters/reimbursement.web.to.crm';
+import { ServiceNotAvailableComponent } from '../shared/service-not-available.component';
 
 enum PAGES {
   CASE_INFORMATION,
@@ -74,7 +76,8 @@ export class VictimTravelFundReimbursementComponent extends FormBase implements 
     private lookupService: LookupService,
     private titleService: Title,
     private reimbursementService: ReimbursementService,
-    private notify: NotificationQueueService
+    private notify: NotificationQueueService,
+    private snackBar: MatSnackBar
   ) {
     super();
   }
@@ -98,7 +101,7 @@ export class VictimTravelFundReimbursementComponent extends FormBase implements 
             resolve();
           },
           (err) => {
-            this.notify.addNotification('Encountered an error getting country information.', 'warning', 3000);
+            reject();
           }
         );
       })
@@ -115,7 +118,7 @@ export class VictimTravelFundReimbursementComponent extends FormBase implements 
             resolve();
           },
           (err) => {
-            this.notify.addNotification('Encountered an error getting province information.', 'warning', 3000);
+            reject();
           }
         );
       })
@@ -129,10 +132,10 @@ export class VictimTravelFundReimbursementComponent extends FormBase implements 
             if (this.lookupData.offences) {
               this.lookupData.offences.sort((a, b) => a.vsd_name.localeCompare(b.vsd_name));
             }
-            resolve();
+            reject();
           },
           (err) => {
-            this.notify.addNotification('Encountered an error getting offence information.', 'warning', 3000);
+            resolve();
           }
         );
       })
@@ -158,17 +161,23 @@ export class VictimTravelFundReimbursementComponent extends FormBase implements 
             resolve();
           },
           (err) => {
-            this.notify.addNotification('Encountered an error getting country information.', 'warning', 3000);
+            reject();
           }
         );
       })
     );
 
-    Promise.all(promise_array).then((res) => {
-      this.didLoad = true;
-      console.log('Lookup data');
-      console.log(this.lookupData);
-    });
+    Promise.all(promise_array)
+      .then((res) => {
+        this.didLoad = true;
+      })
+      .catch((err) => {
+        this.snackBar.openFromComponent(ServiceNotAvailableComponent, {
+          panelClass: ['red-snackbar'],
+          horizontalPosition: 'center',
+          verticalPosition: 'top'
+        });
+      });
   }
 
   buildApplicationForm(): FormGroup {
