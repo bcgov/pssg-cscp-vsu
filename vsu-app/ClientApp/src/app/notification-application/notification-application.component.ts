@@ -80,6 +80,9 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
     var ua = window.navigator.userAgent;
     this.isIE = /MSIE|Trident/.test(ua);
     this.form = this.buildApplicationForm();
+    this.form.valueChanges.subscribe((val) => {
+      this.showValidationMessage = this.hasInvalidTouchedControls(this.form);
+    });
 
     let promise_array = [];
 

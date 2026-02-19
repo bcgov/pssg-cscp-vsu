@@ -87,6 +87,9 @@ export class VictimTravelFundReimbursementComponent extends FormBase implements 
     var ua = window.navigator.userAgent;
     this.isIE = /MSIE|Trident/.test(ua);
     this.form = this.buildApplicationForm();
+    this.form.valueChanges.subscribe((val) => {
+      this.showValidationMessage = this.hasInvalidTouchedControls(this.form);
+    });
 
     let promise_array = [];
 
@@ -132,10 +135,10 @@ export class VictimTravelFundReimbursementComponent extends FormBase implements 
             if (this.lookupData.offences) {
               this.lookupData.offences.sort((a, b) => a.vsd_name.localeCompare(b.vsd_name));
             }
-            reject();
+            resolve();
           },
           (err) => {
-            resolve();
+            reject();
           }
         );
       })
