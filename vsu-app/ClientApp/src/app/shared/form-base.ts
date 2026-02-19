@@ -1,8 +1,8 @@
-import { ValidatorFn, AbstractControl, FormControl, FormGroup, FormArray, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
+import * as _ from 'lodash';
 import * as moment from 'moment';
 import { ApplicationType, EnumHelper } from './enums-list';
-import * as _ from 'lodash';
 import { IDynamicsContact } from './interfaces/dynamics/contact.interface';
 
 export class FormBase {
@@ -490,6 +490,21 @@ export class FormBase {
       this.showValidationMessage = false;
       window.scroll(0, 0);
       stepper.previous();
+    }
+  }
+
+  // recursively checks if all required fields are filled out touched
+  // this is used to determine if the validation message should be shown
+  protected hasInvalidTouchedControls(control: AbstractControl): boolean {
+    if (control instanceof FormGroup) {
+      // check all controls in the FormGroup
+      return Object.keys(control.controls).some((key) => this.hasInvalidTouchedControls(control.get(key)));
+    } else if (control instanceof FormArray) {
+      // check all controls in the FormArray
+      return control.controls.some((ctrl) => this.hasInvalidTouchedControls(ctrl));
+    } else {
+      // it's a FormControl - check if it's invalid and touched
+      return control.invalid && control.touched;
     }
   }
 }
