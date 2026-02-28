@@ -1,13 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ControlContainer, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
-import { iLookupData } from '../../interfaces/lookup-data.interface';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { ApplicationType, MY_FORMATS } from '../../enums-list';
 import { FormBase } from '../../form-base';
+import { iLookupData } from '../../interfaces/lookup-data.interface';
 import { ApplicantInfoHelper } from './applicant-information.helper';
 
 @Component({
+  standalone: false,
   selector: 'app-applicant-information',
   templateUrl: './applicant-information.component.html',
   styleUrls: ['./applicant-information.component.scss'],
@@ -28,7 +29,10 @@ export class ApplicantInformationComponent extends FormBase implements OnInit {
 
   ApplicationType = ApplicationType;
 
-  constructor(private controlContainer: ControlContainer, private fb: FormBuilder) {
+  constructor(
+    private controlContainer: ControlContainer,
+    private fb: FormBuilder
+  ) {
     super();
   }
   ngOnInit() {

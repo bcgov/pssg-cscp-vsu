@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { ControlContainer, FormGroup } from '@angular/forms';
 import { noop, Observable, Observer, of, throwError } from 'rxjs';
-import { retry, catchError, map, switchMap, tap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { config } from '../../../../config';
 import { LookupService } from '../../../services/lookup.service';
 import { ApplicationType } from '../../enums-list';
@@ -10,6 +10,7 @@ import { FormBase } from '../../form-base';
 import { CitiesSearchResponse, iCity, iLookupData } from '../../interfaces/lookup-data.interface';
 
 @Component({
+  standalone: false,
   selector: 'app-victim-service-worker',
   templateUrl: './victim-service-worker.component.html'
 })

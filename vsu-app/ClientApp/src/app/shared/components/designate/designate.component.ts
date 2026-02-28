@@ -5,6 +5,7 @@ import { FormBase } from '../../form-base';
 import { iLookupData } from '../../interfaces/lookup-data.interface';
 
 @Component({
+  standalone: false,
   selector: 'app-designate',
   templateUrl: './designate.component.html'
 })

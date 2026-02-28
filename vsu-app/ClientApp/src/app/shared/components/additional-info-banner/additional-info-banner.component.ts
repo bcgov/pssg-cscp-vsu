@@ -3,6 +3,7 @@ import { LookupService } from '../../../services/lookup.service';
 import { ApplicationType } from '../../enums-list';
 
 @Component({
+  standalone: false,
   selector: 'app-additional-info-banner',
   templateUrl: './additional-info-banner.component.html',
   styleUrls: ['./additional-info-banner.component.scss']

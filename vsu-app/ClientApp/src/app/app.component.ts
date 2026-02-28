@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import moment from 'moment-timezone';
 import { ConfigService } from './services/config.service';
 import { Configuration } from './shared/interfaces/configuration.interface';
-import * as moment from 'moment-timezone';
 
 @Component({
+  standalone: false,
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']

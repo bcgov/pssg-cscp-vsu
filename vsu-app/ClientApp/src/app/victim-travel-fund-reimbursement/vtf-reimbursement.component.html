@@ -16,10 +16,10 @@
                         </ng-template>
                         <ng-template matStepperIcon="number">
                         </ng-template>
-                        <mat-step label="VTF Case Information" [stepControl]="fb.group({name: ['caseInformation']})" [hasError]="max_selected_index >= 2 && !isMyControlValid(form.get('caseInformation'))"></mat-step>
+                        <mat-step label="VTF Case Information" [stepControl]="fb.group({name: ['caseInformation']})" [hasError]="max_selected_index >= 2 && !isMyControlValid(form?.get('caseInformation'))"></mat-step>
                         <!-- <mat-step label="Applicant Information" [stepControl]="fb.group({name: ['applicantInformation']})" [hasError]="!isMyControlValid(form.get('applicantInformation'))"></mat-step> -->
-                        <mat-step label="Travel Information & Expenses" [stepControl]="fb.group({name: ['travelExpenses']})" [hasError]="!isMyControlValid(form.get('travelExpenses'))"></mat-step>
-                        <mat-step label="Declaration & Authorization" [stepControl]="fb.group({name: ['authorizationInformation']})" [hasError]="!isMyControlValid(form.get('authorizationInformation'))"></mat-step>
+                        <mat-step label="Travel Information & Expenses" [stepControl]="fb.group({name: ['travelExpenses']})" [hasError]="!isMyControlValid(form?.get('travelExpenses'))"></mat-step>
+                        <mat-step label="Declaration & Authorization" [stepControl]="fb.group({name: ['authorizationInformation']})" [hasError]="!isMyControlValid(form?.get('authorizationInformation'))"></mat-step>
                         <mat-step label="Confirmation" *ngIf="showConfirmation" [stepControl]="fb.group({name: ['confirmation']})"></mat-step>
                     </mat-vertical-stepper>
 

@@ -1,14 +1,13 @@
 import { ApplicationType, EnumHelper, PARTICIPANT_TYPES } from '../../enums-list';
+import { iTravelFundApplication } from '../application.interface';
 import {
+  iApplicationFormCRM,
   iCRMApplication,
   iCRMCourtInfo,
-  iCRMParticipant,
-  iApplicationFormCRM,
   iCRMOffence,
+  iCRMParticipant,
   iCRMTravelInfo
 } from '../dynamics/crm-application';
-import { iTravelFundApplication } from '../application.interface';
-import * as _ from 'lodash';
 
 export function convertTravelFundApplicationToCRM(application: iTravelFundApplication) {
   console.log('converting travel application');
@@ -305,7 +304,7 @@ function getCRMProviderCollection(application: iTravelFundApplication) {
     application.CaseInformation.victimServiceWorker.forEach((vsw) => {
       //if any field besides okToDiscussTravel has data - we need to add this provider
       //otherwise we don't add a vsw provider
-      let testVSW = _.cloneDeep(vsw);
+      let testVSW = structuredClone(vsw);
       delete testVSW['okToDiscussTravel'];
       if (checkObjectHasValue(testVSW)) {
         provider_collection.push({

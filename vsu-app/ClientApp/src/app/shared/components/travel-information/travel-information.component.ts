@@ -1,14 +1,15 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ControlContainer, FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import moment from 'moment';
 import { ApplicationType, MY_FORMATS } from '../../enums-list';
 import { FormBase } from '../../form-base';
 import { iLookupData } from '../../interfaces/lookup-data.interface';
 import { TravelInfoHelper } from './travel-information.helper';
-import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material/core';
-import { MomentDateAdapter } from '@angular/material-moment-adapter';
-import * as moment from 'moment';
 
 @Component({
+  standalone: false,
   selector: 'app-travel-information',
   templateUrl: './travel-information.component.html',
   styleUrls: ['./travel-information.component.scss'],
@@ -28,7 +29,10 @@ export class TravelInformationComponent extends FormBase implements OnInit {
 
   travelInfoHelper = new TravelInfoHelper();
 
-  constructor(private controlContainer: ControlContainer, private fb: FormBuilder) {
+  constructor(
+    private controlContainer: ControlContainer,
+    private fb: FormBuilder
+  ) {
     super();
   }
 

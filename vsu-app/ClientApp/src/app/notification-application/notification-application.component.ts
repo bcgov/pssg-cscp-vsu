@@ -25,6 +25,7 @@ import { iLookupData } from '../shared/interfaces/lookup-data.interface';
 import { ServiceNotAvailableComponent } from '../shared/service-not-available.component';
 
 @Component({
+  standalone: false,
   selector: 'app-notification-application',
   templateUrl: './notification-application.component.html',
   styleUrls: ['./notification-application.component.scss']

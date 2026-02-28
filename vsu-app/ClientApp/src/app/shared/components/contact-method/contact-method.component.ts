@@ -3,6 +3,7 @@ import { ControlContainer, FormGroup } from '@angular/forms';
 import { FormBase } from '../../form-base';
 
 @Component({
+  standalone: false,
   selector: 'app-contact-method',
   templateUrl: './contact-method.component.html'
 })

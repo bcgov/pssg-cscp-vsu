@@ -1,13 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ControlContainer, FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { LookupService } from '../../../services/lookup.service';
+import { NotificationQueueService } from '../../../services/notification-queue.service';
 import { ApplicationType } from '../../enums-list';
 import { FormBase } from '../../form-base';
 import { iLookupData, iOffence } from '../../interfaces/lookup-data.interface';
-import * as _ from 'lodash';
-import { NotificationQueueService } from '../../../services/notification-queue.service';
 
 @Component({
+  standalone: false,
   selector: 'app-travel-overview',
   templateUrl: './travel-overview.component.html',
   styleUrls: ['./travel-overview.component.scss']

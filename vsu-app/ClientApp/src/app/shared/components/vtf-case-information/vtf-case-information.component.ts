@@ -1,12 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ControlContainer, FormGroup } from '@angular/forms';
+import { ReimbursementService } from '../../../services/reimbursement.service';
 import { ApplicationType } from '../../enums-list';
 import { FormBase } from '../../form-base';
 import { iLookupData } from '../../interfaces/lookup-data.interface';
-import * as _ from 'lodash';
-import { ReimbursementService } from '../../../services/reimbursement.service';
 
 @Component({
+  standalone: false,
   selector: 'app-vtf-case-information',
   templateUrl: './vtf-case-information.component.html',
   styleUrls: ['./vtf-case-information.component.scss']
@@ -20,7 +20,10 @@ export class VTFCaseInformationComponent extends FormBase implements OnInit {
   isValid: boolean = false;
   didCheck: boolean = false;
 
-  constructor(private controlContainer: ControlContainer, private reimbursementService: ReimbursementService) {
+  constructor(
+    private controlContainer: ControlContainer,
+    private reimbursementService: ReimbursementService
+  ) {
     super();
   }
 

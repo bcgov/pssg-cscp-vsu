@@ -1,4 +1,3 @@
-import * as _ from 'lodash';
 import { EnumHelper } from '../../enums-list';
 import { iCRMDocument, iCRMTravelInfo } from '../dynamics/crm-application';
 import { iCRMInvoiceLineDetail, iInvoice, iReimbursementFormCRM } from '../dynamics/crm-reimbursement';

@@ -1,15 +1,16 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ControlContainer, FormArray, FormBuilder, FormGroup } from '@angular/forms';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
-import { iLookupData, iOffence } from '../../interfaces/lookup-data.interface';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { LookupService } from '../../../services/lookup.service';
+import { NotificationQueueService } from '../../../services/notification-queue.service';
 import { ApplicationType, MY_FORMATS } from '../../enums-list';
 import { FormBase } from '../../form-base';
+import { iLookupData, iOffence } from '../../interfaces/lookup-data.interface';
 import { CaseInfoInfoHelper } from './case-information.helper';
-import { NotificationQueueService } from '../../../services/notification-queue.service';
 
 @Component({
+  standalone: false,
   selector: 'app-case-information',
   templateUrl: './case-information.component.html',
   styleUrls: ['./case-information.component.scss'],

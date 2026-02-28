@@ -1,15 +1,15 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { MatStepper } from '@angular/material/stepper';
-import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { ControlContainer, FormGroup } from '@angular/forms';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
-import { FormGroup, ControlContainer } from '@angular/forms';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { SignPadDialog } from '../../dialogs/sign-dialog/sign-dialog.component';
 import { ApplicationType, MY_FORMATS } from '../../enums-list';
 import { FormBase } from '../../form-base';
-import { SignPadDialog } from '../../dialogs/sign-dialog/sign-dialog.component';
 import { AuthInfoHelper } from './authorization.helper';
 
 @Component({
+  standalone: false,
   selector: 'app-authorization',
   templateUrl: './authorization.component.html',
   styleUrls: ['./authorization.component.scss'],
@@ -27,7 +27,10 @@ export class AuthorizationComponent extends FormBase implements OnInit {
 
   ApplicationType = ApplicationType;
 
-  constructor(private controlContainer: ControlContainer, private matDialog: MatDialog) {
+  constructor(
+    private controlContainer: ControlContainer,
+    private matDialog: MatDialog
+  ) {
     super();
   }
 

@@ -35,6 +35,7 @@ const DINNER_RATE_ID = '89d4ae92-fd76-eb11-b823-00505683fbf4';
 const MILEAGE_RATE_ID = '92351edf-2a7d-eb11-b824-00505683fbf4';
 
 @Component({
+  standalone: false,
   selector: 'app-vtf-reimbursement',
   templateUrl: './vtf-reimbursement.component.html',
   styleUrls: ['./vtf-reimbursement.component.scss']

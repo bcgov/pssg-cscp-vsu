@@ -9,8 +9,9 @@ import { POSTAL_CODE, ZIP_CODE } from '../../regex.constants';
 import { LookupService } from '../../../services/lookup.service';
 
 @Component({
-  selector: 'app-address',
-  templateUrl: './address.component.html'
+    selector: 'app-address',
+    templateUrl: './address.component.html',
+    standalone: false
 })
 export class AddressComponent implements OnInit {
   countryList: iCountry[] = config.preferred_countries;

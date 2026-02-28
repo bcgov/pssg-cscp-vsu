@@ -27,6 +27,7 @@ import { iLookupData } from '../shared/interfaces/lookup-data.interface';
 import { ServiceNotAvailableComponent } from '../shared/service-not-available.component';
 
 @Component({
+  standalone: false,
   selector: 'app-vtf-application',
   templateUrl: './vtf-application.component.html',
   styleUrls: ['./vtf-application.component.scss']

@@ -14,9 +14,10 @@ import { Subject, takeUntil } from 'rxjs';
  * @implements {OnDestroy}
  */
 @Component({
-  selector: 'app-pronoun-selector',
-  templateUrl: './pronoun-selector.component.html',
-  styleUrls: ['./pronoun-selector.component.scss']
+    selector: 'app-pronoun-selector',
+    templateUrl: './pronoun-selector.component.html',
+    styleUrls: ['./pronoun-selector.component.scss'],
+    standalone: false
 })
 export class PronounSelectorComponent extends FormBase implements OnInit, OnDestroy {
   @Input() form: FormGroup;

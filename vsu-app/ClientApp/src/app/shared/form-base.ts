@@ -1,7 +1,6 @@
 import { AbstractControl, FormArray, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
-import * as _ from 'lodash';
-import * as moment from 'moment';
+import moment from 'moment';
 import { ApplicationType, EnumHelper } from './enums-list';
 import { IDynamicsContact } from './interfaces/dynamics/contact.interface';
 
@@ -459,7 +458,6 @@ export class FormBase {
 
         if (formParts != null) {
           formValid = formParts.valid;
-          console.log(_.cloneDeep(formParts));
         } else {
           alert('That was a null form. Nothing to validate');
         }
