@@ -278,19 +278,6 @@ namespace Gov.Cscp.Victims.Public
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "VSU API V1");
                 });
             }
-
-            app.UseSpa(spa =>
-            {
-                // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                // see https://go.microsoft.com/fwlink/?linkid=864501
-
-                spa.Options.SourcePath = "ClientApp";
-
-                if (CurrentEnvironment.IsDevelopment())
-                {
-                    spa.UseAngularCliServer(npmScript: "start");
-                }
-            });
         }
 
         private void ConfigureLogging(IWebHostEnvironment env)
