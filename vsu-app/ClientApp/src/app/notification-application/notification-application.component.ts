@@ -34,7 +34,7 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
   @ViewChild('stepper', { static: true }) applicationStepper: MatStepper;
   isIE: boolean = false;
   didLoad: boolean = false;
-  showValidationMessage: boolean;
+  declare showValidationMessage: boolean;
   submitting: boolean = false;
   public currentFormStep: number = 0;
   public showPrintView: boolean = false;

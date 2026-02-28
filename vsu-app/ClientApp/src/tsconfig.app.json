@@ -6,6 +6,10 @@
   },
   "exclude": [
     "src/test.ts",
-    "**/*.spec.ts"
+    "**/*.spec.ts",
+    "src/server.ts",
+    "src/main.server.ts",
+    "src/app/app.server.module.ts",
+    "src/app/shared/components/address/address.helper.ts"
   ]
 }

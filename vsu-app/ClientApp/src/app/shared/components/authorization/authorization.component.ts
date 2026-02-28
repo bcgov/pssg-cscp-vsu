@@ -21,7 +21,7 @@ import { AuthInfoHelper } from './authorization.helper';
 export class AuthorizationComponent extends FormBase implements OnInit {
   @Input() formType: ApplicationType;
   @Input() isDisabled: boolean;
-  public form: FormGroup;
+  declare public form: FormGroup;
 
   authInfoHelper = new AuthInfoHelper();
 

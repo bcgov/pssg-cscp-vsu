@@ -15,7 +15,7 @@ import { CitiesSearchResponse, iCity, iLookupData } from '../../interfaces/looku
   templateUrl: './victim-service-worker.component.html'
 })
 export class VSWComponent extends FormBase implements OnInit {
-  public form: FormGroup;
+  declare public form: FormGroup;
   @Input() isDisabled: boolean;
   @Input() isRequired: boolean = false;
   @Input() orgAndTelRequired: boolean = true;

@@ -8,7 +8,7 @@ import { FormBase } from '../../form-base';
   templateUrl: './contact-method.component.html'
 })
 export class ContactMethodComponent extends FormBase implements OnInit {
-  public form: FormGroup;
+  declare public form: FormGroup;
   @Input() number: number = 1;
   @Input() isDeligate: boolean = false;
   @Input() parent: FormGroup;

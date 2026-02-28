@@ -1,8 +1,8 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { FormBase } from '../../form-base';
-import { EnumHelper } from '../../enums-list';
 import { Subject, takeUntil } from 'rxjs';
+import { EnumHelper } from '../../enums-list';
+import { FormBase } from '../../form-base';
 
 /**
  * A form control for selecting gender.
@@ -14,13 +14,13 @@ import { Subject, takeUntil } from 'rxjs';
  * @implements {OnDestroy}
  */
 @Component({
-    selector: 'app-gender-selector',
-    templateUrl: './gender-selector.component.html',
-    styleUrls: ['./gender-selector.component.scss'],
-    standalone: false
+  selector: 'app-gender-selector',
+  templateUrl: './gender-selector.component.html',
+  styleUrls: ['./gender-selector.component.scss'],
+  standalone: false
 })
 export class GenderSelectorComponent extends FormBase implements OnInit, OnDestroy {
-  @Input() form: FormGroup;
+  @Input() declare form: FormGroup;
   @Input() isDisabled: boolean;
   @Input() genderFormControlName: string;
   @Input() otherGenderFormControlName: string;

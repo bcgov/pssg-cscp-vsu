@@ -21,7 +21,7 @@ export class ApplicantInformationComponent extends FormBase implements OnInit {
   @Input() lookupData: iLookupData;
   @Input() formType: ApplicationType;
   @Input() isDisabled: boolean;
-  public form: FormGroup;
+  declare public form: FormGroup;
 
   today: Date = new Date();
 

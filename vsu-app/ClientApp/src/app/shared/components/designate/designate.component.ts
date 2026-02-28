@@ -14,7 +14,7 @@ export class DesignateComponent extends FormBase implements OnInit {
   @Input() formType: ApplicationType;
   @Input() lookupData: iLookupData;
   @Input() baseForm: FormGroup;
-  public form: FormGroup;
+  declare public form: FormGroup;
 
   constructor(private controlContainer: ControlContainer) {
     super();

@@ -34,7 +34,7 @@ export class RecipientDetailsComponent extends FormBase implements OnInit {
   @Input() formType: ApplicationType;
   @Input() lookupData: iLookupData;
   @Input() isDisabled: boolean;
-  public form: FormGroup;
+  declare public form: FormGroup;
 
   NOTIFICATION_METHODS: string[] = [];
 

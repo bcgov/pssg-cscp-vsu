@@ -16,7 +16,7 @@ export class TravelOverviewComponent extends FormBase implements OnInit {
   @Input() lookupData: iLookupData;
   @Input() isDisabled: boolean = false;
   @Input() formType: ApplicationType;
-  public form: FormGroup;
+  declare public form: FormGroup;
 
   offenceList: iOffence[] = [];
 

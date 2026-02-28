@@ -23,7 +23,7 @@ export class CaseInformationComponent extends FormBase implements OnInit {
   @Input() formType: ApplicationType;
   @Input() lookupData: iLookupData;
   @Input() isDisabled: boolean;
-  public form: FormGroup;
+  declare public form: FormGroup;
 
   courtList: string[] = [];
   offenceList: iOffence[] = [];

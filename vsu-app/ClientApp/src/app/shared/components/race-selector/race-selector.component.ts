@@ -1,8 +1,8 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { FormBase } from '../../form-base';
-import { EnumHelper } from 'src/app/shared/enums-list';
 import { Subject, takeUntil } from 'rxjs';
+import { EnumHelper } from 'src/app/shared/enums-list';
+import { FormBase } from '../../form-base';
 
 /**
  * A form control for selecting race/ethnicity, including indigenous status.
@@ -14,13 +14,13 @@ import { Subject, takeUntil } from 'rxjs';
  * @implements {OnDestroy}
  */
 @Component({
-    selector: 'app-race-selector',
-    templateUrl: './race-selector.component.html',
-    styleUrls: ['./race-selector.component.scss'],
-    standalone: false
+  selector: 'app-race-selector',
+  templateUrl: './race-selector.component.html',
+  styleUrls: ['./race-selector.component.scss'],
+  standalone: false
 })
 export class RaceSelectorComponent extends FormBase implements OnInit, OnDestroy {
-  @Input() form: FormGroup;
+  @Input() declare form: FormGroup;
   @Input() isDisabled: boolean;
   @Input() raceEthnicityFormControlName: string;
   @Input() otherRaceEthnicityFormControlName: string;

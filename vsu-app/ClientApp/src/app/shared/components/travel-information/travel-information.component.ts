@@ -22,7 +22,7 @@ export class TravelInformationComponent extends FormBase implements OnInit {
   @Input() isDisabled: boolean = false;
   @Input() lookupData: iLookupData;
   @Input() formType: ApplicationType;
-  public form: FormGroup;
+  declare public form: FormGroup;
 
   today = new Date();
   travelPeriodStartDates: Date[] = [];
