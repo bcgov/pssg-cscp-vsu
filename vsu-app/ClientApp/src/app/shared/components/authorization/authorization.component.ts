@@ -39,8 +39,6 @@ export class AuthorizationComponent extends FormBase implements OnInit {
     setTimeout(() => {
       this.form.markAsTouched();
     }, 0);
-    console.log('auth info component');
-    console.log(this.form);
 
     if (this.formType === ApplicationType.TRAVEL_REIMBURSEMENT) {
       let subTotal = this.form.parent.get('travelExpenses.subTotal').value || 0;

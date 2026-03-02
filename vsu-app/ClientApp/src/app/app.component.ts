@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import moment from 'moment-timezone';
-import { ConfigService } from './services/config.service';
-import { Configuration } from './shared/interfaces/configuration.interface';
+import { ConfigurationStore } from './store/configuration.store';
 
 @Component({
   standalone: false,
@@ -9,47 +8,32 @@ import { Configuration } from './shared/interfaces/configuration.interface';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = '';
   previousUrl: string;
-  configuration: Configuration;
-  error = false;
   public isNewUser: boolean;
   public isDevMode: boolean;
 
-  constructor(private configService: ConfigService) {}
+  private readonly configStore = inject(ConfigurationStore);
 
-  ngOnInit(): void {
-    this.configService
-      .load()
-      .then((configuration) => {
-        console.log('Fetched Configuration:', configuration);
-        this.configuration = configuration;
-      })
-      .catch((error) => {
-        console.error('Failed to fetch configuration:', error);
-        this.error = error;
-      });
-  }
+  configuration = this.configStore.config;
+  error = computed(() => this.configStore.error());
 
   isOutage() {
-    if (
-      !this.configuration ||
-      !this.configuration.outageEndDate ||
-      !this.configuration.outageStartDate ||
-      !this.configuration.outageMessage
-    ) {
+    const config = this.configuration();
+    if (!config || !config.outageEndDate || !config.outageStartDate || !config.outageMessage) {
       return false;
     }
     const currentDate = moment().tz('America/Vancouver');
-    const outageStartDate = moment(this.configuration.outageStartDate).tz('America/Vancouver');
-    const outageEndDate = moment(this.configuration.outageEndDate).tz('America/Vancouver');
+    const outageStartDate = moment(config.outageStartDate).tz('America/Vancouver');
+    const outageEndDate = moment(config.outageEndDate).tz('America/Vancouver');
     return currentDate.isBetween(outageStartDate, outageEndDate, null, '[]');
   }
 
   generateOutageDateMessage(): string {
-    const startDate = moment(this.configuration.outageStartDate).tz('America/Vancouver').format('MMMM Do YYYY, h:mm a');
-    const endDate = moment(this.configuration.outageEndDate).tz('America/Vancouver').format('MMMM Do YYYY, h:mm a');
+    const config = this.configuration();
+    const startDate = moment(config.outageStartDate).tz('America/Vancouver').format('MMMM Do YYYY, h:mm a');
+    const endDate = moment(config.outageEndDate).tz('America/Vancouver').format('MMMM Do YYYY, h:mm a');
     return 'The system will be down for maintenance from ' + startDate + ' to ' + endDate;
   }
 

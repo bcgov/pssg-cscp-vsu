@@ -44,9 +44,6 @@ export class CaseInformationComponent extends FormBase implements OnInit {
     setTimeout(() => {
       this.form.markAsTouched();
     }, 0);
-    console.log('case info component');
-    console.log(this.form);
-    console.log(this.isDisabled);
 
     if (this.lookupData.courts && this.lookupData.courts.length > 0) {
       this.courtList = this.lookupData.courts.map((c) => c.vsd_name);
@@ -90,7 +87,6 @@ export class CaseInformationComponent extends FormBase implements OnInit {
   onVictimInfoSameAsApplicantChange(val) {
     this.setVictimInfoSameAsApplicant(this.form.parent);
     if (!val) {
-      console.log('clear');
       this.form.get('firstName').patchValue('');
       this.form.get('middleName').patchValue('');
       this.form.get('lastName').patchValue('');

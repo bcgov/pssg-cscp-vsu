@@ -4,9 +4,6 @@ import { iCRMInvoiceLineDetail, iInvoice, iReimbursementFormCRM } from '../dynam
 import { iReimbursementForm } from '../reimbursement.interface';
 
 export function convertReimbursementFormToCRM(data: iReimbursementForm) {
-  console.log('converting reimbursement form');
-  console.log(data);
-
   let crm_application: iReimbursementFormCRM = {
     CaseId: getCRMCase(data),
     ContactInfoComments: data.TravelInformation.contactInfoComments,

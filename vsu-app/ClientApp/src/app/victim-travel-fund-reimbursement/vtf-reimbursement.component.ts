@@ -149,7 +149,6 @@ export class VictimTravelFundReimbursementComponent extends FormBase implements 
       new Promise<void>((resolve, reject) => {
         this.lookupService.getRates().subscribe(
           (res) => {
-            console.log(res);
             let rates = res.value;
             let breakfast = rates.find((r) => r.vsd_configid == BREAKFAST_RATE_ID);
             this.lookupData.expenseRates.breakfast = breakfast ? parseFloat(breakfast.vsd_value) : 0;
@@ -195,9 +194,7 @@ export class VictimTravelFundReimbursementComponent extends FormBase implements 
     return this.fb.group(group);
   }
 
-  downloadPDF() {
-    console.log('download pdf');
-  }
+  downloadPDF() {}
 
   harvestForm() {
     let data = {
@@ -210,20 +207,15 @@ export class VictimTravelFundReimbursementComponent extends FormBase implements 
   }
 
   submit() {
-    console.log('submit');
-    console.log(this.form);
     if (this.form.valid) {
       this.submitting = true;
-      console.log('form is valid - submit');
       let application = this.harvestForm();
       let data = convertReimbursementFormToCRM(application);
-      console.log(data);
       this.reimbursementService.submit(data).subscribe(
         (res) => {
           this.submitting = false;
-          console.log(res);
+
           if (res.IsSuccess) {
-            console.log('CONFIRMATION NUMBER SHOULD COME FROM CRM');
             this.form.get('confirmation.confirmationNumber').patchValue('RXXXXXX');
             this.showConfirmation = true;
             setTimeout(() => {
@@ -231,7 +223,6 @@ export class VictimTravelFundReimbursementComponent extends FormBase implements 
             }, 0);
           } else {
             this.notify.addNotification('There was an error submitting the application.', 'danger', 4000);
-            console.log(res.Result);
           }
         },
         (err) => {
@@ -241,7 +232,6 @@ export class VictimTravelFundReimbursementComponent extends FormBase implements 
         }
       );
     } else {
-      console.log('form is NOT valid - NO submit');
       this.validateAllFormFields(this.form);
     }
   }

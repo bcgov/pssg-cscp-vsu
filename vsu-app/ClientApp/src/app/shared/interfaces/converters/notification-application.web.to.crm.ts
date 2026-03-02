@@ -1,11 +1,8 @@
 import { ApplicationType, EnumHelper, PARTICIPANT_TYPES } from '../../enums-list';
-import { iCRMApplication, iCRMCourtInfo, iCRMParticipant, iApplicationFormCRM } from '../dynamics/crm-application';
 import { iNotificationApplication } from '../application.interface';
+import { iApplicationFormCRM, iCRMApplication, iCRMCourtInfo, iCRMParticipant } from '../dynamics/crm-application';
 
 export function convertNotificationApplicationToCRM(application: iNotificationApplication) {
-  console.log('converting notification application');
-  console.log(application);
-
   let crm_application: iApplicationFormCRM = {
     Application: getCRMApplication(application),
     CourtInfoCollection: getCRMCourtInfoCollection(application),

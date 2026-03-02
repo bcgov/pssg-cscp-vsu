@@ -80,8 +80,6 @@ export class RecipientDetailsComponent extends FormBase implements OnInit {
     setTimeout(() => {
       this.form.markAsTouched();
     }, 0);
-    console.log('recipient details component');
-    console.log(this.form);
 
     this.vswIsOptional = this.form.get('addOptionalVSW').value;
     this.vswIsOptionalPreviousSelection = this.form.get('vswIsOptionalPreviousSelection').value;
@@ -159,8 +157,6 @@ export class RecipientDetailsComponent extends FormBase implements OnInit {
     } else if (!addDesignate && designate.length > 0) {
       designate.removeAt(0);
     }
-
-    console.log(this.form);
   }
 
   addOptionalVSWChange(addOptionalVSW: boolean) {

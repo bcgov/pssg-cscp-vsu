@@ -35,8 +35,6 @@ export class VTFCaseInformationComponent extends FormBase implements OnInit {
 
     this.isValid = this.form.get('isValid').value;
     this.didCheck = this.form.get('didCheck').value;
-    console.log('vtf case info component');
-    console.log(this.form);
   }
 
   caseInfoChange() {
@@ -51,7 +49,6 @@ export class VTFCaseInformationComponent extends FormBase implements OnInit {
       //validate
       this.reimbursementService.checkCase(info).subscribe(
         (res) => {
-          console.log(res);
           this.didCheck = true;
           this.form.get('didCheck').patchValue(this.didCheck);
           this.isValid = res.IsSuccess;

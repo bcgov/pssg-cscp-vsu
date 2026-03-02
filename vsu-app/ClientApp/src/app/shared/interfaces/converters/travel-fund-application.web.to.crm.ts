@@ -10,11 +10,6 @@ import {
 } from '../dynamics/crm-application';
 
 export function convertTravelFundApplicationToCRM(application: iTravelFundApplication) {
-  console.log('converting travel application');
-  console.log(application);
-
-  console.log('TODO - need fields add/updated in COAST to capture form. Check TODO comments for details');
-
   let crm_application: iApplicationFormCRM = {
     Application: getCRMApplication(application),
     CourtInfoCollection: getCRMCourtInfoCollection(application),

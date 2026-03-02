@@ -41,8 +41,6 @@ export class TravelInformationComponent extends FormBase implements OnInit {
     setTimeout(() => {
       this.form.markAsTouched();
     }, 0);
-    console.log('travel info component');
-    console.log(this.form);
   }
 
   addAdditionalCourtDate() {
@@ -81,10 +79,8 @@ export class TravelInformationComponent extends FormBase implements OnInit {
   }
 
   travelPeriodStartChange(index: number) {
-    console.log(index);
     let courtDate = this.form.get('courtDates')['controls'][index];
     this.travelPeriodStartDates[index] = moment(courtDate.get('travelPeriodStart').value).toDate();
-    console.log(this.travelPeriodStartDates[index]);
     let startDate = moment(courtDate.get('travelPeriodStart').value);
 
     let endDate = courtDate.get('travelPeriodEnd').value;

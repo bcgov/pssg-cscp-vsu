@@ -176,19 +176,14 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
   }
 
   submit() {
-    console.log('submit');
-    console.log(this.form);
     if (this.form.valid) {
       this.submitting = true;
-      console.log('form is valid - submit');
       let application = this.harvestForm();
       let data = convertNotificationApplicationToCRM(application);
       this.applicationService.submit(data).subscribe(
         (res) => {
           this.submitting = false;
-          console.log(res);
           if (res.IsSuccess) {
-            console.log('CONFIRMATION NUMBER SHOULD COME FROM CRM');
             this.form.get('confirmation.confirmationNumber').patchValue('RXXXXXX');
             this.showConfirmation = true;
             setTimeout(() => {
@@ -196,7 +191,6 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
             }, 0);
           } else {
             this.notify.addNotification('There was an error submitting the application.', 'danger', 4000);
-            console.log(res.Result);
           }
         },
         (err) => {
@@ -205,7 +199,6 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
         }
       );
     } else {
-      console.log('form is NOT valid - NO submit');
       this.validateAllFormFields(this.form);
     }
   }
@@ -214,7 +207,5 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
     this.router.navigate(['']);
   }
 
-  downloadPDF() {
-    console.log('download pdf');
-  }
+  downloadPDF() {}
 }

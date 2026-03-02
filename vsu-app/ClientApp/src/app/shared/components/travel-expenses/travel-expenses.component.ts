@@ -46,8 +46,6 @@ export class TravelExpensesComponent extends FormBase implements OnInit {
     setTimeout(() => {
       this.form.markAsTouched();
     }, 0);
-    console.log('travel expenses component');
-    console.log(this.form);
 
     this.showContactInfoComments = this.form.get('hasContactInfoChanged').value === true;
   }

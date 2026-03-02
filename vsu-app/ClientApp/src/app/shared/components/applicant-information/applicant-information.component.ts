@@ -40,8 +40,6 @@ export class ApplicantInformationComponent extends FormBase implements OnInit {
     setTimeout(() => {
       this.form.markAsTouched();
     }, 0);
-    console.log('applicant info component');
-    console.log(this.form);
 
     this.checkAtLeastOneContactMethod(this.form);
   }
@@ -100,7 +98,6 @@ export class ApplicantInformationComponent extends FormBase implements OnInit {
   applicantInfoSameAsVictimChange(val) {
     this.setApplicantInfoSameAsVictim(this.form.parent);
     if (!val) {
-      console.log('clear');
       this.form.get('firstName').patchValue('');
       this.form.get('middleName').patchValue('');
       this.form.get('lastName').patchValue('');

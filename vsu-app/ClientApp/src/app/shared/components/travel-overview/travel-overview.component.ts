@@ -34,8 +34,6 @@ export class TravelOverviewComponent extends FormBase implements OnInit {
     setTimeout(() => {
       this.form.markAsTouched();
     }, 0);
-    console.log('overview component');
-    console.log(this.form);
 
     if (this.lookupData.offences && this.lookupData.offences.length > 0) {
       this.offenceList = this.lookupData.offences;
