@@ -1,9 +1,10 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30128.74
+# Visual Studio Version 18
+VisualStudioVersion = 18.3.11520.95 d18.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "vsu-app", "vsu-app.csproj", "{4FD7BB04-6C34-4F26-BCBB-6D882E6DACC7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database", "..\Database\Database.csproj", "{539B48D7-D2AC-40FC-A7D6-14FBF197B7BF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +16,10 @@ Global
 		{4FD7BB04-6C34-4F26-BCBB-6D882E6DACC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FD7BB04-6C34-4F26-BCBB-6D882E6DACC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4FD7BB04-6C34-4F26-BCBB-6D882E6DACC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{539B48D7-D2AC-40FC-A7D6-14FBF197B7BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{539B48D7-D2AC-40FC-A7D6-14FBF197B7BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{539B48D7-D2AC-40FC-A7D6-14FBF197B7BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{539B48D7-D2AC-40FC-A7D6-14FBF197B7BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
