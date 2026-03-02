@@ -3,36 +3,34 @@
     <h1>Declaration & Authorization</h1>
   </div>
 
-  <section *ngIf="formType === ApplicationType.NOTIFICATION">
-    <!-- <p>Please indicate your information sharing preferences in the following section:</p> -->
-
-    <p><em>If the offender enters federal custody or applies for parole you will need to register with the Correctional Service of Canada
+  @if (formType === ApplicationType.NOTIFICATION) {
+    <section>
+      <!-- <p>Please indicate your information sharing preferences in the following section:</p> -->
+      <p><em>If the offender enters federal custody or applies for parole you will need to register with the Correctional Service of Canada
         (<a href="https://www.csc-scc.gc.ca/victims/003006-0001-eng.shtml" target="_blank" title="Victims of Crime Act">CSC</a>) or the Parole Board of Canada
         (<a href="https://www.canada.ca/en/parole-board/services/victims/how-to-register-as-a-victim.html" target="_blank" title="Victims of Crime Act">PBC</a>) if you would like to
         receive federal notifications. CSC/PBC will assess your eligibility to register for federal notification.
-        Call 1-866-806-2275 (CSC) or 1-866-789-INFO/4636 (PBC) for more information.</em></p>
-
-    <div class="checkbox-container mt-3 mb-4" [class.is-disabled]="isDisabled">
-      <label class="inline-label inline-checkbox">
-        <input type="checkbox" [value]="true" name="registerForVictimNotification" formControlName="registerForVictimNotification">
-        <span>I request the VSU to forward this application form to CSC/PBC on my behalf if the offender enters federal custody or applies for parole.</span>
-      </label>
-    </div>
-
-    <div class="checkbox-container mb-4" [class.is-disabled]="isDisabled">
-      <label class="inline-label inline-checkbox">
-        <input type="checkbox" [value]="true" name="permissionToShareContactInfo" formControlName="permissionToShareContactInfo">
-        <span>I acknowledge that the VSU may share my contact information (including any updates) with BC Corrections and CSC/PBC for the purpose of contacting me regarding the accused/offender.</span>
-      </label>
-    </div>
-
-    <div class="checkbox-container" [class.is-disabled]="isDisabled">
-      <label class="inline-label inline-checkbox">
-        <input type="checkbox" [value]="true" name="permissionToContactMyVSW" formControlName="permissionToContactMyVSW">
-        <span>I acknowledge that the VSU may contact my VSW or other designate named on this form for the purpose of confirming/updating their contact information (to ensure they are able to receive notifications on my behalf).</span>
-      </label>
-    </div>
-  </section>
+      Call 1-866-806-2275 (CSC) or 1-866-789-INFO/4636 (PBC) for more information.</em></p>
+      <div class="checkbox-container mt-3 mb-4" [class.is-disabled]="isDisabled">
+        <label class="inline-label inline-checkbox">
+          <input type="checkbox" [value]="true" name="registerForVictimNotification" formControlName="registerForVictimNotification">
+          <span>I request the VSU to forward this application form to CSC/PBC on my behalf if the offender enters federal custody or applies for parole.</span>
+        </label>
+      </div>
+      <div class="checkbox-container mb-4" [class.is-disabled]="isDisabled">
+        <label class="inline-label inline-checkbox">
+          <input type="checkbox" [value]="true" name="permissionToShareContactInfo" formControlName="permissionToShareContactInfo">
+          <span>I acknowledge that the VSU may share my contact information (including any updates) with BC Corrections and CSC/PBC for the purpose of contacting me regarding the accused/offender.</span>
+        </label>
+      </div>
+      <div class="checkbox-container" [class.is-disabled]="isDisabled">
+        <label class="inline-label inline-checkbox">
+          <input type="checkbox" [value]="true" name="permissionToContactMyVSW" formControlName="permissionToContactMyVSW">
+          <span>I acknowledge that the VSU may contact my VSW or other designate named on this form for the purpose of confirming/updating their contact information (to ensure they are able to receive notifications on my behalf).</span>
+        </label>
+      </div>
+    </section>
+  }
 
   <section>
     <h2 class="blue-header" [class.mt-0]="formType === ApplicationType.TRAVEL_FUNDS">Declaration & Authorization</h2>
@@ -40,17 +38,22 @@
     <app-field [required]="true" [valid]="isMyControlValid(form.get('declaration'))" errorMessage="Please check this box to indicate that you accept Declaration" [disabled]="isDisabled">
       <label>
         <input type="checkbox" class="mr-2" [value]="true" name="declaration" formControlName="declaration">
-        <span *ngIf="formType === ApplicationType.NOTIFICATION">I certify that I am the applicant named on this form. I am requesting notification information about the accused/offender/respondent. By signing this application form, I give permission (where applicable) to the Victim Safety Unit to release notification information to the designate(s) that I have named on this form. I understand that any information provided by the Victim Safety Unit is confidential and is intended only for the named recipient (i.e. myself plus my designate(s) if applicable). This information may not be distributed, copied, or otherwise used without the express permission of the Victim Safety Unit. <span class="error-states">*</span></span>
-        <span *ngIf="formType === ApplicationType.TRAVEL_FUNDS">I certify that I am the applicant named on this form and that I am requesting funding via the Victim Travel Fund.  By signing this application form, I certify that all the information provided by me is accurate to the best of my ability and I authorize the Victim Safety Unit to indirectly collect my personal information from my Victim Service Worker or other organizations to verify and process my application, if applicable. <span class="error-states">*</span></span>
-        <span *ngIf="formType === ApplicationType.TRAVEL_REIMBURSEMENT">I certify that I am the applicant named on this form and that the expenses claimed were incurred in order to attend criminal justice proceedings. I am requesting funding via the Victim Travel Fund.  By signing this reimbursement form, I certify that all the information provided by me is accurate to the best of my ability and I authorize the Victim Safety Unit to indirectly collect my personal information from my Victim Service Worker or other organizations to verify and process my application, if applicable. <span class="error-states">*</span></span>
+        @if (formType === ApplicationType.NOTIFICATION) {
+          <span>I certify that I am the applicant named on this form. I am requesting notification information about the accused/offender/respondent. By signing this application form, I give permission (where applicable) to the Victim Safety Unit to release notification information to the designate(s) that I have named on this form. I understand that any information provided by the Victim Safety Unit is confidential and is intended only for the named recipient (i.e. myself plus my designate(s) if applicable). This information may not be distributed, copied, or otherwise used without the express permission of the Victim Safety Unit. <span class="error-states">*</span></span>
+        }
+        @if (formType === ApplicationType.TRAVEL_FUNDS) {
+          <span>I certify that I am the applicant named on this form and that I am requesting funding via the Victim Travel Fund.  By signing this application form, I certify that all the information provided by me is accurate to the best of my ability and I authorize the Victim Safety Unit to indirectly collect my personal information from my Victim Service Worker or other organizations to verify and process my application, if applicable. <span class="error-states">*</span></span>
+        }
+        @if (formType === ApplicationType.TRAVEL_REIMBURSEMENT) {
+          <span>I certify that I am the applicant named on this form and that the expenses claimed were incurred in order to attend criminal justice proceedings. I am requesting funding via the Victim Travel Fund.  By signing this reimbursement form, I certify that all the information provided by me is accurate to the best of my ability and I authorize the Victim Safety Unit to indirectly collect my personal information from my Victim Service Worker or other organizations to verify and process my application, if applicable. <span class="error-states">*</span></span>
+        }
       </label>
     </app-field>
 
-    <ng-container *ngIf="formType === ApplicationType.TRAVEL_REIMBURSEMENT">
+    @if (formType === ApplicationType.TRAVEL_REIMBURSEMENT) {
       <ng-template #receiptsTemplate>If you are missing any receipts, contact VSU to request the appropriate form for you to complete.</ng-template>
       <label>Add receipts<span class='tooltip-icon' data-placement="right" data-animation="true" data-show="true" [tooltip]="receiptsTemplate"><i class='fa fa-info-circle'> </i></span></label>
       <app-file-uploader [formGroup]="form" [formType]="formType" [documents]="form.get('documents')" [isDisabled]="isDisabled"></app-file-uploader>
-
       <ng-container>
         <div class="row">
           <div class="col-6">
@@ -74,7 +77,7 @@
           </div>
         </div>
       </ng-container>
-    </ng-container>
+    }
 
     <div class="row">
       <div class="col-md-6">
@@ -93,13 +96,17 @@
     <div class="row">
       <div class="col-md-6">
         <app-field label="Signature" [required]="true" [valid]="isFieldValid('signature')" errorMessage="Please provide your digital signature" [disabled]="isDisabled">
-          <div class="signature-trigger" (click)="showSignPad('signature')" *ngIf="!hasSignature('signature')">
-            <p>Click this box to sign</p>
-          </div>
-          <div *ngIf="hasSignature('signature')" class="signature-preview">
-            <img src="{{ valueOrEmpty('signature') }}" />
-            <a class="redo" (click)="showSignPad('signature')">Redo Signature</a>
-          </div>
+          @if (!hasSignature('signature')) {
+            <div class="signature-trigger" (click)="showSignPad('signature')">
+              <p>Click this box to sign</p>
+            </div>
+          }
+          @if (hasSignature('signature')) {
+            <div class="signature-preview">
+              <img src="{{ valueOrEmpty('signature') }}" />
+              <a class="redo" (click)="showSignPad('signature')">Redo Signature</a>
+            </div>
+          }
         </app-field>
       </div>
     </div>

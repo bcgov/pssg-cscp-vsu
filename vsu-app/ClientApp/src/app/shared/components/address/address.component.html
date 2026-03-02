@@ -4,22 +4,30 @@
       <app-field label="Country" [required]="showChildrenAsRequired && countryList.length > 0" [valid]="isSubFieldValid('country', disabled)" errorMessage="Please select your country" [disabled]="disabled">
         <select class="form-control" formControlName="country" (change)="onCountryChange($event)">
           <option value="">Choose a country</option>
-          <option *ngFor="let item of countryList" [value]="item.vsd_name">
-            {{ item.vsd_name }}
-          </option>
+          @for (item of countryList; track item) {
+            <option [value]="item.vsd_name">
+              {{ item.vsd_name }}
+            </option>
+          }
         </select>
       </app-field>
     </div>
     <div class="col-md-6">
       <app-field label="{{ provinceType }}" [required]="showChildrenAsRequired" [valid]="isSubFieldValid('province', disabled)" errorMessage="Please enter your {{provinceType.toLowerCase()}}" [disabled]="disabled">
-        <select class="form-control" formControlName="province" (change)="onProvinceChange($event)" *ngIf="provinceList.length > 0">
-          <option value="">Choose a {{ provinceType }}</option>
-          <option *ngFor="let item of provinceList" [value]="item.vsd_name">
-            {{ item.vsd_name }}
-          </option>
-        </select>
+        @if (provinceList.length > 0) {
+          <select class="form-control" formControlName="province" (change)="onProvinceChange($event)">
+            <option value="">Choose a {{ provinceType }}</option>
+            @for (item of provinceList; track item) {
+              <option [value]="item.vsd_name">
+                {{ item.vsd_name }}
+              </option>
+            }
+          </select>
+        }
 
-        <input *ngIf="provinceList.length == 0" formControlName="province" class="form-control">
+        @if (provinceList.length == 0) {
+          <input formControlName="province" class="form-control">
+        }
       </app-field>
     </div>
   </div>

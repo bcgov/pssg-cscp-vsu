@@ -87,7 +87,6 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
 
     let promise_array = [];
 
-    debugger;
     promise_array.push(
       new Promise<void>((resolve, reject) => {
         this.lookupService.getCountries().subscribe(
