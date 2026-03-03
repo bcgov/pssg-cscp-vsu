@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ControlContainer, FormGroup } from '@angular/forms';
-import { ReimbursementService } from '../../../services/reimbursement.service';
+import { ReimbursementService } from '../../../../api/reimbursement/reimbursement.service';
 import { ApplicationType } from '../../enums-list';
 import { FormBase } from '../../form-base';
 import { iLookupData } from '../../interfaces/lookup-data.interface';
@@ -22,7 +22,7 @@ export class VTFCaseInformationComponent extends FormBase implements OnInit {
 
   constructor(
     private controlContainer: ControlContainer,
-    private reimbursementService: ReimbursementService
+    private reimbursementService: ReimbursementService,
   ) {
     super();
   }
@@ -47,21 +47,23 @@ export class VTFCaseInformationComponent extends FormBase implements OnInit {
 
     if (info && info.caseNumber && info.birthDate && info.firstName && info.lastName) {
       //validate
-      this.reimbursementService.checkCase(info).subscribe(
-        (res) => {
-          this.didCheck = true;
-          this.form.get('didCheck').patchValue(this.didCheck);
-          this.isValid = res.IsSuccess;
-          if (res.IsSuccess) {
-            this.form.get('isValid').patchValue(this.isValid);
-            this.form.get('incidentid').patchValue(res.CaseId.incidentid);
-          } else {
-            this.form.get('isValid').patchValue(this.isValid);
-            this.form.get('incidentid').patchValue('');
+      this.reimbursementService.postApiReimbursementCheckCase<any>(info).subscribe({
+          next: (res) => {
+            this.didCheck = true;
+            this.form.get('didCheck').patchValue(this.didCheck);
+            this.isValid = res.Results?.IsSuccess || res.isSuccess;
+            if (this.isValid) {
+              this.form.get('isValid').patchValue(this.isValid);
+              const caseId = res.Results?.CaseId?.Id || res.caseId;
+              this.form.get('incidentId').patchValue(caseId);
+            } else {
+              this.form.get('isValid').patchValue(this.isValid);
+              this.form.get('incidentId').patchValue('');
+            }
+          },
+          error: (err) => {
+            console.log(err);
           }
-        },
-        (err) => {
-          console.log(err);
         }
       );
     } else {

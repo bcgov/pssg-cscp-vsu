@@ -6,17 +6,15 @@
  * OpenAPI spec version: v1
  */
 
-export interface Case {
+export interface CaseDto {
   /** @nullable */
-  readonly fortunecookietype?: string | null;
+  incidentId?: string | null;
   /** @nullable */
-  incidentid?: string | null;
+  courtDate?: string | null;
   /** @nullable */
-  vsd_courtdate?: string | null;
+  purposeOfTravel?: string | null;
   /** @nullable */
-  vsd_purposeoftravel?: string | null;
+  travelPeriodFrom?: string | null;
   /** @nullable */
-  vsd_travelperiodfrom?: string | null;
-  /** @nullable */
-  vsd_travelperiodto?: string | null;
+  travelPeriodTo?: string | null;
 }

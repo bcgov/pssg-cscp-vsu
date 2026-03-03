@@ -1,14 +1,11 @@
+import { CaseDto } from 'src/model';
 import { iAddress } from './address.interface';
 import { iCRMDocument } from './dynamics/crm-application';
 
 export interface iReimbursementForm {
-  CaseInformation: iCaseInformation;
+  CaseInformation: CaseDto;
   TravelInformation: iTravelInformation;
   AuthorizationInformation: iAuthorizationInformation;
-}
-
-export interface iCaseInformation {
-  incidentid: string;
 }
 
 export interface iTravelInformation {

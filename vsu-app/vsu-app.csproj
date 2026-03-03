@@ -43,6 +43,9 @@
     <ItemGroup>
         <PackageReference Include="CSharpier.MSBuild" Version="1.2.6" PrivateAssets="all" />
     </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Database\Database.csproj" />
+    </ItemGroup>
     <Target
         Name="DebugEnsureNodeEnv"
         BeforeTargets="Build"

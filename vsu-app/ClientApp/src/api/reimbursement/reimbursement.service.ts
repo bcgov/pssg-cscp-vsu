@@ -12,7 +12,7 @@ import { Injectable, inject } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
-import type { CheckCase, ReimbursementData } from '../../model';
+import type { CheckCaseDto, ReimbursementCaseDto } from '../../model';
 
 interface HttpClientOptions {
   readonly headers?: HttpHeaders | Record<string, string | string[]>;
@@ -36,71 +36,71 @@ interface HttpClientOptions {
 export class ReimbursementService {
   private readonly http = inject(HttpClient);
   postApiReimbursement<TData = void>(
-    reimbursementData: ReimbursementData,
+    reimbursementCaseDto: ReimbursementCaseDto,
     options?: HttpClientOptions & { observe?: 'body' }
   ): Observable<TData>;
   postApiReimbursement<TData = void>(
-    reimbursementData: ReimbursementData,
+    reimbursementCaseDto: ReimbursementCaseDto,
     options?: HttpClientOptions & { observe: 'events' }
   ): Observable<HttpEvent<TData>>;
   postApiReimbursement<TData = void>(
-    reimbursementData: ReimbursementData,
+    reimbursementCaseDto: ReimbursementCaseDto,
     options?: HttpClientOptions & { observe: 'response' }
   ): Observable<AngularHttpResponse<TData>>;
   postApiReimbursement<TData = void>(
-    reimbursementData: ReimbursementData,
+    reimbursementCaseDto: ReimbursementCaseDto,
     options?: HttpClientOptions & { observe?: 'body' | 'events' | 'response' }
   ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
-      return this.http.post<TData>(`/api/Reimbursement`, reimbursementData, {
+      return this.http.post<TData>(`/api/Reimbursement`, reimbursementCaseDto, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events'
       });
     }
 
     if (options?.observe === 'response') {
-      return this.http.post<TData>(`/api/Reimbursement`, reimbursementData, {
+      return this.http.post<TData>(`/api/Reimbursement`, reimbursementCaseDto, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response'
       });
     }
 
-    return this.http.post<TData>(`/api/Reimbursement`, reimbursementData, {
+    return this.http.post<TData>(`/api/Reimbursement`, reimbursementCaseDto, {
       ...(options as Omit<NonNullable<typeof options>, 'observe'>),
       observe: 'body'
     });
   }
   postApiReimbursementCheckCase<TData = void>(
-    checkCase: CheckCase,
+    checkCaseDto: CheckCaseDto,
     options?: HttpClientOptions & { observe?: 'body' }
   ): Observable<TData>;
   postApiReimbursementCheckCase<TData = void>(
-    checkCase: CheckCase,
+    checkCaseDto: CheckCaseDto,
     options?: HttpClientOptions & { observe: 'events' }
   ): Observable<HttpEvent<TData>>;
   postApiReimbursementCheckCase<TData = void>(
-    checkCase: CheckCase,
+    checkCaseDto: CheckCaseDto,
     options?: HttpClientOptions & { observe: 'response' }
   ): Observable<AngularHttpResponse<TData>>;
   postApiReimbursementCheckCase<TData = void>(
-    checkCase: CheckCase,
+    checkCaseDto: CheckCaseDto,
     options?: HttpClientOptions & { observe?: 'body' | 'events' | 'response' }
   ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
-      return this.http.post<TData>(`/api/Reimbursement/check_case`, checkCase, {
+      return this.http.post<TData>(`/api/Reimbursement/check_case`, checkCaseDto, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events'
       });
     }
 
     if (options?.observe === 'response') {
-      return this.http.post<TData>(`/api/Reimbursement/check_case`, checkCase, {
+      return this.http.post<TData>(`/api/Reimbursement/check_case`, checkCaseDto, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response'
       });
     }
 
-    return this.http.post<TData>(`/api/Reimbursement/check_case`, checkCase, {
+    return this.http.post<TData>(`/api/Reimbursement/check_case`, checkCaseDto, {
       ...(options as Omit<NonNullable<typeof options>, 'observe'>),
       observe: 'body'
     });

@@ -4,9 +4,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatStepper } from '@angular/material/stepper';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { CaseDto } from 'src/model';
+import { ReimbursementService } from '../../api/reimbursement/reimbursement.service';
 import { LookupService } from '../services/lookup.service';
 import { NotificationQueueService } from '../services/notification-queue.service';
-import { ReimbursementService } from '../services/reimbursement.service';
 import { AuthInfoHelper } from '../shared/components/authorization/authorization.helper';
 import { TravelExpensesHelper } from '../shared/components/travel-expenses/travel-expenses.helper';
 import { VTFCaseInfoHelper } from '../shared/components/vtf-case-information/vtf-case-information.helper';
@@ -16,7 +17,6 @@ import { convertReimbursementFormToCRM } from '../shared/interfaces/converters/r
 import { iLookupData } from '../shared/interfaces/lookup-data.interface';
 import {
   iAuthorizationInformation,
-  iCaseInformation,
   iReimbursementForm,
   iTravelInformation
 } from '../shared/interfaces/reimbursement.interface';
@@ -198,7 +198,7 @@ export class VictimTravelFundReimbursementComponent extends FormBase implements 
 
   harvestForm() {
     let data = {
-      CaseInformation: this.form.get('caseInformation').value as iCaseInformation,
+      CaseInformation: this.form.get('caseInformation').value as CaseDto,
       TravelInformation: this.form.get('travelExpenses').value as iTravelInformation,
       AuthorizationInformation: this.form.get('authorizationInformation').value as iAuthorizationInformation
     } as iReimbursementForm;
@@ -211,26 +211,22 @@ export class VictimTravelFundReimbursementComponent extends FormBase implements 
       this.submitting = true;
       let application = this.harvestForm();
       let data = convertReimbursementFormToCRM(application);
-      this.reimbursementService.submit(data).subscribe(
-        (res) => {
-          this.submitting = false;
-
-          if (res.IsSuccess) {
-            this.form.get('confirmation.confirmationNumber').patchValue('RXXXXXX');
-            this.showConfirmation = true;
-            setTimeout(() => {
-              this.gotoNextStep(this.applicationStepper);
-            }, 0);
-          } else {
-            this.notify.addNotification('There was an error submitting the application.', 'danger', 4000);
-          }
+      this.reimbursementService.postApiReimbursement<any>(data).subscribe({
+        next: (res) => {
+          this.form.get('confirmation.confirmationNumber').patchValue('RXXXXXX');
+          this.showConfirmation = true;
+          setTimeout(() => {
+            this.gotoNextStep(this.applicationStepper);
+          }, 0);
         },
-        (err) => {
+        error: (err) => {
           this.notify.addNotification('There was an error submitting the application.', 'danger', 4000);
           console.log(err);
+        },
+        complete: () => {
           this.submitting = false;
         }
-      );
+      });
     } else {
       this.validateAllFormFields(this.form);
     }

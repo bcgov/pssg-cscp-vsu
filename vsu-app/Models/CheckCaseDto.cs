@@ -1,8 +1,8 @@
 using System;
 
-namespace Gov.Cscp.Victims.Public.Models
+namespace Models
 {
-    public class CheckCase
+    public class CheckCaseDto
     {
         public string CaseNumber { get; set; }
         public string FirstName { get; set; }

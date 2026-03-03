@@ -19,13 +19,13 @@ import { GenderSelectorComponent } from 'src/app/shared/components/gender-select
 import { PronounSelectorComponent } from 'src/app/shared/components/pronoun-selector/pronoun-selector.component';
 import { RaceSelectorComponent } from 'src/app/shared/components/race-selector/race-selector.component';
 import { FeatureEnabledDirective } from 'src/app/shared/directives/feature-enabled.directive';
+import { ReimbursementService } from '../api/reimbursement/reimbursement.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { NotificationApplicationComponent } from './notification-application/notification-application.component';
 import { ApplicationService } from './services/application.service';
 import { LookupService } from './services/lookup.service';
-import { ReimbursementService } from './services/reimbursement.service';
 import { AdditionalInfoBannerComponent } from './shared/components/additional-info-banner/additional-info-banner.component';
 import { AddressComponent } from './shared/components/address/address.component';
 import { ApplicantInformationComponent } from './shared/components/applicant-information/applicant-information.component';

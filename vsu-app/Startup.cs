@@ -2,6 +2,7 @@ using System;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
+using Database.Extensions;
 using Gov.Cscp.Victims.Public.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -47,6 +48,9 @@ namespace Gov.Cscp.Victims.Public
             services
                 .AddHttpClient<IDynamicsResultService, DynamicsResultService>()
                 .AddHttpMessageHandler<TokenHandler>();
+
+            // Add Dataverse connection
+            services.AddDatabase(Configuration);
 
             // Add a memory cache
             services.AddMemoryCache();

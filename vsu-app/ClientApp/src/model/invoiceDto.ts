@@ -6,13 +6,13 @@
  * OpenAPI spec version: v1
  */
 
-export interface Invoice {
+export interface InvoiceDto {
   /** @nullable */
-  vsd_vsu_claimantcontactinfochanged?: number | null;
+  claimantContactInfoChanged?: number | null;
   /** @nullable */
-  vsd_vsu_signaturedate?: string | null;
+  signatureDate?: string | null;
   /** @nullable */
-  vsd_signature?: string | null;
+  signature?: string | null;
   /** @nullable */
-  vsd_vsu_declarationsignature?: string | null;
+  declarationSignature?: string | null;
 }

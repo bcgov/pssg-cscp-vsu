@@ -6,7 +6,7 @@
  * OpenAPI spec version: v1
  */
 
-export interface CheckCase {
+export interface CheckCaseDto {
   /** @nullable */
   caseNumber?: string | null;
   /** @nullable */

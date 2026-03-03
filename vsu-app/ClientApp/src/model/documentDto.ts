@@ -6,15 +6,13 @@
  * OpenAPI spec version: v1
  */
 
-export interface DocumentCollection {
-  /** @nullable */
-  readonly fortunecookietype?: string | null;
+export interface DocumentDto {
   /**
    * @minLength 0
    * @maxLength 225
    * @nullable
    */
-  filename?: string | null;
+  fileName?: string | null;
   /**
    * @minLength 0
    * @maxLength 1073741823

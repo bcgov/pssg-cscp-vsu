@@ -1,11 +1,10 @@
 using System;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using Gov.Cscp.Victims.Public.Models;
-using Gov.Cscp.Victims.Public.Services;
+using DataverseModel;
+using Gov.Cscp.Victims.Public.Models.Mapping;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
+using Microsoft.PowerPlatform.Dataverse.Client;
+using Models;
 using Serilog;
 
 namespace Gov.Cscp.Victims.Public.Controllers
@@ -13,17 +12,17 @@ namespace Gov.Cscp.Victims.Public.Controllers
     [Route("api/[controller]")]
     public class ReimbursementController : Controller
     {
-        private readonly IDynamicsResultService _dynamicsResultService;
+        private readonly IOrganizationServiceAsync _organizationService;
         private readonly ILogger _logger;
 
-        public ReimbursementController(IConfiguration configuration, IDynamicsResultService dynamicsResultService)
+        public ReimbursementController(IOrganizationServiceAsync organizationService)
         {
-            this._dynamicsResultService = dynamicsResultService;
+            _organizationService = organizationService;
             _logger = Log.Logger;
         }
 
         [HttpPost]
-        public async Task<IActionResult> SubmitReimbursementInvoice([FromBody] ReimbursementData model)
+        public async Task<IActionResult> SubmitReimbursementInvoice([FromBody] ReimbursementCaseDto model)
         {
             try
             {
@@ -35,25 +34,34 @@ namespace Gov.Cscp.Victims.Public.Controllers
                     return BadRequest(ModelState);
                 }
 
-                string endpointUrl = "vsd_SubmitReimbursementInvoice";
-                JsonSerializerOptions options = new JsonSerializerOptions
+                // Map DTO to Dataverse request
+                var request = model.ToVSdSubmitReimbursementInvoiceRequest();
+
+                // Execute the request using Dataverse SDK
+                var response = (VSd_SubmitReimbursementInvoiceResponse)await _organizationService.ExecuteAsync(request);
+
+                if (response.Results["IsSuccess"] is not true)
                 {
-                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-                };
-                string modelString = System.Text.Json.JsonSerializer.Serialize(model, options);
-                DynamicsResult result = await _dynamicsResultService.Post(endpointUrl, modelString);
-                return StatusCode((int)result.statusCode, result.result.ToString());
+                    _logger.Error(
+                        "Error while submitting reimbursement invoice. Response from Dynamics was:\n{@Response}",
+                        response
+                    );
+
+                    return StatusCode(500, "An error occurred while submitting the reimbursement invoice.");
+                }
+
+                return Ok(response);
             }
             catch (Exception e)
             {
-                _logger.Error(e, "Unexpected error while submitting reimbursement. Source = VSU");
-                return BadRequest();
+                _logger.Error(e, "Unexpected error while submitting reimbursement.");
+                return StatusCode(500, "An unexpected error occurred while submitting the reimbursement.");
             }
             finally { }
         }
 
         [HttpPost("check_case")]
-        public async Task<IActionResult> CheckVSUCase([FromBody] CheckCase info)
+        public async Task<IActionResult> CheckVSUCase([FromBody] CheckCaseDto info)
         {
             try
             {
@@ -65,19 +73,21 @@ namespace Gov.Cscp.Victims.Public.Controllers
                     return BadRequest(ModelState);
                 }
 
-                string endpointUrl = "vsd_CheckVSUCase";
-                JsonSerializerOptions options = new JsonSerializerOptions
+                var request = info.ToVSdCheckVSuCaseRequest();
+
+                var response = (VSd_CheckVSuCaseResponse)await _organizationService.ExecuteAsync(request);
+
+                if (response.Results["IsSuccess"] is not true)
                 {
-                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-                };
-                string modelString = System.Text.Json.JsonSerializer.Serialize(info, options);
-                DynamicsResult result = await _dynamicsResultService.Post(endpointUrl, modelString);
-                return StatusCode((int)result.statusCode, result.result.ToString());
+                    return Ok(new { IsSuccess = false, Message = "No matching VSU case found." });
+                }
+
+                return Ok(new { IsSuccess = true, CaseId = response.CaseId.Id });
             }
             catch (Exception e)
             {
-                _logger.Error(e, "Unexpected error while checking VSU case. Source = VSU");
-                return BadRequest();
+                _logger.Error(e, "Unexpected error while checking VSU case.");
+                return StatusCode(500, "An unexpected error occurred while checking the VSU case.");
             }
             finally { }
         }

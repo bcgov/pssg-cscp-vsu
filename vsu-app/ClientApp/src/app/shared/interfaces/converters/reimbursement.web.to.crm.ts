@@ -1,85 +1,84 @@
+import { DocumentDto, InvoiceDto, InvoiceLineItemDto, ReimbursementCaseDto, TravelInfoDto } from '../../../../model';
 import { EnumHelper } from '../../enums-list';
-import { iCRMDocument, iCRMTravelInfo } from '../dynamics/crm-application';
-import { iCRMInvoiceLineDetail, iInvoice, iReimbursementFormCRM } from '../dynamics/crm-reimbursement';
 import { iReimbursementForm } from '../reimbursement.interface';
 
-export function convertReimbursementFormToCRM(data: iReimbursementForm) {
-  let crm_application: iReimbursementFormCRM = {
-    CaseId: getCRMCase(data),
-    ContactInfoComments: data.TravelInformation.contactInfoComments,
-    Invoice: getInvoice(data)
+export function convertReimbursementFormToCRM(data: iReimbursementForm): ReimbursementCaseDto {
+  let crm_application: ReimbursementCaseDto = {
+    caseId: getCRMCase(data),
+    contactInfoComments: data.TravelInformation.contactInfoComments,
+    invoice: getInvoice(data)
   };
 
   let travelInfo = getCRMTravelInfoCollection(data);
-  if (travelInfo.length > 0) crm_application.TravelInfoCollection = travelInfo;
+  if (travelInfo.length > 0) crm_application.travelInfoCollection = travelInfo;
 
   let travelExpenseInfo = getCRMTravelExpenseCollection(data);
-  if (travelExpenseInfo.length > 0) crm_application.TransportationExpenseCollection = travelExpenseInfo;
+  if (travelExpenseInfo.length > 0) crm_application.transportationExpenseCollection = travelExpenseInfo;
 
   let accommodationInfo = getCRMAccommodationExpenseCollection(data);
-  if (accommodationInfo.length > 0) crm_application.AccommodationExpenseCollection = accommodationInfo;
+  if (accommodationInfo.length > 0) crm_application.accommodationExpenseCollection = accommodationInfo;
 
   let mealInfo = getCRMMealExpenseCollection(data);
-  if (mealInfo.length > 0) crm_application.MealExpenseCollection = mealInfo;
+  if (mealInfo.length > 0) crm_application.mealExpenseCollection = mealInfo;
 
   let childInfo = getCRMChildcareExpenseCollection(data);
-  if (childInfo.length > 0) crm_application.ChildcareExpenseCollection = childInfo;
+  if (childInfo.length > 0) crm_application.childcareExpenseCollection = childInfo;
 
   let otherInfo = getCRMOtherExpenseCollection(data);
-  if (otherInfo.length > 0) crm_application.OtherExpenseCollection = otherInfo;
+  if (otherInfo.length > 0) crm_application.otherExpenseCollection = otherInfo;
 
   let documents = getCRMDocuments(data);
-  if (documents.length > 0) crm_application.DocumentCollection = documents;
+  if (documents.length > 0) crm_application.documentCollection = documents;
 
   return crm_application;
 }
 
 function getCRMCase(data: iReimbursementForm) {
-  return { incidentid: data.CaseInformation.incidentid };
+  return { incidentId: data.CaseInformation.incidentId };
 }
 
-function getInvoice(data: iReimbursementForm) {
+function getInvoice(data: iReimbursementForm): InvoiceDto {
   let enums = new EnumHelper();
-  let invoice: iInvoice = {
-    vsd_vsu_claimantcontactinfochanged: data.TravelInformation.hasContactInfoChanged
+  let invoice: InvoiceDto = {
+    claimantContactInfoChanged: data.TravelInformation.hasContactInfoChanged
       ? enums.Boolean.True.val
       : enums.Boolean.False.val,
-    vsd_vsu_signaturedate: data.AuthorizationInformation.date,
-    vsd_signature: data.AuthorizationInformation.fullName,
-    vsd_vsu_declarationsignature: data.AuthorizationInformation.signature
+    signatureDate: data.AuthorizationInformation.date?.toISOString(),
+    signature: data.AuthorizationInformation.fullName,
+    declarationSignature: data.AuthorizationInformation.signature
   };
   return invoice;
 }
 
-function getCRMTravelInfoCollection(data: iReimbursementForm) {
-  let travel_collection: iCRMTravelInfo[] = [];
+function getCRMTravelInfoCollection(data: iReimbursementForm): TravelInfoDto[] {
+  let travel_collection: TravelInfoDto[] = [];
 
   data.TravelInformation.travelDates.forEach((t) => {
     travel_collection.push({
-      vsd_purposeoftravel: t.purposeOfTravel,
-      vsd_travelperiodfrom: t.travelPeriodStart,
-      vsd_travelperiodto: t.travelPeriodEnd
+      purposeOfTravel: t.purposeOfTravel,
+      travelPeriodFrom: t.travelPeriodStart?.toISOString(),
+      travelPeriodTo: t.travelPeriodEnd?.toISOString()
     });
   });
 
   return travel_collection;
 }
 
-function getCRMTravelExpenseCollection(data: iReimbursementForm) {
-  let travel_expense_collection: iCRMInvoiceLineDetail[] = [];
+function getCRMTravelExpenseCollection(data: iReimbursementForm): InvoiceLineItemDto[] {
+  let travel_expense_collection: InvoiceLineItemDto[] = [];
   let enums = new EnumHelper();
 
   data.TravelInformation.transportationExpenses.forEach((t) => {
     //  not an empty obj       AND    Type has been selected                  AND  a valid amount is entered
     if (checkObjectHasValue(t) && t.type != enums.TransportationType.NONE.val && (t.mileage || t.amount)) {
-      let expense: iCRMInvoiceLineDetail = {
-        vsd_vsu_expensetype: enums.TravelExpenseType.Transportation.val,
-        vsd_vsu_transportationtype: Number(t.type)
+      let expense: InvoiceLineItemDto = {
+        expenseType: enums.TravelExpenseType.Transportation.val,
+        transportationType: Number(t.type)
       };
       if (t.type == enums.TransportationType.Mileage.val) {
-        expense.vsd_vsu_mileage = Number(t.mileage);
+        expense.mileage = Number(t.mileage);
       } else {
-        expense.vsd_amountsimple = Number(t.amount);
+        expense.amount = Number(t.amount);
       }
       travel_expense_collection.push(expense);
     }
@@ -88,18 +87,18 @@ function getCRMTravelExpenseCollection(data: iReimbursementForm) {
   return travel_expense_collection;
 }
 
-function getCRMAccommodationExpenseCollection(data: iReimbursementForm) {
-  let accommodation_expense_collection: iCRMInvoiceLineDetail[] = [];
+function getCRMAccommodationExpenseCollection(data: iReimbursementForm): InvoiceLineItemDto[] {
+  let accommodation_expense_collection: InvoiceLineItemDto[] = [];
   let enums = new EnumHelper();
 
   data.TravelInformation.accommodationExpenses.forEach((a) => {
     if (checkObjectHasValue(a)) {
       accommodation_expense_collection.push({
-        vsd_vsu_expensetype: enums.TravelExpenseType.Accommodation.val,
-        vsd_vsu_other: a.type,
-        vsd_vsu_number: Number(a.numberOfNights),
-        vsd_vsu_dailyroomrate: Number(a.roomRate),
-        vsd_amountsimple: Number(a.numberOfNights) * Number(a.roomRate)
+        expenseType: enums.TravelExpenseType.Accommodation.val,
+        other: a.type,
+        number: Number(a.numberOfNights),
+        dailyRoomRate: Number(a.roomRate),
+        amount: Number(a.numberOfNights) * Number(a.roomRate)
       });
     }
   });
@@ -107,30 +106,30 @@ function getCRMAccommodationExpenseCollection(data: iReimbursementForm) {
   return accommodation_expense_collection;
 }
 
-function getCRMMealExpenseCollection(data: iReimbursementForm) {
-  let meal_expense_collection: iCRMInvoiceLineDetail[] = [];
+function getCRMMealExpenseCollection(data: iReimbursementForm): InvoiceLineItemDto[] {
+  let meal_expense_collection: InvoiceLineItemDto[] = [];
   let enums = new EnumHelper();
 
   //Meal date doesn't have a field in COAST atm
   data.TravelInformation.mealExpenses.forEach((m) => {
     if (m.breakfast > 0) {
       meal_expense_collection.push({
-        vsd_vsu_expensetype: enums.TravelExpenseType.Meal_Breakfast.val,
-        vsd_vsu_number: Number(m.breakfast)
+        expenseType: enums.TravelExpenseType.Meal_Breakfast.val,
+        number: Number(m.breakfast)
       });
     }
 
     if (m.lunch > 0) {
       meal_expense_collection.push({
-        vsd_vsu_expensetype: enums.TravelExpenseType.Meal_Lunch.val,
-        vsd_vsu_number: Number(m.lunch)
+        expenseType: enums.TravelExpenseType.Meal_Lunch.val,
+        number: Number(m.lunch)
       });
     }
 
     if (m.dinner > 0) {
       meal_expense_collection.push({
-        vsd_vsu_expensetype: enums.TravelExpenseType.Meal_Dinner.val,
-        vsd_vsu_number: Number(m.dinner)
+        expenseType: enums.TravelExpenseType.Meal_Dinner.val,
+        number: Number(m.dinner)
       });
     }
   });
@@ -138,36 +137,36 @@ function getCRMMealExpenseCollection(data: iReimbursementForm) {
   return meal_expense_collection;
 }
 
-function getCRMChildcareExpenseCollection(data: iReimbursementForm) {
-  let child_care_expense_collection: iCRMInvoiceLineDetail[] = [];
+function getCRMChildcareExpenseCollection(data: iReimbursementForm): InvoiceLineItemDto[] {
+  let child_care_expense_collection: InvoiceLineItemDto[] = [];
   let enums = new EnumHelper();
 
   data.TravelInformation.children.forEach((c) => {
     child_care_expense_collection.push({
-      vsd_vsu_expensetype: enums.TravelExpenseType.Childcare.val,
-      vsd_vsu_childage: Number(c.age),
-      vsd_vsu_childcarestartdate: c.startDate,
-      vsd_vsu_childcareenddate: c.endDate,
-      vsd_vsu_childcareproviderfirstname: c.firstName,
-      vsd_childcareproviderlastname: c.lastName,
-      vsd_vsu_childcareproviderphoneno: c.phone,
-      vsd_amountsimple: Number(c.amountPaid)
+      expenseType: enums.TravelExpenseType.Childcare.val,
+      childAge: Number(c.age),
+      childcareStartDate: c.startDate?.toISOString(),
+      childcareEndDate: c.endDate?.toISOString(),
+      childcareProviderFirstName: c.firstName,
+      childcareProviderLastName: c.lastName,
+      childcareProviderPhoneNo: c.phone,
+      amount: Number(c.amountPaid)
     });
   });
 
   return child_care_expense_collection;
 }
 
-function getCRMOtherExpenseCollection(data: iReimbursementForm) {
-  let other_expense_collection: iCRMInvoiceLineDetail[] = [];
+function getCRMOtherExpenseCollection(data: iReimbursementForm): InvoiceLineItemDto[] {
+  let other_expense_collection: InvoiceLineItemDto[] = [];
   let enums = new EnumHelper();
 
   data.TravelInformation.otherExpenses.forEach((o) => {
     if (checkObjectHasValue(o)) {
       other_expense_collection.push({
-        vsd_vsu_expensetype: enums.TravelExpenseType.Other.val,
-        vsd_vsu_other: o.description,
-        vsd_amountsimple: Number(o.amount)
+        expenseType: enums.TravelExpenseType.Other.val,
+        other: o.description,
+        amount: Number(o.amount)
       });
     }
   });
@@ -175,13 +174,13 @@ function getCRMOtherExpenseCollection(data: iReimbursementForm) {
   return other_expense_collection;
 }
 
-function getCRMDocuments(data: iReimbursementForm) {
-  let documents: iCRMDocument[] = [];
+function getCRMDocuments(data: iReimbursementForm): DocumentDto[] {
+  let documents: DocumentDto[] = [];
 
   data.AuthorizationInformation.documents.forEach((d) => {
     if (checkObjectHasValue(d)) {
       documents.push({
-        filename: d.filename,
+        fileName: d.filename,
         body: d.body,
         subject: d.subject
       });
