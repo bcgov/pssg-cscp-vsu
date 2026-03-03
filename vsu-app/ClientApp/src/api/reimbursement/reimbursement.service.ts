@@ -52,20 +52,20 @@ export class ReimbursementService {
     options?: HttpClientOptions & { observe?: 'body' | 'events' | 'response' }
   ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
-      return this.http.post<TData>(`/vsuwebforms/api/Reimbursement`, reimbursementCaseDto, {
+      return this.http.post<TData>(`/vsuwebforms/api/reimbursement`, reimbursementCaseDto, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events'
       });
     }
 
     if (options?.observe === 'response') {
-      return this.http.post<TData>(`/vsuwebforms/api/Reimbursement`, reimbursementCaseDto, {
+      return this.http.post<TData>(`/vsuwebforms/api/reimbursement`, reimbursementCaseDto, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response'
       });
     }
 
-    return this.http.post<TData>(`/vsuwebforms/api/Reimbursement`, reimbursementCaseDto, {
+    return this.http.post<TData>(`/vsuwebforms/api/reimbursement`, reimbursementCaseDto, {
       ...(options as Omit<NonNullable<typeof options>, 'observe'>),
       observe: 'body'
     });
@@ -87,20 +87,20 @@ export class ReimbursementService {
     options?: HttpClientOptions & { observe?: 'body' | 'events' | 'response' }
   ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
-      return this.http.post<TData>(`/vsuwebforms/api/Reimbursement/check_case`, checkCaseDto, {
+      return this.http.post<TData>(`/vsuwebforms/api/reimbursement/check_case`, checkCaseDto, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events'
       });
     }
 
     if (options?.observe === 'response') {
-      return this.http.post<TData>(`/vsuwebforms/api/Reimbursement/check_case`, checkCaseDto, {
+      return this.http.post<TData>(`/vsuwebforms/api/reimbursement/check_case`, checkCaseDto, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response'
       });
     }
 
-    return this.http.post<TData>(`/vsuwebforms/api/Reimbursement/check_case`, checkCaseDto, {
+    return this.http.post<TData>(`/vsuwebforms/api/reimbursement/check_case`, checkCaseDto, {
       ...(options as Omit<NonNullable<typeof options>, 'observe'>),
       observe: 'body'
     });

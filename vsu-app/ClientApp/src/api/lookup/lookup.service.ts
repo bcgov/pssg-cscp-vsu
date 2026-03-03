@@ -71,20 +71,20 @@ export class LookupService {
     options?: HttpClientOptions & { observe?: 'body' | 'events' | 'response' }
   ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
-      return this.http.get<TData>(`/vsuwebforms/api/Lookup/contact-email`, {
+      return this.http.get<TData>(`/vsuwebforms/api/lookup/contact-email`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events'
       });
     }
 
     if (options?.observe === 'response') {
-      return this.http.get<TData>(`/vsuwebforms/api/Lookup/contact-email`, {
+      return this.http.get<TData>(`/vsuwebforms/api/lookup/contact-email`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response'
       });
     }
 
-    return this.http.get<TData>(`/vsuwebforms/api/Lookup/contact-email`, {
+    return this.http.get<TData>(`/vsuwebforms/api/lookup/contact-email`, {
       ...(options as Omit<NonNullable<typeof options>, 'observe'>),
       observe: 'body'
     });
@@ -100,20 +100,20 @@ export class LookupService {
     options?: HttpClientOptions & { observe?: 'body' | 'events' | 'response' }
   ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
-      return this.http.get<TData>(`/vsuwebforms/api/Lookup/countries`, {
+      return this.http.get<TData>(`/vsuwebforms/api/lookup/countries`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events'
       });
     }
 
     if (options?.observe === 'response') {
-      return this.http.get<TData>(`/vsuwebforms/api/Lookup/countries`, {
+      return this.http.get<TData>(`/vsuwebforms/api/lookup/countries`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response'
       });
     }
 
-    return this.http.get<TData>(`/vsuwebforms/api/Lookup/countries`, {
+    return this.http.get<TData>(`/vsuwebforms/api/lookup/countries`, {
       ...(options as Omit<NonNullable<typeof options>, 'observe'>),
       observe: 'body'
     });
@@ -129,20 +129,20 @@ export class LookupService {
     options?: HttpClientOptions & { observe?: 'body' | 'events' | 'response' }
   ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
-      return this.http.get<TData>(`/vsuwebforms/api/Lookup/provinces`, {
+      return this.http.get<TData>(`/vsuwebforms/api/lookup/provinces`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events'
       });
     }
 
     if (options?.observe === 'response') {
-      return this.http.get<TData>(`/vsuwebforms/api/Lookup/provinces`, {
+      return this.http.get<TData>(`/vsuwebforms/api/lookup/provinces`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response'
       });
     }
 
-    return this.http.get<TData>(`/vsuwebforms/api/Lookup/provinces`, {
+    return this.http.get<TData>(`/vsuwebforms/api/lookup/provinces`, {
       ...(options as Omit<NonNullable<typeof options>, 'observe'>),
       observe: 'body'
     });
@@ -156,20 +156,20 @@ export class LookupService {
     options?: HttpClientOptions & { observe?: 'body' | 'events' | 'response' }
   ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
-      return this.http.get<TData>(`/vsuwebforms/api/Lookup/cities`, {
+      return this.http.get<TData>(`/vsuwebforms/api/lookup/cities`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events'
       });
     }
 
     if (options?.observe === 'response') {
-      return this.http.get<TData>(`/vsuwebforms/api/Lookup/cities`, {
+      return this.http.get<TData>(`/vsuwebforms/api/lookup/cities`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response'
       });
     }
 
-    return this.http.get<TData>(`/vsuwebforms/api/Lookup/cities`, {
+    return this.http.get<TData>(`/vsuwebforms/api/lookup/cities`, {
       ...(options as Omit<NonNullable<typeof options>, 'observe'>),
       observe: 'body'
     });
@@ -193,7 +193,7 @@ export class LookupService {
     const filteredParams = filterParams({ ...params, ...options?.params }, new Set<string>([]));
 
     if (options?.observe === 'events') {
-      return this.http.get<TData>(`/vsuwebforms/api/Lookup/cities/search`, {
+      return this.http.get<TData>(`/vsuwebforms/api/lookup/cities/search`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events',
         params: filteredParams
@@ -201,14 +201,14 @@ export class LookupService {
     }
 
     if (options?.observe === 'response') {
-      return this.http.get<TData>(`/vsuwebforms/api/Lookup/cities/search`, {
+      return this.http.get<TData>(`/vsuwebforms/api/lookup/cities/search`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response',
         params: filteredParams
       });
     }
 
-    return this.http.get<TData>(`/vsuwebforms/api/Lookup/cities/search`, {
+    return this.http.get<TData>(`/vsuwebforms/api/lookup/cities/search`, {
       ...(options as Omit<NonNullable<typeof options>, 'observe'>),
       observe: 'body',
       params: filteredParams
@@ -231,20 +231,20 @@ export class LookupService {
     options?: HttpClientOptions & { observe?: 'body' | 'events' | 'response' }
   ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
-      return this.http.get<TData>(`/vsuwebforms/api/Lookup/country/${country}/cities`, {
+      return this.http.get<TData>(`/vsuwebforms/api/lookup/country/${country}/cities`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events'
       });
     }
 
     if (options?.observe === 'response') {
-      return this.http.get<TData>(`/vsuwebforms/api/Lookup/country/${country}/cities`, {
+      return this.http.get<TData>(`/vsuwebforms/api/lookup/country/${country}/cities`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response'
       });
     }
 
-    return this.http.get<TData>(`/vsuwebforms/api/Lookup/country/${country}/cities`, {
+    return this.http.get<TData>(`/vsuwebforms/api/lookup/country/${country}/cities`, {
       ...(options as Omit<NonNullable<typeof options>, 'observe'>),
       observe: 'body'
     });
@@ -270,20 +270,20 @@ export class LookupService {
     options?: HttpClientOptions & { observe?: 'body' | 'events' | 'response' }
   ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
-      return this.http.get<TData>(`/vsuwebforms/api/Lookup/country/${countryId}/province/${provinceId}/cities`, {
+      return this.http.get<TData>(`/vsuwebforms/api/lookup/country/${countryId}/province/${provinceId}/cities`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events'
       });
     }
 
     if (options?.observe === 'response') {
-      return this.http.get<TData>(`/vsuwebforms/api/Lookup/country/${countryId}/province/${provinceId}/cities`, {
+      return this.http.get<TData>(`/vsuwebforms/api/lookup/country/${countryId}/province/${provinceId}/cities`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response'
       });
     }
 
-    return this.http.get<TData>(`/vsuwebforms/api/Lookup/country/${countryId}/province/${provinceId}/cities`, {
+    return this.http.get<TData>(`/vsuwebforms/api/lookup/country/${countryId}/province/${provinceId}/cities`, {
       ...(options as Omit<NonNullable<typeof options>, 'observe'>),
       observe: 'body'
     });
@@ -297,20 +297,20 @@ export class LookupService {
     options?: HttpClientOptions & { observe?: 'body' | 'events' | 'response' }
   ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
-      return this.http.get<TData>(`/vsuwebforms/api/Lookup/courts`, {
+      return this.http.get<TData>(`/vsuwebforms/api/lookup/courts`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events'
       });
     }
 
     if (options?.observe === 'response') {
-      return this.http.get<TData>(`/vsuwebforms/api/Lookup/courts`, {
+      return this.http.get<TData>(`/vsuwebforms/api/lookup/courts`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response'
       });
     }
 
-    return this.http.get<TData>(`/vsuwebforms/api/Lookup/courts`, {
+    return this.http.get<TData>(`/vsuwebforms/api/lookup/courts`, {
       ...(options as Omit<NonNullable<typeof options>, 'observe'>),
       observe: 'body'
     });
@@ -324,20 +324,20 @@ export class LookupService {
     options?: HttpClientOptions & { observe?: 'body' | 'events' | 'response' }
   ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
-      return this.http.get<TData>(`/vsuwebforms/api/Lookup/offences`, {
+      return this.http.get<TData>(`/vsuwebforms/api/lookup/offences`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events'
       });
     }
 
     if (options?.observe === 'response') {
-      return this.http.get<TData>(`/vsuwebforms/api/Lookup/offences`, {
+      return this.http.get<TData>(`/vsuwebforms/api/lookup/offences`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response'
       });
     }
 
-    return this.http.get<TData>(`/vsuwebforms/api/Lookup/offences`, {
+    return this.http.get<TData>(`/vsuwebforms/api/lookup/offences`, {
       ...(options as Omit<NonNullable<typeof options>, 'observe'>),
       observe: 'body'
     });
@@ -351,20 +351,20 @@ export class LookupService {
     options?: HttpClientOptions & { observe?: 'body' | 'events' | 'response' }
   ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
-      return this.http.get<TData>(`/vsuwebforms/api/Lookup/rates`, {
+      return this.http.get<TData>(`/vsuwebforms/api/lookup/rates`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events'
       });
     }
 
     if (options?.observe === 'response') {
-      return this.http.get<TData>(`/vsuwebforms/api/Lookup/rates`, {
+      return this.http.get<TData>(`/vsuwebforms/api/lookup/rates`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response'
       });
     }
 
-    return this.http.get<TData>(`/vsuwebforms/api/Lookup/rates`, {
+    return this.http.get<TData>(`/vsuwebforms/api/lookup/rates`, {
       ...(options as Omit<NonNullable<typeof options>, 'observe'>),
       observe: 'body'
     });

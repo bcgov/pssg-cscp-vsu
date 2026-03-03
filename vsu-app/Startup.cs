@@ -55,6 +55,8 @@ namespace Gov.Cscp.Victims.Public
             // Add a memory cache
             services.AddMemoryCache();
 
+            services.AddRouting(options => options.LowercaseUrls = true);
+
             // for security reasons, the following headers are set.
             services
                 .AddMvc(opts =>
