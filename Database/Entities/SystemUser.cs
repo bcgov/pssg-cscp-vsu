@@ -485,6 +485,10 @@ namespace DataverseModel
 			public const string Lk_VSd_Province_CreatedOnBehalfBy = "Lk_VSd_Province_CreatedOnBehalfBy";
 			public const string Lk_VSd_Province_ModifiedBy = "Lk_VSd_Province_ModifiedBy";
 			public const string Lk_VSd_Province_ModifiedOnBehalfBy = "Lk_VSd_Province_ModifiedOnBehalfBy";
+			public const string Lk_VSd_TravelInformation_CreatedBy = "Lk_VSd_TravelInformation_CreatedBy";
+			public const string Lk_VSd_TravelInformation_CreatedOnBehalfBy = "Lk_VSd_TravelInformation_CreatedOnBehalfBy";
+			public const string Lk_VSd_TravelInformation_ModifiedBy = "Lk_VSd_TravelInformation_ModifiedBy";
+			public const string Lk_VSd_TravelInformation_ModifiedOnBehalfBy = "Lk_VSd_TravelInformation_ModifiedOnBehalfBy";
 			public const string MiddleName = "middlename";
 			public const string MobileAlertEmail = "mobilealertemail";
 			public const string MobileOfflineProfileId = "mobileofflineprofileid";
@@ -554,6 +558,7 @@ namespace DataverseModel
 			public const string ReferencingUser_Parent_User = "user_parent_user";
 			public const string User_VSd_Application = "User_VSd_Application";
 			public const string User_VSd_ApplicationCourtInformation = "User_VSd_ApplicationCourtInformation";
+			public const string User_VSd_TravelInformation = "User_VSd_TravelInformation";
 			public const string UserLicenseType = "userlicensetype";
 			public const string UserPuid = "userpuid";
 			public const string UtcConversionTimeZoneCode = "utcconversiontimezonecode";
@@ -4635,6 +4640,78 @@ namespace DataverseModel
 		}
 		
 		/// <summary>
+		/// 1:N lk_vsd_travelinformation_createdby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_travelinformation_createdby")]
+		public System.Collections.Generic.IEnumerable<DataverseModel.VSd_TravelInformation> Lk_VSd_TravelInformation_CreatedBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<DataverseModel.VSd_TravelInformation>("lk_vsd_travelinformation_createdby", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<DataverseModel.VSd_TravelInformation>("lk_vsd_travelinformation_createdby", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N lk_vsd_travelinformation_createdonbehalfby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_travelinformation_createdonbehalfby")]
+		public System.Collections.Generic.IEnumerable<DataverseModel.VSd_TravelInformation> Lk_VSd_TravelInformation_CreatedOnBehalfBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<DataverseModel.VSd_TravelInformation>("lk_vsd_travelinformation_createdonbehalfby", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<DataverseModel.VSd_TravelInformation>("lk_vsd_travelinformation_createdonbehalfby", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N lk_vsd_travelinformation_modifiedby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_travelinformation_modifiedby")]
+		public System.Collections.Generic.IEnumerable<DataverseModel.VSd_TravelInformation> Lk_VSd_TravelInformation_ModifiedBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<DataverseModel.VSd_TravelInformation>("lk_vsd_travelinformation_modifiedby", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<DataverseModel.VSd_TravelInformation>("lk_vsd_travelinformation_modifiedby", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N lk_vsd_travelinformation_modifiedonbehalfby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_travelinformation_modifiedonbehalfby")]
+		public System.Collections.Generic.IEnumerable<DataverseModel.VSd_TravelInformation> Lk_VSd_TravelInformation_ModifiedOnBehalfBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<DataverseModel.VSd_TravelInformation>("lk_vsd_travelinformation_modifiedonbehalfby", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<DataverseModel.VSd_TravelInformation>("lk_vsd_travelinformation_modifiedonbehalfby", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// 1:N system_user_activity_parties
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("system_user_activity_parties")]
@@ -4775,6 +4852,24 @@ namespace DataverseModel
 			set
 			{
 				this.SetRelatedEntities<DataverseModel.VSd_ApplicationCourtInformation>("user_vsd_applicationcourtinformation", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N user_vsd_travelinformation
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("user_vsd_travelinformation")]
+		public System.Collections.Generic.IEnumerable<DataverseModel.VSd_TravelInformation> User_VSd_TravelInformation
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<DataverseModel.VSd_TravelInformation>("user_vsd_travelinformation", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<DataverseModel.VSd_TravelInformation>("user_vsd_travelinformation", null, value);
 			}
 		}
 		

@@ -126,6 +126,7 @@ namespace DataverseModel
 			public const string Business_Unit_System_Users = "Business_Unit_System_Users";
 			public const string Business_Unit_VSd_Application = "Business_Unit_VSd_Application";
 			public const string Business_Unit_VSd_ApplicationCourtInformation = "Business_Unit_VSd_ApplicationCourtInformation";
+			public const string Business_Unit_VSd_TravelInformation = "Business_Unit_VSd_TravelInformation";
 			public const string BusinessUnitId = "businessunitid";
 			public const string Id = "businessunitid";
 			public const string CalendarId = "calendarid";
@@ -1946,6 +1947,24 @@ namespace DataverseModel
 			set
 			{
 				this.SetRelatedEntities<DataverseModel.VSd_ApplicationCourtInformation>("business_unit_vsd_applicationcourtinformation", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N business_unit_vsd_travelinformation
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("business_unit_vsd_travelinformation")]
+		public System.Collections.Generic.IEnumerable<DataverseModel.VSd_TravelInformation> Business_Unit_VSd_TravelInformation
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<DataverseModel.VSd_TravelInformation>("business_unit_vsd_travelinformation", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<DataverseModel.VSd_TravelInformation>("business_unit_vsd_travelinformation", null, value);
 			}
 		}
 		

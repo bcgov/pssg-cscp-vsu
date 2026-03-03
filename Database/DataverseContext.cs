@@ -214,6 +214,17 @@ namespace DataverseModel
 				return this.CreateQuery<DataverseModel.VSd_Province>();
 			}
 		}
+		
+		/// <summary>
+		/// Gets a binding to the set of all <see cref="DataverseModel.VSd_TravelInformation"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<DataverseModel.VSd_TravelInformation> VSd_TravelInformationSet
+		{
+			get
+			{
+				return this.CreateQuery<DataverseModel.VSd_TravelInformation>();
+			}
+		}
 	}
 	
 	/// <summary>

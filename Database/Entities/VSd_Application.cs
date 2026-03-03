@@ -723,6 +723,7 @@ namespace DataverseModel
 			public const string VSd_VSd_Application_VSd_City = "vsd_vsd_application_vsd_city";
 			public const string VSd_VSd_Application_VSd_Offense = "vsd_vsd_application_vsd_offense";
 			public const string VSd_VSd_Application_VSd_Participant = "VSd_VSd_Application_VSd_Participant";
+			public const string VSd_VSd_Application_VSd_TravelInformation = "VSd_VSd_Application_VSd_TravelInformation";
 			public const string VSd_VSu_AdditionalComments = "vsd_vsu_additionalcomments";
 			public const string VSd_VSu_AdditionalTravelComments = "vsd_vsu_additionaltravelcomments";
 			public const string VSd_VSu_ApplicantType = "vsd_vsu_applicanttype";
@@ -6420,6 +6421,24 @@ namespace DataverseModel
 			set
 			{
 				this.SetRelatedEntities<DataverseModel.VSd_Participant>("vsd_vsd_application_vsd_participant", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N vsd_vsd_application_vsd_travelinformation
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_vsd_application_vsd_travelinformation")]
+		public System.Collections.Generic.IEnumerable<DataverseModel.VSd_TravelInformation> VSd_VSd_Application_VSd_TravelInformation
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<DataverseModel.VSd_TravelInformation>("vsd_vsd_application_vsd_travelinformation", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<DataverseModel.VSd_TravelInformation>("vsd_vsd_application_vsd_travelinformation", null, value);
 			}
 		}
 		

@@ -13,10 +13,10 @@ namespace DataverseModel
 	
 	
 	/// <summary>
-	/// Status of the Application Court Information
+	/// Status of the Travel Information
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	public enum VSd_ApplicationCourtInformation_StateCode
+	public enum VSd_TravelInformation_StateCode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -29,10 +29,10 @@ namespace DataverseModel
 	}
 	
 	/// <summary>
-	/// Reason for the status of the Application Court Information
+	/// Reason for the status of the Travel Information
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	public enum VSd_ApplicationCourtInformation_StatusCode
+	public enum VSd_TravelInformation_StatusCode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -44,20 +44,17 @@ namespace DataverseModel
 		Inactive = 2,
 	}
 	
-	/// <summary>
-	/// This entity stores snapshots of applications court information submitted through the portal.
-	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("vsd_applicationcourtinformation")]
-	public partial class VSd_ApplicationCourtInformation : Microsoft.Xrm.Sdk.Entity
+	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("vsd_travelinformation")]
+	public partial class VSd_TravelInformation : Microsoft.Xrm.Sdk.Entity
 	{
 		
 		/// <summary>
-		/// Available fields, a the time of codegen, for the vsd_applicationcourtinformation entity
+		/// Available fields, a the time of codegen, for the vsd_travelinformation entity
 		/// </summary>
 		public partial class Fields
 		{
-			public const string Business_Unit_VSd_ApplicationCourtInformation = "business_unit_vsd_applicationcourtinformation";
+			public const string Business_Unit_VSd_TravelInformation = "business_unit_vsd_travelinformation";
 			public const string CreatedBy = "createdby";
 			public const string CreatedByName = "createdbyname";
 			public const string CreatedByYomiName = "createdbyyominame";
@@ -66,10 +63,10 @@ namespace DataverseModel
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
 			public const string ImportSequenceNumber = "importsequencenumber";
-			public const string Lk_VSd_ApplicationCourtInformation_CreatedBy = "lk_vsd_applicationcourtinformation_createdby";
-			public const string Lk_VSd_ApplicationCourtInformation_CreatedOnBehalfBy = "lk_vsd_applicationcourtinformation_createdonbehalfby";
-			public const string Lk_VSd_ApplicationCourtInformation_ModifiedBy = "lk_vsd_applicationcourtinformation_modifiedby";
-			public const string Lk_VSd_ApplicationCourtInformation_ModifiedOnBehalfBy = "lk_vsd_applicationcourtinformation_modifiedonbehalfby";
+			public const string Lk_VSd_TravelInformation_CreatedBy = "lk_vsd_travelinformation_createdby";
+			public const string Lk_VSd_TravelInformation_CreatedOnBehalfBy = "lk_vsd_travelinformation_createdonbehalfby";
+			public const string Lk_VSd_TravelInformation_ModifiedBy = "lk_vsd_travelinformation_modifiedby";
+			public const string Lk_VSd_TravelInformation_ModifiedOnBehalfBy = "lk_vsd_travelinformation_modifiedonbehalfby";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
 			public const string ModifiedByYomiName = "modifiedbyyominame";
@@ -89,33 +86,41 @@ namespace DataverseModel
 			public const string StatusCode = "statuscode";
 			public const string StatusCodename = "statuscodename";
 			public const string TimeZoneRuleVersionNumber = "timezoneruleversionnumber";
-			public const string User_VSd_ApplicationCourtInformation = "user_vsd_applicationcourtinformation";
+			public const string User_VSd_TravelInformation = "user_vsd_travelinformation";
 			public const string UtcConversionTimeZoneCode = "utcconversiontimezonecode";
 			public const string VersionNumber = "versionnumber";
-			public const string VSd_ApplicationCourtInformationId = "vsd_applicationcourtinformationid";
-			public const string Id = "vsd_applicationcourtinformationid";
 			public const string VSd_ApplicationId = "vsd_applicationid";
 			public const string VSd_ApplicationIdName = "vsd_applicationidname";
+			public const string VSd_CourtDate = "vsd_courtdate";
 			public const string VSd_CourtFileNumber = "vsd_courtfilenumber";
-			public const string VSd_CourtLocation = "vsd_courtlocation";
-			public const string VsD_VsD_Application_VsD_ApplicationCourtInfoR = "vsd_vsd_application_vsd_applicationcourtinfor";
-			public const string VSd_VSd_ApplicationCourtInformation_VSd_TravelInformation_CourtFileNumber = "VSd_VSd_ApplicationCourtInformation_VSd_TravelInformation_CourtFileNumber";
+			public const string VSd_CourtFileNumber_Text = "vsd_courtfilenumber_text";
+			public const string VSd_CourtFileNumberName = "vsd_courtfilenumbername";
+			public const string VSd_InvoiceId = "vsd_invoiceid";
+			public const string VSd_InvoiceIdName = "vsd_invoiceidname";
+			public const string VSd_Name = "vsd_name";
+			public const string VSd_PurposeOfTravel = "vsd_purposeoftravel";
+			public const string VSd_TravelInformationId = "vsd_travelinformationid";
+			public const string Id = "vsd_travelinformationid";
+			public const string VSd_TravelPeriodFrom = "vsd_travelperiodfrom";
+			public const string VSd_TravelPeriodTo = "vsd_travelperiodto";
+			public const string VSd_VSd_Application_VSd_TravelInformation = "vsd_vsd_application_vsd_travelinformation";
+			public const string VSd_VSd_ApplicationCourtInformation_VSd_TravelInformation_CourtFileNumber = "vsd_vsd_applicationcourtinformation_vsd_travelinformation_CourtFileNumber";
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public VSd_ApplicationCourtInformation(System.Guid id) : 
+		public VSd_TravelInformation(System.Guid id) : 
 				base(EntityLogicalName, id)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public VSd_ApplicationCourtInformation(string keyName, object keyValue) : 
+		public VSd_TravelInformation(string keyName, object keyValue) : 
 				base(EntityLogicalName, keyName, keyValue)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public VSd_ApplicationCourtInformation(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
+		public VSd_TravelInformation(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
@@ -124,22 +129,22 @@ namespace DataverseModel
 		/// Default Constructor.
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public VSd_ApplicationCourtInformation() : 
+		public VSd_TravelInformation() : 
 				base(EntityLogicalName)
 		{
 		}
 		
-		public const string PrimaryIdAttribute = "vsd_applicationcourtinformationid";
+		public const string PrimaryIdAttribute = "vsd_travelinformationid";
 		
-		public const string PrimaryNameAttribute = "vsd_courtfilenumber";
+		public const string PrimaryNameAttribute = "vsd_name";
 		
-		public const string EntitySchemaName = "vsd_applicationcourtinformation";
+		public const string EntitySchemaName = "vsd_travelinformation";
 		
-		public const string EntityLogicalName = "vsd_applicationcourtinformation";
+		public const string EntityLogicalName = "vsd_travelinformation";
 		
-		public const string EntityLogicalCollectionName = "vsd_applicationcourtinformations";
+		public const string EntityLogicalCollectionName = "vsd_travelinformations";
 		
-		public const string EntitySetName = "vsd_applicationcourtinformations";
+		public const string EntitySetName = "vsd_travelinformations";
 		
 		/// <summary>
 		/// Unique identifier of the user who created the record.
@@ -499,15 +504,15 @@ namespace DataverseModel
 		}
 		
 		/// <summary>
-		/// Status of the Application Court Information
+		/// Status of the Travel Information
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecode")]
-		public virtual VSd_ApplicationCourtInformation_StateCode? StateCode
+		public virtual VSd_TravelInformation_StateCode? StateCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((VSd_ApplicationCourtInformation_StateCode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
+				return ((VSd_TravelInformation_StateCode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -534,15 +539,15 @@ namespace DataverseModel
 		}
 		
 		/// <summary>
-		/// Reason for the status of the Application Court Information
+		/// Reason for the status of the Travel Information
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscode")]
-		public virtual VSd_ApplicationCourtInformation_StatusCode? StatusCode
+		public virtual VSd_TravelInformation_StatusCode? StatusCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((VSd_ApplicationCourtInformation_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
+				return ((VSd_TravelInformation_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -618,48 +623,7 @@ namespace DataverseModel
 		}
 		
 		/// <summary>
-		/// Unique identifier for entity instances
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_applicationcourtinformationid")]
-		public System.Nullable<System.Guid> VSd_ApplicationCourtInformationId
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<System.Nullable<System.Guid>>("vsd_applicationcourtinformationid");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("vsd_applicationcourtinformationid", value);
-				if (value.HasValue)
-				{
-					base.Id = value.Value;
-				}
-				else
-				{
-					base.Id = System.Guid.Empty;
-				}
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_applicationcourtinformationid")]
-		public override System.Guid Id
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return base.Id;
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.VSd_ApplicationCourtInformationId = value;
-			}
-		}
-		
-		/// <summary>
-		/// The application to which this court file number belongs to.
+		/// Unique identifier for Application associated with Travel Information.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_applicationid")]
 		public Microsoft.Xrm.Sdk.EntityReference VSd_ApplicationId
@@ -693,16 +657,28 @@ namespace DataverseModel
 			}
 		}
 		
-		/// <summary>
-		/// The court file number.
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_courtfilenumber")]
-		public string VSd_CourtFileNumber
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_courtdate")]
+		public System.Nullable<System.DateTime> VSd_CourtDate
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<string>("vsd_courtfilenumber");
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("vsd_courtdate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("vsd_courtdate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_courtfilenumber")]
+		public Microsoft.Xrm.Sdk.EntityReference VSd_CourtFileNumber
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("vsd_courtfilenumber");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -711,152 +687,306 @@ namespace DataverseModel
 			}
 		}
 		
-		/// <summary>
-		/// The location of the court.
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_courtlocation")]
-		public string VSd_CourtLocation
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_courtfilenumber_text")]
+		public string VSd_CourtFileNumber_Text
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<string>("vsd_courtlocation");
+				return this.GetAttributeValue<string>("vsd_courtfilenumber_text");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("vsd_courtlocation", value);
+				this.SetAttributeValue("vsd_courtfilenumber_text", value);
 			}
 		}
 		
-		/// <summary>
-		/// 1:N vsd_vsd_applicationcourtinformation_vsd_travelinformation_CourtFileNumber
-		/// </summary>
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_vsd_applicationcourtinformation_vsd_travelinformation_CourtFileNumber")]
-		public System.Collections.Generic.IEnumerable<DataverseModel.VSd_TravelInformation> VSd_VSd_ApplicationCourtInformation_VSd_TravelInformation_CourtFileNumber
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_courtfilenumbername")]
+		public string VSd_CourtFileNumberName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntities<DataverseModel.VSd_TravelInformation>("vsd_vsd_applicationcourtinformation_vsd_travelinformation_CourtFileNumber", null);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntities<DataverseModel.VSd_TravelInformation>("vsd_vsd_applicationcourtinformation_vsd_travelinformation_CourtFileNumber", null, value);
+				if (this.FormattedValues.Contains("vsd_courtfilenumber"))
+				{
+					return this.FormattedValues["vsd_courtfilenumber"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
 		/// <summary>
-		/// N:1 business_unit_vsd_applicationcourtinformation
+		/// Unique identifier for Invoice associated with Travel Information.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_invoiceid")]
+		public Microsoft.Xrm.Sdk.EntityReference VSd_InvoiceId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("vsd_invoiceid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("vsd_invoiceid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_invoiceidname")]
+		public string VSd_InvoiceIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("vsd_invoiceid"))
+				{
+					return this.FormattedValues["vsd_invoiceid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		/// <summary>
+		/// The name of the custom entity.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_name")]
+		public string VSd_Name
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("vsd_name");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("vsd_name", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_purposeoftravel")]
+		public string VSd_PurposeOfTravel
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("vsd_purposeoftravel");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("vsd_purposeoftravel", value);
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier for entity instances
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_travelinformationid")]
+		public System.Nullable<System.Guid> VSd_TravelInformationId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("vsd_travelinformationid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("vsd_travelinformationid", value);
+				if (value.HasValue)
+				{
+					base.Id = value.Value;
+				}
+				else
+				{
+					base.Id = System.Guid.Empty;
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_travelinformationid")]
+		public override System.Guid Id
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return base.Id;
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.VSd_TravelInformationId = value;
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_travelperiodfrom")]
+		public System.Nullable<System.DateTime> VSd_TravelPeriodFrom
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("vsd_travelperiodfrom");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("vsd_travelperiodfrom", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_travelperiodto")]
+		public System.Nullable<System.DateTime> VSd_TravelPeriodTo
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("vsd_travelperiodto");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("vsd_travelperiodto", value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 business_unit_vsd_travelinformation
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owningbusinessunit")]
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("business_unit_vsd_applicationcourtinformation")]
-		public DataverseModel.BusinessUnit Business_Unit_VSd_ApplicationCourtInformation
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("business_unit_vsd_travelinformation")]
+		public DataverseModel.BusinessUnit Business_Unit_VSd_TravelInformation
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntity<DataverseModel.BusinessUnit>("business_unit_vsd_applicationcourtinformation", null);
+				return this.GetRelatedEntity<DataverseModel.BusinessUnit>("business_unit_vsd_travelinformation", null);
 			}
 		}
 		
 		/// <summary>
-		/// N:1 lk_vsd_applicationcourtinformation_createdby
+		/// N:1 lk_vsd_travelinformation_createdby
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdby")]
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_applicationcourtinformation_createdby")]
-		public DataverseModel.SystemUser Lk_VSd_ApplicationCourtInformation_CreatedBy
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_travelinformation_createdby")]
+		public DataverseModel.SystemUser Lk_VSd_TravelInformation_CreatedBy
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntity<DataverseModel.SystemUser>("lk_vsd_applicationcourtinformation_createdby", null);
+				return this.GetRelatedEntity<DataverseModel.SystemUser>("lk_vsd_travelinformation_createdby", null);
 			}
 		}
 		
 		/// <summary>
-		/// N:1 lk_vsd_applicationcourtinformation_createdonbehalfby
+		/// N:1 lk_vsd_travelinformation_createdonbehalfby
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdonbehalfby")]
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_applicationcourtinformation_createdonbehalfby")]
-		public DataverseModel.SystemUser Lk_VSd_ApplicationCourtInformation_CreatedOnBehalfBy
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_travelinformation_createdonbehalfby")]
+		public DataverseModel.SystemUser Lk_VSd_TravelInformation_CreatedOnBehalfBy
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntity<DataverseModel.SystemUser>("lk_vsd_applicationcourtinformation_createdonbehalfby", null);
+				return this.GetRelatedEntity<DataverseModel.SystemUser>("lk_vsd_travelinformation_createdonbehalfby", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntity<DataverseModel.SystemUser>("lk_vsd_applicationcourtinformation_createdonbehalfby", null, value);
+				this.SetRelatedEntity<DataverseModel.SystemUser>("lk_vsd_travelinformation_createdonbehalfby", null, value);
 			}
 		}
 		
 		/// <summary>
-		/// N:1 lk_vsd_applicationcourtinformation_modifiedby
+		/// N:1 lk_vsd_travelinformation_modifiedby
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedby")]
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_applicationcourtinformation_modifiedby")]
-		public DataverseModel.SystemUser Lk_VSd_ApplicationCourtInformation_ModifiedBy
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_travelinformation_modifiedby")]
+		public DataverseModel.SystemUser Lk_VSd_TravelInformation_ModifiedBy
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntity<DataverseModel.SystemUser>("lk_vsd_applicationcourtinformation_modifiedby", null);
+				return this.GetRelatedEntity<DataverseModel.SystemUser>("lk_vsd_travelinformation_modifiedby", null);
 			}
 		}
 		
 		/// <summary>
-		/// N:1 lk_vsd_applicationcourtinformation_modifiedonbehalfby
+		/// N:1 lk_vsd_travelinformation_modifiedonbehalfby
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedonbehalfby")]
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_applicationcourtinformation_modifiedonbehalfby")]
-		public DataverseModel.SystemUser Lk_VSd_ApplicationCourtInformation_ModifiedOnBehalfBy
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_travelinformation_modifiedonbehalfby")]
+		public DataverseModel.SystemUser Lk_VSd_TravelInformation_ModifiedOnBehalfBy
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntity<DataverseModel.SystemUser>("lk_vsd_applicationcourtinformation_modifiedonbehalfby", null);
+				return this.GetRelatedEntity<DataverseModel.SystemUser>("lk_vsd_travelinformation_modifiedonbehalfby", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntity<DataverseModel.SystemUser>("lk_vsd_applicationcourtinformation_modifiedonbehalfby", null, value);
+				this.SetRelatedEntity<DataverseModel.SystemUser>("lk_vsd_travelinformation_modifiedonbehalfby", null, value);
 			}
 		}
 		
 		/// <summary>
-		/// N:1 user_vsd_applicationcourtinformation
+		/// N:1 user_vsd_travelinformation
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owninguser")]
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("user_vsd_applicationcourtinformation")]
-		public DataverseModel.SystemUser User_VSd_ApplicationCourtInformation
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("user_vsd_travelinformation")]
+		public DataverseModel.SystemUser User_VSd_TravelInformation
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntity<DataverseModel.SystemUser>("user_vsd_applicationcourtinformation", null);
+				return this.GetRelatedEntity<DataverseModel.SystemUser>("user_vsd_travelinformation", null);
 			}
 		}
 		
 		/// <summary>
-		/// N:1 vsd_vsd_application_vsd_applicationcourtinfor
+		/// N:1 vsd_vsd_application_vsd_travelinformation
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_applicationid")]
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_vsd_application_vsd_applicationcourtinfor")]
-		public DataverseModel.VSd_Application VsD_VsD_Application_VsD_ApplicationCourtInfoR
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_vsd_application_vsd_travelinformation")]
+		public DataverseModel.VSd_Application VSd_VSd_Application_VSd_TravelInformation
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntity<DataverseModel.VSd_Application>("vsd_vsd_application_vsd_applicationcourtinfor", null);
+				return this.GetRelatedEntity<DataverseModel.VSd_Application>("vsd_vsd_application_vsd_travelinformation", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntity<DataverseModel.VSd_Application>("vsd_vsd_application_vsd_applicationcourtinfor", null, value);
+				this.SetRelatedEntity<DataverseModel.VSd_Application>("vsd_vsd_application_vsd_travelinformation", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 vsd_vsd_applicationcourtinformation_vsd_travelinformation_CourtFileNumber
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_courtfilenumber")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_vsd_applicationcourtinformation_vsd_travelinformation_CourtFileNumber")]
+		public DataverseModel.VSd_ApplicationCourtInformation VSd_VSd_ApplicationCourtInformation_VSd_TravelInformation_CourtFileNumber
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<DataverseModel.VSd_ApplicationCourtInformation>("vsd_vsd_applicationcourtinformation_vsd_travelinformation_CourtFileNumber", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<DataverseModel.VSd_ApplicationCourtInformation>("vsd_vsd_applicationcourtinformation_vsd_travelinformation_CourtFileNumber", null, value);
 			}
 		}
 		
@@ -865,7 +995,7 @@ namespace DataverseModel
 		/// <param name="anonymousType">LINQ anonymous type.</param>
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public VSd_ApplicationCourtInformation(object anonymousType) : 
+		public VSd_TravelInformation(object anonymousType) : 
 				this()
 		{
             foreach (var p in anonymousType.GetType().GetProperties())
@@ -883,9 +1013,9 @@ namespace DataverseModel
                 {
                     case "id":
                         base.Id = (System.Guid)value;
-                        Attributes["vsd_applicationcourtinformationid"] = base.Id;
+                        Attributes["vsd_travelinformationid"] = base.Id;
                         break;
-                    case "vsd_applicationcourtinformationid":
+                    case "vsd_travelinformationid":
                         var id = (System.Nullable<System.Guid>) value;
                         if(id == null){ continue; }
                         base.Id = id.Value;

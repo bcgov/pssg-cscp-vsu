@@ -47,7 +47,8 @@ vsd_country|
 vsd_court|
 vsd_offense|
 vsd_participant|
-vsd_province</EntitiesWhitelist>
+vsd_province|
+vsd_travelinformation</EntitiesWhitelist>
     <EntityAttributeSpecifiedNames />
     <EntityClassNameOverrides />
     <EntityPrefixesToSkip />
