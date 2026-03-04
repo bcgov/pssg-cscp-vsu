@@ -446,7 +446,13 @@ namespace Gov.Cscp.Victims.Public.Models.Mapping
 
             // Handle multi-value fields that require special handling
             if (!string.IsNullOrEmpty(application.vsd_vsu_travelexpenserequest_03))
-                entity["vsd_vsu_travelexpenserequest_03"] = application.vsd_vsu_travelexpenserequest_03;
+            {
+                var values = application
+                    .vsd_vsu_travelexpenserequest_03.Split(',')
+                    .Select(v => new OptionSetValue(int.Parse(v.Trim())))
+                    .ToList();
+                entity["vsd_vsu_travelexpenserequest_03"] = new OptionSetValueCollection(values);
+            }
 
             if (!string.IsNullOrEmpty(application.vsd_vsu_purposeoftravel))
                 entity["vsd_vsu_purposeoftravel"] = application.vsd_vsu_purposeoftravel;

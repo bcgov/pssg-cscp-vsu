@@ -182,8 +182,6 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
       let data = convertNotificationApplicationToCRM(application);
       this.applicationService.submit(data).subscribe({
         next: (res) => {
-          this.submitting = false;
-
           this.form.get('confirmation.confirmationNumber').patchValue('RXXXXXX');
           this.showConfirmation = true;
           setTimeout(() => {
@@ -192,6 +190,8 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
         },
         error: () => {
           this.notify.addNotification('There was an error submitting the application.', 'danger', 4000);
+        },
+        complete: () => {
           this.submitting = false;
         }
       });

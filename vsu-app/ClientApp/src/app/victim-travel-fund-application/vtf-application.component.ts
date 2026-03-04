@@ -199,25 +199,21 @@ export class VictimTravelFundApplicationComponent extends FormBase implements On
       let application = this.harvestForm();
       let data = convertTravelFundApplicationToCRM(application);
 
-      this.applicationService.submit(data).subscribe(
-        (res) => {
-          this.submitting = false;
-
-          if (res.IsSuccess) {
-            this.form.get('confirmation.confirmationNumber').patchValue('RXXXXXX');
-            this.showConfirmation = true;
-            setTimeout(() => {
-              this.gotoNextStep(this.applicationStepper);
-            }, 0);
-          } else {
-            this.notify.addNotification('There was an error submitting the application.', 'danger', 4000);
-          }
+      this.applicationService.submit(data).subscribe({
+        next: (res) => {
+          this.form.get('confirmation.confirmationNumber').patchValue('RXXXXXX');
+          this.showConfirmation = true;
+          setTimeout(() => {
+            this.gotoNextStep(this.applicationStepper);
+          }, 0);
         },
-        (err) => {
+        error: (err) => {
           this.notify.addNotification('There was an error submitting the application.', 'danger', 4000);
+        },
+        complete: () => {
           this.submitting = false;
         }
-      );
+      });
     } else {
       this.validateAllFormFields(this.form);
     }

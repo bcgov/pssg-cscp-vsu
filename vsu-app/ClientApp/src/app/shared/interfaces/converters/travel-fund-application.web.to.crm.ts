@@ -84,7 +84,7 @@ function getCRMApplication(application: iTravelFundApplication) {
 
     //check if we set these - don't send any info if val is blank
     vsd_vsu_methodofcontact1type: application.ApplicantInformation.contactMethods[0].val
-      ? application.ApplicantInformation.contactMethods[0].type
+      ? Number(application.ApplicantInformation.contactMethods[0].type)
       : null,
     vsd_vsu_methodofcontact1number: application.ApplicantInformation.contactMethods[0].val
       ? application.ApplicantInformation.contactMethods[0].val
@@ -93,7 +93,7 @@ function getCRMApplication(application: iTravelFundApplication) {
       ? application.ApplicantInformation.contactMethods[0].leaveMessage
       : null,
     vsd_vsu_methodofcontact2type: application.ApplicantInformation.contactMethods[1].val
-      ? application.ApplicantInformation.contactMethods[1].type
+      ? Number(application.ApplicantInformation.contactMethods[1].type)
       : null,
     vsd_vsu_methodofcontact2number: application.ApplicantInformation.contactMethods[1].val
       ? application.ApplicantInformation.contactMethods[1].val
@@ -102,7 +102,7 @@ function getCRMApplication(application: iTravelFundApplication) {
       ? application.ApplicantInformation.contactMethods[1].leaveMessage
       : null,
     vsd_vsu_methodofcontact3type: application.ApplicantInformation.contactMethods[2].val
-      ? application.ApplicantInformation.contactMethods[2].type
+      ? Number(application.ApplicantInformation.contactMethods[2].type)
       : null,
     vsd_vsu_methodofcontact3number: application.ApplicantInformation.contactMethods[2].val
       ? application.ApplicantInformation.contactMethods[2].val
@@ -157,7 +157,8 @@ function getCRMApplication(application: iTravelFundApplication) {
   }
 
   if (application.CaseInformation.victimServiceWorker.length > 0) {
-    crm_application.vsd_vsu_discussvtfappwithvsp = application.CaseInformation.victimServiceWorker[0].okToDiscussTravel;
+    crm_application.vsd_vsu_discussvtfappwithvsp =
+      application.CaseInformation.victimServiceWorker[0].okToDiscussTravel || null;
   }
 
   let requested_expenses = [];
@@ -254,7 +255,7 @@ function getCRMProviderCollection(application: iTravelFundApplication) {
     vsd_firstname: application.CaseInformation.accusedFirstName,
     vsd_middlename: application.CaseInformation.accusedMiddleName,
     vsd_lastname: application.CaseInformation.accusedLastName,
-    vsd_birthdate: application.CaseInformation.accusedBirthDate,
+    vsd_birthdate: application.CaseInformation.accusedBirthDate || null,
     vsd_gender: application.CaseInformation.accusedGender,
     vsd_genderidentitytext: application.CaseInformation.accusedOtherGender,
     vsd_pronouns: application.CaseInformation.accusedPronouns,
@@ -271,7 +272,7 @@ function getCRMProviderCollection(application: iTravelFundApplication) {
       vsd_firstname: accused.firstName,
       vsd_middlename: accused.middleName,
       vsd_lastname: accused.lastName,
-      vsd_birthdate: accused.birthDate,
+      vsd_birthdate: accused.birthDate || null,
       vsd_gender: accused.gender,
       vsd_relationship1: PARTICIPANT_TYPES.ACCUSED,
       vsd_relationship2: accused.relationship
