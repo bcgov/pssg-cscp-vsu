@@ -290,184 +290,184 @@ namespace Gov.Cscp.Victims.Public.Models.Mapping
                 VSd_CVAp_VictimMiddleName = application.VictimMiddleName,
                 VSd_CVAp_VictimLastName = application.VictimLastName,
                 VSd_CVAp_VictimBirthdate = application.VictimBirthDate,
-                VSd_OtherFirstName = application.vsd_otherfirstname,
-                VSd_OtherLastName = application.vsd_otherlastname,
-                VSd_DateOfNameChange = application.vsd_dateofnamechange,
+                VSd_OtherFirstName = application.OtherFirstname,
+                VSd_OtherLastName = application.OtherLastname,
+                VSd_DateOfNameChange = application.DateOfNameChange,
                 VSd_CVAp_VictimGenderCode = application.VictimGenderCode.HasValue
                     ? (VSd_Gender?)application.VictimGenderCode.Value
                     : null,
-                VSd_VictimGenderText = application.vsd_victimgendertext,
-                VSd_VictimPronouns = application.vsd_victimpronouns.HasValue
-                    ? (VSd_Pronouns?)application.vsd_victimpronouns.Value
+                VSd_VictimGenderText = application.VictimGenderText,
+                VSd_VictimPronouns = application.VictimPronouns.HasValue
+                    ? (VSd_Pronouns?)application.VictimPronouns.Value
                     : null,
-                VSd_VictimPronounText = application.vsd_victimpronountext,
-                VSd_VictimPrimaryRaceEthnicity = application.vsd_victimprimaryraceethnicity.HasValue
-                    ? (VSd_RaceEthnicity?)application.vsd_victimprimaryraceethnicity.Value
+                VSd_VictimPronounText = application.VictimPronounText,
+                VSd_VictimPrimaryRaceEthnicity = application.VictimPrimaryRaceEthnicity.HasValue
+                    ? (VSd_RaceEthnicity?)application.VictimPrimaryRaceEthnicity.Value
                     : null,
-                VSd_VictimPrimaryRaceEthnicityText = application.vsd_victimprimaryraceethnicitytext,
-                VSd_VictimIndigenous = application.vsd_victimindigenous.HasValue
-                    ? (VSd_Application_VSd_VictimIndigenous)application.vsd_victimindigenous.Value
+                VSd_VictimPrimaryRaceEthnicityText = application.VictimPrimaryRaceEthnicityText,
+                VSd_VictimIndigenous = application.VictimIndigenous.HasValue
+                    ? (VSd_Application_VSd_VictimIndigenous)application.VictimIndigenous.Value
                     : null,
-                VSd_VSu_ApplicantType = (VSd_VSu_ApplicantType)application.vsd_vsu_applicanttype,
-                VSd_VSuApplicantTypeOther = application.vsd_vsu_applicanttypeother,
-                VSd_VSu_OffencesComments = application.vsd_vsu_offencescomments,
-                VSd_VSu_Decision1ImpactToOutcome = application.vsd_vsu_decision1impacttooutcome.HasValue
-                    ? (VSd_YesNo?)application.vsd_vsu_decision1impacttooutcome.Value
+                VSd_VSu_ApplicantType = (VSd_VSu_ApplicantType)application.ApplicantType,
+                VSd_VSuApplicantTypeOther = application.ApplicantTypeOther,
+                VSd_VSu_OffencesComments = application.OffencesComments,
+                VSd_VSu_Decision1ImpactToOutcome = application.Decision1ImpactToOutcome.HasValue
+                    ? (VSd_YesNo?)application.Decision1ImpactToOutcome.Value
                     : null,
-                VSd_VSu_Decision1Comments = application.vsd_vsu_decision1comments,
-                VsD_VsU_Decision2TravelOver100Km = application.vsd_vsu_decision2travelover100km.HasValue
-                    ? (VSd_YesNo?)application.vsd_vsu_decision2travelover100km.Value
+                VSd_VSu_Decision1Comments = application.Decision1Comments,
+                VsD_VsU_Decision2TravelOver100Km = application.Decision2TravelOver100KM.HasValue
+                    ? (VSd_YesNo?)application.Decision2TravelOver100KM.Value
                     : null,
-                VSd_VSu_Decision2Comments = application.vsd_vsu_decision2comments,
-                VSd_VSu_Decision3NoOtherFundingSource = application.vsd_vsu_decision3nootherfundingsource.HasValue
-                    ? (VSd_YesNo?)application.vsd_vsu_decision3nootherfundingsource.Value
+                VSd_VSu_Decision2Comments = application.Decision2Comments,
+                VSd_VSu_Decision3NoOtherFundingSource = application.Decision3NoOtherFundingSource.HasValue
+                    ? (VSd_YesNo?)application.Decision3NoOtherFundingSource.Value
                     : null,
-                VSd_VSu_Decision3Comments = application.vsd_vsu_decision3comments,
-                VSd_VSu_AdditionalComments = application.vsd_vsu_additionalcomments,
+                VSd_VSu_Decision3Comments = application.Decision3Comments,
+                VSd_VSu_AdditionalComments = application.AdditionalComments,
                 VSd_CVAp_RelationshipToVictim = application.RelationshipToVictim,
-                VSd_VSu_VictimTravelFundApplicationSubmitted = application
-                    .VictimTravelFundApplicationSubmitted
-                    .HasValue
+                VSd_VSu_VictimTravelFundApplicationSubmitted = application.VictimTravelFundApplicationSubmitted.HasValue
                     ? (VSd_YesNoUnknown?)application.VictimTravelFundApplicationSubmitted.Value
                     : null,
-                VSd_VSu_VTfAppSubmittedUnknownComments = application.vsd_vsu_vtfappsubmittedunknowncomments,
-                VSd_VSu_OtherFamilyMembersApplyingToVTf = application.vsd_vsu_otherfamilymembersapplyingtovtf.HasValue
-                    ? (VSd_YesNoUnknown?)application.vsd_vsu_otherfamilymembersapplyingtovtf.Value
+                VSd_VSu_VTfAppSubmittedUnknownComments =
+                    application.VictimTravelFundApplicationSubmittedUnknownComments,
+                VSd_VSu_OtherFamilyMembersApplyingToVTf = application.OtherFamilyMembersApplyingToVTF.HasValue
+                    ? (VSd_YesNoUnknown?)application.OtherFamilyMembersApplyingToVTF.Value
                     : null,
-                VSd_VSu_OtherFamilyMemberSvTfOtherComments = application.vsd_vsu_otherfamilymembersvtfothercomments,
-                VSd_VSu_VsWcOmMenTs = application.vsd_vsu_vswcomments,
-                VSd_VSu_CostsCoveredByVSp = application.vsd_vsu_costscoveredbyvsp.HasValue
-                    ? (VSd_YesNo?)application.vsd_vsu_costscoveredbyvsp.Value
+                VSd_VSu_OtherFamilyMemberSvTfOtherComments = application.OtherFamilyMembersVTFOtherComments,
+                VSd_VSu_VsWcOmMenTs = application.VSWComments,
+                VSd_VSu_CostsCoveredByVSp = application.CostsCoveredByVSP.HasValue
+                    ? (VSd_YesNo?)application.CostsCoveredByVSP.Value
                     : null,
-                VSd_VSu_VsPcOmMenTs = application.vsd_vsu_vspcomments,
-                VSd_VSu_ManagerFirstName = application.vsd_vsu_managerfirstname,
-                VSd_VSu_ManagerLastName = application.vsd_vsu_managerlastname,
-                VSd_VSu_OrganizationAgencyName = application.vsd_vsu_organizationagencyname,
-                VSd_VSu_ManagerPhone = application.vsd_vsu_managerphone,
-                VsD_VsU_ManagerEmail = application.vsd_vsu_manageremail,
-                VSd_ApplicantsFirstName = application.vsd_applicantsfirstname,
-                VSd_ApplicantsMiddleName = application.vsd_applicantsmiddlename,
-                VSd_ApplicantsLastName = application.vsd_applicantslastname,
-                VSd_ApplicantsMaritalStatus = application.vsd_applicantsmaritalstatus.HasValue
-                    ? (VSd_MaritalStatus?)application.vsd_applicantsmaritalstatus.Value
+                VSd_VSu_VsPcOmMenTs = application.VSPComments,
+                VSd_VSu_ManagerFirstName = application.ManagerFirstName,
+                VSd_VSu_ManagerLastName = application.ManagerLastName,
+                VSd_VSu_OrganizationAgencyName = application.OrganizationAgencyName,
+                VSd_VSu_ManagerPhone = application.ManagerPhone,
+                VsD_VsU_ManagerEmail = application.ManagerEmail,
+                VSd_ApplicantsFirstName = application.ApplicantsFirstName,
+                VSd_ApplicantsMiddleName = application.ApplicantsMiddleName,
+                VSd_ApplicantsLastName = application.ApplicantsLastName,
+                VSd_ApplicantsMaritalStatus = application.ApplicantsMaritalStatus.HasValue
+                    ? (VSd_MaritalStatus?)application.ApplicantsMaritalStatus.Value
                     : null,
-                VSd_ApplicantsGenderCode = application.vsd_applicantsgendercode.HasValue
-                    ? (VSd_Gender?)application.vsd_applicantsgendercode.Value
+                VSd_ApplicantsGenderCode = application.ApplicantsGenderCode.HasValue
+                    ? (VSd_Gender?)application.ApplicantsGenderCode.Value
                     : null,
-                VSd_GenderIdentityText = application.vsd_genderidentitytext,
-                VSd_Pronouns = application.vsd_pronouns.HasValue ? (VSd_Pronouns?)application.vsd_pronouns.Value : null,
-                VSd_PronounText = application.vsd_pronountext,
-                VSd_ApplicantsBirthdate = application.vsd_applicantsbirthdate,
-                VSd_PrimaryRaceEthnicity = application.vsd_primaryraceethnicity.HasValue
-                    ? (VSd_RaceEthnicity?)application.vsd_primaryraceethnicity.Value
+                VSd_GenderIdentityText = application.ApplicantsGenderIdentityText,
+                VSd_Pronouns = application.ApplicantsPronouns.HasValue
+                    ? (VSd_Pronouns?)application.ApplicantsPronouns.Value
                     : null,
-                VSd_PrimaryRaceEthnicityText = application.vsd_primaryraceethnicitytext,
-                VSd_Indigenous = application.vsd_indigenous.HasValue
-                    ? (VSd_Application_VSd_Indigenous?)application.vsd_indigenous.Value
+                VSd_PronounText = application.ApplicantsPronounText,
+                VSd_ApplicantsBirthdate = application.ApplicantsBirthDate,
+                VSd_PrimaryRaceEthnicity = application.ApplicantsPrimaryRaceEthnicity.HasValue
+                    ? (VSd_RaceEthnicity?)application.ApplicantsPrimaryRaceEthnicity.Value
                     : null,
-                VSd_ApplicantsPreferredLanguage = application.vsd_applicantspreferredlanguage,
-                VSd_ApplicantsInterpreterNeeded = application.vsd_applicantsinterpreterneeded.HasValue
-                    ? (VSd_YesNo?)application.vsd_applicantsinterpreterneeded.Value
+                VSd_PrimaryRaceEthnicityText = application.ApplicantsPrimaryRaceEthnicityText,
+                VSd_Indigenous = application.ApplicantsIndigenous.HasValue
+                    ? (VSd_Application_VSd_Indigenous?)application.ApplicantsIndigenous.Value
                     : null,
-                VSd_ApplicantsPrimaryAddressLine1 = application.vsd_applicantsprimaryaddressline1,
-                VSd_ApplicantsPrimaryAddressLine2 = application.vsd_applicantsprimaryaddressline2,
-                VSd_ApplicantsPrimaryCity = application.vsd_applicantsprimarycity,
-                VSd_ApplicantsPrimaryProvince = application.vsd_applicantsprimaryprovince,
-                VSd_ApplicantsPrimaryCountry = application.vsd_applicantsprimarycountry,
-                VSd_ApplicantsPrimaryPostalCode = application.vsd_applicantsprimarypostalcode,
-                VSd_VSu_OkToSendMail = application.vsd_vsu_oktosendmail.HasValue
-                    ? (VSd_YesNo?)application.vsd_vsu_oktosendmail.Value
+                VSd_ApplicantsPreferredLanguage = application.ApplicantsPreferredLanguage,
+                VSd_ApplicantsInterpreterNeeded = application.ApplicantsInterpreterNeeded.HasValue
+                    ? (VSd_YesNo?)application.ApplicantsInterpreterNeeded.Value
                     : null,
-                VSd_VSu_MethodOfContact1Type = application.vsd_vsu_methodofcontact1type.HasValue
-                    ? (VSd_VSu_VSuMethodsOfContact?)application.vsd_vsu_methodofcontact1type.Value
+                VSd_ApplicantsPrimaryAddressLine1 = application.ApplicantsPrimaryAddressLine1,
+                VSd_ApplicantsPrimaryAddressLine2 = application.ApplicantsPrimaryAddressLine2,
+                VSd_ApplicantsPrimaryCity = application.ApplicantsPrimaryCity,
+                VSd_ApplicantsPrimaryProvince = application.ApplicantsPrimaryProvince,
+                VSd_ApplicantsPrimaryCountry = application.ApplicantsPrimaryCountry,
+                VSd_ApplicantsPrimaryPostalCode = application.ApplicantsPrimaryPostalCode,
+                VSd_VSu_OkToSendMail = application.ApplicantsOkToSendMail.HasValue
+                    ? (VSd_YesNo?)application.ApplicantsOkToSendMail.Value
                     : null,
-                VSd_VSu_MethodOfContact1Number = application.vsd_vsu_methodofcontact1number,
-                VSd_VSu_MethodOfContact1Ext = application.vsd_vsu_methodofcontact1ext,
+                VSd_VSu_MethodOfContact1Type = application.ApplicantsMethodOfContact1Type.HasValue
+                    ? (VSd_VSu_VSuMethodsOfContact?)application.ApplicantsMethodOfContact1Type.Value
+                    : null,
+                VSd_VSu_MethodOfContact1Number = application.ApplicantsMethodOfContact1Number,
+                VSd_VSu_MethodOfContact1Ext = application.ApplicantsMethodOfContact1Ext,
                 VSd_VSu_MethodOfContact1LeaveDetailedMessage = application
-                    .vsd_vsu_methodofcontact1leavedetailedmessage
+                    .ApplicantsMethodOfContact1LeaveDetailedMessage
                     .HasValue
-                    ? (VSd_YesNo?)application.vsd_vsu_methodofcontact1leavedetailedmessage.Value
+                    ? (VSd_YesNo?)application.ApplicantsMethodOfContact1LeaveDetailedMessage.Value
                     : null,
-                VSd_VSu_MethodOfContact2Type = application.vsd_vsu_methodofcontact2type.HasValue
-                    ? (VSd_VSu_VSuMethodsOfContact?)application.vsd_vsu_methodofcontact2type.Value
+                VSd_VSu_MethodOfContact2Type = application.ApplicantsMethodOfContact2Type.HasValue
+                    ? (VSd_VSu_VSuMethodsOfContact?)application.ApplicantsMethodOfContact2Type.Value
                     : null,
-                VSd_VSu_MethodOfContact2Number = application.vsd_vsu_methodofcontact2number,
+                VSd_VSu_MethodOfContact2Number = application.ApplicantsMethodOfContact2Number,
                 VSd_VSu_MethodOfContact2LeaveDetailedMessage = application
-                    .vsd_vsu_methodofcontact2leavedetailedmessage
+                    .ApplicantsMethodOfContact2LeaveDetailedMessage
                     .HasValue
-                    ? (VSd_YesNo?)application.vsd_vsu_methodofcontact2leavedetailedmessage.Value
+                    ? (VSd_YesNo?)application.ApplicantsMethodOfContact2LeaveDetailedMessage.Value
                     : null,
-                VSd_VSu_MethodOfContact3Type = application.vsd_vsu_methodofcontact3type.HasValue
-                    ? (VSd_VSu_VSuMethodsOfContact?)application.vsd_vsu_methodofcontact3type.Value
+                VSd_VSu_MethodOfContact3Type = application.ApplicantsMethodOfContact3Type.HasValue
+                    ? (VSd_VSu_VSuMethodsOfContact?)application.ApplicantsMethodOfContact3Type.Value
                     : null,
-                VSd_VSu_MethodOfContact3Number = application.vsd_vsu_methodofcontact3number,
+                VSd_VSu_MethodOfContact3Number = application.ApplicantsMethodOfContact3Number,
                 VSd_VSu_MethodOfContact3LeaveDetailedMessage = application
-                    .vsd_vsu_methodofcontact3leavedetailedmessage
+                    .ApplicantsMethodOfContact3LeaveDetailedMessage
                     .HasValue
-                    ? (VSd_YesNo?)application.vsd_vsu_methodofcontact3leavedetailedmessage.Value
+                    ? (VSd_YesNo?)application.ApplicantsMethodOfContact3LeaveDetailedMessage.Value
                     : null,
-                VsD_VsU_NotificationTo = application.vsd_vsu_notificationto.HasValue
-                    ? (VsD_VsU_NotificationTo?)application.vsd_vsu_notificationto.Value
+                VsD_VsU_NotificationTo = application.ApplicantsNotificationTo.HasValue
+                    ? (VsD_VsU_NotificationTo?)application.ApplicantsNotificationTo.Value
                     : null,
-                VSd_VSu_DiscusSvTfAppWithVSp = application.vsd_vsu_discussvtfappwithvsp.HasValue
-                    ? (VSd_YesNo?)application.vsd_vsu_discussvtfappwithvsp.Value
+                VSd_VSu_DiscusSvTfAppWithVSp = application.ApplicantsDiscussVTFAppWithVSP.HasValue
+                    ? (VSd_YesNo?)application.ApplicantsDiscussVTFAppWithVSP.Value
                     : null,
-                VSd_VSu_SignificantCourtUpdates = application.vsd_vsu_significantcourtupdates.HasValue
-                    ? (VSd_YesNo?)application.vsd_vsu_significantcourtupdates.Value
+                VSd_VSu_SignificantCourtUpdates = application.ApplicantsSignificantCourtUpdates.HasValue
+                    ? (VSd_YesNo?)application.ApplicantsSignificantCourtUpdates.Value
                     : null,
-                VSd_VSu_FinalCourtResults = application.vsd_vsu_finalcourtresults.HasValue
-                    ? (VSd_YesNo?)application.vsd_vsu_finalcourtresults.Value
+                VSd_VSu_FinalCourtResults = application.ApplicantsFinalCourtResults.HasValue
+                    ? (VSd_YesNo?)application.ApplicantsFinalCourtResults.Value
                     : null,
                 VsD_VsU_UpdatesOnAllCriminalCourtAppearances = application
-                    .vsd_vsu_updatesonallcriminalcourtappearances
+                    .ApplicantsUpdatesOnAllCriminalCourtAppearances
                     .HasValue
-                    ? (VSd_YesNo?)application.vsd_vsu_updatesonallcriminalcourtappearances.Value
+                    ? (VSd_YesNo?)application.ApplicantsUpdatesOnAllCriminalCourtAppearances.Value
                     : null,
-                VSd_VSu_CriminalCourtOrdersIssued = application.vsd_vsu_criminalcourtordersissued.HasValue
-                    ? (VSd_YesNo?)application.vsd_vsu_criminalcourtordersissued.Value
+                VSd_VSu_CriminalCourtOrdersIssued = application.ApplicantsCriminalCourtOrdersIssued.HasValue
+                    ? (VSd_YesNo?)application.ApplicantsCriminalCourtOrdersIssued.Value
                     : null,
-                VSd_VSu_BcCorrectionsInformation = application.vsd_vsu_bccorrectionsinformation.HasValue
-                    ? (VSd_YesNo?)application.vsd_vsu_bccorrectionsinformation.Value
+                VSd_VSu_BcCorrectionsInformation = application.ApplicantsBCCorrectionsInformation.HasValue
+                    ? (VSd_YesNo?)application.ApplicantsBCCorrectionsInformation.Value
                     : null,
-                VSd_VSu_NotificationAdditionalComments = application.vsd_vsu_notificationadditionalcomments,
-                VSd_VSu_TravelExpenseRequestTransportOther = application.vsd_vsu_travelexpenserequesttransportother,
-                VSd_VSu_TravelExpenseRequestOther = application.vsd_vsu_travelexpenserequestother,
-                VSd_VSu_AdditionalTravelComments = application.vsd_vsu_additionaltravelcomments,
-                VSd_VSu_InfoSHaRecScPBc = application.vsd_vsu_infosharecscpbc.HasValue
-                    ? (VSd_YesNo?)application.vsd_vsu_infosharecscpbc.Value
+                VSd_VSu_NotificationAdditionalComments = application.ApplicantsNotificationAdditionalComments,
+                VSd_VSu_TravelExpenseRequestTransportOther = application.ApplicantsTravelExpenseRequestTransportOther,
+                VSd_VSu_TravelExpenseRequestOther = application.ApplicantsTravelExpenseRequestOther,
+                VSd_VSu_AdditionalTravelComments = application.ApplicantsAdditionalTravelComments,
+                VSd_VSu_InfoSHaRecScPBc = application.ApplicantsInfoShareCSCPBC.HasValue
+                    ? (VSd_YesNo?)application.ApplicantsInfoShareCSCPBC.Value
                     : null,
-                VsD_VsU_InfoShareVsU = application.vsd_vsu_infosharevsu.HasValue
-                    ? (VSd_YesNo?)application.vsd_vsu_infosharevsu.Value
+                VsD_VsU_InfoShareVsU = application.ApplicantsInfoShareVSU.HasValue
+                    ? (VSd_YesNo?)application.ApplicantsInfoShareVSU.Value
                     : null,
-                VsD_VsU_InfoShareVsW = application.vsd_vsu_infosharevsw.HasValue
-                    ? (VSd_YesNo?)application.vsd_vsu_infosharevsw.Value
+                VsD_VsU_InfoShareVsW = application.ApplicantsInfoShareVSW.HasValue
+                    ? (VSd_YesNo?)application.ApplicantsInfoShareVSW.Value
                     : null,
-                VSd_DeclarationVerified = application.vsd_declarationverified.HasValue
-                    ? (VSd_YesNo?)application.vsd_declarationverified.Value
+                VSd_DeclarationVerified = application.ApplicantsDeclarationVerified.HasValue
+                    ? (VSd_YesNo?)application.ApplicantsDeclarationVerified.Value
                     : null,
-                VSd_DeclarationFullName = application.vsd_declarationfullname,
-                VSd_DeclarationDate = application.vsd_declarationdate,
-                VSd_ApplicantsSignature = application.vsd_applicantssignature,
+                VSd_DeclarationFullName = application.ApplicantsDeclarationFullName,
+                VSd_DeclarationDate = application.ApplicantsDeclarationDate,
+                VSd_ApplicantsSignature = application.ApplicantsSignature,
             };
 
             // Handle multi-value fields that require special handling
-            if (!string.IsNullOrEmpty(application.vsd_vsu_travelexpenserequest_03))
+            if (!string.IsNullOrEmpty(application.ApplicantsTravelExpenseRequest03))
             {
                 var values = application
-                    .vsd_vsu_travelexpenserequest_03.Split(',')
+                    .ApplicantsTravelExpenseRequest03.Split(',')
                     .Select(v => new OptionSetValue(int.Parse(v.Trim())))
                     .ToList();
                 entity["vsd_vsu_travelexpenserequest_03"] = new OptionSetValueCollection(values);
             }
 
-            if (!string.IsNullOrEmpty(application.vsd_vsu_purposeoftravel))
-                entity["vsd_vsu_purposeoftravel"] = application.vsd_vsu_purposeoftravel;
+            if (!string.IsNullOrEmpty(application.ApplicantsPurposeOfTravel))
+                entity["vsd_vsu_purposeoftravel"] = application.ApplicantsPurposeOfTravel;
 
-            if (application.vsd_vsu_travelperiodfrom.HasValue)
-                entity["vsd_vsu_travelperiodfrom"] = application.vsd_vsu_travelperiodfrom.Value;
-
-            if (application.vsd_vsu_travelperiodto.HasValue)
-                entity["vsd_vsu_travelperiodto"] = application.vsd_vsu_travelperiodto.Value;
+            if (application.ApplicantsTravelPeriodFrom.HasValue)
+                entity["vsd_vsu_travelperiodfrom"] = application.ApplicantsTravelPeriodFrom.Value;
+            if (application.ApplicantsTravelPeriodTo.HasValue)
+                entity["vsd_vsu_travelperiodto"] = application.ApplicantsTravelPeriodTo.Value;
 
             return entity;
         }

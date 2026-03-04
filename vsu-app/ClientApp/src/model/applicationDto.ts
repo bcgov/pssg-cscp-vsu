@@ -25,330 +25,93 @@ export interface ApplicationDto {
    * @maxLength 100
    * @nullable
    */
-  vsd_otherfirstname?: string | null;
+  victimLastName?: string | null;
+  /** @nullable */
+  victimBirthDate?: string | null;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  vsd_otherlastname?: string | null;
+  otherFirstname?: string | null;
+  /**
+   * @minLength 0
+   * @maxLength 100
+   * @nullable
+   */
+  otherLastname?: string | null;
   /** @nullable */
-  vsd_dateofnamechange?: string | null;
+  dateOfNameChange?: string | null;
+  /** @nullable */
+  victimGenderCode?: number | null;
   /**
    * @minLength 0
    * @maxLength 500
    * @nullable
    */
-  vsd_victimgendertext?: string | null;
+  victimGenderText?: string | null;
   /** @nullable */
-  vsd_victimpronouns?: number | null;
+  victimPronouns?: number | null;
   /**
    * @minLength 0
    * @maxLength 500
    * @nullable
    */
-  vsd_victimpronountext?: string | null;
+  victimPronounText?: string | null;
   /** @nullable */
-  vsd_victimprimaryraceethnicity?: number | null;
+  victimPrimaryRaceEthnicity?: number | null;
   /**
    * @minLength 0
    * @maxLength 500
    * @nullable
    */
-  vsd_victimprimaryraceethnicitytext?: string | null;
+  victimPrimaryRaceEthnicityText?: string | null;
   /** @nullable */
-  vsd_victimindigenous?: number | null;
-  vsd_vsu_applicanttype?: number;
+  victimIndigenous?: number | null;
+  /** @nullable */
+  applicantType?: number | null;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  vsd_vsu_applicanttypeother?: string | null;
+  applicantTypeOther?: string | null;
   /**
    * @minLength 0
    * @maxLength 500
    * @nullable
    */
-  vsd_vsu_offencescomments?: string | null;
+  offencesComments?: string | null;
   /** @nullable */
-  vsd_vsu_decision1impacttooutcome?: number | null;
+  decision1ImpactToOutcome?: number | null;
   /**
    * @minLength 0
    * @maxLength 500
    * @nullable
    */
-  vsd_vsu_decision1comments?: string | null;
+  decision1Comments?: string | null;
   /** @nullable */
-  vsd_vsu_decision2travelover100km?: number | null;
+  decision2TravelOver100KM?: number | null;
   /**
    * @minLength 0
    * @maxLength 500
    * @nullable
    */
-  vsd_vsu_decision2comments?: string | null;
+  decision2Comments?: string | null;
   /** @nullable */
-  vsd_vsu_decision3nootherfundingsource?: number | null;
+  decision3NoOtherFundingSource?: number | null;
   /**
    * @minLength 0
    * @maxLength 500
    * @nullable
    */
-  vsd_vsu_decision3comments?: string | null;
+  decision3Comments?: string | null;
   /**
    * @minLength 0
    * @maxLength 500
    * @nullable
    */
-  vsd_vsu_additionalcomments?: string | null;
-  /**
-   * @minLength 0
-   * @maxLength 100
-   * @nullable
-   */
-  vsd_vsu_vtfappsubmittedunknowncomments?: string | null;
-  /** @nullable */
-  vsd_vsu_otherfamilymembersapplyingtovtf?: number | null;
-  /**
-   * @minLength 0
-   * @maxLength 100
-   * @nullable
-   */
-  vsd_vsu_otherfamilymembersvtfothercomments?: string | null;
-  /** @nullable */
-  vsd_vsu_vswcomments?: string | null;
-  /** @nullable */
-  vsd_vsu_costscoveredbyvsp?: number | null;
-  /**
-   * @minLength 0
-   * @maxLength 500
-   * @nullable
-   */
-  vsd_vsu_vspcomments?: string | null;
-  /**
-   * @minLength 0
-   * @maxLength 250
-   * @nullable
-   */
-  vsd_vsu_managerfirstname?: string | null;
-  /**
-   * @minLength 0
-   * @maxLength 250
-   * @nullable
-   */
-  vsd_vsu_managerlastname?: string | null;
-  /**
-   * @minLength 0
-   * @maxLength 250
-   * @nullable
-   */
-  vsd_vsu_organizationagencyname?: string | null;
-  /**
-   * @minLength 0
-   * @maxLength 100
-   * @nullable
-   */
-  vsd_vsu_managerphone?: string | null;
-  /**
-   * @minLength 0
-   * @maxLength 100
-   * @nullable
-   */
-  vsd_vsu_manageremail?: string | null;
-  /**
-   * @minLength 0
-   * @maxLength 100
-   * @nullable
-   */
-  vsd_applicantsfirstname?: string | null;
-  /**
-   * @minLength 0
-   * @maxLength 100
-   * @nullable
-   */
-  vsd_applicantsmiddlename?: string | null;
-  /**
-   * @minLength 0
-   * @maxLength 100
-   * @nullable
-   */
-  vsd_applicantslastname?: string | null;
-  /** @nullable */
-  vsd_applicantsmaritalstatus?: number | null;
-  /** @nullable */
-  vsd_applicantsgendercode?: number | null;
-  /**
-   * @minLength 0
-   * @maxLength 100
-   * @nullable
-   */
-  vsd_genderidentitytext?: string | null;
-  /** @nullable */
-  vsd_pronouns?: number | null;
-  /**
-   * @minLength 0
-   * @maxLength 100
-   * @nullable
-   */
-  vsd_pronountext?: string | null;
-  /** @nullable */
-  vsd_applicantsbirthdate?: string | null;
-  /** @nullable */
-  vsd_primaryraceethnicity?: number | null;
-  /**
-   * @minLength 0
-   * @maxLength 500
-   * @nullable
-   */
-  vsd_primaryraceethnicitytext?: string | null;
-  /** @nullable */
-  vsd_indigenous?: number | null;
-  /**
-   * @minLength 0
-   * @maxLength 100
-   * @nullable
-   */
-  vsd_applicantspreferredlanguage?: string | null;
-  /** @nullable */
-  vsd_applicantsinterpreterneeded?: number | null;
-  /**
-   * @minLength 0
-   * @maxLength 250
-   * @nullable
-   */
-  vsd_applicantsprimaryaddressline1?: string | null;
-  /**
-   * @minLength 0
-   * @maxLength 250
-   * @nullable
-   */
-  vsd_applicantsprimaryaddressline2?: string | null;
-  /**
-   * @minLength 0
-   * @maxLength 100
-   * @nullable
-   */
-  vsd_applicantsprimarycity?: string | null;
-  /**
-   * @minLength 0
-   * @maxLength 100
-   * @nullable
-   */
-  vsd_applicantsprimaryprovince?: string | null;
-  /**
-   * @minLength 0
-   * @maxLength 100
-   * @nullable
-   */
-  vsd_applicantsprimarycountry?: string | null;
-  /**
-   * @minLength 0
-   * @maxLength 20
-   * @nullable
-   */
-  vsd_applicantsprimarypostalcode?: string | null;
-  /** @nullable */
-  vsd_vsu_oktosendmail?: number | null;
-  /** @nullable */
-  vsd_vsu_methodofcontact1type?: number | null;
-  /**
-   * @minLength 0
-   * @maxLength 100
-   * @nullable
-   */
-  vsd_vsu_methodofcontact1number?: string | null;
-  /**
-   * @minLength 0
-   * @maxLength 100
-   * @nullable
-   */
-  vsd_vsu_methodofcontact1ext?: string | null;
-  /** @nullable */
-  vsd_vsu_methodofcontact1leavedetailedmessage?: number | null;
-  /** @nullable */
-  vsd_vsu_methodofcontact2type?: number | null;
-  /**
-   * @minLength 0
-   * @maxLength 100
-   * @nullable
-   */
-  vsd_vsu_methodofcontact2number?: string | null;
-  /** @nullable */
-  vsd_vsu_methodofcontact2leavedetailedmessage?: number | null;
-  /** @nullable */
-  vsd_vsu_methodofcontact3type?: number | null;
-  /**
-   * @minLength 0
-   * @maxLength 100
-   * @nullable
-   */
-  vsd_vsu_methodofcontact3number?: string | null;
-  /** @nullable */
-  vsd_vsu_methodofcontact3leavedetailedmessage?: number | null;
-  /** @nullable */
-  vsd_vsu_notificationto?: number | null;
-  /** @nullable */
-  vsd_vsu_discussvtfappwithvsp?: number | null;
-  /** @nullable */
-  vsd_vsu_significantcourtupdates?: number | null;
-  /** @nullable */
-  vsd_vsu_finalcourtresults?: number | null;
-  /** @nullable */
-  vsd_vsu_updatesonallcriminalcourtappearances?: number | null;
-  /** @nullable */
-  vsd_vsu_criminalcourtordersissued?: number | null;
-  /** @nullable */
-  vsd_vsu_bccorrectionsinformation?: number | null;
-  /**
-   * @minLength 0
-   * @maxLength 250
-   * @nullable
-   */
-  vsd_vsu_notificationadditionalcomments?: string | null;
-  /** @nullable */
-  vsd_vsu_travelexpenserequest_03?: string | null;
-  /**
-   * @minLength 0
-   * @maxLength 100
-   * @nullable
-   */
-  vsd_vsu_travelexpenserequesttransportother?: string | null;
-  /**
-   * @minLength 0
-   * @maxLength 100
-   * @nullable
-   */
-  vsd_vsu_travelexpenserequestother?: string | null;
-  /** @nullable */
-  vsd_vsu_purposeoftravel?: string | null;
-  /** @nullable */
-  vsd_vsu_travelperiodfrom?: string | null;
-  /** @nullable */
-  vsd_vsu_travelperiodto?: string | null;
-  /**
-   * @minLength 0
-   * @maxLength 250
-   * @nullable
-   */
-  vsd_vsu_additionaltravelcomments?: string | null;
-  /** @nullable */
-  vsd_vsu_infosharecscpbc?: number | null;
-  /** @nullable */
-  vsd_vsu_infosharevsu?: number | null;
-  /** @nullable */
-  vsd_vsu_infosharevsw?: number | null;
-  /** @nullable */
-  vsd_declarationverified?: number | null;
-  /**
-   * @minLength 0
-   * @maxLength 150
-   * @nullable
-   */
-  vsd_declarationfullname?: string | null;
-  /** @nullable */
-  vsd_declarationdate?: string | null;
-  /** @nullable */
-  vsd_applicantssignature?: string | null;
+  additionalComments?: string | null;
   /**
    * @minLength 0
    * @maxLength 100
@@ -362,9 +125,247 @@ export interface ApplicationDto {
    * @maxLength 100
    * @nullable
    */
-  victimLastName?: string | null;
+  victimTravelFundApplicationSubmittedUnknownComments?: string | null;
   /** @nullable */
-  victimBirthDate?: string | null;
+  otherFamilyMembersApplyingToVTF?: number | null;
+  /**
+   * @minLength 0
+   * @maxLength 100
+   * @nullable
+   */
+  otherFamilyMembersVTFOtherComments?: string | null;
   /** @nullable */
-  victimGenderCode?: number | null;
+  vswComments?: string | null;
+  /** @nullable */
+  costsCoveredByVSP?: number | null;
+  /**
+   * @minLength 0
+   * @maxLength 500
+   * @nullable
+   */
+  vspComments?: string | null;
+  /**
+   * @minLength 0
+   * @maxLength 250
+   * @nullable
+   */
+  managerFirstName?: string | null;
+  /**
+   * @minLength 0
+   * @maxLength 250
+   * @nullable
+   */
+  managerLastName?: string | null;
+  /**
+   * @minLength 0
+   * @maxLength 250
+   * @nullable
+   */
+  organizationAgencyName?: string | null;
+  /**
+   * @minLength 0
+   * @maxLength 100
+   * @nullable
+   */
+  managerPhone?: string | null;
+  /**
+   * @minLength 0
+   * @maxLength 100
+   * @nullable
+   */
+  managerEmail?: string | null;
+  /**
+   * @minLength 0
+   * @maxLength 100
+   * @nullable
+   */
+  applicantsFirstName?: string | null;
+  /**
+   * @minLength 0
+   * @maxLength 100
+   * @nullable
+   */
+  applicantsMiddleName?: string | null;
+  /**
+   * @minLength 0
+   * @maxLength 100
+   * @nullable
+   */
+  applicantsLastName?: string | null;
+  /** @nullable */
+  applicantsMaritalStatus?: number | null;
+  /** @nullable */
+  applicantsGenderCode?: number | null;
+  /**
+   * @minLength 0
+   * @maxLength 100
+   * @nullable
+   */
+  applicantsGenderIdentityText?: string | null;
+  /** @nullable */
+  applicantsPronouns?: number | null;
+  /**
+   * @minLength 0
+   * @maxLength 100
+   * @nullable
+   */
+  applicantsPronounText?: string | null;
+  /** @nullable */
+  applicantsBirthDate?: string | null;
+  /** @nullable */
+  applicantsPrimaryRaceEthnicity?: number | null;
+  /**
+   * @minLength 0
+   * @maxLength 500
+   * @nullable
+   */
+  applicantsPrimaryRaceEthnicityText?: string | null;
+  /** @nullable */
+  applicantsIndigenous?: number | null;
+  /**
+   * @minLength 0
+   * @maxLength 100
+   * @nullable
+   */
+  applicantsPreferredLanguage?: string | null;
+  /** @nullable */
+  applicantsInterpreterNeeded?: number | null;
+  /**
+   * @minLength 0
+   * @maxLength 250
+   * @nullable
+   */
+  applicantsPrimaryAddressLine1?: string | null;
+  /**
+   * @minLength 0
+   * @maxLength 250
+   * @nullable
+   */
+  applicantsPrimaryAddressLine2?: string | null;
+  /**
+   * @minLength 0
+   * @maxLength 100
+   * @nullable
+   */
+  applicantsPrimaryCity?: string | null;
+  /**
+   * @minLength 0
+   * @maxLength 100
+   * @nullable
+   */
+  applicantsPrimaryProvince?: string | null;
+  /**
+   * @minLength 0
+   * @maxLength 100
+   * @nullable
+   */
+  applicantsPrimaryCountry?: string | null;
+  /**
+   * @minLength 0
+   * @maxLength 20
+   * @nullable
+   */
+  applicantsPrimaryPostalCode?: string | null;
+  /** @nullable */
+  applicantsOkToSendMail?: number | null;
+  /** @nullable */
+  applicantsMethodOfContact1Type?: number | null;
+  /**
+   * @minLength 0
+   * @maxLength 100
+   * @nullable
+   */
+  applicantsMethodOfContact1Number?: string | null;
+  /**
+   * @minLength 0
+   * @maxLength 100
+   * @nullable
+   */
+  applicantsMethodOfContact1Ext?: string | null;
+  /** @nullable */
+  applicantsMethodOfContact1LeaveDetailedMessage?: number | null;
+  /** @nullable */
+  applicantsMethodOfContact2Type?: number | null;
+  /**
+   * @minLength 0
+   * @maxLength 100
+   * @nullable
+   */
+  applicantsMethodOfContact2Number?: string | null;
+  /** @nullable */
+  applicantsMethodOfContact2LeaveDetailedMessage?: number | null;
+  /** @nullable */
+  applicantsMethodOfContact3Type?: number | null;
+  /**
+   * @minLength 0
+   * @maxLength 100
+   * @nullable
+   */
+  applicantsMethodOfContact3Number?: string | null;
+  /** @nullable */
+  applicantsMethodOfContact3LeaveDetailedMessage?: number | null;
+  /** @nullable */
+  applicantsNotificationTo?: number | null;
+  /** @nullable */
+  applicantsDiscussVTFAppWithVSP?: number | null;
+  /** @nullable */
+  applicantsSignificantCourtUpdates?: number | null;
+  /** @nullable */
+  applicantsFinalCourtResults?: number | null;
+  /** @nullable */
+  applicantsUpdatesOnAllCriminalCourtAppearances?: number | null;
+  /** @nullable */
+  applicantsCriminalCourtOrdersIssued?: number | null;
+  /** @nullable */
+  applicantsBCCorrectionsInformation?: number | null;
+  /**
+   * @minLength 0
+   * @maxLength 250
+   * @nullable
+   */
+  applicantsNotificationAdditionalComments?: string | null;
+  /** @nullable */
+  applicantsTravelExpenseRequest03?: string | null;
+  /**
+   * @minLength 0
+   * @maxLength 100
+   * @nullable
+   */
+  applicantsTravelExpenseRequestTransportOther?: string | null;
+  /**
+   * @minLength 0
+   * @maxLength 100
+   * @nullable
+   */
+  applicantsTravelExpenseRequestOther?: string | null;
+  /** @nullable */
+  applicantsPurposeOfTravel?: string | null;
+  /** @nullable */
+  applicantsTravelPeriodFrom?: string | null;
+  /** @nullable */
+  applicantsTravelPeriodTo?: string | null;
+  /**
+   * @minLength 0
+   * @maxLength 250
+   * @nullable
+   */
+  applicantsAdditionalTravelComments?: string | null;
+  /** @nullable */
+  applicantsInfoShareCSCPBC?: number | null;
+  /** @nullable */
+  applicantsInfoShareVSU?: number | null;
+  /** @nullable */
+  applicantsInfoShareVSW?: number | null;
+  /** @nullable */
+  applicantsDeclarationVerified?: number | null;
+  /**
+   * @minLength 0
+   * @maxLength 150
+   * @nullable
+   */
+  applicantsDeclarationFullName?: string | null;
+  /** @nullable */
+  applicantsDeclarationDate?: string | null;
+  /** @nullable */
+  applicantsSignature?: string | null;
 }
