@@ -11,9 +11,8 @@ export interface ApplicationDto {
   /**
    * @minLength 0
    * @maxLength 100
-   * @nullable
    */
-  victimFirstName?: string | null;
+  victimFirstName: string;
   /**
    * @minLength 0
    * @maxLength 100
@@ -23,11 +22,9 @@ export interface ApplicationDto {
   /**
    * @minLength 0
    * @maxLength 100
-   * @nullable
    */
-  victimLastName?: string | null;
-  /** @nullable */
-  victimBirthDate?: string | null;
+  victimLastName: string;
+  victimBirthDate: string;
   /**
    * @minLength 0
    * @maxLength 100
@@ -68,8 +65,7 @@ export interface ApplicationDto {
   victimPrimaryRaceEthnicityText?: string | null;
   /** @nullable */
   victimIndigenous?: number | null;
-  /** @nullable */
-  applicantType?: number | null;
+  applicantType: number;
   /**
    * @minLength 0
    * @maxLength 100
@@ -82,24 +78,21 @@ export interface ApplicationDto {
    * @nullable
    */
   offencesComments?: string | null;
-  /** @nullable */
-  decision1ImpactToOutcome?: number | null;
+  decision1ImpactToOutcome: number;
   /**
    * @minLength 0
    * @maxLength 500
    * @nullable
    */
   decision1Comments?: string | null;
-  /** @nullable */
-  decision2TravelOver100KM?: number | null;
+  decision2TravelOver100KM: number;
   /**
    * @minLength 0
    * @maxLength 500
    * @nullable
    */
   decision2Comments?: string | null;
-  /** @nullable */
-  decision3NoOtherFundingSource?: number | null;
+  decision3NoOtherFundingSource: number;
   /**
    * @minLength 0
    * @maxLength 500
@@ -177,9 +170,8 @@ export interface ApplicationDto {
   /**
    * @minLength 0
    * @maxLength 100
-   * @nullable
    */
-  applicantsFirstName?: string | null;
+  applicantsFirstName: string;
   /**
    * @minLength 0
    * @maxLength 100
@@ -189,9 +181,8 @@ export interface ApplicationDto {
   /**
    * @minLength 0
    * @maxLength 100
-   * @nullable
    */
-  applicantsLastName?: string | null;
+  applicantsLastName: string;
   /** @nullable */
   applicantsMaritalStatus?: number | null;
   /** @nullable */
@@ -210,8 +201,7 @@ export interface ApplicationDto {
    * @nullable
    */
   applicantsPronounText?: string | null;
-  /** @nullable */
-  applicantsBirthDate?: string | null;
+  applicantsBirthDate: string;
   /** @nullable */
   applicantsPrimaryRaceEthnicity?: number | null;
   /**
@@ -233,9 +223,8 @@ export interface ApplicationDto {
   /**
    * @minLength 0
    * @maxLength 250
-   * @nullable
    */
-  applicantsPrimaryAddressLine1?: string | null;
+  applicantsPrimaryAddressLine1: string;
   /**
    * @minLength 0
    * @maxLength 250
@@ -245,27 +234,23 @@ export interface ApplicationDto {
   /**
    * @minLength 0
    * @maxLength 100
-   * @nullable
    */
-  applicantsPrimaryCity?: string | null;
+  applicantsPrimaryCity: string;
   /**
    * @minLength 0
    * @maxLength 100
-   * @nullable
    */
-  applicantsPrimaryProvince?: string | null;
+  applicantsPrimaryProvince: string;
   /**
    * @minLength 0
    * @maxLength 100
-   * @nullable
    */
-  applicantsPrimaryCountry?: string | null;
+  applicantsPrimaryCountry: string;
   /**
    * @minLength 0
    * @maxLength 20
-   * @nullable
    */
-  applicantsPrimaryPostalCode?: string | null;
+  applicantsPrimaryPostalCode: string;
   /** @nullable */
   applicantsOkToSendMail?: number | null;
   /** @nullable */

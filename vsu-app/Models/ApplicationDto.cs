@@ -7,15 +7,18 @@ namespace Gov.Cscp.Victims.Public.Models
     {
         public int ApplicationType { get; set; }
 
+        [Required]
         [StringLength(100)]
         public string VictimFirstName { get; set; }
 
         [StringLength(100)]
         public string VictimMiddleName { get; set; }
 
+        [Required]
         [StringLength(100)]
         public string VictimLastName { get; set; }
 
+        [Required]
         public DateTime? VictimBirthDate { get; set; }
 
         [StringLength(100)]
@@ -42,6 +45,7 @@ namespace Gov.Cscp.Victims.Public.Models
         public string VictimPrimaryRaceEthnicityText { get; set; }
         public int? VictimIndigenous { get; set; }
 
+        [Required]
         public int? ApplicantType { get; set; }
 
         [StringLength(100)]
@@ -49,14 +53,20 @@ namespace Gov.Cscp.Victims.Public.Models
 
         [StringLength(500)]
         public string OffencesComments { get; set; }
+
+        [Required]
         public int? Decision1ImpactToOutcome { get; set; }
 
         [StringLength(500)]
         public string Decision1Comments { get; set; }
+
+        [Required]
         public int? Decision2TravelOver100KM { get; set; }
 
         [StringLength(500)]
         public string Decision2Comments { get; set; }
+
+        [Required]
         public int? Decision3NoOtherFundingSource { get; set; }
 
         [StringLength(500)]
@@ -98,12 +108,14 @@ namespace Gov.Cscp.Victims.Public.Models
         [StringLength(100)]
         public string ManagerEmail { get; set; }
 
+        [Required]
         [StringLength(100)]
         public string ApplicantsFirstName { get; set; }
 
         [StringLength(100)]
         public string ApplicantsMiddleName { get; set; }
 
+        [Required]
         [StringLength(100)]
         public string ApplicantsLastName { get; set; }
         public int? ApplicantsMaritalStatus { get; set; }
@@ -116,6 +128,7 @@ namespace Gov.Cscp.Victims.Public.Models
         [StringLength(100)]
         public string ApplicantsPronounText { get; set; }
 
+        [Required]
         public DateTime? ApplicantsBirthDate { get; set; }
         public int? ApplicantsPrimaryRaceEthnicity { get; set; }
 
@@ -127,21 +140,26 @@ namespace Gov.Cscp.Victims.Public.Models
         public string ApplicantsPreferredLanguage { get; set; }
         public int? ApplicantsInterpreterNeeded { get; set; }
 
+        [Required]
         [StringLength(250)]
         public string ApplicantsPrimaryAddressLine1 { get; set; }
 
         [StringLength(250)]
         public string ApplicantsPrimaryAddressLine2 { get; set; }
 
+        [Required]
         [StringLength(100)]
         public string ApplicantsPrimaryCity { get; set; }
 
+        [Required]
         [StringLength(100)]
         public string ApplicantsPrimaryProvince { get; set; }
 
+        [Required]
         [StringLength(100)]
         public string ApplicantsPrimaryCountry { get; set; }
 
+        [Required]
         [StringLength(20)]
         public string ApplicantsPrimaryPostalCode { get; set; }
         public int? ApplicantsOkToSendMail { get; set; }
