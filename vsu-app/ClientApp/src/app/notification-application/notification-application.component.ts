@@ -180,24 +180,21 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
       this.submitting = true;
       let application = this.harvestForm();
       let data = convertNotificationApplicationToCRM(application);
-      this.applicationService.submit(data).subscribe(
-        (res) => {
+      this.applicationService.submit(data).subscribe({
+        next: (res) => {
           this.submitting = false;
-          if (res.IsSuccess) {
-            this.form.get('confirmation.confirmationNumber').patchValue('RXXXXXX');
-            this.showConfirmation = true;
-            setTimeout(() => {
-              this.gotoNextStep(this.applicationStepper);
-            }, 0);
-          } else {
-            this.notify.addNotification('There was an error submitting the application.', 'danger', 4000);
-          }
+
+          this.form.get('confirmation.confirmationNumber').patchValue('RXXXXXX');
+          this.showConfirmation = true;
+          setTimeout(() => {
+            this.gotoNextStep(this.applicationStepper);
+          }, 0);
         },
-        (err) => {
+        error: () => {
           this.notify.addNotification('There was an error submitting the application.', 'danger', 4000);
           this.submitting = false;
         }
-      );
+      });
     } else {
       this.validateAllFormFields(this.form);
     }

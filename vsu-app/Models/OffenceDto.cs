@@ -4,6 +4,6 @@ namespace Gov.Cscp.Victims.Public.Models
 {
     public class OffenceDto
     {
-        public string OffenseId { get; set; }
+        public string vsd_offenseid { get; set; }
     }
 }

@@ -5,186 +5,186 @@ namespace Gov.Cscp.Victims.Public.Models
 {
     public class ApplicationDto
     {
-        public int VsuApplicationType { get; set; }
+        public int vsd_vsu_applicationtype { get; set; }
 
         [StringLength(100)]
-        public string VictimFirstName { get; set; }
+        public string vsd_cvap_victimfirstname { get; set; }
 
         [StringLength(100)]
-        public string VictimMiddleName { get; set; }
+        public string vsd_cvap_victimmiddlename { get; set; }
 
         [StringLength(100)]
-        public string VictimLastName { get; set; }
-        public DateTime? VictimBirthDate { get; set; }
-        public int? VictimGenderCode { get; set; }
+        public string vsd_cvap_victimlastname { get; set; }
+        public DateTime? vsd_cvap_victimbirthdate { get; set; }
+        public int? vsd_cvap_victimgendercode { get; set; }
 
         [StringLength(500)]
-        public string VictimGenderText { get; set; }
-        public int? VictimPronouns { get; set; }
+        public string vsd_victimgendertext { get; set; }
+        public int? vsd_victimpronouns { get; set; }
 
         [StringLength(500)]
-        public string VictimPronounText { get; set; }
+        public string vsd_victimpronountext { get; set; }
 
-        public int? VictimPrimaryRaceEthnicity { get; set; }
+        public int? vsd_victimprimaryraceethnicity { get; set; }
 
         [StringLength(500)]
-        public string VictimPrimaryRaceEthnicityText { get; set; }
-        public int? VictimIndigenous { get; set; }
+        public string vsd_victimprimaryraceethnicitytext { get; set; }
+        public int? vsd_victimindigenous { get; set; }
 
-        public int VsuApplicantType { get; set; }
+        public int vsd_vsu_applicanttype { get; set; }
 
         [StringLength(100)]
-        public string VsuApplicantTypeOther { get; set; }
+        public string vsd_vsu_applicanttypeother { get; set; }
 
         [StringLength(500)]
-        public string VsuOffencesComments { get; set; }
-        public int? VsuDecision1ImpactToOutcome { get; set; }
+        public string vsd_vsu_offencescomments { get; set; }
+        public int? vsd_vsu_decision1impacttooutcome { get; set; }
 
         [StringLength(500)]
-        public string VsuDecision1Comments { get; set; }
-        public int? VsuDecision2TravelOver100Km { get; set; }
+        public string vsd_vsu_decision1comments { get; set; }
+        public int? vsd_vsu_decision2travelover100km { get; set; }
 
         [StringLength(500)]
-        public string VsuDecision2Comments { get; set; }
-        public int? VsuDecision3NoOtherFundingSource { get; set; }
+        public string vsd_vsu_decision2comments { get; set; }
+        public int? vsd_vsu_decision3nootherfundingsource { get; set; }
 
         [StringLength(500)]
-        public string VsuDecision3Comments { get; set; }
+        public string vsd_vsu_decision3comments { get; set; }
 
         [StringLength(500)]
-        public string VsuAdditionalComments { get; set; }
+        public string vsd_vsu_additionalcomments { get; set; }
 
         [StringLength(100)]
-        public string RelationshipToVictim { get; set; }
-        public int? VsuVictimTravelFundApplicationSubmitted { get; set; }
+        public string vsd_cvap_relationshiptovictim { get; set; }
+        public int? vsd_vsu_victimtravelfundapplicationsubmitted { get; set; }
 
         [StringLength(100)]
-        public string VsuVtfAppSubmittedUnknownComments { get; set; }
-        public int? VsuOtherFamilyMembersApplyingToVtf { get; set; }
+        public string vsd_vsu_vtfappsubmittedunknowncomments { get; set; }
+        public int? vsd_vsu_otherfamilymembersapplyingtovtf { get; set; }
 
         [StringLength(100)]
-        public string VsuOtherFamilyMembersVtfOtherComments { get; set; }
+        public string vsd_vsu_otherfamilymembersvtfothercomments { get; set; }
 
-        public string VsuVswComments { get; set; }
+        public string vsd_vsu_vswcomments { get; set; }
 
-        public int? VsuCostsCoveredByVsp { get; set; }
+        public int? vsd_vsu_costscoveredbyvsp { get; set; }
 
         [StringLength(500)]
-        public string VsuVspComments { get; set; }
+        public string vsd_vsu_vspcomments { get; set; }
 
         [StringLength(250)]
-        public string VsuManagerFirstName { get; set; }
+        public string vsd_vsu_managerfirstname { get; set; }
 
         [StringLength(250)]
-        public string VsuManagerLastName { get; set; }
+        public string vsd_vsu_managerlastname { get; set; }
 
         [StringLength(250)]
-        public string VsuOrganizationAgencyName { get; set; }
+        public string vsd_vsu_organizationagencyname { get; set; }
 
         [StringLength(100)]
-        public string VsuManagerPhone { get; set; }
+        public string vsd_vsu_managerphone { get; set; }
 
         [StringLength(100)]
-        public string VsuManagerEmail { get; set; }
+        public string vsd_vsu_manageremail { get; set; }
 
         [StringLength(100)]
-        public string ApplicantsFirstName { get; set; }
+        public string vsd_applicantsfirstname { get; set; }
 
         [StringLength(100)]
-        public string ApplicantsMiddleName { get; set; }
+        public string vsd_applicantsmiddlename { get; set; }
 
         [StringLength(100)]
-        public string ApplicantsLastName { get; set; }
-        public int? ApplicantsGenderCode { get; set; }
+        public string vsd_applicantslastname { get; set; }
+        public int? vsd_applicantsgendercode { get; set; }
 
         [StringLength(100)]
-        public string GenderIdentityText { get; set; }
-        public int? Pronouns { get; set; }
+        public string vsd_genderidentitytext { get; set; }
+        public int? vsd_pronouns { get; set; }
 
         [StringLength(100)]
-        public string PronounText { get; set; }
+        public string vsd_pronountext { get; set; }
 
-        public DateTime? ApplicantsBirthDate { get; set; }
-        public int? PrimaryRaceEthnicity { get; set; }
+        public DateTime? vsd_applicantsbirthdate { get; set; }
+        public int? vsd_primaryraceethnicity { get; set; }
 
         [StringLength(500)]
-        public string PrimaryRaceEthnicityText { get; set; }
-        public int? Indigenous { get; set; }
+        public string vsd_primaryraceethnicitytext { get; set; }
+        public int? vsd_indigenous { get; set; }
 
         [StringLength(100)]
-        public string ApplicantsPreferredLanguage { get; set; }
-        public int? ApplicantsInterpreterNeeded { get; set; }
+        public string vsd_applicantspreferredlanguage { get; set; }
+        public int? vsd_applicantsinterpreterneeded { get; set; }
 
         [StringLength(250)]
-        public string ApplicantsPrimaryAddressLine1 { get; set; }
+        public string vsd_applicantsprimaryaddressline1 { get; set; }
 
         [StringLength(250)]
-        public string ApplicantsPrimaryAddressLine2 { get; set; }
+        public string vsd_applicantsprimaryaddressline2 { get; set; }
 
         [StringLength(100)]
-        public string ApplicantsPrimaryCity { get; set; }
+        public string vsd_applicantsprimarycity { get; set; }
 
         [StringLength(100)]
-        public string ApplicantsPrimaryProvince { get; set; }
+        public string vsd_applicantsprimaryprovince { get; set; }
 
         [StringLength(100)]
-        public string ApplicantsPrimaryCountry { get; set; }
+        public string vsd_applicantsprimarycountry { get; set; }
 
         [StringLength(20)]
-        public string ApplicantsPrimaryPostalCode { get; set; }
-        public int? VsuOkToSendMail { get; set; }
-        public int? VsuMethodOfContact1Type { get; set; }
+        public string vsd_applicantsprimarypostalcode { get; set; }
+        public int? vsd_vsu_oktosendmail { get; set; }
+        public int? vsd_vsu_methodofcontact1type { get; set; }
 
         [StringLength(100)]
-        public string VsuMethodOfContact1Number { get; set; }
+        public string vsd_vsu_methodofcontact1number { get; set; }
 
         [StringLength(100)]
-        public string VsuMethodOfContact1Ext { get; set; }
-        public int? VsuMethodOfContact1LeaveDetailedMessage { get; set; }
-        public int? VsuMethodOfContact2Type { get; set; }
+        public string vsd_vsu_methodofcontact1ext { get; set; }
+        public int? vsd_vsu_methodofcontact1leavedetailedmessage { get; set; }
+        public int? vsd_vsu_methodofcontact2type { get; set; }
 
         [StringLength(100)]
-        public string VsuMethodOfContact2Number { get; set; }
-        public int? VsuMethodOfContact2LeaveDetailedMessage { get; set; }
-        public int? VsuMethodOfContact3Type { get; set; }
+        public string vsd_vsu_methodofcontact2number { get; set; }
+        public int? vsd_vsu_methodofcontact2leavedetailedmessage { get; set; }
+        public int? vsd_vsu_methodofcontact3type { get; set; }
 
         [StringLength(100)]
-        public string VsuMethodOfContact3Number { get; set; }
-        public int? VsuMethodOfContact3LeaveDetailedMessage { get; set; }
-        public int? VsuNotificationTo { get; set; }
-        public int? VsuDiscussVtfAppWithVsp { get; set; }
+        public string vsd_vsu_methodofcontact3number { get; set; }
+        public int? vsd_vsu_methodofcontact3leavedetailedmessage { get; set; }
+        public int? vsd_vsu_notificationto { get; set; }
+        public int? vsd_vsu_discussvtfappwithvsp { get; set; }
 
-        public int? VsuSignificantCourtUpdates { get; set; }
-        public int? VsuFinalCourtResults { get; set; }
-        public int? VsuUpdatesOnAllCriminalCourtAppearances { get; set; }
-        public int? VsuCriminalCourtOrdersIssued { get; set; }
-        public int? VsuBcCorrectionsInformation { get; set; }
+        public int? vsd_vsu_significantcourtupdates { get; set; }
+        public int? vsd_vsu_finalcourtresults { get; set; }
+        public int? vsd_vsu_updatesonallcriminalcourtappearances { get; set; }
+        public int? vsd_vsu_criminalcourtordersissued { get; set; }
+        public int? vsd_vsu_bccorrectionsinformation { get; set; }
 
         [StringLength(250)]
-        public string VsuNotificationAdditionalComments { get; set; }
+        public string vsd_vsu_notificationadditionalcomments { get; set; }
 
-        public string VsuTravelExpenseRequest { get; set; }
-
-        [StringLength(100)]
-        public string VsuTravelExpenseRequestTransportOther { get; set; }
+        public string vsd_vsu_travelexpenserequest_03 { get; set; }
 
         [StringLength(100)]
-        public string VsuTravelExpenseRequestOther { get; set; }
-        public string VsuPurposeOfTravel { get; set; }
-        public DateTime? VsuTravelPeriodFrom { get; set; }
-        public DateTime? VsuTravelPeriodTo { get; set; }
+        public string vsd_vsu_travelexpenserequesttransportother { get; set; }
+
+        [StringLength(100)]
+        public string vsd_vsu_travelexpenserequestother { get; set; }
+        public string vsd_vsu_purposeoftravel { get; set; }
+        public DateTime? vsd_vsu_travelperiodfrom { get; set; }
+        public DateTime? vsd_vsu_travelperiodto { get; set; }
 
         [StringLength(250)]
-        public string VsuAdditionalTravelComments { get; set; }
+        public string vsd_vsu_additionaltravelcomments { get; set; }
 
-        public int? VsuInfoShareCscpBc { get; set; }
-        public int? VsuInfoShareVsu { get; set; }
-        public int? VsuInfoShareVsw { get; set; }
-        public int? DeclarationVerified { get; set; }
+        public int? vsd_vsu_infosharecscpbc { get; set; }
+        public int? vsd_vsu_infosharevsu { get; set; }
+        public int? vsd_vsu_infosharevsw { get; set; }
+        public int? vsd_declarationverified { get; set; }
 
         [StringLength(150)]
-        public string DeclarationFullName { get; set; }
-        public DateTime? DeclarationDate { get; set; }
-        public string ApplicantsSignature { get; set; }
+        public string vsd_declarationfullname { get; set; }
+        public DateTime? vsd_declarationdate { get; set; }
+        public string vsd_applicantssignature { get; set; }
     }
 }

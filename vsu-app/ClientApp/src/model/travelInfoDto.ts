@@ -7,22 +7,22 @@
  */
 
 export interface TravelInfoDto {
+  /** @nullable */
+  vsd_courtdate?: string | null;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  courtFileNumber?: string | null;
-  /** @nullable */
-  courtDate?: string | null;
+  vsd_courtfilenumber_text?: string | null;
   /**
    * @minLength 0
    * @maxLength 1000
    * @nullable
    */
-  purposeOfTravel?: string | null;
+  vsd_purposeoftravel?: string | null;
   /** @nullable */
-  travelPeriodFrom?: string | null;
+  vsd_travelperiodfrom?: string | null;
   /** @nullable */
-  travelPeriodTo?: string | null;
+  vsd_travelperiodto?: string | null;
 }

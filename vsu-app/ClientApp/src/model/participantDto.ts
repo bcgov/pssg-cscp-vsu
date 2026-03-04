@@ -12,165 +12,165 @@ export interface ParticipantDto {
    * @maxLength 160
    * @nullable
    */
-  firstName?: string | null;
+  vsd_firstname?: string | null;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  middleName?: string | null;
+  vsd_middlename?: string | null;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  lastName?: string | null;
+  vsd_lastname?: string | null;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  companyName?: string | null;
+  vsd_companyname?: string | null;
   /**
    * @minLength 0
    * @maxLength 400
    * @nullable
    */
-  name?: string | null;
+  vsd_name?: string | null;
   /** @nullable */
-  birthDate?: string | null;
+  vsd_birthdate?: string | null;
   /** @nullable */
-  gender?: number | null;
+  vsd_gender?: number | null;
   /**
    * @minLength 0
    * @maxLength 500
    * @nullable
    */
-  genderIdentityText?: string | null;
+  vsd_genderidentitytext?: string | null;
   /** @nullable */
-  pronouns?: number | null;
+  vsd_pronouns?: number | null;
   /**
    * @minLength 0
    * @maxLength 500
    * @nullable
    */
-  pronounText?: string | null;
+  vsd_pronountext?: string | null;
   /** @nullable */
-  primaryRaceEthnicity?: number | null;
+  vsd_primaryraceethnicity?: number | null;
   /**
    * @minLength 0
    * @maxLength 500
    * @nullable
    */
-  primaryRaceEthnicityText?: string | null;
+  vsd_primaryraceethnicitytext?: string | null;
   /**
    * @minLength 0
    * @maxLength 250
    * @nullable
    */
-  phoneNumber?: string | null;
+  vsd_phonenumber?: string | null;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  mainPhoneExtension?: string | null;
+  vsd_mainphoneextension?: string | null;
   /**
    * @minLength 0
    * @maxLength 250
    * @nullable
    */
-  addressLine1?: string | null;
+  vsd_addressline1?: string | null;
   /**
    * @minLength 0
    * @maxLength 250
    * @nullable
    */
-  addressLine2?: string | null;
+  vsd_addressline2?: string | null;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  city?: string | null;
+  vsd_city?: string | null;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  province?: string | null;
+  vsd_province?: string | null;
   /**
    * @minLength 0
    * @maxLength 20
    * @nullable
    */
-  postalCode?: string | null;
+  vsd_postalcode?: string | null;
   /** @nullable */
-  vsuOkToSendMail?: number | null;
+  vsd_vsu_oktosendmail?: number | null;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  email?: string | null;
+  vsd_email?: string | null;
   /**
    * @minLength 0
    * @maxLength 150
    * @nullable
    */
-  relationship1?: string | null;
+  vsd_relationship1?: string | null;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  relationship1Other?: string | null;
+  vsd_relationship1other?: string | null;
   /**
    * @minLength 0
    * @maxLength 150
    * @nullable
    */
-  relationship2?: string | null;
+  vsd_relationship2?: string | null;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  relationship2Other?: string | null;
+  vsd_relationship2other?: string | null;
   /** @nullable */
-  vsuMethodOfContact1Type?: number | null;
+  vsd_vsu_methodofcontact1type?: number | null;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  vsuMethodOfContact1Number?: string | null;
+  vsd_vsu_methodofcontact1number?: string | null;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  vsuMethodOfContact1Ext?: string | null;
+  vsd_vsu_methodofcontact1ext?: string | null;
   /** @nullable */
-  vsuMethodOfContact1LeaveDetailedMessage?: number | null;
+  vsd_vsu_methodofcontact1leavedetailedmessage?: number | null;
   /** @nullable */
-  vsuMethodOfContact2Type?: number | null;
+  vsd_vsu_methodofcontact2type?: number | null;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  vsuMethodOfContact2Number?: string | null;
+  vsd_vsu_methodofcontact2number?: string | null;
   /** @nullable */
-  vsuMethodOfContact2LeaveDetailedMessage?: number | null;
+  vsd_vsu_methodofcontact2leavedetailedmessage?: number | null;
   /** @nullable */
-  vsuMethodOfContact3Type?: number | null;
+  vsd_vsu_methodofcontact3type?: number | null;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  vsuMethodOfContact3Number?: string | null;
+  vsd_vsu_methodofcontact3number?: string | null;
   /** @nullable */
-  vsuMethodOfContact3LeaveDetailedMessage?: number | null;
+  vsd_vsu_methodofcontact3leavedetailedmessage?: number | null;
 }

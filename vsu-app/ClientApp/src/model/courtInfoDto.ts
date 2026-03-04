@@ -12,11 +12,11 @@ export interface CourtInfoDto {
    * @maxLength 100
    * @nullable
    */
-  courtFileNumber?: string | null;
+  vsd_courtfilenumber?: string | null;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  courtLocation?: string | null;
+  vsd_courtlocation?: string | null;
 }

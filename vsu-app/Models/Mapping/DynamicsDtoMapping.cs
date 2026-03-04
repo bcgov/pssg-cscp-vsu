@@ -158,11 +158,11 @@ namespace Gov.Cscp.Victims.Public.Models.Mapping
         {
             var entity = new VSd_TravelInformation
             {
-                VSd_CourtFileNumber_Text = travelInfo.CourtFileNumber,
-                VSd_CourtDate = travelInfo.CourtDate,
-                VSd_PurposeOfTravel = travelInfo.PurposeOfTravel,
-                VSd_TravelPeriodFrom = travelInfo.TravelPeriodFrom,
-                VSd_TravelPeriodTo = travelInfo.TravelPeriodTo,
+                VSd_CourtDate = travelInfo.vsd_courtdate,
+                VSd_CourtFileNumber_Text = travelInfo.vsd_courtfilenumber_text,
+                VSd_PurposeOfTravel = travelInfo.vsd_purposeoftravel,
+                VSd_TravelPeriodFrom = travelInfo.vsd_travelperiodfrom,
+                VSd_TravelPeriodTo = travelInfo.vsd_travelperiodto,
             };
 
             return entity;
@@ -206,9 +206,9 @@ namespace Gov.Cscp.Victims.Public.Models.Mapping
         {
             var entity = new ActivityMimeAttachment
             {
-                FileName = document.FileName,
-                Body = document.Body,
-                Subject = document.Subject,
+                FileName = document.vsd_filename,
+                Body = document.vsd_body,
+                Subject = document.vsd_subject,
             };
 
             return entity;
@@ -285,177 +285,177 @@ namespace Gov.Cscp.Victims.Public.Models.Mapping
         {
             var entity = new VSd_Application
             {
-                VSd_VSu_ApplicationType = (VSd_VSu_ApplicationType)application.VsuApplicationType,
-                VSd_CVAp_VictimFirstName = application.VictimFirstName,
-                VSd_CVAp_VictimMiddleName = application.VictimMiddleName,
-                VSd_CVAp_VictimLastName = application.VictimLastName,
-                VSd_CVAp_VictimBirthdate = application.VictimBirthDate,
-                VSd_CVAp_VictimGenderCode = application.VictimGenderCode.HasValue
-                    ? (VSd_Gender?)application.VictimGenderCode.Value
+                VSd_VSu_ApplicationType = (VSd_VSu_ApplicationType)application.vsd_vsu_applicationtype,
+                VSd_CVAp_VictimFirstName = application.vsd_cvap_victimfirstname,
+                VSd_CVAp_VictimMiddleName = application.vsd_cvap_victimmiddlename,
+                VSd_CVAp_VictimLastName = application.vsd_cvap_victimlastname,
+                VSd_CVAp_VictimBirthdate = application.vsd_cvap_victimbirthdate,
+                VSd_CVAp_VictimGenderCode = application.vsd_cvap_victimgendercode.HasValue
+                    ? (VSd_Gender?)application.vsd_cvap_victimgendercode.Value
                     : null,
-                VSd_VictimGenderText = application.VictimGenderText,
-                VSd_VictimPronouns = application.VictimPronouns.HasValue
-                    ? (VSd_Pronouns?)application.VictimPronouns.Value
+                VSd_VictimGenderText = application.vsd_victimgendertext,
+                VSd_VictimPronouns = application.vsd_victimpronouns.HasValue
+                    ? (VSd_Pronouns?)application.vsd_victimpronouns.Value
                     : null,
-                VSd_VictimPronounText = application.VictimPronounText,
-                VSd_VictimPrimaryRaceEthnicity = application.VictimPrimaryRaceEthnicity.HasValue
-                    ? (VSd_RaceEthnicity?)application.VictimPrimaryRaceEthnicity.Value
+                VSd_VictimPronounText = application.vsd_victimpronountext,
+                VSd_VictimPrimaryRaceEthnicity = application.vsd_victimprimaryraceethnicity.HasValue
+                    ? (VSd_RaceEthnicity?)application.vsd_victimprimaryraceethnicity.Value
                     : null,
-                VSd_VictimPrimaryRaceEthnicityText = application.VictimPrimaryRaceEthnicityText,
-                VSd_VictimIndigenous = application.VictimIndigenous.HasValue
-                    ? (VSd_Application_VSd_VictimIndigenous)application.VictimIndigenous.Value
+                VSd_VictimPrimaryRaceEthnicityText = application.vsd_victimprimaryraceethnicitytext,
+                VSd_VictimIndigenous = application.vsd_victimindigenous.HasValue
+                    ? (VSd_Application_VSd_VictimIndigenous)application.vsd_victimindigenous.Value
                     : null,
-                VSd_VSu_ApplicantType = (VSd_VSu_ApplicantType)application.VsuApplicantType,
-                VSd_VSuApplicantTypeOther = application.VsuApplicantTypeOther,
-                VSd_VSu_OffencesComments = application.VsuOffencesComments,
-                VSd_VSu_Decision1ImpactToOutcome = application.VsuDecision1ImpactToOutcome.HasValue
-                    ? (VSd_YesNo?)application.VsuDecision1ImpactToOutcome.Value
+                VSd_VSu_ApplicantType = (VSd_VSu_ApplicantType)application.vsd_vsu_applicanttype,
+                VSd_VSuApplicantTypeOther = application.vsd_vsu_applicanttypeother,
+                VSd_VSu_OffencesComments = application.vsd_vsu_offencescomments,
+                VSd_VSu_Decision1ImpactToOutcome = application.vsd_vsu_decision1impacttooutcome.HasValue
+                    ? (VSd_YesNo?)application.vsd_vsu_decision1impacttooutcome.Value
                     : null,
-                VSd_VSu_Decision1Comments = application.VsuDecision1Comments,
-                VsD_VsU_Decision2TravelOver100Km = application.VsuDecision2TravelOver100Km.HasValue
-                    ? (VSd_YesNo?)application.VsuDecision2TravelOver100Km.Value
+                VSd_VSu_Decision1Comments = application.vsd_vsu_decision1comments,
+                VsD_VsU_Decision2TravelOver100Km = application.vsd_vsu_decision2travelover100km.HasValue
+                    ? (VSd_YesNo?)application.vsd_vsu_decision2travelover100km.Value
                     : null,
-                VSd_VSu_Decision2Comments = application.VsuDecision2Comments,
-                VSd_VSu_Decision3NoOtherFundingSource = application.VsuDecision3NoOtherFundingSource.HasValue
-                    ? (VSd_YesNo?)application.VsuDecision3NoOtherFundingSource.Value
+                VSd_VSu_Decision2Comments = application.vsd_vsu_decision2comments,
+                VSd_VSu_Decision3NoOtherFundingSource = application.vsd_vsu_decision3nootherfundingsource.HasValue
+                    ? (VSd_YesNo?)application.vsd_vsu_decision3nootherfundingsource.Value
                     : null,
-                VSd_VSu_Decision3Comments = application.VsuDecision3Comments,
-                VSd_VSu_AdditionalComments = application.VsuAdditionalComments,
-                VSd_CVAp_RelationshipToVictim = application.RelationshipToVictim,
+                VSd_VSu_Decision3Comments = application.vsd_vsu_decision3comments,
+                VSd_VSu_AdditionalComments = application.vsd_vsu_additionalcomments,
+                VSd_CVAp_RelationshipToVictim = application.vsd_cvap_relationshiptovictim,
                 VSd_VSu_VictimTravelFundApplicationSubmitted = application
-                    .VsuVictimTravelFundApplicationSubmitted
+                    .vsd_vsu_victimtravelfundapplicationsubmitted
                     .HasValue
-                    ? (VSd_YesNoUnknown?)application.VsuVictimTravelFundApplicationSubmitted.Value
+                    ? (VSd_YesNoUnknown?)application.vsd_vsu_victimtravelfundapplicationsubmitted.Value
                     : null,
-                VSd_VSu_VTfAppSubmittedUnknownComments = application.VsuVtfAppSubmittedUnknownComments,
-                VSd_VSu_OtherFamilyMembersApplyingToVTf = application.VsuOtherFamilyMembersApplyingToVtf.HasValue
-                    ? (VSd_YesNoUnknown?)application.VsuOtherFamilyMembersApplyingToVtf.Value
+                VSd_VSu_VTfAppSubmittedUnknownComments = application.vsd_vsu_vtfappsubmittedunknowncomments,
+                VSd_VSu_OtherFamilyMembersApplyingToVTf = application.vsd_vsu_otherfamilymembersapplyingtovtf.HasValue
+                    ? (VSd_YesNoUnknown?)application.vsd_vsu_otherfamilymembersapplyingtovtf.Value
                     : null,
-                VSd_VSu_OtherFamilyMemberSvTfOtherComments = application.VsuOtherFamilyMembersVtfOtherComments,
-                VSd_VSu_VsWcOmMenTs = application.VsuVswComments,
-                VSd_VSu_CostsCoveredByVSp = application.VsuCostsCoveredByVsp.HasValue
-                    ? (VSd_YesNo?)application.VsuCostsCoveredByVsp.Value
+                VSd_VSu_OtherFamilyMemberSvTfOtherComments = application.vsd_vsu_otherfamilymembersvtfothercomments,
+                VSd_VSu_VsWcOmMenTs = application.vsd_vsu_vswcomments,
+                VSd_VSu_CostsCoveredByVSp = application.vsd_vsu_costscoveredbyvsp.HasValue
+                    ? (VSd_YesNo?)application.vsd_vsu_costscoveredbyvsp.Value
                     : null,
-                VSd_VSu_VsPcOmMenTs = application.VsuVspComments,
-                VSd_VSu_ManagerFirstName = application.VsuManagerFirstName,
-                VSd_VSu_ManagerLastName = application.VsuManagerLastName,
-                VSd_VSu_OrganizationAgencyName = application.VsuOrganizationAgencyName,
-                VSd_VSu_ManagerPhone = application.VsuManagerPhone,
-                VsD_VsU_ManagerEmail = application.VsuManagerEmail,
-                VSd_ApplicantsFirstName = application.ApplicantsFirstName,
-                VSd_ApplicantsMiddleName = application.ApplicantsMiddleName,
-                VSd_ApplicantsLastName = application.ApplicantsLastName,
-                VSd_ApplicantsGenderCode = application.ApplicantsGenderCode.HasValue
-                    ? (VSd_Gender?)application.ApplicantsGenderCode.Value
+                VSd_VSu_VsPcOmMenTs = application.vsd_vsu_vspcomments,
+                VSd_VSu_ManagerFirstName = application.vsd_vsu_managerfirstname,
+                VSd_VSu_ManagerLastName = application.vsd_vsu_managerlastname,
+                VSd_VSu_OrganizationAgencyName = application.vsd_vsu_organizationagencyname,
+                VSd_VSu_ManagerPhone = application.vsd_vsu_managerphone,
+                VsD_VsU_ManagerEmail = application.vsd_vsu_manageremail,
+                VSd_ApplicantsFirstName = application.vsd_applicantsfirstname,
+                VSd_ApplicantsMiddleName = application.vsd_applicantsmiddlename,
+                VSd_ApplicantsLastName = application.vsd_applicantslastname,
+                VSd_ApplicantsGenderCode = application.vsd_applicantsgendercode.HasValue
+                    ? (VSd_Gender?)application.vsd_applicantsgendercode.Value
                     : null,
-                VSd_GenderIdentityText = application.GenderIdentityText,
-                VSd_Pronouns = application.Pronouns.HasValue ? (VSd_Pronouns?)application.Pronouns.Value : null,
-                VSd_PronounText = application.PronounText,
-                VSd_ApplicantsBirthdate = application.ApplicantsBirthDate,
-                VSd_PrimaryRaceEthnicity = application.PrimaryRaceEthnicity.HasValue
-                    ? (VSd_RaceEthnicity?)application.PrimaryRaceEthnicity.Value
+                VSd_GenderIdentityText = application.vsd_genderidentitytext,
+                VSd_Pronouns = application.vsd_pronouns.HasValue ? (VSd_Pronouns?)application.vsd_pronouns.Value : null,
+                VSd_PronounText = application.vsd_pronountext,
+                VSd_ApplicantsBirthdate = application.vsd_applicantsbirthdate,
+                VSd_PrimaryRaceEthnicity = application.vsd_primaryraceethnicity.HasValue
+                    ? (VSd_RaceEthnicity?)application.vsd_primaryraceethnicity.Value
                     : null,
-                VSd_PrimaryRaceEthnicityText = application.PrimaryRaceEthnicityText,
-                VSd_Indigenous = application.Indigenous.HasValue
-                    ? (VSd_Application_VSd_Indigenous?)application.Indigenous.Value
+                VSd_PrimaryRaceEthnicityText = application.vsd_primaryraceethnicitytext,
+                VSd_Indigenous = application.vsd_indigenous.HasValue
+                    ? (VSd_Application_VSd_Indigenous?)application.vsd_indigenous.Value
                     : null,
-                VSd_ApplicantsPreferredLanguage = application.ApplicantsPreferredLanguage,
-                VSd_ApplicantsInterpreterNeeded = application.ApplicantsInterpreterNeeded.HasValue
-                    ? (VSd_YesNo?)application.ApplicantsInterpreterNeeded.Value
+                VSd_ApplicantsPreferredLanguage = application.vsd_applicantspreferredlanguage,
+                VSd_ApplicantsInterpreterNeeded = application.vsd_applicantsinterpreterneeded.HasValue
+                    ? (VSd_YesNo?)application.vsd_applicantsinterpreterneeded.Value
                     : null,
-                VSd_ApplicantsPrimaryAddressLine1 = application.ApplicantsPrimaryAddressLine1,
-                VSd_ApplicantsPrimaryAddressLine2 = application.ApplicantsPrimaryAddressLine2,
-                VSd_ApplicantsPrimaryCity = application.ApplicantsPrimaryCity,
-                VSd_ApplicantsPrimaryProvince = application.ApplicantsPrimaryProvince,
-                VSd_ApplicantsPrimaryCountry = application.ApplicantsPrimaryCountry,
-                VSd_ApplicantsPrimaryPostalCode = application.ApplicantsPrimaryPostalCode,
-                VSd_VSu_OkToSendMail = application.VsuOkToSendMail.HasValue
-                    ? (VSd_YesNo?)application.VsuOkToSendMail.Value
+                VSd_ApplicantsPrimaryAddressLine1 = application.vsd_applicantsprimaryaddressline1,
+                VSd_ApplicantsPrimaryAddressLine2 = application.vsd_applicantsprimaryaddressline2,
+                VSd_ApplicantsPrimaryCity = application.vsd_applicantsprimarycity,
+                VSd_ApplicantsPrimaryProvince = application.vsd_applicantsprimaryprovince,
+                VSd_ApplicantsPrimaryCountry = application.vsd_applicantsprimarycountry,
+                VSd_ApplicantsPrimaryPostalCode = application.vsd_applicantsprimarypostalcode,
+                VSd_VSu_OkToSendMail = application.vsd_vsu_oktosendmail.HasValue
+                    ? (VSd_YesNo?)application.vsd_vsu_oktosendmail.Value
                     : null,
-                VSd_VSu_MethodOfContact1Type = application.VsuMethodOfContact1Type.HasValue
-                    ? (VSd_VSu_VSuMethodsOfContact?)application.VsuMethodOfContact1Type.Value
+                VSd_VSu_MethodOfContact1Type = application.vsd_vsu_methodofcontact1type.HasValue
+                    ? (VSd_VSu_VSuMethodsOfContact?)application.vsd_vsu_methodofcontact1type.Value
                     : null,
-                VSd_VSu_MethodOfContact1Number = application.VsuMethodOfContact1Number,
-                VSd_VSu_MethodOfContact1Ext = application.VsuMethodOfContact1Ext,
+                VSd_VSu_MethodOfContact1Number = application.vsd_vsu_methodofcontact1number,
+                VSd_VSu_MethodOfContact1Ext = application.vsd_vsu_methodofcontact1ext,
                 VSd_VSu_MethodOfContact1LeaveDetailedMessage = application
-                    .VsuMethodOfContact1LeaveDetailedMessage
+                    .vsd_vsu_methodofcontact1leavedetailedmessage
                     .HasValue
-                    ? (VSd_YesNo?)application.VsuMethodOfContact1LeaveDetailedMessage.Value
+                    ? (VSd_YesNo?)application.vsd_vsu_methodofcontact1leavedetailedmessage.Value
                     : null,
-                VSd_VSu_MethodOfContact2Type = application.VsuMethodOfContact2Type.HasValue
-                    ? (VSd_VSu_VSuMethodsOfContact?)application.VsuMethodOfContact2Type.Value
+                VSd_VSu_MethodOfContact2Type = application.vsd_vsu_methodofcontact2type.HasValue
+                    ? (VSd_VSu_VSuMethodsOfContact?)application.vsd_vsu_methodofcontact2type.Value
                     : null,
-                VSd_VSu_MethodOfContact2Number = application.VsuMethodOfContact2Number,
+                VSd_VSu_MethodOfContact2Number = application.vsd_vsu_methodofcontact2number,
                 VSd_VSu_MethodOfContact2LeaveDetailedMessage = application
-                    .VsuMethodOfContact2LeaveDetailedMessage
+                    .vsd_vsu_methodofcontact2leavedetailedmessage
                     .HasValue
-                    ? (VSd_YesNo?)application.VsuMethodOfContact2LeaveDetailedMessage.Value
+                    ? (VSd_YesNo?)application.vsd_vsu_methodofcontact2leavedetailedmessage.Value
                     : null,
-                VSd_VSu_MethodOfContact3Type = application.VsuMethodOfContact3Type.HasValue
-                    ? (VSd_VSu_VSuMethodsOfContact?)application.VsuMethodOfContact3Type.Value
+                VSd_VSu_MethodOfContact3Type = application.vsd_vsu_methodofcontact3type.HasValue
+                    ? (VSd_VSu_VSuMethodsOfContact?)application.vsd_vsu_methodofcontact3type.Value
                     : null,
-                VSd_VSu_MethodOfContact3Number = application.VsuMethodOfContact3Number,
+                VSd_VSu_MethodOfContact3Number = application.vsd_vsu_methodofcontact3number,
                 VSd_VSu_MethodOfContact3LeaveDetailedMessage = application
-                    .VsuMethodOfContact3LeaveDetailedMessage
+                    .vsd_vsu_methodofcontact3leavedetailedmessage
                     .HasValue
-                    ? (VSd_YesNo?)application.VsuMethodOfContact3LeaveDetailedMessage.Value
+                    ? (VSd_YesNo?)application.vsd_vsu_methodofcontact3leavedetailedmessage.Value
                     : null,
-                VsD_VsU_NotificationTo = application.VsuNotificationTo.HasValue
-                    ? (VsD_VsU_NotificationTo?)application.VsuNotificationTo.Value
+                VsD_VsU_NotificationTo = application.vsd_vsu_notificationto.HasValue
+                    ? (VsD_VsU_NotificationTo?)application.vsd_vsu_notificationto.Value
                     : null,
-                VSd_VSu_DiscusSvTfAppWithVSp = application.VsuDiscussVtfAppWithVsp.HasValue
-                    ? (VSd_YesNo?)application.VsuDiscussVtfAppWithVsp.Value
+                VSd_VSu_DiscusSvTfAppWithVSp = application.vsd_vsu_discussvtfappwithvsp.HasValue
+                    ? (VSd_YesNo?)application.vsd_vsu_discussvtfappwithvsp.Value
                     : null,
-                VSd_VSu_SignificantCourtUpdates = application.VsuSignificantCourtUpdates.HasValue
-                    ? (VSd_YesNo?)application.VsuSignificantCourtUpdates.Value
+                VSd_VSu_SignificantCourtUpdates = application.vsd_vsu_significantcourtupdates.HasValue
+                    ? (VSd_YesNo?)application.vsd_vsu_significantcourtupdates.Value
                     : null,
-                VSd_VSu_FinalCourtResults = application.VsuFinalCourtResults.HasValue
-                    ? (VSd_YesNo?)application.VsuFinalCourtResults.Value
+                VSd_VSu_FinalCourtResults = application.vsd_vsu_finalcourtresults.HasValue
+                    ? (VSd_YesNo?)application.vsd_vsu_finalcourtresults.Value
                     : null,
                 VsD_VsU_UpdatesOnAllCriminalCourtAppearances = application
-                    .VsuUpdatesOnAllCriminalCourtAppearances
+                    .vsd_vsu_updatesonallcriminalcourtappearances
                     .HasValue
-                    ? (VSd_YesNo?)application.VsuUpdatesOnAllCriminalCourtAppearances.Value
+                    ? (VSd_YesNo?)application.vsd_vsu_updatesonallcriminalcourtappearances.Value
                     : null,
-                VSd_VSu_CriminalCourtOrdersIssued = application.VsuCriminalCourtOrdersIssued.HasValue
-                    ? (VSd_YesNo?)application.VsuCriminalCourtOrdersIssued.Value
+                VSd_VSu_CriminalCourtOrdersIssued = application.vsd_vsu_criminalcourtordersissued.HasValue
+                    ? (VSd_YesNo?)application.vsd_vsu_criminalcourtordersissued.Value
                     : null,
-                VSd_VSu_BcCorrectionsInformation = application.VsuBcCorrectionsInformation.HasValue
-                    ? (VSd_YesNo?)application.VsuBcCorrectionsInformation.Value
+                VSd_VSu_BcCorrectionsInformation = application.vsd_vsu_bccorrectionsinformation.HasValue
+                    ? (VSd_YesNo?)application.vsd_vsu_bccorrectionsinformation.Value
                     : null,
-                VSd_VSu_NotificationAdditionalComments = application.VsuNotificationAdditionalComments,
-                VSd_VSu_TravelExpenseRequestTransportOther = application.VsuTravelExpenseRequestTransportOther,
-                VSd_VSu_TravelExpenseRequestOther = application.VsuTravelExpenseRequestOther,
-                VSd_VSu_AdditionalTravelComments = application.VsuAdditionalTravelComments,
-                VSd_VSu_InfoSHaRecScPBc = application.VsuInfoShareCscpBc.HasValue
-                    ? (VSd_YesNo?)application.VsuInfoShareCscpBc.Value
+                VSd_VSu_NotificationAdditionalComments = application.vsd_vsu_notificationadditionalcomments,
+                VSd_VSu_TravelExpenseRequestTransportOther = application.vsd_vsu_travelexpenserequesttransportother,
+                VSd_VSu_TravelExpenseRequestOther = application.vsd_vsu_travelexpenserequestother,
+                VSd_VSu_AdditionalTravelComments = application.vsd_vsu_additionaltravelcomments,
+                VSd_VSu_InfoSHaRecScPBc = application.vsd_vsu_infosharecscpbc.HasValue
+                    ? (VSd_YesNo?)application.vsd_vsu_infosharecscpbc.Value
                     : null,
-                VsD_VsU_InfoShareVsU = application.VsuInfoShareVsu.HasValue
-                    ? (VSd_YesNo?)application.VsuInfoShareVsu.Value
+                VsD_VsU_InfoShareVsU = application.vsd_vsu_infosharevsu.HasValue
+                    ? (VSd_YesNo?)application.vsd_vsu_infosharevsu.Value
                     : null,
-                VsD_VsU_InfoShareVsW = application.VsuInfoShareVsw.HasValue
-                    ? (VSd_YesNo?)application.VsuInfoShareVsw.Value
+                VsD_VsU_InfoShareVsW = application.vsd_vsu_infosharevsw.HasValue
+                    ? (VSd_YesNo?)application.vsd_vsu_infosharevsw.Value
                     : null,
-                VSd_DeclarationVerified = application.DeclarationVerified.HasValue
-                    ? (VSd_YesNo?)application.DeclarationVerified.Value
+                VSd_DeclarationVerified = application.vsd_declarationverified.HasValue
+                    ? (VSd_YesNo?)application.vsd_declarationverified.Value
                     : null,
-                VSd_DeclarationFullName = application.DeclarationFullName,
-                VSd_DeclarationDate = application.DeclarationDate,
-                VSd_ApplicantsSignature = application.ApplicantsSignature,
+                VSd_DeclarationFullName = application.vsd_declarationfullname,
+                VSd_DeclarationDate = application.vsd_declarationdate,
+                VSd_ApplicantsSignature = application.vsd_applicantssignature,
             };
 
             // Handle multi-value fields that require special handling
-            if (!string.IsNullOrEmpty(application.VsuTravelExpenseRequest))
-                entity["vsd_vsu_travelexpenserequest_03"] = application.VsuTravelExpenseRequest;
+            if (!string.IsNullOrEmpty(application.vsd_vsu_travelexpenserequest_03))
+                entity["vsd_vsu_travelexpenserequest_03"] = application.vsd_vsu_travelexpenserequest_03;
 
-            if (!string.IsNullOrEmpty(application.VsuPurposeOfTravel))
-                entity["vsd_vsu_purposeoftravel"] = application.VsuPurposeOfTravel;
+            if (!string.IsNullOrEmpty(application.vsd_vsu_purposeoftravel))
+                entity["vsd_vsu_purposeoftravel"] = application.vsd_vsu_purposeoftravel;
 
-            if (application.VsuTravelPeriodFrom.HasValue)
-                entity["vsd_vsu_travelperiodfrom"] = application.VsuTravelPeriodFrom.Value;
+            if (application.vsd_vsu_travelperiodfrom.HasValue)
+                entity["vsd_vsu_travelperiodfrom"] = application.vsd_vsu_travelperiodfrom.Value;
 
-            if (application.VsuTravelPeriodTo.HasValue)
-                entity["vsd_vsu_travelperiodto"] = application.VsuTravelPeriodTo.Value;
+            if (application.vsd_vsu_travelperiodto.HasValue)
+                entity["vsd_vsu_travelperiodto"] = application.vsd_vsu_travelperiodto.Value;
 
             return entity;
         }
@@ -467,8 +467,8 @@ namespace Gov.Cscp.Victims.Public.Models.Mapping
         {
             var entity = new VSd_ApplicationCourtInformation
             {
-                VSd_CourtFileNumber = courtInfo.CourtFileNumber,
-                VSd_CourtLocation = courtInfo.CourtLocation,
+                VSd_CourtFileNumber = courtInfo.vsd_courtfilenumber,
+                VSd_CourtLocation = courtInfo.vsd_courtlocation,
             };
 
             return entity;
@@ -481,115 +481,121 @@ namespace Gov.Cscp.Victims.Public.Models.Mapping
         {
             var entity = new VSd_Participant();
 
-            if (!string.IsNullOrEmpty(participant.FirstName))
-                entity["vsd_firstname"] = participant.FirstName;
+            if (!string.IsNullOrEmpty(participant.vsd_firstname))
+                entity["vsd_firstname"] = participant.vsd_firstname;
 
-            if (!string.IsNullOrEmpty(participant.MiddleName))
-                entity["vsd_middlename"] = participant.MiddleName;
+            if (!string.IsNullOrEmpty(participant.vsd_middlename))
+                entity["vsd_middlename"] = participant.vsd_middlename;
 
-            if (!string.IsNullOrEmpty(participant.LastName))
-                entity["vsd_lastname"] = participant.LastName;
+            if (!string.IsNullOrEmpty(participant.vsd_lastname))
+                entity["vsd_lastname"] = participant.vsd_lastname;
 
-            if (!string.IsNullOrEmpty(participant.CompanyName))
-                entity["vsd_companyname"] = participant.CompanyName;
+            if (!string.IsNullOrEmpty(participant.vsd_companyname))
+                entity["vsd_companyname"] = participant.vsd_companyname;
 
-            if (!string.IsNullOrEmpty(participant.Name))
-                entity["vsd_name"] = participant.Name;
+            if (!string.IsNullOrEmpty(participant.vsd_name))
+                entity["vsd_name"] = participant.vsd_name;
 
-            if (participant.BirthDate.HasValue)
-                entity["vsd_birthdate"] = participant.BirthDate.Value;
+            if (participant.vsd_birthdate.HasValue)
+                entity["vsd_birthdate"] = participant.vsd_birthdate.Value;
 
-            if (participant.Gender.HasValue)
-                entity["vsd_gender"] = new OptionSetValue(participant.Gender.Value);
+            if (participant.vsd_gender.HasValue)
+                entity["vsd_gender"] = new OptionSetValue(participant.vsd_gender.Value);
 
-            if (!string.IsNullOrEmpty(participant.GenderIdentityText))
-                entity["vsd_genderidentitytext"] = participant.GenderIdentityText;
+            if (!string.IsNullOrEmpty(participant.vsd_genderidentitytext))
+                entity["vsd_genderidentitytext"] = participant.vsd_genderidentitytext;
 
-            if (participant.Pronouns.HasValue)
-                entity["vsd_pronouns"] = new OptionSetValue(participant.Pronouns.Value);
+            if (participant.vsd_pronouns.HasValue)
+                entity["vsd_pronouns"] = new OptionSetValue(participant.vsd_pronouns.Value);
 
-            if (!string.IsNullOrEmpty(participant.PronounText))
-                entity["vsd_pronountext"] = participant.PronounText;
+            if (!string.IsNullOrEmpty(participant.vsd_pronountext))
+                entity["vsd_pronountext"] = participant.vsd_pronountext;
 
-            if (participant.PrimaryRaceEthnicity.HasValue)
-                entity["vsd_primaryraceethnicity"] = new OptionSetValue(participant.PrimaryRaceEthnicity.Value);
+            if (participant.vsd_primaryraceethnicity.HasValue)
+                entity["vsd_primaryraceethnicity"] = new OptionSetValue(participant.vsd_primaryraceethnicity.Value);
 
-            if (!string.IsNullOrEmpty(participant.PrimaryRaceEthnicityText))
-                entity["vsd_primaryraceethnicitytext"] = participant.PrimaryRaceEthnicityText;
+            if (!string.IsNullOrEmpty(participant.vsd_primaryraceethnicitytext))
+                entity["vsd_primaryraceethnicitytext"] = participant.vsd_primaryraceethnicitytext;
 
-            if (!string.IsNullOrEmpty(participant.PhoneNumber))
-                entity["vsd_phonenumber"] = participant.PhoneNumber;
+            if (!string.IsNullOrEmpty(participant.vsd_phonenumber))
+                entity["vsd_phonenumber"] = participant.vsd_phonenumber;
 
-            if (!string.IsNullOrEmpty(participant.MainPhoneExtension))
-                entity["vsd_mainphoneextension"] = participant.MainPhoneExtension;
+            if (!string.IsNullOrEmpty(participant.vsd_mainphoneextension))
+                entity["vsd_mainphoneextension"] = participant.vsd_mainphoneextension;
 
-            if (!string.IsNullOrEmpty(participant.AddressLine1))
-                entity["vsd_addressline1"] = participant.AddressLine1;
+            if (!string.IsNullOrEmpty(participant.vsd_addressline1))
+                entity["vsd_addressline1"] = participant.vsd_addressline1;
 
-            if (!string.IsNullOrEmpty(participant.AddressLine2))
-                entity["vsd_addressline2"] = participant.AddressLine2;
+            if (!string.IsNullOrEmpty(participant.vsd_addressline2))
+                entity["vsd_addressline2"] = participant.vsd_addressline2;
 
-            if (!string.IsNullOrEmpty(participant.City))
-                entity["vsd_city"] = participant.City;
+            if (!string.IsNullOrEmpty(participant.vsd_city))
+                entity["vsd_city"] = participant.vsd_city;
 
-            if (!string.IsNullOrEmpty(participant.Province))
-                entity["vsd_province"] = participant.Province;
+            if (!string.IsNullOrEmpty(participant.vsd_province))
+                entity["vsd_province"] = participant.vsd_province;
 
-            if (!string.IsNullOrEmpty(participant.PostalCode))
-                entity["vsd_postalcode"] = participant.PostalCode;
+            if (!string.IsNullOrEmpty(participant.vsd_postalcode))
+                entity["vsd_postalcode"] = participant.vsd_postalcode;
 
-            if (participant.VsuOkToSendMail.HasValue)
-                entity["vsd_vsu_oktosendmail"] = new OptionSetValue(participant.VsuOkToSendMail.Value);
+            if (participant.vsd_vsu_oktosendmail.HasValue)
+                entity["vsd_vsu_oktosendmail"] = new OptionSetValue(participant.vsd_vsu_oktosendmail.Value);
 
-            if (!string.IsNullOrEmpty(participant.Email))
-                entity["vsd_email"] = participant.Email;
+            if (!string.IsNullOrEmpty(participant.vsd_email))
+                entity["vsd_email"] = participant.vsd_email;
 
-            if (!string.IsNullOrEmpty(participant.Relationship1))
-                entity["vsd_relationship1"] = participant.Relationship1;
+            if (!string.IsNullOrEmpty(participant.vsd_relationship1))
+                entity["vsd_relationship1"] = participant.vsd_relationship1;
 
-            if (!string.IsNullOrEmpty(participant.Relationship1Other))
-                entity["vsd_relationship1other"] = participant.Relationship1Other;
+            if (!string.IsNullOrEmpty(participant.vsd_relationship1other))
+                entity["vsd_relationship1other"] = participant.vsd_relationship1other;
 
-            if (!string.IsNullOrEmpty(participant.Relationship2))
-                entity["vsd_relationship2"] = participant.Relationship2;
+            if (!string.IsNullOrEmpty(participant.vsd_relationship2))
+                entity["vsd_relationship2"] = participant.vsd_relationship2;
 
-            if (!string.IsNullOrEmpty(participant.Relationship2Other))
-                entity["vsd_relationship2other"] = participant.Relationship2Other;
+            if (!string.IsNullOrEmpty(participant.vsd_relationship2other))
+                entity["vsd_relationship2other"] = participant.vsd_relationship2other;
 
-            if (participant.VsuMethodOfContact1Type.HasValue)
-                entity["vsd_vsu_methodofcontact1type"] = new OptionSetValue(participant.VsuMethodOfContact1Type.Value);
+            if (participant.vsd_vsu_methodofcontact1type.HasValue)
+                entity["vsd_vsu_methodofcontact1type"] = new OptionSetValue(
+                    participant.vsd_vsu_methodofcontact1type.Value
+                );
 
-            if (!string.IsNullOrEmpty(participant.VsuMethodOfContact1Number))
-                entity["vsd_vsu_methodofcontact1number"] = participant.VsuMethodOfContact1Number;
+            if (!string.IsNullOrEmpty(participant.vsd_vsu_methodofcontact1number))
+                entity["vsd_vsu_methodofcontact1number"] = participant.vsd_vsu_methodofcontact1number;
 
-            if (!string.IsNullOrEmpty(participant.VsuMethodOfContact1Ext))
-                entity["vsd_vsu_methodofcontact1ext"] = participant.VsuMethodOfContact1Ext;
+            if (!string.IsNullOrEmpty(participant.vsd_vsu_methodofcontact1ext))
+                entity["vsd_vsu_methodofcontact1ext"] = participant.vsd_vsu_methodofcontact1ext;
 
-            if (participant.VsuMethodOfContact1LeaveDetailedMessage.HasValue)
+            if (participant.vsd_vsu_methodofcontact1leavedetailedmessage.HasValue)
                 entity["vsd_vsu_methodofcontact1leavedetailedmessage"] = new OptionSetValue(
-                    participant.VsuMethodOfContact1LeaveDetailedMessage.Value
+                    participant.vsd_vsu_methodofcontact1leavedetailedmessage.Value
                 );
 
-            if (participant.VsuMethodOfContact2Type.HasValue)
-                entity["vsd_vsu_methodofcontact2type"] = new OptionSetValue(participant.VsuMethodOfContact2Type.Value);
+            if (participant.vsd_vsu_methodofcontact2type.HasValue)
+                entity["vsd_vsu_methodofcontact2type"] = new OptionSetValue(
+                    participant.vsd_vsu_methodofcontact2type.Value
+                );
 
-            if (!string.IsNullOrEmpty(participant.VsuMethodOfContact2Number))
-                entity["vsd_vsu_methodofcontact2number"] = participant.VsuMethodOfContact2Number;
+            if (!string.IsNullOrEmpty(participant.vsd_vsu_methodofcontact2number))
+                entity["vsd_vsu_methodofcontact2number"] = participant.vsd_vsu_methodofcontact2number;
 
-            if (participant.VsuMethodOfContact2LeaveDetailedMessage.HasValue)
+            if (participant.vsd_vsu_methodofcontact2leavedetailedmessage.HasValue)
                 entity["vsd_vsu_methodofcontact2leavedetailedmessage"] = new OptionSetValue(
-                    participant.VsuMethodOfContact2LeaveDetailedMessage.Value
+                    participant.vsd_vsu_methodofcontact2leavedetailedmessage.Value
                 );
 
-            if (participant.VsuMethodOfContact3Type.HasValue)
-                entity["vsd_vsu_methodofcontact3type"] = new OptionSetValue(participant.VsuMethodOfContact3Type.Value);
+            if (participant.vsd_vsu_methodofcontact3type.HasValue)
+                entity["vsd_vsu_methodofcontact3type"] = new OptionSetValue(
+                    participant.vsd_vsu_methodofcontact3type.Value
+                );
 
-            if (!string.IsNullOrEmpty(participant.VsuMethodOfContact3Number))
-                entity["vsd_vsu_methodofcontact3number"] = participant.VsuMethodOfContact3Number;
+            if (!string.IsNullOrEmpty(participant.vsd_vsu_methodofcontact3number))
+                entity["vsd_vsu_methodofcontact3number"] = participant.vsd_vsu_methodofcontact3number;
 
-            if (participant.VsuMethodOfContact3LeaveDetailedMessage.HasValue)
+            if (participant.vsd_vsu_methodofcontact3leavedetailedmessage.HasValue)
                 entity["vsd_vsu_methodofcontact3leavedetailedmessage"] = new OptionSetValue(
-                    participant.VsuMethodOfContact3LeaveDetailedMessage.Value
+                    participant.vsd_vsu_methodofcontact3leavedetailedmessage.Value
                 );
 
             return entity;
@@ -602,8 +608,8 @@ namespace Gov.Cscp.Victims.Public.Models.Mapping
         {
             var entity = new VSd_Offense();
 
-            if (!string.IsNullOrEmpty(offence.OffenseId))
-                entity["vsd_offenseid"] = offence.OffenseId;
+            if (!string.IsNullOrEmpty(offence.vsd_offenseid))
+                entity["vsd_offenseid"] = offence.vsd_offenseid;
 
             return entity;
         }

@@ -8,5 +8,5 @@
 
 export interface OffenceDto {
   /** @nullable */
-  offenseId?: string | null;
+  vsd_offenseid?: string | null;
 }

@@ -7,348 +7,348 @@
  */
 
 export interface ApplicationDto {
-  vsuApplicationType?: number;
+  vsd_vsu_applicationtype?: number;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  victimFirstName?: string | null;
+  vsd_cvap_victimfirstname?: string | null;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  victimMiddleName?: string | null;
+  vsd_cvap_victimmiddlename?: string | null;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  victimLastName?: string | null;
+  vsd_cvap_victimlastname?: string | null;
   /** @nullable */
-  victimBirthDate?: string | null;
+  vsd_cvap_victimbirthdate?: string | null;
   /** @nullable */
-  victimGenderCode?: number | null;
+  vsd_cvap_victimgendercode?: number | null;
   /**
    * @minLength 0
    * @maxLength 500
    * @nullable
    */
-  victimGenderText?: string | null;
+  vsd_victimgendertext?: string | null;
   /** @nullable */
-  victimPronouns?: number | null;
+  vsd_victimpronouns?: number | null;
   /**
    * @minLength 0
    * @maxLength 500
    * @nullable
    */
-  victimPronounText?: string | null;
+  vsd_victimpronountext?: string | null;
   /** @nullable */
-  victimPrimaryRaceEthnicity?: number | null;
+  vsd_victimprimaryraceethnicity?: number | null;
   /**
    * @minLength 0
    * @maxLength 500
    * @nullable
    */
-  victimPrimaryRaceEthnicityText?: string | null;
+  vsd_victimprimaryraceethnicitytext?: string | null;
   /** @nullable */
-  victimIndigenous?: number | null;
-  vsuApplicantType?: number;
+  vsd_victimindigenous?: number | null;
+  vsd_vsu_applicanttype?: number;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  vsuApplicantTypeOther?: string | null;
+  vsd_vsu_applicanttypeother?: string | null;
   /**
    * @minLength 0
    * @maxLength 500
    * @nullable
    */
-  vsuOffencesComments?: string | null;
+  vsd_vsu_offencescomments?: string | null;
   /** @nullable */
-  vsuDecision1ImpactToOutcome?: number | null;
+  vsd_vsu_decision1impacttooutcome?: number | null;
   /**
    * @minLength 0
    * @maxLength 500
    * @nullable
    */
-  vsuDecision1Comments?: string | null;
+  vsd_vsu_decision1comments?: string | null;
   /** @nullable */
-  vsuDecision2TravelOver100Km?: number | null;
+  vsd_vsu_decision2travelover100km?: number | null;
   /**
    * @minLength 0
    * @maxLength 500
    * @nullable
    */
-  vsuDecision2Comments?: string | null;
+  vsd_vsu_decision2comments?: string | null;
   /** @nullable */
-  vsuDecision3NoOtherFundingSource?: number | null;
+  vsd_vsu_decision3nootherfundingsource?: number | null;
   /**
    * @minLength 0
    * @maxLength 500
    * @nullable
    */
-  vsuDecision3Comments?: string | null;
+  vsd_vsu_decision3comments?: string | null;
   /**
    * @minLength 0
    * @maxLength 500
    * @nullable
    */
-  vsuAdditionalComments?: string | null;
+  vsd_vsu_additionalcomments?: string | null;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  relationshipToVictim?: string | null;
+  vsd_cvap_relationshiptovictim?: string | null;
   /** @nullable */
-  vsuVictimTravelFundApplicationSubmitted?: number | null;
+  vsd_vsu_victimtravelfundapplicationsubmitted?: number | null;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  vsuVtfAppSubmittedUnknownComments?: string | null;
+  vsd_vsu_vtfappsubmittedunknowncomments?: string | null;
   /** @nullable */
-  vsuOtherFamilyMembersApplyingToVtf?: number | null;
+  vsd_vsu_otherfamilymembersapplyingtovtf?: number | null;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  vsuOtherFamilyMembersVtfOtherComments?: string | null;
+  vsd_vsu_otherfamilymembersvtfothercomments?: string | null;
   /** @nullable */
-  vsuVswComments?: string | null;
+  vsd_vsu_vswcomments?: string | null;
   /** @nullable */
-  vsuCostsCoveredByVsp?: number | null;
+  vsd_vsu_costscoveredbyvsp?: number | null;
   /**
    * @minLength 0
    * @maxLength 500
    * @nullable
    */
-  vsuVspComments?: string | null;
+  vsd_vsu_vspcomments?: string | null;
   /**
    * @minLength 0
    * @maxLength 250
    * @nullable
    */
-  vsuManagerFirstName?: string | null;
+  vsd_vsu_managerfirstname?: string | null;
   /**
    * @minLength 0
    * @maxLength 250
    * @nullable
    */
-  vsuManagerLastName?: string | null;
+  vsd_vsu_managerlastname?: string | null;
   /**
    * @minLength 0
    * @maxLength 250
    * @nullable
    */
-  vsuOrganizationAgencyName?: string | null;
+  vsd_vsu_organizationagencyname?: string | null;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  vsuManagerPhone?: string | null;
+  vsd_vsu_managerphone?: string | null;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  vsuManagerEmail?: string | null;
+  vsd_vsu_manageremail?: string | null;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  applicantsFirstName?: string | null;
+  vsd_applicantsfirstname?: string | null;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  applicantsMiddleName?: string | null;
+  vsd_applicantsmiddlename?: string | null;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  applicantsLastName?: string | null;
+  vsd_applicantslastname?: string | null;
   /** @nullable */
-  applicantsGenderCode?: number | null;
+  vsd_applicantsgendercode?: number | null;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  genderIdentityText?: string | null;
+  vsd_genderidentitytext?: string | null;
   /** @nullable */
-  pronouns?: number | null;
+  vsd_pronouns?: number | null;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  pronounText?: string | null;
+  vsd_pronountext?: string | null;
   /** @nullable */
-  applicantsBirthDate?: string | null;
+  vsd_applicantsbirthdate?: string | null;
   /** @nullable */
-  primaryRaceEthnicity?: number | null;
+  vsd_primaryraceethnicity?: number | null;
   /**
    * @minLength 0
    * @maxLength 500
    * @nullable
    */
-  primaryRaceEthnicityText?: string | null;
+  vsd_primaryraceethnicitytext?: string | null;
   /** @nullable */
-  indigenous?: number | null;
+  vsd_indigenous?: number | null;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  applicantsPreferredLanguage?: string | null;
+  vsd_applicantspreferredlanguage?: string | null;
   /** @nullable */
-  applicantsInterpreterNeeded?: number | null;
+  vsd_applicantsinterpreterneeded?: number | null;
   /**
    * @minLength 0
    * @maxLength 250
    * @nullable
    */
-  applicantsPrimaryAddressLine1?: string | null;
+  vsd_applicantsprimaryaddressline1?: string | null;
   /**
    * @minLength 0
    * @maxLength 250
    * @nullable
    */
-  applicantsPrimaryAddressLine2?: string | null;
+  vsd_applicantsprimaryaddressline2?: string | null;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  applicantsPrimaryCity?: string | null;
+  vsd_applicantsprimarycity?: string | null;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  applicantsPrimaryProvince?: string | null;
+  vsd_applicantsprimaryprovince?: string | null;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  applicantsPrimaryCountry?: string | null;
+  vsd_applicantsprimarycountry?: string | null;
   /**
    * @minLength 0
    * @maxLength 20
    * @nullable
    */
-  applicantsPrimaryPostalCode?: string | null;
+  vsd_applicantsprimarypostalcode?: string | null;
   /** @nullable */
-  vsuOkToSendMail?: number | null;
+  vsd_vsu_oktosendmail?: number | null;
   /** @nullable */
-  vsuMethodOfContact1Type?: number | null;
+  vsd_vsu_methodofcontact1type?: number | null;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  vsuMethodOfContact1Number?: string | null;
+  vsd_vsu_methodofcontact1number?: string | null;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  vsuMethodOfContact1Ext?: string | null;
+  vsd_vsu_methodofcontact1ext?: string | null;
   /** @nullable */
-  vsuMethodOfContact1LeaveDetailedMessage?: number | null;
+  vsd_vsu_methodofcontact1leavedetailedmessage?: number | null;
   /** @nullable */
-  vsuMethodOfContact2Type?: number | null;
+  vsd_vsu_methodofcontact2type?: number | null;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  vsuMethodOfContact2Number?: string | null;
+  vsd_vsu_methodofcontact2number?: string | null;
   /** @nullable */
-  vsuMethodOfContact2LeaveDetailedMessage?: number | null;
+  vsd_vsu_methodofcontact2leavedetailedmessage?: number | null;
   /** @nullable */
-  vsuMethodOfContact3Type?: number | null;
+  vsd_vsu_methodofcontact3type?: number | null;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  vsuMethodOfContact3Number?: string | null;
+  vsd_vsu_methodofcontact3number?: string | null;
   /** @nullable */
-  vsuMethodOfContact3LeaveDetailedMessage?: number | null;
+  vsd_vsu_methodofcontact3leavedetailedmessage?: number | null;
   /** @nullable */
-  vsuNotificationTo?: number | null;
+  vsd_vsu_notificationto?: number | null;
   /** @nullable */
-  vsuDiscussVtfAppWithVsp?: number | null;
+  vsd_vsu_discussvtfappwithvsp?: number | null;
   /** @nullable */
-  vsuSignificantCourtUpdates?: number | null;
+  vsd_vsu_significantcourtupdates?: number | null;
   /** @nullable */
-  vsuFinalCourtResults?: number | null;
+  vsd_vsu_finalcourtresults?: number | null;
   /** @nullable */
-  vsuUpdatesOnAllCriminalCourtAppearances?: number | null;
+  vsd_vsu_updatesonallcriminalcourtappearances?: number | null;
   /** @nullable */
-  vsuCriminalCourtOrdersIssued?: number | null;
+  vsd_vsu_criminalcourtordersissued?: number | null;
   /** @nullable */
-  vsuBcCorrectionsInformation?: number | null;
+  vsd_vsu_bccorrectionsinformation?: number | null;
   /**
    * @minLength 0
    * @maxLength 250
    * @nullable
    */
-  vsuNotificationAdditionalComments?: string | null;
+  vsd_vsu_notificationadditionalcomments?: string | null;
   /** @nullable */
-  vsuTravelExpenseRequest?: string | null;
+  vsd_vsu_travelexpenserequest_03?: string | null;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  vsuTravelExpenseRequestTransportOther?: string | null;
+  vsd_vsu_travelexpenserequesttransportother?: string | null;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  vsuTravelExpenseRequestOther?: string | null;
+  vsd_vsu_travelexpenserequestother?: string | null;
   /** @nullable */
-  vsuPurposeOfTravel?: string | null;
+  vsd_vsu_purposeoftravel?: string | null;
   /** @nullable */
-  vsuTravelPeriodFrom?: string | null;
+  vsd_vsu_travelperiodfrom?: string | null;
   /** @nullable */
-  vsuTravelPeriodTo?: string | null;
+  vsd_vsu_travelperiodto?: string | null;
   /**
    * @minLength 0
    * @maxLength 250
    * @nullable
    */
-  vsuAdditionalTravelComments?: string | null;
+  vsd_vsu_additionaltravelcomments?: string | null;
   /** @nullable */
-  vsuInfoShareCscpBc?: number | null;
+  vsd_vsu_infosharecscpbc?: number | null;
   /** @nullable */
-  vsuInfoShareVsu?: number | null;
+  vsd_vsu_infosharevsu?: number | null;
   /** @nullable */
-  vsuInfoShareVsw?: number | null;
+  vsd_vsu_infosharevsw?: number | null;
   /** @nullable */
-  declarationVerified?: number | null;
+  vsd_declarationverified?: number | null;
   /**
    * @minLength 0
    * @maxLength 150
    * @nullable
    */
-  declarationFullName?: string | null;
+  vsd_declarationfullname?: string | null;
   /** @nullable */
-  declarationDate?: string | null;
+  vsd_declarationdate?: string | null;
   /** @nullable */
-  applicantsSignature?: string | null;
+  vsd_applicantssignature?: string | null;
 }

@@ -55,9 +55,9 @@ function getCRMTravelInfoCollection(data: iReimbursementForm): TravelInfoDto[] {
 
   data.TravelInformation.travelDates.forEach((t) => {
     travel_collection.push({
-      purposeOfTravel: t.purposeOfTravel,
-      travelPeriodFrom: t.travelPeriodStart?.toISOString(),
-      travelPeriodTo: t.travelPeriodEnd?.toISOString()
+      vsd_purposeoftravel: t.purposeOfTravel,
+      vsd_travelperiodfrom: t.travelPeriodStart?.toISOString(),
+      vsd_travelperiodto: t.travelPeriodEnd?.toISOString()
     });
   });
 
@@ -180,9 +180,9 @@ function getCRMDocuments(data: iReimbursementForm): DocumentDto[] {
   data.AuthorizationInformation.documents.forEach((d) => {
     if (checkObjectHasValue(d)) {
       documents.push({
-        fileName: d.filename,
-        body: d.body,
-        subject: d.subject
+        vsd_filename: d.filename,
+        vsd_body: d.body,
+        vsd_subject: d.subject
       });
     }
   });
