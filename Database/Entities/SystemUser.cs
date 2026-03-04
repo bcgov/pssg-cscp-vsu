@@ -473,6 +473,14 @@ namespace DataverseModel
 			public const string Lk_VSd_Court_CreatedOnBehalfBy = "Lk_VSd_Court_CreatedOnBehalfBy";
 			public const string Lk_VSd_Court_ModifiedBy = "Lk_VSd_Court_ModifiedBy";
 			public const string Lk_VSd_Court_ModifiedOnBehalfBy = "Lk_VSd_Court_ModifiedOnBehalfBy";
+			public const string Lk_VSd_Invoice_CreatedBy = "Lk_VSd_Invoice_CreatedBy";
+			public const string Lk_VSd_Invoice_CreatedOnBehalfBy = "Lk_VSd_Invoice_CreatedOnBehalfBy";
+			public const string Lk_VSd_Invoice_ModifiedBy = "Lk_VSd_Invoice_ModifiedBy";
+			public const string Lk_VSd_Invoice_ModifiedOnBehalfBy = "Lk_VSd_Invoice_ModifiedOnBehalfBy";
+			public const string Lk_VSd_InvoiceLineDetail_CreatedBy = "Lk_VSd_InvoiceLineDetail_CreatedBy";
+			public const string Lk_VSd_InvoiceLineDetail_CreatedOnBehalfBy = "Lk_VSd_InvoiceLineDetail_CreatedOnBehalfBy";
+			public const string Lk_VSd_InvoiceLineDetail_ModifiedBy = "Lk_VSd_InvoiceLineDetail_ModifiedBy";
+			public const string Lk_VSd_InvoiceLineDetail_ModifiedOnBehalfBy = "Lk_VSd_InvoiceLineDetail_ModifiedOnBehalfBy";
 			public const string Lk_VSd_Offense_CreatedBy = "Lk_VSd_Offense_CreatedBy";
 			public const string Lk_VSd_Offense_CreatedOnBehalfBy = "Lk_VSd_Offense_CreatedOnBehalfBy";
 			public const string Lk_VSd_Offense_ModifiedBy = "Lk_VSd_Offense_ModifiedBy";
@@ -558,6 +566,8 @@ namespace DataverseModel
 			public const string ReferencingUser_Parent_User = "user_parent_user";
 			public const string User_VSd_Application = "User_VSd_Application";
 			public const string User_VSd_ApplicationCourtInformation = "User_VSd_ApplicationCourtInformation";
+			public const string User_VSd_Invoice = "User_VSd_Invoice";
+			public const string User_VSd_InvoiceLineDetail = "User_VSd_InvoiceLineDetail";
 			public const string User_VSd_TravelInformation = "User_VSd_TravelInformation";
 			public const string UserLicenseType = "userlicensetype";
 			public const string UserPuid = "userpuid";
@@ -565,6 +575,8 @@ namespace DataverseModel
 			public const string VersionNumber = "versionnumber";
 			public const string VSd_PartnerId = "vsd_partnerid";
 			public const string VsD_PartnerIdName = "vsd_partneridname";
+			public const string VsD_SystemUser_VsD_Invoice_User2 = "VsD_SystemUser_VsD_Invoice_User2";
+			public const string VsD_SystemUser_VsD_Invoice_User3 = "VsD_SystemUser_VsD_Invoice_User3";
 			public const string VSd_Utilization = "vsd_utilization";
 			public const string WindowsLiveId = "windowsliveid";
 			public const string YammerEmailAddress = "yammeremailaddress";
@@ -4424,6 +4436,150 @@ namespace DataverseModel
 		}
 		
 		/// <summary>
+		/// 1:N lk_vsd_invoice_createdby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_invoice_createdby")]
+		public System.Collections.Generic.IEnumerable<DataverseModel.VSd_Invoice> Lk_VSd_Invoice_CreatedBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<DataverseModel.VSd_Invoice>("lk_vsd_invoice_createdby", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<DataverseModel.VSd_Invoice>("lk_vsd_invoice_createdby", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N lk_vsd_invoice_createdonbehalfby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_invoice_createdonbehalfby")]
+		public System.Collections.Generic.IEnumerable<DataverseModel.VSd_Invoice> Lk_VSd_Invoice_CreatedOnBehalfBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<DataverseModel.VSd_Invoice>("lk_vsd_invoice_createdonbehalfby", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<DataverseModel.VSd_Invoice>("lk_vsd_invoice_createdonbehalfby", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N lk_vsd_invoice_modifiedby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_invoice_modifiedby")]
+		public System.Collections.Generic.IEnumerable<DataverseModel.VSd_Invoice> Lk_VSd_Invoice_ModifiedBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<DataverseModel.VSd_Invoice>("lk_vsd_invoice_modifiedby", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<DataverseModel.VSd_Invoice>("lk_vsd_invoice_modifiedby", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N lk_vsd_invoice_modifiedonbehalfby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_invoice_modifiedonbehalfby")]
+		public System.Collections.Generic.IEnumerable<DataverseModel.VSd_Invoice> Lk_VSd_Invoice_ModifiedOnBehalfBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<DataverseModel.VSd_Invoice>("lk_vsd_invoice_modifiedonbehalfby", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<DataverseModel.VSd_Invoice>("lk_vsd_invoice_modifiedonbehalfby", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N lk_vsd_invoicelinedetail_createdby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_invoicelinedetail_createdby")]
+		public System.Collections.Generic.IEnumerable<DataverseModel.VSd_InvoiceLineDetail> Lk_VSd_InvoiceLineDetail_CreatedBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<DataverseModel.VSd_InvoiceLineDetail>("lk_vsd_invoicelinedetail_createdby", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<DataverseModel.VSd_InvoiceLineDetail>("lk_vsd_invoicelinedetail_createdby", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N lk_vsd_invoicelinedetail_createdonbehalfby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_invoicelinedetail_createdonbehalfby")]
+		public System.Collections.Generic.IEnumerable<DataverseModel.VSd_InvoiceLineDetail> Lk_VSd_InvoiceLineDetail_CreatedOnBehalfBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<DataverseModel.VSd_InvoiceLineDetail>("lk_vsd_invoicelinedetail_createdonbehalfby", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<DataverseModel.VSd_InvoiceLineDetail>("lk_vsd_invoicelinedetail_createdonbehalfby", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N lk_vsd_invoicelinedetail_modifiedby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_invoicelinedetail_modifiedby")]
+		public System.Collections.Generic.IEnumerable<DataverseModel.VSd_InvoiceLineDetail> Lk_VSd_InvoiceLineDetail_ModifiedBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<DataverseModel.VSd_InvoiceLineDetail>("lk_vsd_invoicelinedetail_modifiedby", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<DataverseModel.VSd_InvoiceLineDetail>("lk_vsd_invoicelinedetail_modifiedby", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N lk_vsd_invoicelinedetail_modifiedonbehalfby
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_invoicelinedetail_modifiedonbehalfby")]
+		public System.Collections.Generic.IEnumerable<DataverseModel.VSd_InvoiceLineDetail> Lk_VSd_InvoiceLineDetail_ModifiedOnBehalfBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<DataverseModel.VSd_InvoiceLineDetail>("lk_vsd_invoicelinedetail_modifiedonbehalfby", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<DataverseModel.VSd_InvoiceLineDetail>("lk_vsd_invoicelinedetail_modifiedonbehalfby", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// 1:N lk_vsd_offense_createdby
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("lk_vsd_offense_createdby")]
@@ -4856,6 +5012,42 @@ namespace DataverseModel
 		}
 		
 		/// <summary>
+		/// 1:N user_vsd_invoice
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("user_vsd_invoice")]
+		public System.Collections.Generic.IEnumerable<DataverseModel.VSd_Invoice> User_VSd_Invoice
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<DataverseModel.VSd_Invoice>("user_vsd_invoice", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<DataverseModel.VSd_Invoice>("user_vsd_invoice", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N user_vsd_invoicelinedetail
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("user_vsd_invoicelinedetail")]
+		public System.Collections.Generic.IEnumerable<DataverseModel.VSd_InvoiceLineDetail> User_VSd_InvoiceLineDetail
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<DataverseModel.VSd_InvoiceLineDetail>("user_vsd_invoicelinedetail", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<DataverseModel.VSd_InvoiceLineDetail>("user_vsd_invoicelinedetail", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// 1:N user_vsd_travelinformation
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("user_vsd_travelinformation")]
@@ -4870,6 +5062,42 @@ namespace DataverseModel
 			set
 			{
 				this.SetRelatedEntities<DataverseModel.VSd_TravelInformation>("user_vsd_travelinformation", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N vsd_systemuser_vsd_invoice_User2
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_systemuser_vsd_invoice_User2")]
+		public System.Collections.Generic.IEnumerable<DataverseModel.VSd_Invoice> VsD_SystemUser_VsD_Invoice_User2
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<DataverseModel.VSd_Invoice>("vsd_systemuser_vsd_invoice_User2", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<DataverseModel.VSd_Invoice>("vsd_systemuser_vsd_invoice_User2", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N vsd_systemuser_vsd_invoice_User3
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_systemuser_vsd_invoice_User3")]
+		public System.Collections.Generic.IEnumerable<DataverseModel.VSd_Invoice> VsD_SystemUser_VsD_Invoice_User3
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<DataverseModel.VSd_Invoice>("vsd_systemuser_vsd_invoice_User3", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<DataverseModel.VSd_Invoice>("vsd_systemuser_vsd_invoice_User3", null, value);
 			}
 		}
 		

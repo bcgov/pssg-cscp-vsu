@@ -9,7 +9,7 @@ public class InvoiceLineItemDto
 
     public int? TransportationType { get; set; }
     public int? Mileage { get; set; }
-    public double? Amount { get; set; }
+    public decimal? Amount { get; set; }
 
     public string Other { get; set; }
     public int? Number { get; set; }

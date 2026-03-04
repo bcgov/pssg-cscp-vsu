@@ -183,6 +183,28 @@ namespace DataverseModel
 		}
 		
 		/// <summary>
+		/// Gets a binding to the set of all <see cref="DataverseModel.VSd_Invoice"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<DataverseModel.VSd_Invoice> VSd_InvoiceSet
+		{
+			get
+			{
+				return this.CreateQuery<DataverseModel.VSd_Invoice>();
+			}
+		}
+		
+		/// <summary>
+		/// Gets a binding to the set of all <see cref="DataverseModel.VSd_InvoiceLineDetail"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<DataverseModel.VSd_InvoiceLineDetail> VSd_InvoiceLineDetailSet
+		{
+			get
+			{
+				return this.CreateQuery<DataverseModel.VSd_InvoiceLineDetail>();
+			}
+		}
+		
+		/// <summary>
 		/// Gets a binding to the set of all <see cref="DataverseModel.VSd_Offense"/> entities.
 		/// </summary>
 		public System.Linq.IQueryable<DataverseModel.VSd_Offense> VSd_OffenseSet

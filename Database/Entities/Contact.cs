@@ -1340,6 +1340,9 @@ namespace DataverseModel
 			public const string VSd_CloneContactName = "vsd_clonecontactname";
 			public const string VSd_ConcatenatedGlobalSearchLine2 = "vsd_concatenatedglobalsearchline2";
 			public const string VSd_Contact_VSd_Application_Applicant = "VSd_Contact_VSd_Application_Applicant";
+			public const string VSd_Contact_VSd_Invoice = "VSd_Contact_VSd_Invoice";
+			public const string VSd_Contact_VSd_Invoice_Customer = "VSd_Contact_VSd_Invoice_Customer";
+			public const string VSd_Contact_VSd_Invoice_Payee = "VSd_Contact_VSd_Invoice_Payee";
 			public const string VSd_Contact_VSd_Participant = "VSd_Contact_VSd_Participant";
 			public const string VSd_ContactRole = "vsd_contactrole";
 			public const string VSd_ContactRoleName = "vsd_contactrolename";
@@ -9922,6 +9925,60 @@ namespace DataverseModel
 			set
 			{
 				this.SetRelatedEntities<DataverseModel.VSd_Application>("vsd_contact_vsd_application_Applicant", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N vsd_contact_vsd_invoice
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_contact_vsd_invoice")]
+		public System.Collections.Generic.IEnumerable<DataverseModel.VSd_Invoice> VSd_Contact_VSd_Invoice
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<DataverseModel.VSd_Invoice>("vsd_contact_vsd_invoice", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<DataverseModel.VSd_Invoice>("vsd_contact_vsd_invoice", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N vsd_contact_vsd_invoice_Customer
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_contact_vsd_invoice_Customer")]
+		public System.Collections.Generic.IEnumerable<DataverseModel.VSd_Invoice> VSd_Contact_VSd_Invoice_Customer
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<DataverseModel.VSd_Invoice>("vsd_contact_vsd_invoice_Customer", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<DataverseModel.VSd_Invoice>("vsd_contact_vsd_invoice_Customer", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N vsd_contact_vsd_invoice_Payee
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_contact_vsd_invoice_Payee")]
+		public System.Collections.Generic.IEnumerable<DataverseModel.VSd_Invoice> VSd_Contact_VSd_Invoice_Payee
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<DataverseModel.VSd_Invoice>("vsd_contact_vsd_invoice_Payee", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<DataverseModel.VSd_Invoice>("vsd_contact_vsd_invoice_Payee", null, value);
 			}
 		}
 		

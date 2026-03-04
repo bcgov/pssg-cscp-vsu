@@ -126,6 +126,8 @@ namespace DataverseModel
 			public const string Business_Unit_System_Users = "Business_Unit_System_Users";
 			public const string Business_Unit_VSd_Application = "Business_Unit_VSd_Application";
 			public const string Business_Unit_VSd_ApplicationCourtInformation = "Business_Unit_VSd_ApplicationCourtInformation";
+			public const string Business_Unit_VSd_Invoice = "Business_Unit_VSd_Invoice";
+			public const string Business_Unit_VSd_InvoiceLineDetail = "Business_Unit_VSd_InvoiceLineDetail";
 			public const string Business_Unit_VSd_TravelInformation = "Business_Unit_VSd_TravelInformation";
 			public const string BusinessUnitId = "businessunitid";
 			public const string Id = "businessunitid";
@@ -1947,6 +1949,42 @@ namespace DataverseModel
 			set
 			{
 				this.SetRelatedEntities<DataverseModel.VSd_ApplicationCourtInformation>("business_unit_vsd_applicationcourtinformation", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N business_unit_vsd_invoice
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("business_unit_vsd_invoice")]
+		public System.Collections.Generic.IEnumerable<DataverseModel.VSd_Invoice> Business_Unit_VSd_Invoice
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<DataverseModel.VSd_Invoice>("business_unit_vsd_invoice", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<DataverseModel.VSd_Invoice>("business_unit_vsd_invoice", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N business_unit_vsd_invoicelinedetail
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("business_unit_vsd_invoicelinedetail")]
+		public System.Collections.Generic.IEnumerable<DataverseModel.VSd_InvoiceLineDetail> Business_Unit_VSd_InvoiceLineDetail
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<DataverseModel.VSd_InvoiceLineDetail>("business_unit_vsd_invoicelinedetail", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<DataverseModel.VSd_InvoiceLineDetail>("business_unit_vsd_invoicelinedetail", null, value);
 			}
 		}
 		

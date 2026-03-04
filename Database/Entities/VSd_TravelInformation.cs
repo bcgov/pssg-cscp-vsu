@@ -105,6 +105,7 @@ namespace DataverseModel
 			public const string VSd_TravelPeriodTo = "vsd_travelperiodto";
 			public const string VSd_VSd_Application_VSd_TravelInformation = "vsd_vsd_application_vsd_travelinformation";
 			public const string VSd_VSd_ApplicationCourtInformation_VSd_TravelInformation_CourtFileNumber = "vsd_vsd_applicationcourtinformation_vsd_travelinformation_CourtFileNumber";
+			public const string VSd_VSd_Invoice_VSd_TravelInformation = "vsd_vsd_invoice_vsd_travelinformation";
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
@@ -987,6 +988,25 @@ namespace DataverseModel
 			set
 			{
 				this.SetRelatedEntity<DataverseModel.VSd_ApplicationCourtInformation>("vsd_vsd_applicationcourtinformation_vsd_travelinformation_CourtFileNumber", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 vsd_vsd_invoice_vsd_travelinformation
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("vsd_invoiceid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_vsd_invoice_vsd_travelinformation")]
+		public DataverseModel.VSd_Invoice VSd_VSd_Invoice_VSd_TravelInformation
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<DataverseModel.VSd_Invoice>("vsd_vsd_invoice_vsd_travelinformation", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<DataverseModel.VSd_Invoice>("vsd_vsd_invoice_vsd_travelinformation", null, value);
 			}
 		}
 		

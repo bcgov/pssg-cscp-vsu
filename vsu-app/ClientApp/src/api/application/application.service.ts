@@ -12,7 +12,7 @@ import { Injectable, inject } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
-import type { ApplicationData } from '../../model';
+import type { ApplicationDataDto } from '../../model';
 
 interface HttpClientOptions {
   readonly headers?: HttpHeaders | Record<string, string | string[]>;
@@ -36,36 +36,36 @@ interface HttpClientOptions {
 export class ApplicationService {
   private readonly http = inject(HttpClient);
   postApiApplication<TData = void>(
-    applicationData: ApplicationData,
+    applicationDataDto: ApplicationDataDto,
     options?: HttpClientOptions & { observe?: 'body' }
   ): Observable<TData>;
   postApiApplication<TData = void>(
-    applicationData: ApplicationData,
+    applicationDataDto: ApplicationDataDto,
     options?: HttpClientOptions & { observe: 'events' }
   ): Observable<HttpEvent<TData>>;
   postApiApplication<TData = void>(
-    applicationData: ApplicationData,
+    applicationDataDto: ApplicationDataDto,
     options?: HttpClientOptions & { observe: 'response' }
   ): Observable<AngularHttpResponse<TData>>;
   postApiApplication<TData = void>(
-    applicationData: ApplicationData,
+    applicationDataDto: ApplicationDataDto,
     options?: HttpClientOptions & { observe?: 'body' | 'events' | 'response' }
   ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
-      return this.http.post<TData>(`/vsuwebforms/api/application`, applicationData, {
+      return this.http.post<TData>(`/vsuwebforms/api/application`, applicationDataDto, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events'
       });
     }
 
     if (options?.observe === 'response') {
-      return this.http.post<TData>(`/vsuwebforms/api/application`, applicationData, {
+      return this.http.post<TData>(`/vsuwebforms/api/application`, applicationDataDto, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response'
       });
     }
 
-    return this.http.post<TData>(`/vsuwebforms/api/application`, applicationData, {
+    return this.http.post<TData>(`/vsuwebforms/api/application`, applicationDataDto, {
       ...(options as Omit<NonNullable<typeof options>, 'observe'>),
       observe: 'body'
     });

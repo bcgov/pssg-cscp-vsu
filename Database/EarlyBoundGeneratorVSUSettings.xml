@@ -45,6 +45,8 @@ vsd_city|
 vsd_config|
 vsd_country|
 vsd_court|
+vsd_invoice|
+vsd_invoicelinedetail|
 vsd_offense|
 vsd_participant|
 vsd_province|

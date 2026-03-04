@@ -6,9 +6,7 @@
  * OpenAPI spec version: v1
  */
 
-export interface Offence {
+export interface OffenceDto {
   /** @nullable */
-  readonly fortunecookietype?: string | null;
-  /** @nullable */
-  vsd_offenseid?: string | null;
+  offenseId?: string | null;
 }

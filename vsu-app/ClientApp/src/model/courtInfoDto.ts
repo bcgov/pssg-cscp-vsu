@@ -6,19 +6,17 @@
  * OpenAPI spec version: v1
  */
 
-export interface CourtInfo {
-  /** @nullable */
-  readonly fortunecookietype?: string | null;
+export interface CourtInfoDto {
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  vsd_courtfilenumber?: string | null;
+  courtFileNumber?: string | null;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  vsd_courtlocation?: string | null;
+  courtLocation?: string | null;
 }

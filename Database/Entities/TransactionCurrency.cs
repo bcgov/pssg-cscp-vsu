@@ -96,6 +96,8 @@ namespace DataverseModel
 			public const string TransactionCurrency_Contact = "TransactionCurrency_Contact";
 			public const string TransactionCurrency_Email = "TransactionCurrency_Email";
 			public const string TransactionCurrency_SystemUser = "TransactionCurrency_SystemUser";
+			public const string TransactionCurrency_VSd_Invoice = "TransactionCurrency_VSd_Invoice";
+			public const string TransactionCurrency_VSd_InvoiceLineDetail = "TransactionCurrency_VSd_InvoiceLineDetail";
 			public const string TransactionCurrency_VSd_Participant = "TransactionCurrency_VSd_Participant";
 			public const string TransactionCurrency_VSd_Province = "TransactionCurrency_VSd_Province";
 			public const string TransactionCurrencyId = "transactioncurrencyid";
@@ -767,6 +769,42 @@ namespace DataverseModel
 			set
 			{
 				this.SetRelatedEntities<DataverseModel.SystemUser>("TransactionCurrency_SystemUser", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N TransactionCurrency_vsd_invoice
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("TransactionCurrency_vsd_invoice")]
+		public System.Collections.Generic.IEnumerable<DataverseModel.VSd_Invoice> TransactionCurrency_VSd_Invoice
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<DataverseModel.VSd_Invoice>("TransactionCurrency_vsd_invoice", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<DataverseModel.VSd_Invoice>("TransactionCurrency_vsd_invoice", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N TransactionCurrency_vsd_invoicelinedetail
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("TransactionCurrency_vsd_invoicelinedetail")]
+		public System.Collections.Generic.IEnumerable<DataverseModel.VSd_InvoiceLineDetail> TransactionCurrency_VSd_InvoiceLineDetail
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<DataverseModel.VSd_InvoiceLineDetail>("TransactionCurrency_vsd_invoicelinedetail", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<DataverseModel.VSd_InvoiceLineDetail>("TransactionCurrency_vsd_invoicelinedetail", null, value);
 			}
 		}
 		

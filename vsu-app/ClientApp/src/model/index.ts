@@ -6,17 +6,16 @@
  * OpenAPI spec version: v1
  */
 
-export * from './application';
-export * from './applicationData';
+export * from './applicationDataDto';
+export * from './applicationDto';
 export * from './caseDto';
 export * from './checkCaseDto';
-export * from './courtInfo';
+export * from './courtInfoDto';
 export * from './documentDto';
 export * from './getApiLookupCitiesSearchParams';
 export * from './invoiceDto';
 export * from './invoiceLineItemDto';
-export * from './offence';
-export * from './participant';
+export * from './offenceDto';
+export * from './participantDto';
 export * from './reimbursementCaseDto';
-export * from './travelInfo';
 export * from './travelInfoDto';

@@ -122,6 +122,8 @@ namespace DataverseModel
 			public const string VSd_TaxTypeName = "vsd_taxtypename";
 			public const string VSd_VSd_Country_VSd_Province = "vsd_vsd_country_vsd_province";
 			public const string VSd_VSd_Province_VSd_City = "VSd_VSd_Province_VSd_City";
+			public const string VSd_VSd_Province_VSd_Invoice = "VSd_VSd_Province_VSd_Invoice";
+			public const string VSd_VSd_Province_VSd_InvoiceLineDetail_ProvinceStateId = "VSd_VSd_Province_VSd_InvoiceLineDetail_ProvinceStateId";
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
@@ -815,6 +817,42 @@ namespace DataverseModel
 			set
 			{
 				this.SetRelatedEntities<DataverseModel.VSd_City>("vsd_vsd_province_vsd_city", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N vsd_vsd_province_vsd_invoice
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_vsd_province_vsd_invoice")]
+		public System.Collections.Generic.IEnumerable<DataverseModel.VSd_Invoice> VSd_VSd_Province_VSd_Invoice
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<DataverseModel.VSd_Invoice>("vsd_vsd_province_vsd_invoice", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<DataverseModel.VSd_Invoice>("vsd_vsd_province_vsd_invoice", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N vsd_vsd_province_vsd_invoicelinedetail_ProvinceStateId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("vsd_vsd_province_vsd_invoicelinedetail_ProvinceStateId")]
+		public System.Collections.Generic.IEnumerable<DataverseModel.VSd_InvoiceLineDetail> VSd_VSd_Province_VSd_InvoiceLineDetail_ProvinceStateId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<DataverseModel.VSd_InvoiceLineDetail>("vsd_vsd_province_vsd_invoicelinedetail_ProvinceStateId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<DataverseModel.VSd_InvoiceLineDetail>("vsd_vsd_province_vsd_invoicelinedetail_ProvinceStateId", null, value);
 			}
 		}
 		
