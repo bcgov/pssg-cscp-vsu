@@ -1,6 +1,7 @@
+import { ApplicationDto } from 'src/model';
 import { ApplicationType, EnumHelper, PARTICIPANT_TYPES } from '../../enums-list';
 import { iNotificationApplication } from '../application.interface';
-import { iApplicationFormCRM, iCRMApplication, iCRMCourtInfo, iCRMParticipant } from '../dynamics/crm-application';
+import { iApplicationFormCRM, iCRMCourtInfo, iCRMParticipant } from '../dynamics/crm-application';
 
 export function convertNotificationApplicationToCRM(application: iNotificationApplication) {
   let crm_application: iApplicationFormCRM = {
@@ -16,13 +17,13 @@ export function convertNotificationApplicationToCRM(application: iNotificationAp
 
 function getCRMApplication(application: iNotificationApplication) {
   let enums = new EnumHelper();
-  let crm_application: iCRMApplication = {
-    vsd_vsu_applicationtype: ApplicationType.NOTIFICATION,
-    vsd_cvap_victimfirstname: application.CaseInformation.firstName,
-    vsd_cvap_victimmiddlename: application.CaseInformation.middleName,
-    vsd_cvap_victimlastname: application.CaseInformation.lastName,
-    vsd_cvap_victimbirthdate: application.CaseInformation.birthDate,
-    vsd_cvap_victimgendercode: application.CaseInformation.gender,
+  let crm_application: ApplicationDto = {
+    applicationType: ApplicationType.NOTIFICATION,
+    victimFirstName: application.CaseInformation.firstName,
+    victimMiddleName: application.CaseInformation.middleName,
+    victimLastName: application.CaseInformation.lastName,
+    victimBirthDate: application.CaseInformation.birthDate?.toISOString(),
+    victimGenderCode: application.CaseInformation.gender,
     vsd_victimgendertext: application.CaseInformation.otherGender,
     vsd_victimpronouns: application.CaseInformation.pronouns,
     vsd_victimpronountext: application.CaseInformation.otherPronouns,
@@ -31,14 +32,14 @@ function getCRMApplication(application: iNotificationApplication) {
     vsd_victimindigenous: application.CaseInformation.indigenousStatus,
 
     vsd_vsu_applicanttype: application.ApplicantInformation.applicantType,
-    vsd_vsuapplicanttypeother: application.ApplicantInformation.applicantTypeOther,
+    vsd_vsu_applicanttypeother: application.ApplicantInformation.applicantTypeOther,
     vsd_applicantsfirstname: application.ApplicantInformation.firstName,
     vsd_applicantsmiddlename: application.ApplicantInformation.middleName,
     vsd_applicantslastname: application.ApplicantInformation.lastName,
     vsd_otherfirstname: '',
     vsd_otherlastname: '',
     vsd_dateofnamechange: null,
-    vsd_applicantsbirthdate: application.ApplicantInformation.birthDate,
+    vsd_applicantsbirthdate: application.ApplicantInformation.birthDate?.toISOString(),
     vsd_applicantsgendercode: application.ApplicantInformation.gender,
     vsd_genderidentitytext: application.ApplicantInformation.otherGender,
     vsd_pronouns: application.ApplicantInformation.pronouns,
@@ -46,7 +47,7 @@ function getCRMApplication(application: iNotificationApplication) {
     vsd_primaryraceethnicity: application.ApplicantInformation.raceEthnicity,
     vsd_primaryraceethnicitytext: application.ApplicantInformation.otherRaceEthnicity,
     vsd_indigenous: application.ApplicantInformation.indigenousStatus,
-    vsd_applicantsmaritalstatus: 0,
+    vsd_applicantsmaritalstatus: null,
 
     vsd_applicantspreferredlanguage: application.ApplicantInformation.preferredLanguage,
     vsd_applicantsinterpreterneeded: application.ApplicantInformation.interpreterNeeded,
@@ -119,7 +120,7 @@ function getCRMApplication(application: iNotificationApplication) {
       : enums.Boolean.False.val,
 
     vsd_declarationfullname: application.AuthorizationInformation.fullName,
-    vsd_declarationdate: application.AuthorizationInformation.date,
+    vsd_declarationdate: application.AuthorizationInformation.date?.toISOString(),
     vsd_applicantssignature: application.AuthorizationInformation.signature
   };
   return crm_application;

@@ -285,13 +285,16 @@ namespace Gov.Cscp.Victims.Public.Models.Mapping
         {
             var entity = new VSd_Application
             {
-                VSd_VSu_ApplicationType = (VSd_VSu_ApplicationType)application.vsd_vsu_applicationtype,
-                VSd_CVAp_VictimFirstName = application.vsd_cvap_victimfirstname,
-                VSd_CVAp_VictimMiddleName = application.vsd_cvap_victimmiddlename,
-                VSd_CVAp_VictimLastName = application.vsd_cvap_victimlastname,
-                VSd_CVAp_VictimBirthdate = application.vsd_cvap_victimbirthdate,
-                VSd_CVAp_VictimGenderCode = application.vsd_cvap_victimgendercode.HasValue
-                    ? (VSd_Gender?)application.vsd_cvap_victimgendercode.Value
+                VSd_VSu_ApplicationType = (VSd_VSu_ApplicationType)application.ApplicationType,
+                VSd_CVAp_VictimFirstName = application.VictimFirstName,
+                VSd_CVAp_VictimMiddleName = application.VictimMiddleName,
+                VSd_CVAp_VictimLastName = application.VictimLastName,
+                VSd_CVAp_VictimBirthdate = application.VictimBirthDate,
+                VSd_OtherFirstName = application.vsd_otherfirstname,
+                VSd_OtherLastName = application.vsd_otherlastname,
+                VSd_DateOfNameChange = application.vsd_dateofnamechange,
+                VSd_CVAp_VictimGenderCode = application.VictimGenderCode.HasValue
+                    ? (VSd_Gender?)application.VictimGenderCode.Value
                     : null,
                 VSd_VictimGenderText = application.vsd_victimgendertext,
                 VSd_VictimPronouns = application.vsd_victimpronouns.HasValue
@@ -321,11 +324,11 @@ namespace Gov.Cscp.Victims.Public.Models.Mapping
                     : null,
                 VSd_VSu_Decision3Comments = application.vsd_vsu_decision3comments,
                 VSd_VSu_AdditionalComments = application.vsd_vsu_additionalcomments,
-                VSd_CVAp_RelationshipToVictim = application.vsd_cvap_relationshiptovictim,
+                VSd_CVAp_RelationshipToVictim = application.RelationshipToVictim,
                 VSd_VSu_VictimTravelFundApplicationSubmitted = application
-                    .vsd_vsu_victimtravelfundapplicationsubmitted
+                    .VictimTravelFundApplicationSubmitted
                     .HasValue
-                    ? (VSd_YesNoUnknown?)application.vsd_vsu_victimtravelfundapplicationsubmitted.Value
+                    ? (VSd_YesNoUnknown?)application.VictimTravelFundApplicationSubmitted.Value
                     : null,
                 VSd_VSu_VTfAppSubmittedUnknownComments = application.vsd_vsu_vtfappsubmittedunknowncomments,
                 VSd_VSu_OtherFamilyMembersApplyingToVTf = application.vsd_vsu_otherfamilymembersapplyingtovtf.HasValue
@@ -345,6 +348,9 @@ namespace Gov.Cscp.Victims.Public.Models.Mapping
                 VSd_ApplicantsFirstName = application.vsd_applicantsfirstname,
                 VSd_ApplicantsMiddleName = application.vsd_applicantsmiddlename,
                 VSd_ApplicantsLastName = application.vsd_applicantslastname,
+                VSd_ApplicantsMaritalStatus = application.vsd_applicantsmaritalstatus.HasValue
+                    ? (VSd_MaritalStatus?)application.vsd_applicantsmaritalstatus.Value
+                    : null,
                 VSd_ApplicantsGenderCode = application.vsd_applicantsgendercode.HasValue
                     ? (VSd_Gender?)application.vsd_applicantsgendercode.Value
                     : null,

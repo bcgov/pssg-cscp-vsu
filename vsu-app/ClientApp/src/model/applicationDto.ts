@@ -7,29 +7,33 @@
  */
 
 export interface ApplicationDto {
-  vsd_vsu_applicationtype?: number;
+  applicationType?: number;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  vsd_cvap_victimfirstname?: string | null;
+  victimFirstName?: string | null;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  vsd_cvap_victimmiddlename?: string | null;
+  victimMiddleName?: string | null;
   /**
    * @minLength 0
    * @maxLength 100
    * @nullable
    */
-  vsd_cvap_victimlastname?: string | null;
+  vsd_otherfirstname?: string | null;
+  /**
+   * @minLength 0
+   * @maxLength 100
+   * @nullable
+   */
+  vsd_otherlastname?: string | null;
   /** @nullable */
-  vsd_cvap_victimbirthdate?: string | null;
-  /** @nullable */
-  vsd_cvap_victimgendercode?: number | null;
+  vsd_dateofnamechange?: string | null;
   /**
    * @minLength 0
    * @maxLength 500
@@ -102,14 +106,6 @@ export interface ApplicationDto {
    * @maxLength 100
    * @nullable
    */
-  vsd_cvap_relationshiptovictim?: string | null;
-  /** @nullable */
-  vsd_vsu_victimtravelfundapplicationsubmitted?: number | null;
-  /**
-   * @minLength 0
-   * @maxLength 100
-   * @nullable
-   */
   vsd_vsu_vtfappsubmittedunknowncomments?: string | null;
   /** @nullable */
   vsd_vsu_otherfamilymembersapplyingtovtf?: number | null;
@@ -177,6 +173,8 @@ export interface ApplicationDto {
    * @nullable
    */
   vsd_applicantslastname?: string | null;
+  /** @nullable */
+  vsd_applicantsmaritalstatus?: number | null;
   /** @nullable */
   vsd_applicantsgendercode?: number | null;
   /**
@@ -351,4 +349,22 @@ export interface ApplicationDto {
   vsd_declarationdate?: string | null;
   /** @nullable */
   vsd_applicantssignature?: string | null;
+  /**
+   * @minLength 0
+   * @maxLength 100
+   * @nullable
+   */
+  relationshipToVictim?: string | null;
+  /** @nullable */
+  victimTravelFundApplicationSubmitted?: number | null;
+  /**
+   * @minLength 0
+   * @maxLength 100
+   * @nullable
+   */
+  victimLastName?: string | null;
+  /** @nullable */
+  victimBirthDate?: string | null;
+  /** @nullable */
+  victimGenderCode?: number | null;
 }

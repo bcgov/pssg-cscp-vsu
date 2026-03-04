@@ -5,18 +5,25 @@ namespace Gov.Cscp.Victims.Public.Models
 {
     public class ApplicationDto
     {
-        public int vsd_vsu_applicationtype { get; set; }
+        public int ApplicationType { get; set; }
 
         [StringLength(100)]
-        public string vsd_cvap_victimfirstname { get; set; }
+        public string VictimFirstName { get; set; }
 
         [StringLength(100)]
-        public string vsd_cvap_victimmiddlename { get; set; }
+        public string VictimMiddleName { get; set; }
 
         [StringLength(100)]
-        public string vsd_cvap_victimlastname { get; set; }
-        public DateTime? vsd_cvap_victimbirthdate { get; set; }
-        public int? vsd_cvap_victimgendercode { get; set; }
+        public string VictimLastName { get; set; }
+        public DateTime? VictimBirthDate { get; set; }
+
+        [StringLength(100)]
+        public string vsd_otherfirstname { get; set; }
+
+        [StringLength(100)]
+        public string vsd_otherlastname { get; set; }
+        public DateTime? vsd_dateofnamechange { get; set; }
+        public int? VictimGenderCode { get; set; }
 
         [StringLength(500)]
         public string vsd_victimgendertext { get; set; }
@@ -55,8 +62,8 @@ namespace Gov.Cscp.Victims.Public.Models
         public string vsd_vsu_additionalcomments { get; set; }
 
         [StringLength(100)]
-        public string vsd_cvap_relationshiptovictim { get; set; }
-        public int? vsd_vsu_victimtravelfundapplicationsubmitted { get; set; }
+        public string RelationshipToVictim { get; set; }
+        public int? VictimTravelFundApplicationSubmitted { get; set; }
 
         [StringLength(100)]
         public string vsd_vsu_vtfappsubmittedunknowncomments { get; set; }
@@ -95,6 +102,7 @@ namespace Gov.Cscp.Victims.Public.Models
 
         [StringLength(100)]
         public string vsd_applicantslastname { get; set; }
+        public int? vsd_applicantsmaritalstatus { get; set; }
         public int? vsd_applicantsgendercode { get; set; }
 
         [StringLength(100)]

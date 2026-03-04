@@ -1,8 +1,8 @@
+import { ApplicationDto } from 'src/model';
 import { ApplicationType, EnumHelper, PARTICIPANT_TYPES } from '../../enums-list';
 import { iTravelFundApplication } from '../application.interface';
 import {
   iApplicationFormCRM,
-  iCRMApplication,
   iCRMCourtInfo,
   iCRMOffence,
   iCRMParticipant,
@@ -35,8 +35,8 @@ function getCRMApplication(application: iTravelFundApplication) {
     relationship_to_victim = application.ApplicantInformation.IFMRelationship;
   }
 
-  let crm_application: iCRMApplication = {
-    vsd_vsu_applicationtype: ApplicationType.TRAVEL_FUNDS,
+  let crm_application: ApplicationDto = {
+    applicationType: ApplicationType.TRAVEL_FUNDS,
 
     vsd_vsu_offencescomments: application.OverviewInformation.offencesComment,
     vsd_vsu_decision1impacttooutcome: application.OverviewInformation.proceedingsImpactOutcome,
@@ -48,9 +48,9 @@ function getCRMApplication(application: iTravelFundApplication) {
     vsd_vsu_additionalcomments: application.OverviewInformation.additionalComments,
 
     vsd_vsu_applicanttype: application.ApplicantInformation.applicantType,
-    vsd_cvap_relationshiptovictim: relationship_to_victim,
+    relationshipToVictim: relationship_to_victim,
 
-    vsd_vsu_victimtravelfundapplicationsubmitted: application.ApplicantInformation.victimAlreadySubmitted,
+    victimTravelFundApplicationSubmitted: application.ApplicantInformation.victimAlreadySubmitted,
     vsd_vsu_vtfappsubmittedunknowncomments: application.ApplicantInformation.victimAlreadySubmittedComment,
 
     vsd_vsu_otherfamilymembersapplyingtovtf: application.ApplicantInformation.otherFamilyAlsoApplying,
@@ -62,7 +62,7 @@ function getCRMApplication(application: iTravelFundApplication) {
     vsd_otherfirstname: '',
     vsd_otherlastname: '',
     vsd_dateofnamechange: null,
-    vsd_applicantsbirthdate: application.ApplicantInformation.birthDate,
+    vsd_applicantsbirthdate: application.ApplicantInformation.birthDate?.toISOString(),
     vsd_applicantsgendercode: application.ApplicantInformation.gender,
     vsd_genderidentitytext: application.ApplicantInformation.otherGender,
     vsd_pronouns: application.ApplicantInformation.pronouns,
@@ -70,7 +70,7 @@ function getCRMApplication(application: iTravelFundApplication) {
     vsd_primaryraceethnicity: application.ApplicantInformation.raceEthnicity,
     vsd_primaryraceethnicitytext: application.ApplicantInformation.otherRaceEthnicity,
     vsd_indigenous: application.ApplicantInformation.indigenousStatus,
-    vsd_applicantsmaritalstatus: 0,
+    vsd_applicantsmaritalstatus: null,
 
     vsd_applicantspreferredlanguage: application.ApplicantInformation.preferredLanguage,
     vsd_applicantsinterpreterneeded: application.ApplicantInformation.interpreterNeeded,
@@ -111,11 +111,11 @@ function getCRMApplication(application: iTravelFundApplication) {
       ? application.ApplicantInformation.contactMethods[2].leaveMessage
       : null,
 
-    vsd_cvap_victimfirstname: application.CaseInformation.firstName,
-    vsd_cvap_victimmiddlename: application.CaseInformation.middleName,
-    vsd_cvap_victimlastname: application.CaseInformation.lastName,
-    vsd_cvap_victimbirthdate: application.CaseInformation.birthDate,
-    vsd_cvap_victimgendercode: application.CaseInformation.gender,
+    victimFirstName: application.CaseInformation.firstName,
+    victimMiddleName: application.CaseInformation.middleName,
+    victimLastName: application.CaseInformation.lastName,
+    victimBirthDate: application.CaseInformation.birthDate?.toISOString(),
+    victimGenderCode: application.CaseInformation.gender,
     vsd_victimgendertext: application.CaseInformation.otherGender,
     vsd_victimpronouns: application.CaseInformation.pronouns,
     vsd_victimpronountext: application.CaseInformation.otherPronouns,
@@ -135,7 +135,7 @@ function getCRMApplication(application: iTravelFundApplication) {
       ? enums.Boolean.True.val
       : enums.Boolean.False.val,
     vsd_declarationfullname: application.AuthorizationInformation.fullName,
-    vsd_declarationdate: application.AuthorizationInformation.date,
+    vsd_declarationdate: application.AuthorizationInformation.date?.toISOString(),
     vsd_applicantssignature: application.AuthorizationInformation.signature
   };
 
