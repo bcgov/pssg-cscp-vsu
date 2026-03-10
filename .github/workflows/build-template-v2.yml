@@ -4,8 +4,7 @@
 #  Description:
 #  Reusable workflow for building and publishing Docker images.
 #  Follows ERA (EMCR-ESS-PORTAL) standard build template pattern.
-#  Builds once, then pushes to OpenShift registry (critical for deployments) and
-#  Artifactory (backup). Artifactory push failures are non-blocking.
+#  Builds once, then pushes to OpenShift registry.
 #  Images are tagged as 'latest' with OCI labels for traceability.
 # ======================================================================================
 
@@ -35,20 +34,12 @@ on:
       IMAGE_NAME:
         required: true
         type: string
-      # URL of the Artifactory container registry.
-      ARTIFACTORY_REGISTRY:
-        required: true
-        type: string
       # The branch name, used for tagging.
       BRANCH:
         required: false
         type: string
 
     secrets:
-      ARTIFACTORY_USERNAME:
-        required: true
-      ARTIFACTORY_PASSWORD:
-        required: true
       OCP4_PASSWORD:
         required: true
       OCP4_NAMESPACE:
@@ -62,8 +53,7 @@ on:
 jobs:
   # ------------------------------------------------------------------------------------
   #  Job: build-and-publish
-  #  Purpose: Build image once and push to OpenShift (critical) and Artifactory (backup).
-  #  Note: Artifactory failures are non-blocking to ensure deployments proceed.
+  #  Purpose: Build image once and push to OpenShift registry.
   # ------------------------------------------------------------------------------------
   build-and-publish:
     permissions:
@@ -88,15 +78,6 @@ jobs:
           registry: ${{ secrets.OCP4_REGISTRY }}
           username: unused
           password: ${{ secrets.OCP4_PASSWORD }}
-
-      - name: Login to Artifactory
-        id: artifactory-login
-        uses: docker/login-action@v3
-        continue-on-error: true
-        with:
-          registry: ${{ inputs.ARTIFACTORY_REGISTRY }}
-          username: ${{ secrets.ARTIFACTORY_USERNAME }}
-          password: ${{ secrets.ARTIFACTORY_PASSWORD }}
 
       - name: Extract Docker Image Metadata
         id: meta
@@ -132,13 +113,6 @@ jobs:
         run: |
           docker tag ${{ inputs.IMAGE_NAME }}:latest ${{ secrets.OCP4_REGISTRY }}/${{ secrets.OCP4_NAMESPACE }}/${{ inputs.IMAGE_NAME }}:latest
           docker push ${{ secrets.OCP4_REGISTRY }}/${{ secrets.OCP4_NAMESPACE }}/${{ inputs.IMAGE_NAME }}:latest
-
-      - name: Push to Artifactory (non-blocking)
-        id: push-artifactory
-        continue-on-error: true
-        run: |
-          docker tag ${{ inputs.IMAGE_NAME }}:latest ${{ inputs.ARTIFACTORY_REGISTRY }}/${{ inputs.IMAGE_NAME }}:latest
-          docker push ${{ inputs.ARTIFACTORY_REGISTRY }}/${{ inputs.IMAGE_NAME }}:latest
 
       # STEP: Print a summary of vulnerabilities in the built image (does not fail build)
       - name: Trivy Image Scan (Table Summary)
@@ -181,18 +155,10 @@ jobs:
           echo "- **Build**: #${{ github.run_number }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Branch**: ${{ inputs.BRANCH }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### OpenShift Registry (Primary)" >> $GITHUB_STEP_SUMMARY
+          echo "### OpenShift Registry" >> $GITHUB_STEP_SUMMARY
           if [ "${{ steps.push-openshift.outcome }}" == "success" ]; then
             echo "- **Status**: ✅ Success" >> $GITHUB_STEP_SUMMARY
           else
             echo "- **Status**: ❌ Failed" >> $GITHUB_STEP_SUMMARY
           fi
           echo "- **Image**: ${{ secrets.OCP4_REGISTRY }}/${{ secrets.OCP4_NAMESPACE }}/${{ inputs.IMAGE_NAME }}:latest" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### Artifactory (Backup)" >> $GITHUB_STEP_SUMMARY
-          if [ "${{ steps.push-artifactory.outcome }}" == "success" ]; then
-            echo "- **Status**: ✅ Success" >> $GITHUB_STEP_SUMMARY
-          else
-            echo "- **Status**: ⚠️ Failed (non-blocking)" >> $GITHUB_STEP_SUMMARY
-          fi
-          echo "- **Image**: ${{ inputs.ARTIFACTORY_REGISTRY }}/${{ inputs.IMAGE_NAME }}:latest" >> $GITHUB_STEP_SUMMARY

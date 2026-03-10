@@ -47,11 +47,8 @@ jobs:
       IMAGE_CONTEXT: ./vsu-app/ClientApp
       IMAGE_FILE: ./vsu-app/ClientApp/Dockerfile
       IMAGE_NAME: vsu-ui
-      ARTIFACTORY_REGISTRY: ${{ vars.ARTIFACTORY_REGISTRY }}
       BRANCH: ${{ github.ref_name }}
     secrets:
-      ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
-      ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
       OCP4_PASSWORD: ${{ secrets.OCP4_PASSWORD }}
       OCP4_NAMESPACE: ${{ secrets.OCP4_NAMESPACE }}
       OCP4_REGISTRY: ${{ secrets.OCP4_REGISTRY }}
