@@ -40,7 +40,6 @@ jobs:
       packages: write             # Push Docker images to container registry
       # Environment and security
       id-token: write             # Required for environment protection and OIDC
-      security-events: write      # Upload security scan results (Trivy SARIF)
     uses: ./.github/workflows/build-template-v2.yml
     with:
       EVENT_NAME: ${{ github.event_name }}

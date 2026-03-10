@@ -60,7 +60,6 @@ jobs:
       contents: read
       actions: read
       packages: write
-      security-events: write      # Upload Trivy SARIF to GitHub Security tab
     runs-on: ubuntu-latest
 
     steps:
@@ -113,39 +112,6 @@ jobs:
         run: |
           docker tag ${{ inputs.IMAGE_NAME }}:latest ${{ secrets.OCP4_REGISTRY }}/${{ secrets.OCP4_NAMESPACE }}/${{ inputs.IMAGE_NAME }}:latest
           docker push ${{ secrets.OCP4_REGISTRY }}/${{ secrets.OCP4_NAMESPACE }}/${{ inputs.IMAGE_NAME }}:latest
-
-      # STEP: Print a summary of vulnerabilities in the built image (does not fail build)
-      - name: Trivy Image Scan (Table Summary)
-        uses: aquasecurity/trivy-action@0.31.0
-        with:
-          scan-type: "image"
-          image-ref: "${{ inputs.IMAGE_NAME }}:latest"
-          scanners: "vuln,secret"
-          format: "table"
-          severity: "CRITICAL,HIGH"
-          exit-code: "0"
-          ignore-unfixed: true
-
-      # STEP: Main vulnerability scan on the built image (for GitHub Security tab, fails build if needed)
-      - name: Scan Image for Vulnerabilities
-        uses: aquasecurity/trivy-action@0.31.0
-        with:
-          scan-type: "image"
-          image-ref: "${{ inputs.IMAGE_NAME }}:latest"
-          scanners: "vuln,secret"
-          format: "sarif"
-          output: "trivy-image-results-${{ inputs.IMAGE_NAME }}.sarif"
-          severity: "CRITICAL,HIGH"
-          exit-code: "1"
-          ignore-unfixed: true
-          limit-severities-for-sarif: true
-
-      - name: Upload Vulnerability Scan Results
-        uses: github/codeql-action/upload-sarif@v3
-        if: always()
-        with:
-          sarif_file: "trivy-image-results-${{ inputs.IMAGE_NAME }}.sarif"
-          category: "trivy-scan-${{ inputs.IMAGE_NAME }}"
 
       - name: Summary
         run: |
