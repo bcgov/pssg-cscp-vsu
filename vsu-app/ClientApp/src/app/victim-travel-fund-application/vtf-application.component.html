@@ -1,71 +1,99 @@
 <div class="form-wrapper" style="position: relative;">
-    <div class="loading-indicator" *ngIf="submitting">
-        <mat-spinner mode="indeterminate"></mat-spinner>
+  @if (submitting) {
+    <div class="loading-indicator">
+      <mat-spinner mode="indeterminate"></mat-spinner>
     </div>
-    <div class="row" [formGroup]="form">
-        <div class="col-lg-3 col-sm-12 application-gutter" [class.hidden]="showPrintView">
-            <h3>Victim Travel Fund Application Form</h3>
-            <section class="application-nav sticky-top">
-                <div>
-                    <mat-vertical-stepper [linear]="true" (selectionChange)="gotoPage($event)" #stepper>
-                        <ng-template matStepperIcon="edit">
-                            <i class="fa fa-check"></i>
-                        </ng-template>
-                        <ng-template matStepperIcon="error">
-                            <i class="fa fa-times"></i>
-                        </ng-template>
-                        <ng-template matStepperIcon="number">
-                        </ng-template>
-                        <mat-step label="Overview" [stepControl]="fb.group({name: ['overview']})" [hasError]="!isMyControlValid(form.get('overview'))"></mat-step>
-                        <mat-step label="Applicant Information" [stepControl]="fb.group({name: ['applicantInformation']})" [hasError]="!isMyControlValid(form.get('applicantInformation'))"></mat-step>
-                        <mat-step label="Case Information" [stepControl]="fb.group({name: ['caseInformation']})" [hasError]="max_selected_index >= 2 && !isMyControlValid(form.get('caseInformation'))"></mat-step>
-                        <mat-step label="Travel Information" [stepControl]="fb.group({name: ['travelInformation']})" [hasError]="!isMyControlValid(form.get('travelInformation'))"></mat-step>
-                        <mat-step label="Declaration & Authorization" [stepControl]="fb.group({name: ['authorizationInformation']})" [hasError]="!isMyControlValid(form.get('authorizationInformation'))"></mat-step>
-                        <mat-step label="Confirmation" *ngIf="showConfirmation" [stepControl]="fb.group({name: ['confirmation']})"></mat-step>
-                    </mat-vertical-stepper>
+  }
+  <div class="row" [formGroup]="form">
+    <div class="col-lg-3 col-sm-12 application-gutter" [class.hidden]="showPrintView">
+      <h3>Victim Travel Fund Application Form</h3>
+      <section class="application-nav sticky-top">
+        <div>
+          <mat-vertical-stepper [linear]="true" (selectionChange)="gotoPage($event)" #stepper>
+            <ng-template matStepperIcon="edit">
+              <i class="fa fa-check"></i>
+            </ng-template>
+            <ng-template matStepperIcon="error">
+              <i class="fa fa-times"></i>
+            </ng-template>
+            <ng-template matStepperIcon="number">
+            </ng-template>
+            <mat-step label="Overview" [stepControl]="fb.group({name: ['overview']})" [hasError]="!isMyControlValid(form.get('overview'))"></mat-step>
+            <mat-step label="Applicant Information" [stepControl]="fb.group({name: ['applicantInformation']})" [hasError]="!isMyControlValid(form.get('applicantInformation'))"></mat-step>
+            <mat-step label="Case Information" [stepControl]="fb.group({name: ['caseInformation']})" [hasError]="max_selected_index >= 2 && !isMyControlValid(form.get('caseInformation'))"></mat-step>
+            <mat-step label="Travel Information" [stepControl]="fb.group({name: ['travelInformation']})" [hasError]="!isMyControlValid(form.get('travelInformation'))"></mat-step>
+            <mat-step label="Declaration & Authorization" [stepControl]="fb.group({name: ['authorizationInformation']})" [hasError]="!isMyControlValid(form.get('authorizationInformation'))"></mat-step>
+            @if (showConfirmation) {
+              <mat-step label="Confirmation" [stepControl]="fb.group({name: ['confirmation']})"></mat-step>
+            }
+          </mat-vertical-stepper>
 
-                    <app-additional-info-banner [formType]="formType.val"></app-additional-info-banner>
-                </div>
-            </section>
+          <app-additional-info-banner [formType]="formType.val"></app-additional-info-banner>
         </div>
-
-        <div id="pdfPrintGroup" [class.col-12]="showPrintView" class="col-lg-7 col-sm-12">
-            <form [formGroup]="form">
-                <div *ngIf="isIE" class="alert alert-danger warning-message">
-                    <p>It looks like you are using an unsupported browser.</p>
-                    <p>For best results, we recommend you use Chrome, Firefox, Edge, or Safari.</p>
-                </div>
-
-                <app-travel-overview [formType]="formType.val" [formGroup]="form" formGroupName="overview" [lookupData]="lookupData" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == 0 || showPrintView"></app-travel-overview>
-
-                <div class="pagebreak"> </div>
-                <app-applicant-information [formType]="formType.val" [formGroup]="form" formGroupName="applicantInformation" [lookupData]="lookupData" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == 1 || showPrintView"></app-applicant-information>
-
-                <div class="pagebreak"> </div>
-                <app-case-information [formType]="formType.val" [formGroup]="form" formGroupName="caseInformation" [lookupData]="lookupData" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == 2 || showPrintView"></app-case-information>
-
-                <div class="pagebreak"> </div>
-                <app-travel-information [formType]="formType.val" [formGroup]="form" formGroupName="travelInformation" [lookupData]="lookupData" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == 3 || showPrintView"></app-travel-information>
-
-                <div class="pagebreak"> </div>
-                <app-authorization [formType]="formType.val" [formGroup]="form" formGroupName="authorizationInformation" [isDisabled]="showConfirmation" *ngIf="this.currentFormStep == 4 || showPrintView"></app-authorization>
-
-                <div *ngIf="showValidationMessage" class="error-summary">
-                    <i class="fas fa-exclamation-triangle" style="margin-right: 10px;"></i>
-                    <span>There are errors with some fields on this page. Please scroll up to review and fix the errors (marked in red) before continuing.</span>
-                </div>
-
-                <div class="pagebreak"> </div>
-                <app-confirmation [formType]="formType.val" [confirmationNumber]="form.get('confirmation.confirmationNumber').value" (showPrintView)="showPrintView = $event" *ngIf="stepper.selectedIndex == 5"></app-confirmation>
-
-                <section class="button-container" *ngIf="!showPrintView" [class.disabled-wrapper]="submitting">
-                    <span class="right-buttons">
-                        <button (click)="submit();" class="btn btn-primary continue-btn" [class.is-disabled]="submitting" *ngIf="stepper.selectedIndex == 4 && !showConfirmation">SUBMIT</button>
-                        <button (click)="gotoNextStep(stepper);" class="btn btn-primary continue-btn" [class.is-disabled]="submitting" *ngIf="stepper.selectedIndex < 4 || (stepper.selectedIndex == 4 && showConfirmation)">{{stepper.selectedIndex === 0 ? 'START APPLICATION' : 'CONTINUE'}} <i class="fas fa-chevron-right"></i></button>
-                        <button (click)="gotoPreviousStep(stepper);" class="btn btn-primary continue-btn" [class.is-disabled]="submitting" *ngIf="stepper.selectedIndex > 0 && !showConfirmation"><i class="fas fa-chevron-left"></i> BACK</button>
-                    </span>
-                </section>
-            </form>
-        </div>
+      </section>
     </div>
+
+    <div id="pdfPrintGroup" [class.col-12]="showPrintView" class="col-lg-7 col-sm-12">
+      <form [formGroup]="form">
+        @if (isIE) {
+          <div class="alert alert-danger warning-message">
+            <p>It looks like you are using an unsupported browser.</p>
+            <p>For best results, we recommend you use Chrome, Firefox, Edge, or Safari.</p>
+          </div>
+        }
+
+        @if (this.currentFormStep == 0 || showPrintView) {
+          <app-travel-overview [formType]="formType.val" [formGroup]="form" formGroupName="overview" [lookupData]="lookupData" [isDisabled]="showConfirmation"></app-travel-overview>
+        }
+
+        <div class="pagebreak"> </div>
+        @if (this.currentFormStep == 1 || showPrintView) {
+          <app-applicant-information [formType]="formType.val" [formGroup]="form" formGroupName="applicantInformation" [lookupData]="lookupData" [isDisabled]="showConfirmation"></app-applicant-information>
+        }
+
+        <div class="pagebreak"> </div>
+        @if (this.currentFormStep == 2 || showPrintView) {
+          <app-case-information [formType]="formType.val" [formGroup]="form" formGroupName="caseInformation" [lookupData]="lookupData" [isDisabled]="showConfirmation"></app-case-information>
+        }
+
+        <div class="pagebreak"> </div>
+        @if (this.currentFormStep == 3 || showPrintView) {
+          <app-travel-information [formType]="formType.val" [formGroup]="form" formGroupName="travelInformation" [lookupData]="lookupData" [isDisabled]="showConfirmation"></app-travel-information>
+        }
+
+        <div class="pagebreak"> </div>
+        @if (this.currentFormStep == 4 || showPrintView) {
+          <app-authorization [formType]="formType.val" [formGroup]="form" formGroupName="authorizationInformation" [isDisabled]="showConfirmation"></app-authorization>
+        }
+
+        @if (showValidationMessage) {
+          <div class="error-summary">
+            <i class="fas fa-exclamation-triangle" style="margin-right: 10px;"></i>
+            <span>There are errors with some fields on this page. Please scroll up to review and fix the errors (marked in red) before continuing.</span>
+          </div>
+        }
+
+        <div class="pagebreak"> </div>
+        @if (stepper.selectedIndex == 5) {
+          <app-confirmation [formType]="formType.val" [confirmationNumber]="form.get('confirmation.confirmationNumber').value" (showPrintView)="showPrintView = $event"></app-confirmation>
+        }
+
+        @if (!showPrintView) {
+          <section class="button-container" [class.disabled-wrapper]="submitting">
+            <span class="right-buttons">
+              @if (stepper.selectedIndex == 4 && !showConfirmation) {
+                <button (click)="submit();" class="btn btn-primary continue-btn" [class.is-disabled]="submitting">SUBMIT</button>
+              }
+              @if (stepper.selectedIndex < 4 || (stepper.selectedIndex == 4 && showConfirmation)) {
+                <button (click)="gotoNextStep(stepper);" class="btn btn-primary continue-btn" [class.is-disabled]="submitting">{{stepper.selectedIndex === 0 ? 'START APPLICATION' : 'CONTINUE'}} <i class="fas fa-chevron-right"></i></button>
+              }
+              @if (stepper.selectedIndex > 0 && !showConfirmation) {
+                <button (click)="gotoPreviousStep(stepper);" class="btn btn-primary continue-btn" [class.is-disabled]="submitting"><i class="fas fa-chevron-left"></i> BACK</button>
+              }
+            </span>
+          </section>
+        }
+      </form>
+    </div>
+  </div>
 </div>

@@ -1,156 +1,164 @@
 <div [formGroup]="form">
-    <div class="page-header mb-0">
-        <h1>Travel Information</h1>
+  <div class="page-header mb-0">
+    <h1>Travel Information</h1>
+  </div>
+
+  <h2 class="blue-header mt-0">Travel Information</h2>
+
+  <p>I would like to apply for the following expenses: <span class="error-states">*</span></p>
+
+  <div [formGroup]="form.get('expenses')" class="address-info">
+    <div class="row">
+      <div class="col-md-6">
+        <app-field [disabled]="isDisabled">
+          <label>
+            <input type="checkbox" [value]="true" name="applyForAccommodation" formControlName="applyForAccommodation" (change)="changeGroupValidity()">
+            Accomodation
+          </label>
+        </app-field>
+      </div>
+      <div class="col-md-6">
+        <app-field [disabled]="isDisabled">
+          <label>
+            <input type="checkbox" [value]="true" name="applyForMeals" formControlName="applyForMeals" (change)="changeGroupValidity()">
+            Meals
+          </label>
+        </app-field>
+      </div>
     </div>
 
-    <h2 class="blue-header mt-0">Travel Information</h2>
+    <div class="row">
+      <div class="col-md-6">
+        <app-field [disabled]="isDisabled">
+          <label>
+            <input type="checkbox" [value]="true" name="applyForTransportationBus" formControlName="applyForTransportationBus" (change)="changeGroupValidity()">
+            Transportation - Bus
+          </label>
+        </app-field>
+      </div>
 
-    <p>I would like to apply for the following expenses: <span class="error-states">*</span></p>
-
-    <div [formGroup]="form.get('expenses')" class="address-info">
-        <div class="row">
-            <div class="col-md-6">
-                <app-field [disabled]="isDisabled">
-                    <label>
-                        <input type="checkbox" [value]="true" name="applyForAccommodation" formControlName="applyForAccommodation" (change)="changeGroupValidity()">
-                        Accomodation
-                    </label>
-                </app-field>
-            </div>
-            <div class="col-md-6">
-                <app-field [disabled]="isDisabled">
-                    <label>
-                        <input type="checkbox" [value]="true" name="applyForMeals" formControlName="applyForMeals" (change)="changeGroupValidity()">
-                        Meals
-                    </label>
-                </app-field>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-6">
-                <app-field [disabled]="isDisabled">
-                    <label>
-                        <input type="checkbox" [value]="true" name="applyForTransportationBus" formControlName="applyForTransportationBus" (change)="changeGroupValidity()">
-                        Transportation - Bus
-                    </label>
-                </app-field>
-            </div>
-
-            <div class="col-md-6">
-                <app-field [disabled]="isDisabled">
-                    <label>
-                        <input type="checkbox" [value]="true" name="applyForTransportationFerry" formControlName="applyForTransportationFerry" (change)="changeGroupValidity()">
-                        Transportation - Ferry
-                    </label>
-                </app-field>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-6">
-                <app-field [disabled]="isDisabled">
-                    <label>
-                        <input type="checkbox" [value]="true" name="applyForTransportationFlights" formControlName="applyForTransportationFlights" (change)="changeGroupValidity()">
-                        Transportation - Flights
-                    </label>
-                </app-field>
-            </div>
-            <div class="col-md-6">
-                <app-field [disabled]="isDisabled">
-                    <label>
-                        <input type="checkbox" [value]="true" name="applyForTransportationMileage" formControlName="applyForTransportationMileage" (change)="changeGroupValidity()">
-                        Transportation - Mileage
-                    </label>
-                </app-field>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-6">
-                <app-field [disabled]="isDisabled">
-                    <label>
-                        <input type="checkbox" [value]="true" name="applyForTransportationOther" formControlName="applyForTransportationOther" (change)="changeGroupValidity()">
-                        Transportation - Other
-                    </label>
-                    <section *ngIf="form.get('expenses').get('applyForTransportationOther').value === true" class="pushed">
-                        <app-field label="Please specify" [disabled]="isDisabled">
-                            <input class="form-control" type="text" formControlName="applyForTransportationOtherText">
-                        </app-field>
-                    </section>
-                </app-field>
-            </div>
-
-            <div class="col-md-6">
-                <app-field [disabled]="isDisabled">
-                    <label>
-                        <input type="checkbox" [value]="true" name="applyForOther" formControlName="applyForOther" (change)="changeGroupValidity();">
-                        Other
-                    </label>
-                    <section *ngIf="form.get('expenses').get('applyForOther').value === true" class="pushed">
-                        <app-field label="Please specify" [disabled]="isDisabled">
-                            <input class="form-control" type="text" formControlName="applyForOtherText">
-                        </app-field>
-                    </section>
-                </app-field>
-            </div>
-        </div>
+      <div class="col-md-6">
+        <app-field [disabled]="isDisabled">
+          <label>
+            <input type="checkbox" [value]="true" name="applyForTransportationFerry" formControlName="applyForTransportationFerry" (change)="changeGroupValidity()">
+            Transportation - Ferry
+          </label>
+        </app-field>
+      </div>
     </div>
 
-    <app-field [valid]="isFieldValid('atLeastOneExpense')" errorMessage="Please select at least one option">
-        <input type="hidden" name="atLeastOneExpense" formControlName="atLeastOneExpense">
-    </app-field>
-
-    <div formArrayName="courtDates" *ngFor="let item of form.get('courtDates')['controls']; let i = index;">
-        <div [formGroupName]="i" class="court-date-info">
-            <div class="row">
-                <div class="col-md-6">
-                    <app-field label="Court Date" [required]="true" [valid]="isMyControlValid(item.get('courtDate'))" errorMessage="Please enter the date" [disabled]="isDisabled" [tooltipReference]="courtDateTemplate">
-                        <input type="text" class="form-control date-picker" formControlName="courtDate" placeholder="yyyy/mm/dd" [matDatepicker]="courtDatePicker_i" (focus)="courtDatePicker_i.open()" (click)="courtDatePicker_i.open()" readonly>
-                        <mat-datepicker #courtDatePicker_i></mat-datepicker>
-                    </app-field>
-                </div>
-                <div class="col">
-                    <div class="remove-button" *ngIf="form.get('courtDates')['controls'].length > 1">
-                        <br>
-                        <i class="fas fa-times-circle text-danger center-clear-btn" (click)="removeCourtDate(i)"></i>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-12">
-                    <app-field label="Please indicate below the purpose of travel (e.g. attend trial, sentencing, etc.)" [required]="true" [valid]="isMyControlValid(item.get('purposeOfTravel'))" errorMessage="Please enter a purpose of travel" [disabled]="isDisabled" [tooltipReference]="purposeOfTravelTemplate">
-                        <textarea class="form-control bigger" formControlName="purposeOfTravel" maxlength="500"></textarea>
-                    </app-field>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6">
-                    <app-field label="Travel Period (from):" [required]="true" [valid]="isMyControlValid(item.get('travelPeriodStart'))" errorMessage="Please select a travel start date" [disabled]="isDisabled">
-                        <input type="text" class="form-control date-picker" formControlName="travelPeriodStart" placeholder="yyyy/mm/dd" [matDatepicker]="travelPeriodStartPicker_i" (focus)="travelPeriodStartPicker_i.open()" (click)="travelPeriodStartPicker_i.open()" readonly (dateChange)="travelPeriodStartChange(i)">
-                        <mat-datepicker #travelPeriodStartPicker_i></mat-datepicker>
-                    </app-field>
-                </div>
-                <div class="col-md-6">
-                    <app-field label="Travel Period (to):" [required]="true" [valid]="isMyControlValid(item.get('travelPeriodEnd'))" errorMessage="Please select a valid travel end date" [disabled]="isDisabled">
-                        <input type="text" [min]="travelPeriodStartDates[i]" class="form-control date-picker" formControlName="travelPeriodEnd" placeholder="yyyy/mm/dd" [matDatepicker]="travelPeriodEndPicker_i" (focus)="travelPeriodEndPicker_i.open()" (click)="travelPeriodEndPicker_i.open()" readonly>
-                        <mat-datepicker #travelPeriodEndPicker_i></mat-datepicker>
-                    </app-field>
-                </div>
-            </div>
-        </div>
+    <div class="row">
+      <div class="col-md-6">
+        <app-field [disabled]="isDisabled">
+          <label>
+            <input type="checkbox" [value]="true" name="applyForTransportationFlights" formControlName="applyForTransportationFlights" (change)="changeGroupValidity()">
+            Transportation - Flights
+          </label>
+        </app-field>
+      </div>
+      <div class="col-md-6">
+        <app-field [disabled]="isDisabled">
+          <label>
+            <input type="checkbox" [value]="true" name="applyForTransportationMileage" formControlName="applyForTransportationMileage" (change)="changeGroupValidity()">
+            Transportation - Mileage
+          </label>
+        </app-field>
+      </div>
     </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <app-field [disabled]="isDisabled">
+          <label>
+            <input type="checkbox" [value]="true" name="applyForTransportationOther" formControlName="applyForTransportationOther" (change)="changeGroupValidity()">
+            Transportation - Other
+          </label>
+          @if (form.get('expenses').get('applyForTransportationOther').value === true) {
+            <section class="pushed">
+              <app-field label="Please specify" [disabled]="isDisabled">
+                <input class="form-control" type="text" formControlName="applyForTransportationOtherText">
+              </app-field>
+            </section>
+          }
+        </app-field>
+      </div>
+
+      <div class="col-md-6">
+        <app-field [disabled]="isDisabled">
+          <label>
+            <input type="checkbox" [value]="true" name="applyForOther" formControlName="applyForOther" (change)="changeGroupValidity();">
+            Other
+          </label>
+          @if (form.get('expenses').get('applyForOther').value === true) {
+            <section class="pushed">
+              <app-field label="Please specify" [disabled]="isDisabled">
+                <input class="form-control" type="text" formControlName="applyForOtherText">
+              </app-field>
+            </section>
+          }
+        </app-field>
+      </div>
+    </div>
+  </div>
+
+  <app-field [valid]="isFieldValid('atLeastOneExpense')" errorMessage="Please select at least one option">
+    <input type="hidden" name="atLeastOneExpense" formControlName="atLeastOneExpense">
+  </app-field>
+
+  @for (item of form.get('courtDates')['controls']; track item; let i = $index) {
+    <div formArrayName="courtDates">
+      <div [formGroupName]="i" class="court-date-info">
+        <div class="row">
+          <div class="col-md-6">
+            <app-field label="Court Date" [required]="true" [valid]="isMyControlValid(item.get('courtDate'))" errorMessage="Please enter the date" [disabled]="isDisabled" [tooltipReference]="courtDateTemplate">
+              <input type="text" class="form-control date-picker" formControlName="courtDate" placeholder="yyyy/mm/dd" [matDatepicker]="courtDatePicker_i" (focus)="courtDatePicker_i.open()" (click)="courtDatePicker_i.open()" readonly>
+              <mat-datepicker #courtDatePicker_i></mat-datepicker>
+            </app-field>
+          </div>
+          <div class="col">
+            @if (form.get('courtDates')['controls'].length > 1) {
+              <div class="remove-button">
+                <br>
+                  <i class="fas fa-times-circle text-danger center-clear-btn" (click)="removeCourtDate(i)"></i>
+                </div>
+              }
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <app-field label="Please indicate below the purpose of travel (e.g. attend trial, sentencing, etc.)" [required]="true" [valid]="isMyControlValid(item.get('purposeOfTravel'))" errorMessage="Please enter a purpose of travel" [disabled]="isDisabled" [tooltipReference]="purposeOfTravelTemplate">
+                <textarea class="form-control bigger" formControlName="purposeOfTravel" maxlength="500"></textarea>
+              </app-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <app-field label="Travel Period (from):" [required]="true" [valid]="isMyControlValid(item.get('travelPeriodStart'))" errorMessage="Please select a travel start date" [disabled]="isDisabled">
+                <input type="text" class="form-control date-picker" formControlName="travelPeriodStart" placeholder="yyyy/mm/dd" [matDatepicker]="travelPeriodStartPicker_i" (focus)="travelPeriodStartPicker_i.open()" (click)="travelPeriodStartPicker_i.open()" readonly (dateChange)="travelPeriodStartChange(i)">
+                <mat-datepicker #travelPeriodStartPicker_i></mat-datepicker>
+              </app-field>
+            </div>
+            <div class="col-md-6">
+              <app-field label="Travel Period (to):" [required]="true" [valid]="isMyControlValid(item.get('travelPeriodEnd'))" errorMessage="Please select a valid travel end date" [disabled]="isDisabled">
+                <input type="text" [min]="travelPeriodStartDates[i]" class="form-control date-picker" formControlName="travelPeriodEnd" placeholder="yyyy/mm/dd" [matDatepicker]="travelPeriodEndPicker_i" (focus)="travelPeriodEndPicker_i.open()" (click)="travelPeriodEndPicker_i.open()" readonly>
+                <mat-datepicker #travelPeriodEndPicker_i></mat-datepicker>
+              </app-field>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
 
     <ng-template #courtDateTemplate>Please indicate below if there are multiple court dates and the purpose of travel.</ng-template>
     <ng-template #purposeOfTravelTemplate>If needed, you may be approved for funding to cover travel expenses the day prior to court and one day after court, in addition to eligible court dates.</ng-template>
 
     <div class="add-additional-btn-container">
-        <button *ngIf="!isDisabled" class="btn btn-secondary" (click)="addAdditionalCourtDate()">+ ADD ADDITIONAL TRAVEL PERIOD</button>
+      @if (!isDisabled) {
+        <button class="btn btn-secondary" (click)="addAdditionalCourtDate()">+ ADD ADDITIONAL TRAVEL PERIOD</button>
+      }
     </div>
 
     <app-field label="Please provide any additional comments regarding this application and/or your intended travel dates" [disabled]="isDisabled">
-        <textarea class="form-control bigger" formControlName="additionalComments" maxlength="250"></textarea>
+      <textarea class="form-control bigger" formControlName="additionalComments" maxlength="250"></textarea>
     </app-field>
-</div>
+  </div>

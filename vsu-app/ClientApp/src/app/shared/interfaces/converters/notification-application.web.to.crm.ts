@@ -1,11 +1,9 @@
+import { ApplicationDto } from 'src/model';
 import { ApplicationType, EnumHelper, PARTICIPANT_TYPES } from '../../enums-list';
-import { iCRMApplication, iCRMCourtInfo, iCRMParticipant, iApplicationFormCRM } from '../dynamics/crm-application';
 import { iNotificationApplication } from '../application.interface';
+import { iApplicationFormCRM, iCRMCourtInfo, iCRMParticipant } from '../dynamics/crm-application';
 
 export function convertNotificationApplicationToCRM(application: iNotificationApplication) {
-  console.log('converting notification application');
-  console.log(application);
-
   let crm_application: iApplicationFormCRM = {
     Application: getCRMApplication(application),
     CourtInfoCollection: getCRMCourtInfoCollection(application),
@@ -19,111 +17,115 @@ export function convertNotificationApplicationToCRM(application: iNotificationAp
 
 function getCRMApplication(application: iNotificationApplication) {
   let enums = new EnumHelper();
-  let crm_application: iCRMApplication = {
-    vsd_vsu_applicationtype: ApplicationType.NOTIFICATION,
-    vsd_cvap_victimfirstname: application.CaseInformation.firstName,
-    vsd_cvap_victimmiddlename: application.CaseInformation.middleName,
-    vsd_cvap_victimlastname: application.CaseInformation.lastName,
-    vsd_cvap_victimbirthdate: application.CaseInformation.birthDate,
-    vsd_cvap_victimgendercode: application.CaseInformation.gender,
-    vsd_victimgendertext: application.CaseInformation.otherGender,
-    vsd_victimpronouns: application.CaseInformation.pronouns,
-    vsd_victimpronountext: application.CaseInformation.otherPronouns,
-    vsd_victimprimaryraceethnicity: application.CaseInformation.raceEthnicity,
-    vsd_victimprimaryraceethnicitytext: application.CaseInformation.otherRaceEthnicity,
-    vsd_victimindigenous: application.CaseInformation.indigenousStatus,
+  let crm_application: ApplicationDto = {
+    applicationType: ApplicationType.NOTIFICATION,
+    victimFirstName: application.CaseInformation.firstName,
+    victimMiddleName: application.CaseInformation.middleName,
+    victimLastName: application.CaseInformation.lastName,
+    victimBirthDate: application.CaseInformation.birthDate?.toISOString(),
+    victimGenderCode: application.CaseInformation.gender,
+    victimGenderText: application.CaseInformation.otherGender,
+    victimPronouns: application.CaseInformation.pronouns,
+    victimPronounText: application.CaseInformation.otherPronouns,
+    victimPrimaryRaceEthnicity: application.CaseInformation.raceEthnicity,
+    victimPrimaryRaceEthnicityText: application.CaseInformation.otherRaceEthnicity,
+    victimIndigenous: application.CaseInformation.indigenousStatus,
 
-    vsd_vsu_applicanttype: application.ApplicantInformation.applicantType,
-    vsd_vsuapplicanttypeother: application.ApplicantInformation.applicantTypeOther,
-    vsd_applicantsfirstname: application.ApplicantInformation.firstName,
-    vsd_applicantsmiddlename: application.ApplicantInformation.middleName,
-    vsd_applicantslastname: application.ApplicantInformation.lastName,
-    vsd_otherfirstname: '',
-    vsd_otherlastname: '',
-    vsd_dateofnamechange: null,
-    vsd_applicantsbirthdate: application.ApplicantInformation.birthDate,
-    vsd_applicantsgendercode: application.ApplicantInformation.gender,
-    vsd_genderidentitytext: application.ApplicantInformation.otherGender,
-    vsd_pronouns: application.ApplicantInformation.pronouns,
-    vsd_pronountext: application.ApplicantInformation.otherPronouns,
-    vsd_primaryraceethnicity: application.ApplicantInformation.raceEthnicity,
-    vsd_primaryraceethnicitytext: application.ApplicantInformation.otherRaceEthnicity,
-    vsd_indigenous: application.ApplicantInformation.indigenousStatus,
-    vsd_applicantsmaritalstatus: 0,
+    decision1ImpactToOutcome: null,
+    decision2TravelOver100KM: null,
+    decision3NoOtherFundingSource: null,
 
-    vsd_applicantspreferredlanguage: application.ApplicantInformation.preferredLanguage,
-    vsd_applicantsinterpreterneeded: application.ApplicantInformation.interpreterNeeded,
-    vsd_applicantsprimaryaddressline1: application.ApplicantInformation.address.line1,
-    vsd_applicantsprimaryaddressline2: application.ApplicantInformation.address.line2,
-    vsd_applicantsprimarycity: application.ApplicantInformation.address.city,
-    vsd_applicantsprimaryprovince: application.ApplicantInformation.address.province,
-    vsd_applicantsprimarycountry: application.ApplicantInformation.address.country,
-    vsd_applicantsprimarypostalcode: application.ApplicantInformation.address.postalCode,
-    vsd_vsu_oktosendmail: application.ApplicantInformation.mayWeSendCorrespondence,
+    applicantType: application.ApplicantInformation.applicantType,
+    applicantTypeOther: application.ApplicantInformation.applicantTypeOther,
+    applicantsFirstName: application.ApplicantInformation.firstName,
+    applicantsMiddleName: application.ApplicantInformation.middleName,
+    applicantsLastName: application.ApplicantInformation.lastName,
+    otherFirstname: '',
+    otherLastname: '',
+    dateOfNameChange: null,
+    applicantsBirthDate: application.ApplicantInformation.birthDate?.toISOString(),
+    applicantsGenderCode: application.ApplicantInformation.gender,
+    applicantsGenderIdentityText: application.ApplicantInformation.otherGender,
+    applicantsPronouns: application.ApplicantInformation.pronouns,
+    applicantsPronounText: application.ApplicantInformation.otherPronouns,
+    applicantsPrimaryRaceEthnicity: application.ApplicantInformation.raceEthnicity,
+    applicantsPrimaryRaceEthnicityText: application.ApplicantInformation.otherRaceEthnicity,
+    applicantsIndigenous: application.ApplicantInformation.indigenousStatus,
+    applicantsMaritalStatus: null,
+
+    applicantsPreferredLanguage: application.ApplicantInformation.preferredLanguage,
+    applicantsInterpreterNeeded: application.ApplicantInformation.interpreterNeeded,
+    applicantsPrimaryAddressLine1: application.ApplicantInformation.address.line1,
+    applicantsPrimaryAddressLine2: application.ApplicantInformation.address.line2,
+    applicantsPrimaryCity: application.ApplicantInformation.address.city,
+    applicantsPrimaryProvince: application.ApplicantInformation.address.province,
+    applicantsPrimaryCountry: application.ApplicantInformation.address.country,
+    applicantsPrimaryPostalCode: application.ApplicantInformation.address.postalCode,
+    applicantsOkToSendMail: application.ApplicantInformation.mayWeSendCorrespondence,
 
     //check if we set these - don't send any info if val is blank
-    vsd_vsu_methodofcontact1type: application.ApplicantInformation.contactMethods[0].val
+    applicantsMethodOfContact1Type: application.ApplicantInformation.contactMethods[0].val
       ? application.ApplicantInformation.contactMethods[0].type
       : null,
-    vsd_vsu_methodofcontact1number: application.ApplicantInformation.contactMethods[0].val
+    applicantsMethodOfContact1Number: application.ApplicantInformation.contactMethods[0].val
       ? application.ApplicantInformation.contactMethods[0].val
       : null,
-    vsd_vsu_methodofcontact1leavedetailedmessage: application.ApplicantInformation.contactMethods[0].val
+    applicantsMethodOfContact1LeaveDetailedMessage: application.ApplicantInformation.contactMethods[0].val
       ? application.ApplicantInformation.contactMethods[0].leaveMessage
       : null,
-    vsd_vsu_methodofcontact2type: application.ApplicantInformation.contactMethods[1].val
+    applicantsMethodOfContact2Type: application.ApplicantInformation.contactMethods[1].val
       ? application.ApplicantInformation.contactMethods[1].type
       : null,
-    vsd_vsu_methodofcontact2number: application.ApplicantInformation.contactMethods[1].val
+    applicantsMethodOfContact2Number: application.ApplicantInformation.contactMethods[1].val
       ? application.ApplicantInformation.contactMethods[1].val
       : null,
-    vsd_vsu_methodofcontact2leavedetailedmessage: application.ApplicantInformation.contactMethods[1].val
+    applicantsMethodOfContact2LeaveDetailedMessage: application.ApplicantInformation.contactMethods[1].val
       ? application.ApplicantInformation.contactMethods[1].leaveMessage
       : null,
-    vsd_vsu_methodofcontact3type: application.ApplicantInformation.contactMethods[2].val
+    applicantsMethodOfContact3Type: application.ApplicantInformation.contactMethods[2].val
       ? application.ApplicantInformation.contactMethods[2].type
       : null,
-    vsd_vsu_methodofcontact3number: application.ApplicantInformation.contactMethods[2].val
+    applicantsMethodOfContact3Number: application.ApplicantInformation.contactMethods[2].val
       ? application.ApplicantInformation.contactMethods[2].val
       : null,
-    vsd_vsu_methodofcontact3leavedetailedmessage: application.ApplicantInformation.contactMethods[2].val
+    applicantsMethodOfContact3LeaveDetailedMessage: application.ApplicantInformation.contactMethods[2].val
       ? application.ApplicantInformation.contactMethods[2].leaveMessage
       : null,
 
-    vsd_vsu_notificationto: application.RecipientDetails.notificationRecipient,
-    vsd_vsu_significantcourtupdates: application.RecipientDetails.courtUpdates
+    applicantsNotificationTo: application.RecipientDetails.notificationRecipient,
+    applicantsSignificantCourtUpdates: application.RecipientDetails.courtUpdates
       ? enums.Boolean.True.val
       : enums.Boolean.False.val,
-    vsd_vsu_finalcourtresults: application.RecipientDetails.courtResults
+    applicantsFinalCourtResults: application.RecipientDetails.courtResults
       ? enums.Boolean.True.val
       : enums.Boolean.False.val,
-    vsd_vsu_updatesonallcriminalcourtappearances: application.RecipientDetails.courtAppearances
+    applicantsUpdatesOnAllCriminalCourtAppearances: application.RecipientDetails.courtAppearances
       ? enums.Boolean.True.val
       : enums.Boolean.False.val,
-    vsd_vsu_criminalcourtordersissued: application.RecipientDetails.courtOrders
+    applicantsCriminalCourtOrdersIssued: application.RecipientDetails.courtOrders
       ? enums.Boolean.True.val
       : enums.Boolean.False.val,
-    vsd_vsu_bccorrectionsinformation: application.RecipientDetails.correctionsInformation
+    applicantsBCCorrectionsInformation: application.RecipientDetails.correctionsInformation
       ? enums.Boolean.True.val
       : enums.Boolean.False.val,
-    vsd_vsu_notificationadditionalcomments: application.RecipientDetails.additionalComments,
+    applicantsNotificationAdditionalComments: application.RecipientDetails.additionalComments,
 
-    vsd_vsu_infosharecscpbc: application.AuthorizationInformation.registerForVictimNotification
+    applicantsInfoShareCSCPBC: application.AuthorizationInformation.registerForVictimNotification
       ? enums.Boolean.True.val
       : enums.Boolean.False.val,
-    vsd_vsu_infosharevsu: application.AuthorizationInformation.permissionToShareContactInfo
+    applicantsInfoShareVSU: application.AuthorizationInformation.permissionToShareContactInfo
       ? enums.Boolean.True.val
       : enums.Boolean.False.val,
-    vsd_vsu_infosharevsw: application.AuthorizationInformation.permissionToContactMyVSW
+    applicantsInfoShareVSW: application.AuthorizationInformation.permissionToContactMyVSW
       ? enums.Boolean.True.val
       : enums.Boolean.False.val,
-    vsd_declarationverified: application.AuthorizationInformation.declaration
+    applicantsDeclarationVerified: application.AuthorizationInformation.declaration
       ? enums.Boolean.True.val
       : enums.Boolean.False.val,
 
-    vsd_declarationfullname: application.AuthorizationInformation.fullName,
-    vsd_declarationdate: application.AuthorizationInformation.date,
-    vsd_applicantssignature: application.AuthorizationInformation.signature
+    applicantsDeclarationFullName: application.AuthorizationInformation.fullName,
+    applicantsDeclarationDate: application.AuthorizationInformation.date?.toISOString(),
+    applicantsSignature: application.AuthorizationInformation.signature
   };
   return crm_application;
 }

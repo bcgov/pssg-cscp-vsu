@@ -27,6 +27,7 @@ import { iLookupData } from '../shared/interfaces/lookup-data.interface';
 import { ServiceNotAvailableComponent } from '../shared/service-not-available.component';
 
 @Component({
+  standalone: false,
   selector: 'app-vtf-application',
   templateUrl: './vtf-application.component.html',
   styleUrls: ['./vtf-application.component.scss']
@@ -168,9 +169,7 @@ export class VictimTravelFundApplicationComponent extends FormBase implements On
     return this.fb.group(group);
   }
 
-  downloadPDF() {
-    console.log('download pdf');
-  }
+  downloadPDF() {}
 
   harvestForm(): iTravelFundApplication {
     let data = {
@@ -194,38 +193,28 @@ export class VictimTravelFundApplicationComponent extends FormBase implements On
   }
 
   submit() {
-    console.log('submit');
-    console.log(this.form);
     if (this.form.valid) {
       this.submitting = true;
-      console.log('form is valid - submit');
+
       let application = this.harvestForm();
       let data = convertTravelFundApplicationToCRM(application);
-      console.log(data);
-      this.applicationService.submit(data).subscribe(
-        (res) => {
-          this.submitting = false;
-          console.log(res);
-          if (res.IsSuccess) {
-            console.log('CONFIRMATION NUMBER SHOULD COME FROM CRM');
-            this.form.get('confirmation.confirmationNumber').patchValue('RXXXXXX');
-            this.showConfirmation = true;
-            setTimeout(() => {
-              this.gotoNextStep(this.applicationStepper);
-            }, 0);
-          } else {
-            this.notify.addNotification('There was an error submitting the application.', 'danger', 4000);
-            console.log(res.Result);
-          }
+
+      this.applicationService.submit(data).subscribe({
+        next: (res) => {
+          this.form.get('confirmation.confirmationNumber').patchValue('RXXXXXX');
+          this.showConfirmation = true;
+          setTimeout(() => {
+            this.gotoNextStep(this.applicationStepper);
+          }, 0);
         },
-        (err) => {
+        error: (err) => {
           this.notify.addNotification('There was an error submitting the application.', 'danger', 4000);
-          console.log(err);
+        },
+        complete: () => {
           this.submitting = false;
         }
-      );
+      });
     } else {
-      console.log('form is NOT valid - NO submit');
       this.validateAllFormFields(this.form);
     }
   }

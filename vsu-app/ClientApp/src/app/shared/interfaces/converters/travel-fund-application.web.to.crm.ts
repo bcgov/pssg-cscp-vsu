@@ -1,21 +1,15 @@
+import { ApplicationDto } from 'src/model';
 import { ApplicationType, EnumHelper, PARTICIPANT_TYPES } from '../../enums-list';
+import { iTravelFundApplication } from '../application.interface';
 import {
-  iCRMApplication,
-  iCRMCourtInfo,
-  iCRMParticipant,
   iApplicationFormCRM,
+  iCRMCourtInfo,
   iCRMOffence,
+  iCRMParticipant,
   iCRMTravelInfo
 } from '../dynamics/crm-application';
-import { iTravelFundApplication } from '../application.interface';
-import * as _ from 'lodash';
 
 export function convertTravelFundApplicationToCRM(application: iTravelFundApplication) {
-  console.log('converting travel application');
-  console.log(application);
-
-  console.log('TODO - need fields add/updated in COAST to capture form. Check TODO comments for details');
-
   let crm_application: iApplicationFormCRM = {
     Application: getCRMApplication(application),
     CourtInfoCollection: getCRMCourtInfoCollection(application),
@@ -41,108 +35,105 @@ function getCRMApplication(application: iTravelFundApplication) {
     relationship_to_victim = application.ApplicantInformation.IFMRelationship;
   }
 
-  let crm_application: iCRMApplication = {
-    vsd_vsu_applicationtype: ApplicationType.TRAVEL_FUNDS,
+  let crm_application: ApplicationDto = {
+    applicationType: ApplicationType.TRAVEL_FUNDS,
 
-    vsd_vsu_offencescomments: application.OverviewInformation.offencesComment,
-    vsd_vsu_decision1impacttooutcome: application.OverviewInformation.proceedingsImpactOutcome,
-    vsd_vsu_decision1comments: application.OverviewInformation.proceedingsImpactOutcomeComment,
-    vsd_vsu_decision2travelover100km: application.OverviewInformation.travelMoreThan100KM,
-    vsd_vsu_decision2comments: application.OverviewInformation.travelMoreThan100KMComment,
-    vsd_vsu_decision3nootherfundingsource: application.OverviewInformation.notCoveredByOtherSources,
-    vsd_vsu_decision3comments: application.OverviewInformation.notCoveredByOtherSourcesComment,
-    vsd_vsu_additionalcomments: application.OverviewInformation.additionalComments,
+    offencesComments: application.OverviewInformation.offencesComment,
+    decision1ImpactToOutcome: application.OverviewInformation.proceedingsImpactOutcome,
+    decision1Comments: application.OverviewInformation.proceedingsImpactOutcomeComment,
+    decision2TravelOver100KM: application.OverviewInformation.travelMoreThan100KM,
+    decision2Comments: application.OverviewInformation.travelMoreThan100KMComment,
+    decision3NoOtherFundingSource: application.OverviewInformation.notCoveredByOtherSources,
+    decision3Comments: application.OverviewInformation.notCoveredByOtherSourcesComment,
+    additionalComments: application.OverviewInformation.additionalComments,
 
-    vsd_vsu_applicanttype: application.ApplicantInformation.applicantType,
-    vsd_cvap_relationshiptovictim: relationship_to_victim,
+    applicantType: application.ApplicantInformation.applicantType,
+    relationshipToVictim: relationship_to_victim,
 
-    vsd_vsu_victimtravelfundapplicationsubmitted: application.ApplicantInformation.victimAlreadySubmitted,
-    vsd_vsu_vtfappsubmittedunknowncomments: application.ApplicantInformation.victimAlreadySubmittedComment,
+    victimTravelFundApplicationSubmitted: application.ApplicantInformation.victimAlreadySubmitted,
+    victimTravelFundApplicationSubmittedUnknownComments: application.ApplicantInformation.victimAlreadySubmittedComment,
 
-    vsd_vsu_otherfamilymembersapplyingtovtf: application.ApplicantInformation.otherFamilyAlsoApplying,
-    vsd_vsu_otherfamilymembersvtfothercomments: application.ApplicantInformation.otherFamilyAlsoApplyingComment,
+    otherFamilyMembersApplyingToVTF: application.ApplicantInformation.otherFamilyAlsoApplying,
+    otherFamilyMembersVTFOtherComments: application.ApplicantInformation.otherFamilyAlsoApplyingComment,
 
-    vsd_applicantsfirstname: application.ApplicantInformation.firstName,
-    vsd_applicantsmiddlename: application.ApplicantInformation.middleName,
-    vsd_applicantslastname: application.ApplicantInformation.lastName,
-    vsd_otherfirstname: '',
-    vsd_otherlastname: '',
-    vsd_dateofnamechange: null,
-    vsd_applicantsbirthdate: application.ApplicantInformation.birthDate,
-    vsd_applicantsgendercode: application.ApplicantInformation.gender,
-    vsd_genderidentitytext: application.ApplicantInformation.otherGender,
-    vsd_pronouns: application.ApplicantInformation.pronouns,
-    vsd_pronountext: application.ApplicantInformation.otherPronouns,
-    vsd_primaryraceethnicity: application.ApplicantInformation.raceEthnicity,
-    vsd_primaryraceethnicitytext: application.ApplicantInformation.otherRaceEthnicity,
-    vsd_indigenous: application.ApplicantInformation.indigenousStatus,
-    vsd_applicantsmaritalstatus: 0,
+    applicantsFirstName: application.ApplicantInformation.firstName,
+    applicantsMiddleName: application.ApplicantInformation.middleName,
+    applicantsLastName: application.ApplicantInformation.lastName,
+    otherFirstname: '',
+    otherLastname: '',
+    dateOfNameChange: null,
+    applicantsBirthDate: application.ApplicantInformation.birthDate?.toISOString(),
+    applicantsGenderCode: application.ApplicantInformation.gender,
+    applicantsGenderIdentityText: application.ApplicantInformation.otherGender,
+    applicantsPronouns: application.ApplicantInformation.pronouns,
+    applicantsPronounText: application.ApplicantInformation.otherPronouns,
+    applicantsPrimaryRaceEthnicity: application.ApplicantInformation.raceEthnicity,
+    applicantsPrimaryRaceEthnicityText: application.ApplicantInformation.otherRaceEthnicity,
+    applicantsIndigenous: application.ApplicantInformation.indigenousStatus,
+    applicantsMaritalStatus: null,
 
-    vsd_applicantspreferredlanguage: application.ApplicantInformation.preferredLanguage,
-    vsd_applicantsinterpreterneeded: application.ApplicantInformation.interpreterNeeded,
-    vsd_applicantsprimaryaddressline1: application.ApplicantInformation.address.line1,
-    vsd_applicantsprimaryaddressline2: application.ApplicantInformation.address.line2,
-    vsd_applicantsprimarycity: application.ApplicantInformation.address.city,
-    vsd_applicantsprimaryprovince: application.ApplicantInformation.address.province,
-    vsd_applicantsprimarycountry: application.ApplicantInformation.address.country,
-    vsd_applicantsprimarypostalcode: application.ApplicantInformation.address.postalCode,
-    vsd_vsu_oktosendmail: application.ApplicantInformation.mayWeSendCorrespondence,
+    applicantsPreferredLanguage: application.ApplicantInformation.preferredLanguage,
+    applicantsInterpreterNeeded: application.ApplicantInformation.interpreterNeeded,
+    applicantsPrimaryAddressLine1: application.ApplicantInformation.address.line1,
+    applicantsPrimaryAddressLine2: application.ApplicantInformation.address.line2,
+    applicantsPrimaryCity: application.ApplicantInformation.address.city,
+    applicantsPrimaryProvince: application.ApplicantInformation.address.province,
+    applicantsPrimaryCountry: application.ApplicantInformation.address.country,
+    applicantsPrimaryPostalCode: application.ApplicantInformation.address.postalCode,
+    applicantsOkToSendMail: application.ApplicantInformation.mayWeSendCorrespondence,
 
     //check if we set these - don't send any info if val is blank
-    vsd_vsu_methodofcontact1type: application.ApplicantInformation.contactMethods[0].val
-      ? application.ApplicantInformation.contactMethods[0].type
+    applicantsMethodOfContact1Type: application.ApplicantInformation.contactMethods[0].val
+      ? Number(application.ApplicantInformation.contactMethods[0].type)
       : null,
-    vsd_vsu_methodofcontact1number: application.ApplicantInformation.contactMethods[0].val
+    applicantsMethodOfContact1Number: application.ApplicantInformation.contactMethods[0].val
       ? application.ApplicantInformation.contactMethods[0].val
       : null,
-    vsd_vsu_methodofcontact1leavedetailedmessage: application.ApplicantInformation.contactMethods[0].val
+    applicantsMethodOfContact1LeaveDetailedMessage: application.ApplicantInformation.contactMethods[0].val
       ? application.ApplicantInformation.contactMethods[0].leaveMessage
       : null,
-    vsd_vsu_methodofcontact2type: application.ApplicantInformation.contactMethods[1].val
-      ? application.ApplicantInformation.contactMethods[1].type
+    applicantsMethodOfContact2Type: application.ApplicantInformation.contactMethods[1].val
+      ? Number(application.ApplicantInformation.contactMethods[1].type)
       : null,
-    vsd_vsu_methodofcontact2number: application.ApplicantInformation.contactMethods[1].val
+    applicantsMethodOfContact2Number: application.ApplicantInformation.contactMethods[1].val
       ? application.ApplicantInformation.contactMethods[1].val
       : null,
-    vsd_vsu_methodofcontact2leavedetailedmessage: application.ApplicantInformation.contactMethods[1].val
+    applicantsMethodOfContact2LeaveDetailedMessage: application.ApplicantInformation.contactMethods[1].val
       ? application.ApplicantInformation.contactMethods[1].leaveMessage
       : null,
-    vsd_vsu_methodofcontact3type: application.ApplicantInformation.contactMethods[2].val
-      ? application.ApplicantInformation.contactMethods[2].type
+    applicantsMethodOfContact3Type: application.ApplicantInformation.contactMethods[2].val
+      ? Number(application.ApplicantInformation.contactMethods[2].type)
       : null,
-    vsd_vsu_methodofcontact3number: application.ApplicantInformation.contactMethods[2].val
+    applicantsMethodOfContact3Number: application.ApplicantInformation.contactMethods[2].val
       ? application.ApplicantInformation.contactMethods[2].val
       : null,
-    vsd_vsu_methodofcontact3leavedetailedmessage: application.ApplicantInformation.contactMethods[2].val
+    applicantsMethodOfContact3LeaveDetailedMessage: application.ApplicantInformation.contactMethods[2].val
       ? application.ApplicantInformation.contactMethods[2].leaveMessage
       : null,
 
-    vsd_cvap_victimfirstname: application.CaseInformation.firstName,
-    vsd_cvap_victimmiddlename: application.CaseInformation.middleName,
-    vsd_cvap_victimlastname: application.CaseInformation.lastName,
-    vsd_cvap_victimbirthdate: application.CaseInformation.birthDate,
-    vsd_cvap_victimgendercode: application.CaseInformation.gender,
-    vsd_victimgendertext: application.CaseInformation.otherGender,
-    vsd_victimpronouns: application.CaseInformation.pronouns,
-    vsd_victimpronountext: application.CaseInformation.otherPronouns,
-    vsd_victimprimaryraceethnicity: application.CaseInformation.raceEthnicity,
-    vsd_victimprimaryraceethnicitytext: application.CaseInformation.otherRaceEthnicity,
-    vsd_victimindigenous: application.CaseInformation.indigenousStatus,
+    victimFirstName: application.CaseInformation.firstName,
+    victimMiddleName: application.CaseInformation.middleName,
+    victimLastName: application.CaseInformation.lastName,
+    victimBirthDate: application.CaseInformation.birthDate?.toISOString(),
+    victimGenderCode: application.CaseInformation.gender,
+    victimGenderText: application.CaseInformation.otherGender,
+    victimPronouns: application.CaseInformation.pronouns,
+    victimPronounText: application.CaseInformation.otherPronouns,
+    victimPrimaryRaceEthnicity: application.CaseInformation.raceEthnicity,
+    victimPrimaryRaceEthnicityText: application.CaseInformation.otherRaceEthnicity,
+    victimIndigenous: application.CaseInformation.indigenousStatus,
 
-    vsd_vsu_travelexpenserequest_03: '',
-    vsd_vsu_travelexpenserequesttransportother: '',
-    vsd_vsu_travelexpenserequestother: application.TravelInformation.expenses.applyForOtherText,
-    // vsd_vsu_purposeoftravel: application.TravelInformation.purposeOfTravel,
-    // vsd_vsu_travelperiodfrom: application.TravelInformation.travelPeriodStart,
-    // vsd_vsu_travelperiodto: application.TravelInformation.travelPeriodEnd,
-    vsd_vsu_additionaltravelcomments: application.TravelInformation.additionalComments,
+    applicantsTravelExpenseRequest03: '',
+    applicantsTravelExpenseRequestTransportOther: '',
+    applicantsTravelExpenseRequestOther: application.TravelInformation.expenses.applyForOtherText,
+    applicantsAdditionalTravelComments: application.TravelInformation.additionalComments,
 
-    vsd_declarationverified: application.AuthorizationInformation.declaration
+    applicantsDeclarationVerified: application.AuthorizationInformation.declaration
       ? enums.Boolean.True.val
       : enums.Boolean.False.val,
-    vsd_declarationfullname: application.AuthorizationInformation.fullName,
-    vsd_declarationdate: application.AuthorizationInformation.date,
-    vsd_applicantssignature: application.AuthorizationInformation.signature
+    applicantsDeclarationFullName: application.AuthorizationInformation.fullName,
+    applicantsDeclarationDate: application.AuthorizationInformation.date?.toISOString(),
+    applicantsSignature: application.AuthorizationInformation.signature
   };
 
   if (
@@ -150,20 +141,20 @@ function getCRMApplication(application: iTravelFundApplication) {
     application.ApplicantInformation.victimServiceWorker.length > 0
   ) {
     //TODO - need fields in dynamics to capture vsw info (labled as Manager name on the webform)
-    crm_application.vsd_vsu_vswcomments = application.ApplicantInformation.vswComment;
-    crm_application.vsd_vsu_costscoveredbyvsp = application.ApplicantInformation.coveredByVictimServiceProgram;
-    crm_application.vsd_vsu_vspcomments = application.ApplicantInformation.coveredByVictimServiceProgramComment;
+    crm_application.vswComments = application.ApplicantInformation.vswComment;
+    crm_application.costsCoveredByVSP = application.ApplicantInformation.coveredByVictimServiceProgram;
+    crm_application.vspComments = application.ApplicantInformation.coveredByVictimServiceProgramComment;
 
-    crm_application.vsd_vsu_managerfirstname = application.ApplicantInformation.victimServiceWorker[0].firstName;
-    crm_application.vsd_vsu_managerlastname = application.ApplicantInformation.victimServiceWorker[0].lastName;
-    crm_application.vsd_vsu_organizationagencyname =
-      application.ApplicantInformation.victimServiceWorker[0].organization;
-    crm_application.vsd_vsu_managerphone = application.ApplicantInformation.victimServiceWorker[0].telephone;
-    crm_application.vsd_vsu_manageremail = application.ApplicantInformation.victimServiceWorker[0].email;
+    crm_application.managerFirstName = application.ApplicantInformation.victimServiceWorker[0].firstName;
+    crm_application.managerLastName = application.ApplicantInformation.victimServiceWorker[0].lastName;
+    crm_application.organizationAgencyName = application.ApplicantInformation.victimServiceWorker[0].organization;
+    crm_application.managerPhone = application.ApplicantInformation.victimServiceWorker[0].telephone;
+    crm_application.managerEmail = application.ApplicantInformation.victimServiceWorker[0].email;
   }
 
   if (application.CaseInformation.victimServiceWorker.length > 0) {
-    crm_application.vsd_vsu_discussvtfappwithvsp = application.CaseInformation.victimServiceWorker[0].okToDiscussTravel;
+    crm_application.applicantsDiscussVTFAppWithVSP =
+      application.CaseInformation.victimServiceWorker[0].okToDiscussTravel || null;
   }
 
   let requested_expenses = [];
@@ -190,7 +181,7 @@ function getCRMApplication(application: iTravelFundApplication) {
 
   if (application.TravelInformation.expenses.applyForTransportationOther) {
     requested_expenses.push(enums.TravelExpenses.TransportationOther.val);
-    crm_application.vsd_vsu_travelexpenserequesttransportother =
+    crm_application.applicantsTravelExpenseRequestTransportOther =
       application.TravelInformation.expenses.applyForTransportationOtherText;
   }
 
@@ -202,7 +193,7 @@ function getCRMApplication(application: iTravelFundApplication) {
     requested_expenses.push(enums.TravelExpenses.Other.val);
   }
 
-  crm_application.vsd_vsu_travelexpenserequest_03 = requested_expenses.join(',');
+  crm_application.applicantsTravelExpenseRequest03 = requested_expenses.join(',');
 
   return crm_application;
 }
@@ -260,7 +251,7 @@ function getCRMProviderCollection(application: iTravelFundApplication) {
     vsd_firstname: application.CaseInformation.accusedFirstName,
     vsd_middlename: application.CaseInformation.accusedMiddleName,
     vsd_lastname: application.CaseInformation.accusedLastName,
-    vsd_birthdate: application.CaseInformation.accusedBirthDate,
+    vsd_birthdate: application.CaseInformation.accusedBirthDate || null,
     vsd_gender: application.CaseInformation.accusedGender,
     vsd_genderidentitytext: application.CaseInformation.accusedOtherGender,
     vsd_pronouns: application.CaseInformation.accusedPronouns,
@@ -277,7 +268,7 @@ function getCRMProviderCollection(application: iTravelFundApplication) {
       vsd_firstname: accused.firstName,
       vsd_middlename: accused.middleName,
       vsd_lastname: accused.lastName,
-      vsd_birthdate: accused.birthDate,
+      vsd_birthdate: accused.birthDate || null,
       vsd_gender: accused.gender,
       vsd_relationship1: PARTICIPANT_TYPES.ACCUSED,
       vsd_relationship2: accused.relationship
@@ -305,7 +296,7 @@ function getCRMProviderCollection(application: iTravelFundApplication) {
     application.CaseInformation.victimServiceWorker.forEach((vsw) => {
       //if any field besides okToDiscussTravel has data - we need to add this provider
       //otherwise we don't add a vsw provider
-      let testVSW = _.cloneDeep(vsw);
+      let testVSW = structuredClone(vsw);
       delete testVSW['okToDiscussTravel'];
       if (checkObjectHasValue(testVSW)) {
         provider_collection.push({

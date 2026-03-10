@@ -1,6 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
+  standalone: false,
   selector: 'app-field',
   templateUrl: './field.component.html',
   styleUrls: ['./field.component.scss']

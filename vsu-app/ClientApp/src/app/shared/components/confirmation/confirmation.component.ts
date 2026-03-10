@@ -2,6 +2,7 @@ import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@a
 import { ApplicationType } from '../../enums-list';
 
 @Component({
+  standalone: false,
   selector: 'app-confirmation',
   templateUrl: './confirmation.component.html',
   styleUrls: ['./confirmation.component.scss']

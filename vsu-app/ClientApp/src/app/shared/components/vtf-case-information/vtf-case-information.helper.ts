@@ -1,4 +1,4 @@
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApplicationType } from '../../enums-list';
 
 export class VTFCaseInfoHelper {
@@ -10,7 +10,7 @@ export class VTFCaseInfoHelper {
       birthDate: ['', [Validators.required]],
       isValid: [false, [Validators.requiredTrue]],
       didCheck: [false],
-      incidentid: ['', [Validators.required]]
+      incidentId: ['', [Validators.required]]
     };
 
     return fb.group(group);

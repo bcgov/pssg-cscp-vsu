@@ -1,11 +1,12 @@
-import { Component, ViewChild, ElementRef, Input } from '@angular/core';
-import { FormBuilder, FormArray } from '@angular/forms';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { FormArray, FormBuilder } from '@angular/forms';
 import { config } from '../../../../config';
 
 @Component({
   selector: 'app-file-uploader',
   templateUrl: './file-uploader.component.html',
-  styleUrls: ['./file-uploader.component.scss']
+  styleUrls: ['./file-uploader.component.scss'],
+  standalone: false
 })
 export class FileUploaderComponent {
   @ViewChild('files', { static: true }) myInputVariable: ElementRef;
@@ -45,7 +46,7 @@ export class FileUploaderComponent {
           }
         }
       };
-      reader.onerror = (error) => console.log('Error: ', error);
+      reader.onerror = (error) => console.log(error);
     }
   }
   removeItem(index: number): void {

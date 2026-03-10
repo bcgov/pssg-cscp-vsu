@@ -1,9 +1,10 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
-import * as moment from 'moment';
+import moment from 'moment';
 import { Subscription } from 'rxjs';
 
 @Component({
+  standalone: false,
   selector: 'app-date-field',
   templateUrl: './date-field.component.html',
   styleUrls: ['./date-field.component.scss']

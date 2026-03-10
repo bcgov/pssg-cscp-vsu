@@ -1,7 +1,8 @@
+import { CaseDto } from 'src/model';
 import { iCRMDocument, iCRMTravelInfo } from './crm-application';
 
 export interface iReimbursementFormCRM {
-  CaseId: iCase;
+  CaseId: CaseDto;
   ContactInfoComments: string;
   Invoice: iInvoice;
   TravelInfoCollection?: iCRMTravelInfo[];
@@ -13,9 +14,6 @@ export interface iReimbursementFormCRM {
   DocumentCollection?: iCRMDocument[];
 }
 
-export interface iCase {
-  incidentid: string;
-}
 export interface iInvoice {
   vsd_vsu_claimantcontactinfochanged?: number;
   vsd_vsu_signaturedate: Date;

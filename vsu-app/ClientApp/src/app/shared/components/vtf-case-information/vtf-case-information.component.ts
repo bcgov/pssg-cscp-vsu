@@ -1,12 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ControlContainer, FormGroup } from '@angular/forms';
+import { ReimbursementService } from '../../../../api/reimbursement/reimbursement.service';
 import { ApplicationType } from '../../enums-list';
 import { FormBase } from '../../form-base';
 import { iLookupData } from '../../interfaces/lookup-data.interface';
-import * as _ from 'lodash';
-import { ReimbursementService } from '../../../services/reimbursement.service';
 
 @Component({
+  standalone: false,
   selector: 'app-vtf-case-information',
   templateUrl: './vtf-case-information.component.html',
   styleUrls: ['./vtf-case-information.component.scss']
@@ -15,12 +15,15 @@ export class VTFCaseInformationComponent extends FormBase implements OnInit {
   @Input() lookupData: iLookupData;
   @Input() isDisabled: boolean = false;
   @Input() formType: ApplicationType;
-  public form: FormGroup;
+  declare public form: FormGroup;
 
   isValid: boolean = false;
   didCheck: boolean = false;
 
-  constructor(private controlContainer: ControlContainer, private reimbursementService: ReimbursementService) {
+  constructor(
+    private controlContainer: ControlContainer,
+    private reimbursementService: ReimbursementService,
+  ) {
     super();
   }
 
@@ -32,8 +35,6 @@ export class VTFCaseInformationComponent extends FormBase implements OnInit {
 
     this.isValid = this.form.get('isValid').value;
     this.didCheck = this.form.get('didCheck').value;
-    console.log('vtf case info component');
-    console.log(this.form);
   }
 
   caseInfoChange() {
@@ -46,22 +47,23 @@ export class VTFCaseInformationComponent extends FormBase implements OnInit {
 
     if (info && info.caseNumber && info.birthDate && info.firstName && info.lastName) {
       //validate
-      this.reimbursementService.checkCase(info).subscribe(
-        (res) => {
-          console.log(res);
-          this.didCheck = true;
-          this.form.get('didCheck').patchValue(this.didCheck);
-          this.isValid = res.IsSuccess;
-          if (res.IsSuccess) {
-            this.form.get('isValid').patchValue(this.isValid);
-            this.form.get('incidentid').patchValue(res.CaseId.incidentid);
-          } else {
-            this.form.get('isValid').patchValue(this.isValid);
-            this.form.get('incidentid').patchValue('');
+      this.reimbursementService.postApiReimbursementCheckCase<any>(info).subscribe({
+          next: (res) => {
+            this.didCheck = true;
+            this.form.get('didCheck').patchValue(this.didCheck);
+            this.isValid = res.Results?.IsSuccess || res.isSuccess;
+            if (this.isValid) {
+              this.form.get('isValid').patchValue(this.isValid);
+              const caseId = res.Results?.CaseId?.Id || res.caseId;
+              this.form.get('incidentId').patchValue(caseId);
+            } else {
+              this.form.get('isValid').patchValue(this.isValid);
+              this.form.get('incidentId').patchValue('');
+            }
+          },
+          error: (err) => {
+            console.log(err);
           }
-        },
-        (err) => {
-          console.log(err);
         }
       );
     } else {

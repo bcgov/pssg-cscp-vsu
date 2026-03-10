@@ -3,9 +3,10 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { SignaturePadComponent } from '@almothafar/angular-signature-pad';
 
 @Component({
-  selector: 'app-sign-dialog',
-  templateUrl: './sign-dialog.component.html',
-  styleUrls: ['./sign-dialog.component.scss']
+    selector: 'app-sign-dialog',
+    templateUrl: './sign-dialog.component.html',
+    styleUrls: ['./sign-dialog.component.scss'],
+    standalone: false
 })
 export class SignPadDialog implements OnInit {
   public signatureImage: any;

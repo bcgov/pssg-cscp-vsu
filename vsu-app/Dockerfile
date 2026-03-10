@@ -49,14 +49,14 @@ ARG BUILD_IMAGE_NAME
 ARG BUILD_VERSION
 
 # --- Runtime Base Image ---
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
 ARG BUILD_IMAGE_NAME
 ARG BUILD_VERSION
 WORKDIR /app
 
 
 # --- Build Stage (SDK) ---
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_IMAGE_NAME
 ARG BUILD_VERSION
 

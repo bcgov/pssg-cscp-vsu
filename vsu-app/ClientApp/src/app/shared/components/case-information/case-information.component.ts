@@ -1,15 +1,16 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ControlContainer, FormArray, FormBuilder, FormGroup } from '@angular/forms';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
-import { iLookupData, iOffence } from '../../interfaces/lookup-data.interface';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { LookupService } from '../../../services/lookup.service';
+import { NotificationQueueService } from '../../../services/notification-queue.service';
 import { ApplicationType, MY_FORMATS } from '../../enums-list';
 import { FormBase } from '../../form-base';
+import { iLookupData, iOffence } from '../../interfaces/lookup-data.interface';
 import { CaseInfoInfoHelper } from './case-information.helper';
-import { NotificationQueueService } from '../../../services/notification-queue.service';
 
 @Component({
+  standalone: false,
   selector: 'app-case-information',
   templateUrl: './case-information.component.html',
   styleUrls: ['./case-information.component.scss'],
@@ -22,7 +23,7 @@ export class CaseInformationComponent extends FormBase implements OnInit {
   @Input() formType: ApplicationType;
   @Input() lookupData: iLookupData;
   @Input() isDisabled: boolean;
-  public form: FormGroup;
+  declare public form: FormGroup;
 
   courtList: string[] = [];
   offenceList: iOffence[] = [];
@@ -43,9 +44,6 @@ export class CaseInformationComponent extends FormBase implements OnInit {
     setTimeout(() => {
       this.form.markAsTouched();
     }, 0);
-    console.log('case info component');
-    console.log(this.form);
-    console.log(this.isDisabled);
 
     if (this.lookupData.courts && this.lookupData.courts.length > 0) {
       this.courtList = this.lookupData.courts.map((c) => c.vsd_name);
@@ -89,7 +87,6 @@ export class CaseInformationComponent extends FormBase implements OnInit {
   onVictimInfoSameAsApplicantChange(val) {
     this.setVictimInfoSameAsApplicant(this.form.parent);
     if (!val) {
-      console.log('clear');
       this.form.get('firstName').patchValue('');
       this.form.get('middleName').patchValue('');
       this.form.get('lastName').patchValue('');

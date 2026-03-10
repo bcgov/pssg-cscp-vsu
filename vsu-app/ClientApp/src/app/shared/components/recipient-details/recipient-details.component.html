@@ -1,100 +1,108 @@
 <div [formGroup]="form">
-    <div class="page-header mb-0">
-        <h1>Notification Recipient & Details</h1>
-    </div>
+  <div class="page-header mb-0">
+    <h1>Notification Recipient & Details</h1>
+  </div>
 
-    <p>How would you like to receive notifications from us? Please complete the following section to indicate the notification recipient(s) and requested details.</p>
+  <p>How would you like to receive notifications from us? Please complete the following section to indicate the notification recipient(s) and requested details.</p>
 
-    <h2 class="blue-header mt-0">Notification Recipient</h2>
+  <h2 class="blue-header mt-0">Notification Recipient</h2>
 
-    <section class="radio-list per-line">
-        <app-field label="I would like notifications to be provided to:" [required]="true" [valid]="isMyControlValid(form.get('notificationRecipient'))" errorMessage="Please select one" [disabled]="isDisabled">
-            <label>
-                <input type="radio" [value]="enum.NotificationRecipientEnum.Myself.val" name="notificationRecipient" formControlName="notificationRecipient" (change)="setupVictimAndDesignate(false, false)">
-                Myself only
-            </label>
-            <label>
-                <input type="radio" [value]="enum.NotificationRecipientEnum.Designate.val" name="notificationRecipient" formControlName="notificationRecipient" (change)="setupVictimAndDesignate(false, true)">
-                My designate only on my behalf
-            </label>
-            <label>
-                <input type="radio" [value]="enum.NotificationRecipientEnum.Victim_Service_Worker.val" name="notificationRecipient" formControlName="notificationRecipient" (change)="setupVictimAndDesignate(true, false)">
-                My victim service worker only on my behalf
-            </label>
-            <label>
-                <input type="radio" [value]="enum.NotificationRecipientEnum.Myself_And_Designate.val" name="notificationRecipient" formControlName="notificationRecipient" (change)="setupVictimAndDesignate(false, true)">
-                Myself plus my designate
-            </label>
-            <label>
-                <input type="radio" [value]="enum.NotificationRecipientEnum.Myself_And_Victim_Service_Worker.val" name="notificationRecipient" formControlName="notificationRecipient" (change)="setupVictimAndDesignate(true, false)">
-                Myself plus my victim service worker
-            </label>
-            <label>
-                <input type="radio" [value]="enum.NotificationRecipientEnum.Designate_And_Victim_Service_Worker.val" name="notificationRecipient" formControlName="notificationRecipient" (change)="setupVictimAndDesignate(true, true)">
-                My designate plus my victim service worker
-            </label>
-        </app-field>
-    </section>
-
-    <!-- Designate Information -->
-    <div class="designate" formArrayName="designate" *ngFor="let item of form.get('designate')['controls']; let i = index;">
-        <app-designate [formGroupName]="i" [formGroup]="item" [isDisabled]="isDisabled" [formType]="formType" [baseForm]="form.parent" [lookupData]="lookupData"></app-designate>
-    </div>
-
-    <div *ngIf="form.get('victimServiceWorker')['length'] > 0 && form.get('designate')['length'] > 0" class="designate-separator"></div>
-
-    <div class="checkbox-container" [class.is-disabled]="isDisabled" *ngIf="form.get('notificationRecipient').value === enum.NotificationRecipientEnum.Myself.val || form.get('notificationRecipient').value === enum.NotificationRecipientEnum.Designate.val || form.get('notificationRecipient').value === enum.NotificationRecipientEnum.Myself_And_Designate.val">
-        <label class="inline-label inline-checkbox">
-            <input type="checkbox" [value]="true" name="addOptionalVSW" formControlName="addOptionalVSW" (change)="addOptionalVSWChange($event.target.checked)">
-            <span>Click here if you have a Victim Service Worker (VSW) and would like to enter their details, but not add them to the notification recipient list:</span>
-        </label>
-    </div>
-
-    <!-- Victim Service Worker -->
-    <div class="victimServiceWorker" formArrayName="victimServiceWorker" *ngFor="let item of form.get('victimServiceWorker')['controls']; let i = index;">
-        <app-victim-service-worker [formGroupName]="i" [formGroup]="item" [isDisabled]="isDisabled" [formType]="formType" [isRequired]="true" [orgAndTelRequired]="!vswIsOptional"></app-victim-service-worker>
-    </div>
-
-    <!-- Notification Details -->
-    <h2 class="blue-header mt-0">Notification Details</h2>
-    <p><em>I would like updates to be provided on the following (please check all that apply):</em></p>
-
-    <div class="checkbox-container" [class.is-disabled]="isDisabled">
-        <label class="inline-label inline-checkbox">
-            <input type="checkbox" [value]="true" name="courtUpdates" formControlName="courtUpdates" (change)="checkAtLeastOneNotification()">
-            <span>Significant court updates (e.g. trial dates set, plea entered, sentencing date, etc.)</span>
-        </label>
-    </div>
-    <div class="checkbox-container" [class.is-disabled]="isDisabled">
-        <label class="inline-label inline-checkbox">
-            <input type="checkbox" [value]="true" name="courtResults" formControlName="courtResults" (change)="checkAtLeastOneNotification()">
-            <span>Final court results (e.g. sentencing outcome, stay of proceedings, etc.)</span>
-        </label>
-    </div>
-    <div class="checkbox-container" [class.is-disabled]="isDisabled">
-        <label class="inline-label inline-checkbox">
-            <input type="checkbox" [value]="true" name="courtAppearances" formControlName="courtAppearances" (change)="checkAtLeastOneNotification()">
-            <span>Updates on all criminal court appearances (e.g. above updates/results plus administrative court dates)</span>
-        </label>
-    </div>
-    <div class="checkbox-container" [class.is-disabled]="isDisabled">
-        <label class="inline-label inline-checkbox">
-            <input type="checkbox" [value]="true" name="courtOrders" formControlName="courtOrders" (change)="checkAtLeastOneNotification()">
-            <span>Criminal court orders issued (e.g. bail, probation, etc.)</span>
-        </label>
-    </div>
-    <div class="checkbox-container" [class.is-disabled]="isDisabled">
-        <label class="inline-label inline-checkbox">
-            <input type="checkbox" [value]="true" name="correctionsInformation" formControlName="correctionsInformation" (change)="checkAtLeastOneNotification()">
-            <span>BC Corrections information (e.g. if the accused / offender is reporting in the community; details of their reporting conditions; admission/transfer/release from provincial custody; changes to potential release dates, etc.)</span>
-        </label>
-    </div>
-
-    <app-field [valid]="isFieldValid('atLeastOneNotification')" errorMessage="Please select at least one" [disabled]="isDisabled">
-        <input type="hidden" name="atLeastOneNotification" formControlName="atLeastOneNotification">
+  <section class="radio-list per-line">
+    <app-field label="I would like notifications to be provided to:" [required]="true" [valid]="isMyControlValid(form.get('notificationRecipient'))" errorMessage="Please select one" [disabled]="isDisabled">
+      <label>
+        <input type="radio" [value]="enum.NotificationRecipientEnum.Myself.val" name="notificationRecipient" formControlName="notificationRecipient" (change)="setupVictimAndDesignate(false, false)">
+        Myself only
+      </label>
+      <label>
+        <input type="radio" [value]="enum.NotificationRecipientEnum.Designate.val" name="notificationRecipient" formControlName="notificationRecipient" (change)="setupVictimAndDesignate(false, true)">
+        My designate only on my behalf
+      </label>
+      <label>
+        <input type="radio" [value]="enum.NotificationRecipientEnum.Victim_Service_Worker.val" name="notificationRecipient" formControlName="notificationRecipient" (change)="setupVictimAndDesignate(true, false)">
+        My victim service worker only on my behalf
+      </label>
+      <label>
+        <input type="radio" [value]="enum.NotificationRecipientEnum.Myself_And_Designate.val" name="notificationRecipient" formControlName="notificationRecipient" (change)="setupVictimAndDesignate(false, true)">
+        Myself plus my designate
+      </label>
+      <label>
+        <input type="radio" [value]="enum.NotificationRecipientEnum.Myself_And_Victim_Service_Worker.val" name="notificationRecipient" formControlName="notificationRecipient" (change)="setupVictimAndDesignate(true, false)">
+        Myself plus my victim service worker
+      </label>
+      <label>
+        <input type="radio" [value]="enum.NotificationRecipientEnum.Designate_And_Victim_Service_Worker.val" name="notificationRecipient" formControlName="notificationRecipient" (change)="setupVictimAndDesignate(true, true)">
+        My designate plus my victim service worker
+      </label>
     </app-field>
+  </section>
 
-    <app-field label="Additional comments relating to my application" [disabled]="isDisabled">
-        <textarea class="form-control bigger" formControlName="additionalComments" maxlength="250"></textarea>
-    </app-field>
+  <!-- Designate Information -->
+  @for (item of form.get('designate')['controls']; track item; let i = $index) {
+    <div class="designate" formArrayName="designate">
+      <app-designate [formGroupName]="i" [formGroup]="item" [isDisabled]="isDisabled" [formType]="formType" [baseForm]="form.parent" [lookupData]="lookupData"></app-designate>
+    </div>
+  }
+
+  @if (form.get('victimServiceWorker')['length'] > 0 && form.get('designate')['length'] > 0) {
+    <div class="designate-separator"></div>
+  }
+
+  @if (form.get('notificationRecipient').value === enum.NotificationRecipientEnum.Myself.val || form.get('notificationRecipient').value === enum.NotificationRecipientEnum.Designate.val || form.get('notificationRecipient').value === enum.NotificationRecipientEnum.Myself_And_Designate.val) {
+    <div class="checkbox-container" [class.is-disabled]="isDisabled">
+      <label class="inline-label inline-checkbox">
+        <input type="checkbox" [value]="true" name="addOptionalVSW" formControlName="addOptionalVSW" (change)="addOptionalVSWChange($event.target.checked)">
+        <span>Click here if you have a Victim Service Worker (VSW) and would like to enter their details, but not add them to the notification recipient list:</span>
+      </label>
+    </div>
+  }
+
+  <!-- Victim Service Worker -->
+  @for (item of form.get('victimServiceWorker')['controls']; track item; let i = $index) {
+    <div class="victimServiceWorker" formArrayName="victimServiceWorker">
+      <app-victim-service-worker [formGroupName]="i" [formGroup]="item" [isDisabled]="isDisabled" [formType]="formType" [isRequired]="true" [orgAndTelRequired]="!vswIsOptional"></app-victim-service-worker>
+    </div>
+  }
+
+  <!-- Notification Details -->
+  <h2 class="blue-header mt-0">Notification Details</h2>
+  <p><em>I would like updates to be provided on the following (please check all that apply):</em></p>
+
+  <div class="checkbox-container" [class.is-disabled]="isDisabled">
+    <label class="inline-label inline-checkbox">
+      <input type="checkbox" [value]="true" name="courtUpdates" formControlName="courtUpdates" (change)="checkAtLeastOneNotification()">
+      <span>Significant court updates (e.g. trial dates set, plea entered, sentencing date, etc.)</span>
+    </label>
+  </div>
+  <div class="checkbox-container" [class.is-disabled]="isDisabled">
+    <label class="inline-label inline-checkbox">
+      <input type="checkbox" [value]="true" name="courtResults" formControlName="courtResults" (change)="checkAtLeastOneNotification()">
+      <span>Final court results (e.g. sentencing outcome, stay of proceedings, etc.)</span>
+    </label>
+  </div>
+  <div class="checkbox-container" [class.is-disabled]="isDisabled">
+    <label class="inline-label inline-checkbox">
+      <input type="checkbox" [value]="true" name="courtAppearances" formControlName="courtAppearances" (change)="checkAtLeastOneNotification()">
+      <span>Updates on all criminal court appearances (e.g. above updates/results plus administrative court dates)</span>
+    </label>
+  </div>
+  <div class="checkbox-container" [class.is-disabled]="isDisabled">
+    <label class="inline-label inline-checkbox">
+      <input type="checkbox" [value]="true" name="courtOrders" formControlName="courtOrders" (change)="checkAtLeastOneNotification()">
+      <span>Criminal court orders issued (e.g. bail, probation, etc.)</span>
+    </label>
+  </div>
+  <div class="checkbox-container" [class.is-disabled]="isDisabled">
+    <label class="inline-label inline-checkbox">
+      <input type="checkbox" [value]="true" name="correctionsInformation" formControlName="correctionsInformation" (change)="checkAtLeastOneNotification()">
+      <span>BC Corrections information (e.g. if the accused / offender is reporting in the community; details of their reporting conditions; admission/transfer/release from provincial custody; changes to potential release dates, etc.)</span>
+    </label>
+  </div>
+
+  <app-field [valid]="isFieldValid('atLeastOneNotification')" errorMessage="Please select at least one" [disabled]="isDisabled">
+    <input type="hidden" name="atLeastOneNotification" formControlName="atLeastOneNotification">
+  </app-field>
+
+  <app-field label="Additional comments relating to my application" [disabled]="isDisabled">
+    <textarea class="form-control bigger" formControlName="additionalComments" maxlength="250"></textarea>
+  </app-field>
 </div>

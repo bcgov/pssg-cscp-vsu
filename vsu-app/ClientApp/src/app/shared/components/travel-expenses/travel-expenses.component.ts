@@ -1,15 +1,16 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AbstractControl, ControlContainer, FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { ControlContainer, FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import moment from 'moment';
 import { ApplicationType, MY_FORMATS } from '../../enums-list';
 import { FormBase } from '../../form-base';
 import { iLookupData } from '../../interfaces/lookup-data.interface';
-import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material/core';
-import { MomentDateAdapter } from '@angular/material-moment-adapter';
-import * as moment from 'moment';
-import { TravelExpensesHelper } from './travel-expenses.helper';
 import { TIME } from '../../regex.constants';
+import { TravelExpensesHelper } from './travel-expenses.helper';
 
 @Component({
+  standalone: false,
   selector: 'app-travel-expenses',
   templateUrl: './travel-expenses.component.html',
   styleUrls: ['./travel-expenses.component.scss'],
@@ -22,7 +23,7 @@ export class TravelExpensesComponent extends FormBase implements OnInit {
   @Input() isDisabled: boolean = false;
   @Input() lookupData: iLookupData;
   @Input() formType: ApplicationType;
-  public form: FormGroup;
+  declare public form: FormGroup;
 
   timeRegex = TIME;
 
@@ -33,7 +34,10 @@ export class TravelExpensesComponent extends FormBase implements OnInit {
 
   childCareStartDates: Date[] = [];
 
-  constructor(private controlContainer: ControlContainer, private fb: FormBuilder) {
+  constructor(
+    private controlContainer: ControlContainer,
+    private fb: FormBuilder
+  ) {
     super();
   }
 
@@ -42,8 +46,6 @@ export class TravelExpensesComponent extends FormBase implements OnInit {
     setTimeout(() => {
       this.form.markAsTouched();
     }, 0);
-    console.log('travel expenses component');
-    console.log(this.form);
 
     this.showContactInfoComments = this.form.get('hasContactInfoChanged').value === true;
   }

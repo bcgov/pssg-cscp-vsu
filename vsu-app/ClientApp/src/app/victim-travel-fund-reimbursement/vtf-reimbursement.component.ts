@@ -4,9 +4,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatStepper } from '@angular/material/stepper';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { CaseDto } from 'src/model';
+import { ReimbursementService } from '../../api/reimbursement/reimbursement.service';
 import { LookupService } from '../services/lookup.service';
 import { NotificationQueueService } from '../services/notification-queue.service';
-import { ReimbursementService } from '../services/reimbursement.service';
 import { AuthInfoHelper } from '../shared/components/authorization/authorization.helper';
 import { TravelExpensesHelper } from '../shared/components/travel-expenses/travel-expenses.helper';
 import { VTFCaseInfoHelper } from '../shared/components/vtf-case-information/vtf-case-information.helper';
@@ -16,7 +17,6 @@ import { convertReimbursementFormToCRM } from '../shared/interfaces/converters/r
 import { iLookupData } from '../shared/interfaces/lookup-data.interface';
 import {
   iAuthorizationInformation,
-  iCaseInformation,
   iReimbursementForm,
   iTravelInformation
 } from '../shared/interfaces/reimbursement.interface';
@@ -35,6 +35,7 @@ const DINNER_RATE_ID = '89d4ae92-fd76-eb11-b823-00505683fbf4';
 const MILEAGE_RATE_ID = '92351edf-2a7d-eb11-b824-00505683fbf4';
 
 @Component({
+  standalone: false,
   selector: 'app-vtf-reimbursement',
   templateUrl: './vtf-reimbursement.component.html',
   styleUrls: ['./vtf-reimbursement.component.scss']
@@ -148,7 +149,6 @@ export class VictimTravelFundReimbursementComponent extends FormBase implements 
       new Promise<void>((resolve, reject) => {
         this.lookupService.getRates().subscribe(
           (res) => {
-            console.log(res);
             let rates = res.value;
             let breakfast = rates.find((r) => r.vsd_configid == BREAKFAST_RATE_ID);
             this.lookupData.expenseRates.breakfast = breakfast ? parseFloat(breakfast.vsd_value) : 0;
@@ -194,13 +194,11 @@ export class VictimTravelFundReimbursementComponent extends FormBase implements 
     return this.fb.group(group);
   }
 
-  downloadPDF() {
-    console.log('download pdf');
-  }
+  downloadPDF() {}
 
   harvestForm() {
     let data = {
-      CaseInformation: this.form.get('caseInformation').value as iCaseInformation,
+      CaseInformation: this.form.get('caseInformation').value as CaseDto,
       TravelInformation: this.form.get('travelExpenses').value as iTravelInformation,
       AuthorizationInformation: this.form.get('authorizationInformation').value as iAuthorizationInformation
     } as iReimbursementForm;
@@ -209,38 +207,27 @@ export class VictimTravelFundReimbursementComponent extends FormBase implements 
   }
 
   submit() {
-    console.log('submit');
-    console.log(this.form);
     if (this.form.valid) {
       this.submitting = true;
-      console.log('form is valid - submit');
       let application = this.harvestForm();
       let data = convertReimbursementFormToCRM(application);
-      console.log(data);
-      this.reimbursementService.submit(data).subscribe(
-        (res) => {
-          this.submitting = false;
-          console.log(res);
-          if (res.IsSuccess) {
-            console.log('CONFIRMATION NUMBER SHOULD COME FROM CRM');
-            this.form.get('confirmation.confirmationNumber').patchValue('RXXXXXX');
-            this.showConfirmation = true;
-            setTimeout(() => {
-              this.gotoNextStep(this.applicationStepper);
-            }, 0);
-          } else {
-            this.notify.addNotification('There was an error submitting the application.', 'danger', 4000);
-            console.log(res.Result);
-          }
+      this.reimbursementService.postApiReimbursement<any>(data).subscribe({
+        next: (res) => {
+          this.form.get('confirmation.confirmationNumber').patchValue('RXXXXXX');
+          this.showConfirmation = true;
+          setTimeout(() => {
+            this.gotoNextStep(this.applicationStepper);
+          }, 0);
         },
-        (err) => {
+        error: (err) => {
           this.notify.addNotification('There was an error submitting the application.', 'danger', 4000);
           console.log(err);
+        },
+        complete: () => {
           this.submitting = false;
         }
-      );
+      });
     } else {
-      console.log('form is NOT valid - NO submit');
       this.validateAllFormFields(this.form);
     }
   }

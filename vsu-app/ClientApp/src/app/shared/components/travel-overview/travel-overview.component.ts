@@ -1,13 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ControlContainer, FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { LookupService } from '../../../services/lookup.service';
+import { NotificationQueueService } from '../../../services/notification-queue.service';
 import { ApplicationType } from '../../enums-list';
 import { FormBase } from '../../form-base';
 import { iLookupData, iOffence } from '../../interfaces/lookup-data.interface';
-import * as _ from 'lodash';
-import { NotificationQueueService } from '../../../services/notification-queue.service';
 
 @Component({
+  standalone: false,
   selector: 'app-travel-overview',
   templateUrl: './travel-overview.component.html',
   styleUrls: ['./travel-overview.component.scss']
@@ -16,7 +16,7 @@ export class TravelOverviewComponent extends FormBase implements OnInit {
   @Input() lookupData: iLookupData;
   @Input() isDisabled: boolean = false;
   @Input() formType: ApplicationType;
-  public form: FormGroup;
+  declare public form: FormGroup;
 
   offenceList: iOffence[] = [];
 
@@ -34,8 +34,6 @@ export class TravelOverviewComponent extends FormBase implements OnInit {
     setTimeout(() => {
       this.form.markAsTouched();
     }, 0);
-    console.log('overview component');
-    console.log(this.form);
 
     if (this.lookupData.offences && this.lookupData.offences.length > 0) {
       this.offenceList = this.lookupData.offences;

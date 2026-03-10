@@ -1,13 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ControlContainer, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
-import { iLookupData } from '../../interfaces/lookup-data.interface';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { ApplicationType, MY_FORMATS } from '../../enums-list';
 import { FormBase } from '../../form-base';
+import { iLookupData } from '../../interfaces/lookup-data.interface';
 import { ApplicantInfoHelper } from './applicant-information.helper';
 
 @Component({
+  standalone: false,
   selector: 'app-applicant-information',
   templateUrl: './applicant-information.component.html',
   styleUrls: ['./applicant-information.component.scss'],
@@ -20,7 +21,7 @@ export class ApplicantInformationComponent extends FormBase implements OnInit {
   @Input() lookupData: iLookupData;
   @Input() formType: ApplicationType;
   @Input() isDisabled: boolean;
-  public form: FormGroup;
+  declare public form: FormGroup;
 
   today: Date = new Date();
 
@@ -28,7 +29,10 @@ export class ApplicantInformationComponent extends FormBase implements OnInit {
 
   ApplicationType = ApplicationType;
 
-  constructor(private controlContainer: ControlContainer, private fb: FormBuilder) {
+  constructor(
+    private controlContainer: ControlContainer,
+    private fb: FormBuilder
+  ) {
     super();
   }
   ngOnInit() {
@@ -36,8 +40,6 @@ export class ApplicantInformationComponent extends FormBase implements OnInit {
     setTimeout(() => {
       this.form.markAsTouched();
     }, 0);
-    console.log('applicant info component');
-    console.log(this.form);
 
     this.checkAtLeastOneContactMethod(this.form);
   }
@@ -96,7 +98,6 @@ export class ApplicantInformationComponent extends FormBase implements OnInit {
   applicantInfoSameAsVictimChange(val) {
     this.setApplicantInfoSameAsVictim(this.form.parent);
     if (!val) {
-      console.log('clear');
       this.form.get('firstName').patchValue('');
       this.form.get('middleName').patchValue('');
       this.form.get('lastName').patchValue('');

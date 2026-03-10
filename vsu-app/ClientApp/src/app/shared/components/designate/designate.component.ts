@@ -5,6 +5,7 @@ import { FormBase } from '../../form-base';
 import { iLookupData } from '../../interfaces/lookup-data.interface';
 
 @Component({
+  standalone: false,
   selector: 'app-designate',
   templateUrl: './designate.component.html'
 })
@@ -13,7 +14,7 @@ export class DesignateComponent extends FormBase implements OnInit {
   @Input() formType: ApplicationType;
   @Input() lookupData: iLookupData;
   @Input() baseForm: FormGroup;
-  public form: FormGroup;
+  declare public form: FormGroup;
 
   constructor(private controlContainer: ControlContainer) {
     super();

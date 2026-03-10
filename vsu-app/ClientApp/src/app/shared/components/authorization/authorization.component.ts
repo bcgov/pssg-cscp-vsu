@@ -1,15 +1,15 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { MatStepper } from '@angular/material/stepper';
-import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { ControlContainer, FormGroup } from '@angular/forms';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
-import { FormGroup, ControlContainer } from '@angular/forms';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { SignPadDialog } from '../../dialogs/sign-dialog/sign-dialog.component';
 import { ApplicationType, MY_FORMATS } from '../../enums-list';
 import { FormBase } from '../../form-base';
-import { SignPadDialog } from '../../dialogs/sign-dialog/sign-dialog.component';
 import { AuthInfoHelper } from './authorization.helper';
 
 @Component({
+  standalone: false,
   selector: 'app-authorization',
   templateUrl: './authorization.component.html',
   styleUrls: ['./authorization.component.scss'],
@@ -21,13 +21,16 @@ import { AuthInfoHelper } from './authorization.helper';
 export class AuthorizationComponent extends FormBase implements OnInit {
   @Input() formType: ApplicationType;
   @Input() isDisabled: boolean;
-  public form: FormGroup;
+  declare public form: FormGroup;
 
   authInfoHelper = new AuthInfoHelper();
 
   ApplicationType = ApplicationType;
 
-  constructor(private controlContainer: ControlContainer, private matDialog: MatDialog) {
+  constructor(
+    private controlContainer: ControlContainer,
+    private matDialog: MatDialog
+  ) {
     super();
   }
 
@@ -36,8 +39,6 @@ export class AuthorizationComponent extends FormBase implements OnInit {
     setTimeout(() => {
       this.form.markAsTouched();
     }, 0);
-    console.log('auth info component');
-    console.log(this.form);
 
     if (this.formType === ApplicationType.TRAVEL_REIMBURSEMENT) {
       let subTotal = this.form.parent.get('travelExpenses.subTotal').value || 0;

@@ -1,23 +1,25 @@
-import 'hammerjs';
-import { enableProdMode } from '@angular/core';
+import { enableProdMode, inject, provideAppInitializer, provideZoneChangeDetection } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 import { AppModule } from './app/app.module';
+import { ConfigurationStore } from './app/store/configuration.store';
 import { environment } from './environments/environment';
 
 export function getBaseUrl() {
   return document.getElementsByTagName('base')[0].href;
 }
 
-const providers = [{ provide: 'BASE_URL', useFactory: getBaseUrl, deps: [] }];
-
 if (environment.production) {
   enableProdMode();
-  if (window) {
-    window.console.log = function () {};
-  }
 }
 
-platformBrowserDynamic(providers)
-  .bootstrapModule(AppModule)
+platformBrowserDynamic()
+  .bootstrapModule(AppModule, {
+    applicationProviders: [
+      provideZoneChangeDetection(),
+      provideAppInitializer(async () => {
+        await Promise.all([inject(ConfigurationStore).loadConfiguration()]);
+      })
+    ]
+  })
   .catch((err) => console.log(err));

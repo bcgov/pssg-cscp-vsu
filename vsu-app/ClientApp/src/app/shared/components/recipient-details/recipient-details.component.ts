@@ -9,18 +9,19 @@ import {
   FormGroup,
   Validators
 } from '@angular/forms';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { noop, Observable, Observer, of, throwError } from 'rxjs';
-import { retry, catchError, map, switchMap, tap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { config } from '../../../../config';
-import { CitiesSearchResponse, iCity, iLookupData } from '../../interfaces/lookup-data.interface';
+import { LookupService } from '../../../services/lookup.service';
 import { ApplicationType, MY_FORMATS } from '../../enums-list';
 import { FormBase } from '../../form-base';
+import { CitiesSearchResponse, iCity, iLookupData } from '../../interfaces/lookup-data.interface';
 import { RecipientDetailsHelper } from './recipient-details.helper';
-import { LookupService } from '../../../services/lookup.service';
 
 @Component({
+  standalone: false,
   selector: 'app-recipient-details',
   templateUrl: './recipient-details.component.html',
   styleUrls: ['./recipient-details.component.scss'],
@@ -33,7 +34,7 @@ export class RecipientDetailsComponent extends FormBase implements OnInit {
   @Input() formType: ApplicationType;
   @Input() lookupData: iLookupData;
   @Input() isDisabled: boolean;
-  public form: FormGroup;
+  declare public form: FormGroup;
 
   NOTIFICATION_METHODS: string[] = [];
 
@@ -79,8 +80,6 @@ export class RecipientDetailsComponent extends FormBase implements OnInit {
     setTimeout(() => {
       this.form.markAsTouched();
     }, 0);
-    console.log('recipient details component');
-    console.log(this.form);
 
     this.vswIsOptional = this.form.get('addOptionalVSW').value;
     this.vswIsOptionalPreviousSelection = this.form.get('vswIsOptionalPreviousSelection').value;
@@ -158,8 +157,6 @@ export class RecipientDetailsComponent extends FormBase implements OnInit {
     } else if (!addDesignate && designate.length > 0) {
       designate.removeAt(0);
     }
-
-    console.log(this.form);
   }
 
   addOptionalVSWChange(addOptionalVSW: boolean) {

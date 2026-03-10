@@ -1,257 +1,275 @@
 <div [formGroup]="form">
-    <div class="page-header mb-0">
-        <h1>Applicant Information</h1>
-    </div>
+  <div class="page-header mb-0">
+    <h1>Applicant Information</h1>
+  </div>
 
-    <section class="radio-list per-line">
-        <app-field label="I am the:" [required]="true" [valid]="isMyControlValid(form.get('applicantType'))" errorMessage="Please select one" [disabled]="isDisabled">
-            <label>
-                <input type="radio" [value]="enum.ApplicantType.Victim.val" name="applicantType" formControlName="applicantType" (change)="applicantTypeChange()">
-                {{enum.ApplicantType.Victim.name}}
-            </label>
-            <label *ngIf="formType === ApplicationType.TRAVEL_FUNDS">
-                <input type="radio" [value]="enum.ApplicantType.Victim_Service_Worker.val" name="applicantType" formControlName="applicantType" (change)="applicantTypeChange()">
-                {{enum.ApplicantType.Victim_Service_Worker.name}}
-            </label>
-            <label *ngIf="formType === ApplicationType.TRAVEL_FUNDS">
-                <input type="radio" [value]="enum.ApplicantType.Support_Person.val" name="applicantType" formControlName="applicantType" (change)="applicantTypeChange()">
-                {{enum.ApplicantType.Support_Person.name}}
-            </label>
-            <label *ngIf="formType === ApplicationType.TRAVEL_FUNDS">
-                <input type="radio" [value]="enum.ApplicantType.Immediate_Family_Member.val" name="applicantType" formControlName="applicantType" (change)="applicantTypeChange()">
-                {{enum.ApplicantType.Immediate_Family_Member.name}}
-            </label>
-            <label *ngIf="formType === ApplicationType.NOTIFICATION">
-                <input type="radio" [value]="enum.ApplicantType.Civil_Protected_Party.val" name="applicantType" formControlName="applicantType" (change)="applicantTypeChange()">
-                {{enum.ApplicantType.Civil_Protected_Party.name}}
-            </label>
-            <label *ngIf="formType === ApplicationType.NOTIFICATION">
-                <input type="radio" [value]="enum.ApplicantType.Victim_Parent.val" name="applicantType" formControlName="applicantType" (change)="applicantTypeChange()">
-                {{enum.ApplicantType.Victim_Parent.name}}
-            </label>
-            <label *ngIf="formType === ApplicationType.NOTIFICATION">
-                <input type="radio" [value]="enum.ApplicantType.Other_Family_Member.val" name="applicantType" formControlName="applicantType" (change)="applicantTypeChange()">
-                {{enum.ApplicantType.Other_Family_Member.name}}
-            </label>
-        </app-field>
-    </section>
-
-    <ng-container *ngIf="form.get('applicantType').value === enum.ApplicantType.Other_Family_Member.val">
-        <div class="row">
-            <div class="col-md-6">
-                <app-field label="Please indicate relationship" [required]="true" [disabled]="isDisabled" [valid]="isMyControlValid(form.get('applicantTypeOther'))" errorMessage="Please enter a relationship">
-                    <input class="form-control" type="text" formControlName="applicantTypeOther" maxlength="100">
-                </app-field>
-            </div>
-        </div>
-    </ng-container>
-
-
-    <ng-container *ngIf="form.get('applicantType').value === enum.ApplicantType.Victim_Service_Worker.val">
-        <p>Please provide details about your request. Why is travel in this case required? Please list exceptional/unique circumstances (e.g., case characteristics, victimization dynamics, lack of victim support program in the court location):</p>
-        <div class="row">
-            <div class="col-md-12">
-                <app-field label="Comments" [disabled]="isDisabled">
-                    <textarea class="form-control bigger" formControlName="vswComment" maxlength="500"></textarea>
-                </app-field>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12">
-                <app-field label="Are these travel costs able to be covered (in full or in part) by your Victim Service Program operating budgets?" errorMessage="Please select one" [required]="true" [valid]="isMyControlValid(form.get('coveredByVictimServiceProgram'))" [disabled]="isDisabled">
-                    <label class="inline-label">
-                        <input type="radio" [value]="enum.Boolean.True.val" name="coveredByVictimServiceProgram" formControlName="coveredByVictimServiceProgram">
-                        <span>Yes</span>
-                    </label>
-                    <label class="inline-label">
-                        <input type="radio" [value]="enum.Boolean.False.val" name="coveredByVictimServiceProgram" formControlName="coveredByVictimServiceProgram">
-                        <span>No</span>
-                    </label>
-                </app-field>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <app-field label="Comments" [disabled]="isDisabled">
-                    <input class="form-control" type="text" formControlName="coveredByVictimServiceProgramComment" maxlength="100">
-                </app-field>
-            </div>
-        </div>
-
-        <div formArrayName="victimServiceWorker" *ngFor="let item of form.get('victimServiceWorker')['controls']; let i = index;">
-            <div [formGroupName]="i" class="vsw-info">
-                <div class="row">
-                    <div class="col-md-6">
-                        <app-field label="Manager First Name" [required]="true" [valid]="isMyControlValid(item.get('firstName'))" errorMessage="Please enter your manager's first name" [disabled]="isDisabled">
-                            <input class="form-control" type="text" formControlName="firstName" maxlength="100">
-                        </app-field>
-                    </div>
-                    <div class="col-md-6">
-                        <app-field label="Manager Last Name" [required]="true" [valid]="isMyControlValid(item.get('lastName'))" errorMessage="Please enter your manager's last name" [disabled]="isDisabled">
-                            <input class="form-control" type="text" formControlName="lastName" maxlength="100">
-                        </app-field>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <app-field label="Organization / Agency Name" [required]="true" [valid]="isMyControlValid(item.get('organization'))" errorMessage="Please enter your manager's organization / agency" [disabled]="isDisabled">
-                            <input class="form-control" type="text" formControlName="organization" maxlength="100">
-                        </app-field>
-                    </div>
-                    <div class="col-md-6">
-                        <app-field label="Manager Phone" [required]="true" [valid]="isMyControlValid(item.get('telephone'))" errorMessage="Please enter your manager's phone number" [disabled]="isDisabled">
-                            <input class="form-control" mask='000-000-0000' type="text" formControlName="telephone" maxlength="100">
-                        </app-field>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <app-field label="Manager Email" [required]="true" [valid]="isMyControlValid(item.get('email'))" errorMessage="Please enter your manager's email address" [disabled]="isDisabled">
-                            <input class="form-control" type="text" formControlName="email" maxlength="100">
-                        </app-field>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </ng-container>
-
-    <ng-container *ngIf="form.get('applicantType').value === enum.ApplicantType.Support_Person.val">
-        <div class="row">
-            <div class="col-md-6">
-                <app-field label="My relationship to the victim is:" [required]="true" [disabled]="isDisabled" [valid]="isMyControlValid(form.get('supportPersonRelationship'))" errorMessage="Please enter a relationship">
-                    <input class="form-control" type="text" formControlName="supportPersonRelationship" maxlength="100">
-                </app-field>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <app-field label="The victim has already submitted a Victim Travel Fund application:" errorMessage="" [disabled]="isDisabled">
-                    <label class="inline-label">
-                        <input type="radio" [value]="enum.MultiBoolean.True.val" name="victimAlreadySubmitted" formControlName="victimAlreadySubmitted" (change)="victimAlreadySubmittedChange()">
-                        <span>Yes</span>
-                    </label>
-                    <label class="inline-label">
-                        <input type="radio" [value]="enum.MultiBoolean.False.val" name="victimAlreadySubmitted" formControlName="victimAlreadySubmitted" (change)="victimAlreadySubmittedChange()">
-                        <span>No</span>
-                    </label>
-                    <label class="inline-label">
-                        <input type="radio" [value]="enum.MultiBoolean.Undecided.val" name="victimAlreadySubmitted" formControlName="victimAlreadySubmitted" (change)="victimAlreadySubmittedChange()">
-                        <span>I don't know</span>
-                    </label>
-                </app-field>
-            </div>
-        </div>
-        <div class="row" *ngIf="form.get('victimAlreadySubmitted').value === enum.MultiBoolean.Undecided.val">
-            <div class="col-md-6">
-                <app-field label="Comments" [disabled]="isDisabled">
-                    <input class="form-control" type="text" formControlName="victimAlreadySubmittedComment" maxlength="100">
-                </app-field>
-            </div>
-        </div>
-    </ng-container>
-
-    <ng-container *ngIf="form.get('applicantType').value === enum.ApplicantType.Immediate_Family_Member.val">
-        <div class="row">
-            <div class="col-md-6">
-                <app-field label="My relationship to the victim is:" [required]="true" [disabled]="isDisabled" [valid]="isMyControlValid(form.get('IFMRelationship'))" errorMessage="Please enter a relationship">
-                    <input class="form-control" type="text" formControlName="IFMRelationship" maxlength="100">
-                </app-field>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <app-field label="There are other members of my family who are also applying to the Victim Travel Fund:" errorMessage="" [disabled]="isDisabled">
-                    <label class="inline-label">
-                        <input type="radio" [value]="enum.MultiBoolean.True.val" name="otherFamilyAlsoApplying" formControlName="otherFamilyAlsoApplying" (change)="otherFamilyAlsoApplyingChange()">
-                        <span>Yes</span>
-                    </label>
-                    <label class="inline-label">
-                        <input type="radio" [value]="enum.MultiBoolean.False.val" name="otherFamilyAlsoApplying" formControlName="otherFamilyAlsoApplying" (change)="otherFamilyAlsoApplyingChange()">
-                        <span>No</span>
-                    </label>
-                    <label class="inline-label">
-                        <input type="radio" [value]="enum.MultiBoolean.Undecided.val" name="otherFamilyAlsoApplying" formControlName="otherFamilyAlsoApplying" (change)="otherFamilyAlsoApplyingChange()">
-                        <span>I don't know</span>
-                    </label>
-                </app-field>
-            </div>
-        </div>
-        <div class="row" *ngIf="form.get('otherFamilyAlsoApplying').value === enum.MultiBoolean.Undecided.val">
-            <div class="col-md-6">
-                <app-field label="Comments" [disabled]="isDisabled">
-                    <input class="form-control" type="text" formControlName="otherFamilyAlsoApplyingComment" maxlength="100">
-                </app-field>
-            </div>
-        </div>
-    </ng-container>
-
-    <h2 class="blue-header mt-0">Applicant Information</h2>
-
-    <div [class.is-disabled]="isDisabled" *ngIf="formType === ApplicationType.NOTIFICATION">
-        <label class="inline-label inline-checkbox">
-            <input type="checkbox" [value]="true" name="applicantInfoSameAsVictim" formControlName="applicantInfoSameAsVictim" (change)="applicantInfoSameAsVictimChange($event.target.checked)">
-            <span>Select if the applicant's name is the same as Victim / Civil Protected Party in the Case Information section</span>
+  <section class="radio-list per-line">
+    <app-field label="I am the:" [required]="true" [valid]="isMyControlValid(form.get('applicantType'))" errorMessage="Please select one" [disabled]="isDisabled">
+      <label>
+        <input type="radio" [value]="enum.ApplicantType.Victim.val" name="applicantType" formControlName="applicantType" (change)="applicantTypeChange()">
+        {{enum.ApplicantType.Victim.name}}
+      </label>
+      @if (formType === ApplicationType.TRAVEL_FUNDS) {
+        <label>
+          <input type="radio" [value]="enum.ApplicantType.Victim_Service_Worker.val" name="applicantType" formControlName="applicantType" (change)="applicantTypeChange()">
+          {{enum.ApplicantType.Victim_Service_Worker.name}}
         </label>
-    </div>
+      }
+      @if (formType === ApplicationType.TRAVEL_FUNDS) {
+        <label>
+          <input type="radio" [value]="enum.ApplicantType.Support_Person.val" name="applicantType" formControlName="applicantType" (change)="applicantTypeChange()">
+          {{enum.ApplicantType.Support_Person.name}}
+        </label>
+      }
+      @if (formType === ApplicationType.TRAVEL_FUNDS) {
+        <label>
+          <input type="radio" [value]="enum.ApplicantType.Immediate_Family_Member.val" name="applicantType" formControlName="applicantType" (change)="applicantTypeChange()">
+          {{enum.ApplicantType.Immediate_Family_Member.name}}
+        </label>
+      }
+      @if (formType === ApplicationType.NOTIFICATION) {
+        <label>
+          <input type="radio" [value]="enum.ApplicantType.Civil_Protected_Party.val" name="applicantType" formControlName="applicantType" (change)="applicantTypeChange()">
+          {{enum.ApplicantType.Civil_Protected_Party.name}}
+        </label>
+      }
+      @if (formType === ApplicationType.NOTIFICATION) {
+        <label>
+          <input type="radio" [value]="enum.ApplicantType.Victim_Parent.val" name="applicantType" formControlName="applicantType" (change)="applicantTypeChange()">
+          {{enum.ApplicantType.Victim_Parent.name}}
+        </label>
+      }
+      @if (formType === ApplicationType.NOTIFICATION) {
+        <label>
+          <input type="radio" [value]="enum.ApplicantType.Other_Family_Member.val" name="applicantType" formControlName="applicantType" (change)="applicantTypeChange()">
+          {{enum.ApplicantType.Other_Family_Member.name}}
+        </label>
+      }
+    </app-field>
+  </section>
 
+  @if (form.get('applicantType').value === enum.ApplicantType.Other_Family_Member.val) {
     <div class="row">
-        <div class="col-md-4">
-            <app-field label="First Name" [required]="true" [valid]="isMyControlValid(form.get('firstName'))" errorMessage="Please enter your first name" [disabled]="isDisabled" [tooltipReference]="formType === ApplicationType.TRAVEL_FUNDS ? nameTemplate : ''">
-                <input class="form-control" type="text" formControlName="firstName" maxlength="100" (change)="setVictimInfoSameAsApplicant(form.parent)">
-            </app-field>
-        </div>
-        <div class="col-md-4">
-            <app-field label="Middle Name" [required]="false" [valid]="isMyControlValid(form.get('middleName'))" errorMessage="Please enter your middle name" [disabled]="isDisabled" [tooltipReference]="formType === ApplicationType.TRAVEL_FUNDS ? nameTemplate : ''">
-                <input class="form-control" type="text" formControlName="middleName" maxlength="100" (change)="setVictimInfoSameAsApplicant(form.parent)">
-            </app-field>
-        </div>
-        <div class="col-md-4">
-            <app-field label="Last Name" [required]="true" [valid]="isMyControlValid(form.get('lastName'))" errorMessage="Please enter your last name" [disabled]="isDisabled" [tooltipReference]="formType === ApplicationType.TRAVEL_FUNDS ? nameTemplate : ''">
-                <input class="form-control" type="text" formControlName="lastName" maxlength="100" (change)="setVictimInfoSameAsApplicant(form.parent)">
-            </app-field>
-        </div>
-        <ng-template #nameTemplate>If you may be eligible for funding for air travel, please enter your name exactly as it shows on your travel ID (e.g. passport, drivers license)</ng-template>
+      <div class="col-md-6">
+        <app-field label="Please indicate relationship" [required]="true" [disabled]="isDisabled" [valid]="isMyControlValid(form.get('applicantTypeOther'))" errorMessage="Please enter a relationship">
+          <input class="form-control" type="text" formControlName="applicantTypeOther" maxlength="100">
+        </app-field>
+      </div>
     </div>
+  }
 
+
+  @if (form.get('applicantType').value === enum.ApplicantType.Victim_Service_Worker.val) {
+    <p>Please provide details about your request. Why is travel in this case required? Please list exceptional/unique circumstances (e.g., case characteristics, victimization dynamics, lack of victim support program in the court location):</p>
     <div class="row">
-        <div class="col-md-6 date-col">
-            <app-field label="Birth Date" [required]="true" [valid]="isMyControlValid(form.get('birthDate'))" errorMessage="Please enter your birth date" [disabled]="isDisabled" (change)="setVictimInfoSameAsApplicant(form.parent)">
-                <app-date-field [control]="form.get('birthDate')" [max]="today" [disabled]="form.get('applicantInfoSameAsVictim').value"></app-date-field>
-            </app-field>
+      <div class="col-md-12">
+        <app-field label="Comments" [disabled]="isDisabled">
+          <textarea class="form-control bigger" formControlName="vswComment" maxlength="500"></textarea>
+        </app-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <app-field label="Are these travel costs able to be covered (in full or in part) by your Victim Service Program operating budgets?" errorMessage="Please select one" [required]="true" [valid]="isMyControlValid(form.get('coveredByVictimServiceProgram'))" [disabled]="isDisabled">
+          <label class="inline-label">
+            <input type="radio" [value]="enum.Boolean.True.val" name="coveredByVictimServiceProgram" formControlName="coveredByVictimServiceProgram">
+            <span>Yes</span>
+          </label>
+          <label class="inline-label">
+            <input type="radio" [value]="enum.Boolean.False.val" name="coveredByVictimServiceProgram" formControlName="coveredByVictimServiceProgram">
+            <span>No</span>
+          </label>
+        </app-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <app-field label="Comments" [disabled]="isDisabled">
+          <input class="form-control" type="text" formControlName="coveredByVictimServiceProgramComment" maxlength="100">
+        </app-field>
+      </div>
+    </div>
+    @for (item of form.get('victimServiceWorker')['controls']; track item; let i = $index) {
+      <div formArrayName="victimServiceWorker">
+        <div [formGroupName]="i" class="vsw-info">
+          <div class="row">
+            <div class="col-md-6">
+              <app-field label="Manager First Name" [required]="true" [valid]="isMyControlValid(item.get('firstName'))" errorMessage="Please enter your manager's first name" [disabled]="isDisabled">
+                <input class="form-control" type="text" formControlName="firstName" maxlength="100">
+              </app-field>
+            </div>
+            <div class="col-md-6">
+              <app-field label="Manager Last Name" [required]="true" [valid]="isMyControlValid(item.get('lastName'))" errorMessage="Please enter your manager's last name" [disabled]="isDisabled">
+                <input class="form-control" type="text" formControlName="lastName" maxlength="100">
+              </app-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <app-field label="Organization / Agency Name" [required]="true" [valid]="isMyControlValid(item.get('organization'))" errorMessage="Please enter your manager's organization / agency" [disabled]="isDisabled">
+                <input class="form-control" type="text" formControlName="organization" maxlength="100">
+              </app-field>
+            </div>
+            <div class="col-md-6">
+              <app-field label="Manager Phone" [required]="true" [valid]="isMyControlValid(item.get('telephone'))" errorMessage="Please enter your manager's phone number" [disabled]="isDisabled">
+                <input class="form-control" mask='000-000-0000' type="text" formControlName="telephone" maxlength="100">
+              </app-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <app-field label="Manager Email" [required]="true" [valid]="isMyControlValid(item.get('email'))" errorMessage="Please enter your manager's email address" [disabled]="isDisabled">
+                <input class="form-control" type="text" formControlName="email" maxlength="100">
+              </app-field>
+            </div>
+          </div>
         </div>
-    </div>
+      </div>
+    }
+  }
 
-    <div class="attention">
-        <p>Please note that your answers to questions about demographic information (e.g. gender, Indigenous identity) allow the Community Safety and Crime Prevention branch to better understand who accesses our programs so we may continue to improve our service delivery. Your response is voluntary and the information you provide does not impact your ability to access these services.</p>
+  @if (form.get('applicantType').value === enum.ApplicantType.Support_Person.val) {
+    <div class="row">
+      <div class="col-md-6">
+        <app-field label="My relationship to the victim is:" [required]="true" [disabled]="isDisabled" [valid]="isMyControlValid(form.get('supportPersonRelationship'))" errorMessage="Please enter a relationship">
+          <input class="form-control" type="text" formControlName="supportPersonRelationship" maxlength="100">
+        </app-field>
+      </div>
     </div>
-
-    <div class="row" featureEnabled="useUpdatedComplianceFields" [featureEnabledIf]="false">
+    <div class="row">
+      <div class="col">
+        <app-field label="The victim has already submitted a Victim Travel Fund application:" errorMessage="" [disabled]="isDisabled">
+          <label class="inline-label">
+            <input type="radio" [value]="enum.MultiBoolean.True.val" name="victimAlreadySubmitted" formControlName="victimAlreadySubmitted" (change)="victimAlreadySubmittedChange()">
+            <span>Yes</span>
+          </label>
+          <label class="inline-label">
+            <input type="radio" [value]="enum.MultiBoolean.False.val" name="victimAlreadySubmitted" formControlName="victimAlreadySubmitted" (change)="victimAlreadySubmittedChange()">
+            <span>No</span>
+          </label>
+          <label class="inline-label">
+            <input type="radio" [value]="enum.MultiBoolean.Undecided.val" name="victimAlreadySubmitted" formControlName="victimAlreadySubmitted" (change)="victimAlreadySubmittedChange()">
+            <span>I don't know</span>
+          </label>
+        </app-field>
+      </div>
+    </div>
+    @if (form.get('victimAlreadySubmitted').value === enum.MultiBoolean.Undecided.val) {
+      <div class="row">
         <div class="col-md-6">
-            <app-field label="Gender" [required]="false" [valid]="isMyControlValid(form.get('gender'))" errorMessage="Please select your gender" [disabled]="isDisabled">
-                <label class="inline-label">
-                    <input type="radio" [value]="enum.Gender.Male.val" name="gender" formControlName="gender" (change)="setVictimInfoSameAsApplicant(form.parent)">
-                    <span>M <app-tool-tip [trigger]="genderMToolTip"></app-tool-tip></span>
-                </label>
-                <label class="inline-label">
-                    <input type="radio" [value]="enum.Gender.Female.val" name="gender" formControlName="gender" (change)="setVictimInfoSameAsApplicant(form.parent)">
-                    <span>F <app-tool-tip [trigger]="genderFToolTip"></app-tool-tip></span>
-                </label>
-                <label class="inline-label">
-                    <input type="radio" [value]="enum.Gender.X.val" name="gender" formControlName="gender" (change)="setVictimInfoSameAsApplicant(form.parent)">
-                    <span>X <app-tool-tip [trigger]="genderXToolTip"></app-tool-tip></span>
-                </label>
-            </app-field>
+          <app-field label="Comments" [disabled]="isDisabled">
+            <input class="form-control" type="text" formControlName="victimAlreadySubmittedComment" maxlength="100">
+          </app-field>
         </div>
-    </div>
+      </div>
+    }
+  }
 
-    <app-gender-selector
-      [form]="form"
-      [isDisabled]="isDisabled"
-      genderFormControlName="gender"
-      otherGenderFormControlName="otherGender"
-      featureEnabled="useUpdatedComplianceFields"
-      [featureEnabledIf]="true" />
+  @if (form.get('applicantType').value === enum.ApplicantType.Immediate_Family_Member.val) {
+    <div class="row">
+      <div class="col-md-6">
+        <app-field label="My relationship to the victim is:" [required]="true" [disabled]="isDisabled" [valid]="isMyControlValid(form.get('IFMRelationship'))" errorMessage="Please enter a relationship">
+          <input class="form-control" type="text" formControlName="IFMRelationship" maxlength="100">
+        </app-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <app-field label="There are other members of my family who are also applying to the Victim Travel Fund:" errorMessage="" [disabled]="isDisabled">
+          <label class="inline-label">
+            <input type="radio" [value]="enum.MultiBoolean.True.val" name="otherFamilyAlsoApplying" formControlName="otherFamilyAlsoApplying" (change)="otherFamilyAlsoApplyingChange()">
+            <span>Yes</span>
+          </label>
+          <label class="inline-label">
+            <input type="radio" [value]="enum.MultiBoolean.False.val" name="otherFamilyAlsoApplying" formControlName="otherFamilyAlsoApplying" (change)="otherFamilyAlsoApplyingChange()">
+            <span>No</span>
+          </label>
+          <label class="inline-label">
+            <input type="radio" [value]="enum.MultiBoolean.Undecided.val" name="otherFamilyAlsoApplying" formControlName="otherFamilyAlsoApplying" (change)="otherFamilyAlsoApplyingChange()">
+            <span>I don't know</span>
+          </label>
+        </app-field>
+      </div>
+    </div>
+    @if (form.get('otherFamilyAlsoApplying').value === enum.MultiBoolean.Undecided.val) {
+      <div class="row">
+        <div class="col-md-6">
+          <app-field label="Comments" [disabled]="isDisabled">
+            <input class="form-control" type="text" formControlName="otherFamilyAlsoApplyingComment" maxlength="100">
+          </app-field>
+        </div>
+      </div>
+    }
+  }
+
+  <h2 class="blue-header mt-0">Applicant Information</h2>
+
+  @if (formType === ApplicationType.NOTIFICATION) {
+    <div [class.is-disabled]="isDisabled">
+      <label class="inline-label inline-checkbox">
+        <input type="checkbox" [value]="true" name="applicantInfoSameAsVictim" formControlName="applicantInfoSameAsVictim" (change)="applicantInfoSameAsVictimChange($event.target.checked)">
+        <span>Select if the applicant's name is the same as Victim / Civil Protected Party in the Case Information section</span>
+      </label>
+    </div>
+  }
+
+  <div class="row">
+    <div class="col-md-4">
+      <app-field label="First Name" [required]="true" [valid]="isMyControlValid(form.get('firstName'))" errorMessage="Please enter your first name" [disabled]="isDisabled" [tooltipReference]="formType === ApplicationType.TRAVEL_FUNDS ? nameTemplate : ''">
+        <input class="form-control" type="text" formControlName="firstName" maxlength="100" (change)="setVictimInfoSameAsApplicant(form.parent)">
+      </app-field>
+    </div>
+    <div class="col-md-4">
+      <app-field label="Middle Name" [required]="false" [valid]="isMyControlValid(form.get('middleName'))" errorMessage="Please enter your middle name" [disabled]="isDisabled" [tooltipReference]="formType === ApplicationType.TRAVEL_FUNDS ? nameTemplate : ''">
+        <input class="form-control" type="text" formControlName="middleName" maxlength="100" (change)="setVictimInfoSameAsApplicant(form.parent)">
+      </app-field>
+    </div>
+    <div class="col-md-4">
+      <app-field label="Last Name" [required]="true" [valid]="isMyControlValid(form.get('lastName'))" errorMessage="Please enter your last name" [disabled]="isDisabled" [tooltipReference]="formType === ApplicationType.TRAVEL_FUNDS ? nameTemplate : ''">
+        <input class="form-control" type="text" formControlName="lastName" maxlength="100" (change)="setVictimInfoSameAsApplicant(form.parent)">
+      </app-field>
+    </div>
+    <ng-template #nameTemplate>If you may be eligible for funding for air travel, please enter your name exactly as it shows on your travel ID (e.g. passport, drivers license)</ng-template>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6 date-col">
+      <app-field label="Birth Date" [required]="true" [valid]="isMyControlValid(form.get('birthDate'))" errorMessage="Please enter your birth date" [disabled]="isDisabled" (change)="setVictimInfoSameAsApplicant(form.parent)">
+        <app-date-field [control]="form.get('birthDate')" [max]="today" [disabled]="form.get('applicantInfoSameAsVictim').value"></app-date-field>
+      </app-field>
+    </div>
+  </div>
+
+  <div class="attention">
+    <p>Please note that your answers to questions about demographic information (e.g. gender, Indigenous identity) allow the Community Safety and Crime Prevention branch to better understand who accesses our programs so we may continue to improve our service delivery. Your response is voluntary and the information you provide does not impact your ability to access these services.</p>
+  </div>
+
+  <div class="row" featureEnabled="useUpdatedComplianceFields" [featureEnabledIf]="false">
+    <div class="col-md-6">
+      <app-field label="Gender" [required]="false" [valid]="isMyControlValid(form.get('gender'))" errorMessage="Please select your gender" [disabled]="isDisabled">
+        <label class="inline-label">
+          <input type="radio" [value]="enum.Gender.Male.val" name="gender" formControlName="gender" (change)="setVictimInfoSameAsApplicant(form.parent)">
+          <span>M <app-tool-tip [trigger]="genderMToolTip"></app-tool-tip></span>
+        </label>
+        <label class="inline-label">
+          <input type="radio" [value]="enum.Gender.Female.val" name="gender" formControlName="gender" (change)="setVictimInfoSameAsApplicant(form.parent)">
+          <span>F <app-tool-tip [trigger]="genderFToolTip"></app-tool-tip></span>
+        </label>
+        <label class="inline-label">
+          <input type="radio" [value]="enum.Gender.X.val" name="gender" formControlName="gender" (change)="setVictimInfoSameAsApplicant(form.parent)">
+          <span>X <app-tool-tip [trigger]="genderXToolTip"></app-tool-tip></span>
+        </label>
+      </app-field>
+    </div>
+  </div>
+
+  <app-gender-selector
+    [form]="form"
+    [isDisabled]="isDisabled"
+    genderFormControlName="gender"
+    otherGenderFormControlName="otherGender"
+    featureEnabled="useUpdatedComplianceFields"
+    [featureEnabledIf]="true" />
 
     <app-pronoun-selector
       [form]="form"
@@ -261,88 +279,100 @@
       featureEnabled="useUpdatedComplianceFields"
       [featureEnabledIf]="true" />
 
-    <ng-template #genderMToolTip>Persons whose current gender is male. This includes cisgender and transgender persons who are male.</ng-template>
-    <ng-template #genderFToolTip>Persons whose current gender is female. This includes cisgender and transgender persons who are female.</ng-template>
-    <ng-template #genderXToolTip>Persons whose current gender is not exclusively male or female. It includes people who are unsure of their gender, do not have one gender, have no gender, are gender fluid, or are Two-Spirit.</ng-template>
+      <ng-template #genderMToolTip>Persons whose current gender is male. This includes cisgender and transgender persons who are male.</ng-template>
+      <ng-template #genderFToolTip>Persons whose current gender is female. This includes cisgender and transgender persons who are female.</ng-template>
+      <ng-template #genderXToolTip>Persons whose current gender is not exclusively male or female. It includes people who are unsure of their gender, do not have one gender, have no gender, are gender fluid, or are Two-Spirit.</ng-template>
 
-    <div class="row" featureEnabled="useUpdatedComplianceFields" [featureEnabledIf]="false">
+      <div class="row" featureEnabled="useUpdatedComplianceFields" [featureEnabledIf]="false">
         <div class="col-md-6">
-            <app-field label="Do you identify as an Indigenous person?" [required]="true" [valid]="isMyControlValid(form.get('indigenousStatus'))" errorMessage="Please select an option" class="long-label" [disabled]="isDisabled">
-                <select class="form-control" formControlName="indigenousStatus">
-                    <option [value]="enum.IndigenousStatus.BLANK.val">{{ enum.IndigenousStatus.BLANK.name }}</option>
-                    <option [value]="enum.IndigenousStatus.First_Nations.val">
-                        {{ enum.IndigenousStatus.First_Nations.name }}
-                    </option>
-                    <option [value]="enum.IndigenousStatus.Metis.val">{{ enum.IndigenousStatus.Metis.name }}</option>
-                    <option [value]="enum.IndigenousStatus.Inuit.val">{{ enum.IndigenousStatus.Inuit.name }}</option>
-                    <option [value]="enum.IndigenousStatus.Prefer_Not_To_Answer.val">
-                        {{ enum.IndigenousStatus.Prefer_Not_To_Answer.name }}
-                    </option>
-                    <option [value]="enum.IndigenousStatus.Not_Applicable.val">
-                        {{ enum.IndigenousStatus.Not_Applicable.name }}
-                    </option>
-                </select>
-            </app-field>
+          <app-field label="Do you identify as an Indigenous person?" [required]="true" [valid]="isMyControlValid(form.get('indigenousStatus'))" errorMessage="Please select an option" class="long-label" [disabled]="isDisabled">
+            <select class="form-control" formControlName="indigenousStatus">
+              <option [value]="enum.IndigenousStatus.BLANK.val">{{ enum.IndigenousStatus.BLANK.name }}</option>
+              <option [value]="enum.IndigenousStatus.First_Nations.val">
+                {{ enum.IndigenousStatus.First_Nations.name }}
+              </option>
+              <option [value]="enum.IndigenousStatus.Metis.val">{{ enum.IndigenousStatus.Metis.name }}</option>
+              <option [value]="enum.IndigenousStatus.Inuit.val">{{ enum.IndigenousStatus.Inuit.name }}</option>
+              <option [value]="enum.IndigenousStatus.Prefer_Not_To_Answer.val">
+                {{ enum.IndigenousStatus.Prefer_Not_To_Answer.name }}
+              </option>
+              <option [value]="enum.IndigenousStatus.Not_Applicable.val">
+                {{ enum.IndigenousStatus.Not_Applicable.name }}
+              </option>
+            </select>
+          </app-field>
         </div>
-    </div>
+      </div>
 
-    <app-race-selector
-      [form]="form"
-      [isDisabled]="isDisabled"
-      raceEthnicityFormControlName="raceEthnicity"
-      otherRaceEthnicityFormControlName="otherRaceEthnicity"
-      indigenousStatusFormControlName="indigenousStatus"
-      featureEnabled="useUpdatedComplianceFields"
-      [featureEnabledIf]="true" />
+      <app-race-selector
+        [form]="form"
+        [isDisabled]="isDisabled"
+        raceEthnicityFormControlName="raceEthnicity"
+        otherRaceEthnicityFormControlName="otherRaceEthnicity"
+        indigenousStatusFormControlName="indigenousStatus"
+        featureEnabled="useUpdatedComplianceFields"
+        [featureEnabledIf]="true" />
 
-    <div class="row">
-        <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-6">
             <app-field label="Preferred Language" [required]="false" [valid]="isFieldValid('preferredLanguage')" errorMessage="" [disabled]="isDisabled">
-                <input class="form-control" type="text" formControlName="preferredLanguage" maxlength="100">
+              <input class="form-control" type="text" formControlName="preferredLanguage" maxlength="100">
             </app-field>
-        </div>
-        <div class="col-md-6">
+          </div>
+          <div class="col-md-6">
             <app-field label="Interpreter Needed" errorMessage="" [disabled]="isDisabled">
-                <label class="inline-label">
-                    <input type="radio" [value]="enum.Boolean.True.val" name="interpreterNeeded" formControlName="interpreterNeeded">
-                    <span>Yes</span>
-                </label>
-                <label class="inline-label">
-                    <input type="radio" [value]="enum.Boolean.False.val" name="interpreterNeeded" formControlName="interpreterNeeded">
-                    <span>No</span>
-                </label>
+              <label class="inline-label">
+                <input type="radio" [value]="enum.Boolean.True.val" name="interpreterNeeded" formControlName="interpreterNeeded">
+                <span>Yes</span>
+              </label>
+              <label class="inline-label">
+                <input type="radio" [value]="enum.Boolean.False.val" name="interpreterNeeded" formControlName="interpreterNeeded">
+                <span>No</span>
+              </label>
             </app-field>
+          </div>
         </div>
-    </div>
 
-    <app-address [group]="form.get('address')" [lookupData]="lookupData" [showChildrenAsRequired]="true" (change)="copyApplicantAddressToDeligate(form.parent, formType)" [disabled]="isDisabled"></app-address>
+        <app-address [group]="form.get('address')" [lookupData]="lookupData" [showChildrenAsRequired]="true" (change)="copyApplicantAddressToDeligate(form.parent, formType)" [disabled]="isDisabled"></app-address>
 
-    <div class="row">
-        <div class="col">
-            <label *ngIf="formType === ApplicationType.NOTIFICATION">May we send correspondence and notification information to the above address? (if no, please provide your email address below):</label>
-            <label *ngIf="formType === ApplicationType.TRAVEL_FUNDS">May we send correspondence to the above address?</label>
+        <div class="row">
+          <div class="col">
+            @if (formType === ApplicationType.NOTIFICATION) {
+              <label>May we send correspondence and notification information to the above address? (if no, please provide your email address below):</label>
+            }
+            @if (formType === ApplicationType.TRAVEL_FUNDS) {
+              <label>May we send correspondence to the above address?</label>
+            }
             <app-field label="" errorMessage="" [disabled]="isDisabled">
-                <label class="inline-label">
-                    <input type="radio" [value]="enum.Boolean.True.val" name="mayWeSendCorrespondence" formControlName="mayWeSendCorrespondence">
-                    <span>Yes</span>
-                </label>
-                <label class="inline-label">
-                    <input type="radio" [value]="enum.Boolean.False.val" name="mayWeSendCorrespondence" formControlName="mayWeSendCorrespondence">
-                    <span>No</span>
-                </label>
+              <label class="inline-label">
+                <input type="radio" [value]="enum.Boolean.True.val" name="mayWeSendCorrespondence" formControlName="mayWeSendCorrespondence">
+                <span>Yes</span>
+              </label>
+              <label class="inline-label">
+                <input type="radio" [value]="enum.Boolean.False.val" name="mayWeSendCorrespondence" formControlName="mayWeSendCorrespondence">
+                <span>No</span>
+              </label>
             </app-field>
+          </div>
         </div>
-    </div>
 
-    <p *ngIf="formType === ApplicationType.NOTIFICATION">Please list one or more methods of contact (telephone / cellular / email) in order of preference and indicate if we may leave a detailed message (e.g. our organization name, phone number, case information, notification details):</p>
-    <p *ngIf="formType === ApplicationType.TRAVEL_FUNDS">Please list <strong>one or more</strong> methods of contact in order of preference and indicate if we may leave a detailed message (e.g. our organization name, phone number, case or travel information):</p>
-    <p *ngIf="formType === ApplicationType.TRAVEL_FUNDS"><strong>If we need to send travel confirmations and itineraries to you, please ensure that your email address is listed below as one of your preferred contact methods.</strong></p>
+        @if (formType === ApplicationType.NOTIFICATION) {
+          <p>Please list one or more methods of contact (telephone / cellular / email) in order of preference and indicate if we may leave a detailed message (e.g. our organization name, phone number, case information, notification details):</p>
+        }
+        @if (formType === ApplicationType.TRAVEL_FUNDS) {
+          <p>Please list <strong>one or more</strong> methods of contact in order of preference and indicate if we may leave a detailed message (e.g. our organization name, phone number, case or travel information):</p>
+        }
+        @if (formType === ApplicationType.TRAVEL_FUNDS) {
+          <p><strong>If we need to send travel confirmations and itineraries to you, please ensure that your email address is listed below as one of your preferred contact methods.</strong></p>
+        }
 
-    <div class="contactMethods" formArrayName="contactMethods" *ngFor="let item of form.get('contactMethods')['controls']; let i = index;">
-        <app-contact-method [formGroup]="item" [formGroupName]="i" [number]="i" [parent]="form" [disabled]="isDisabled"></app-contact-method>
-    </div>
+        @for (item of form.get('contactMethods')['controls']; track item; let i = $index) {
+          <div class="contactMethods" formArrayName="contactMethods">
+            <app-contact-method [formGroup]="item" [formGroupName]="i" [number]="i" [parent]="form" [disabled]="isDisabled"></app-contact-method>
+          </div>
+        }
 
-    <app-field [valid]="isFieldValid('atLeastOneContactMethod')" errorMessage="At least one method of contact is required" [disabled]="isDisabled">
-        <input type="hidden" name="atLeastOneContactMethod" formControlName="atLeastOneContactMethod">
-    </app-field>
-</div>
+        <app-field [valid]="isFieldValid('atLeastOneContactMethod')" errorMessage="At least one method of contact is required" [disabled]="isDisabled">
+          <input type="hidden" name="atLeastOneContactMethod" formControlName="atLeastOneContactMethod">
+        </app-field>
+      </div>
