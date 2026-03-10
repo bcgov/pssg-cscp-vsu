@@ -1,0 +1,60 @@
+# ======================================================================================
+#  Last Updated: 2026-03-10
+#
+#  Description:
+#  This is the main CD workflow for the VSU API (.NET backend).
+#  It orchestrates the build and deployment process for the API service.
+#
+#  Triggers:
+#  1. Automatic (`push`): Triggers automatically when code is merged to 'development' branch.
+#  2. Manual (`workflow_dispatch`): Allows for manual deployments.
+#
+#  Note: Commit SHA and build metadata are automatically baked into image labels.
+#
+# ======================================================================================
+
+name: CD VSU API
+
+# --- TRIGGERS -----------------------------------------------------------------------
+on:
+  # Triggers this workflow when code is merged to development branch
+  push:
+    branches: [development]
+    paths:
+      - "vsu-app/**"
+      - "Database/**"
+      - "!vsu-app/ClientApp/**"
+
+  # manual trigger
+  workflow_dispatch:
+
+# --- JOBS ---------------------------------------------------------------------------
+jobs:
+  # ------------------------------------------------------------------------------------
+  #  Job: build-and-deploy
+  #  Purpose: Calls the reusable build workflow to build, publish, and scan the image.
+  # ------------------------------------------------------------------------------------
+  build-and-deploy:
+    permissions:
+      # Core repository and deployment access
+      contents: read              # Read repository files and clone code
+      actions: read               # Read workflow runs and job information for private repo access
+      packages: write             # Push Docker images to container registry
+      # Environment and security
+      id-token: write             # Required for environment protection and OIDC
+      security-events: write      # Upload security scan results (Trivy SARIF)
+    uses: ./.github/workflows/build-template-v2.yml
+    with:
+      EVENT_NAME: ${{ github.event_name }}
+      IMAGE_CONTEXT: .
+      IMAGE_FILE: ./vsu-app/Dockerfile.api
+      IMAGE_NAME: vsu-api
+      ARTIFACTORY_REGISTRY: ${{ vars.ARTIFACTORY_REGISTRY }}
+      BRANCH: ${{ github.ref_name }}
+    secrets:
+      ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
+      ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
+      OCP4_PASSWORD: ${{ secrets.OCP4_PASSWORD }}
+      OCP4_NAMESPACE: ${{ secrets.OCP4_NAMESPACE }}
+      OCP4_REGISTRY: ${{ secrets.OCP4_REGISTRY }}
+      OPENSHIFT_SERVER: ${{ secrets.OPENSHIFT_SERVER }}

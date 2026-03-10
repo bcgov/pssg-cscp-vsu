@@ -1,0 +1,101 @@
+# ##################################################################################################
+#                                                                                                 #
+#   VSU-API: ASP.NET Core Web API (Backend Only)                                                  #
+#                                                                                                 #
+#   LOCAL BUILD & RUN INSTRUCTIONS                                                                #
+#   --------------------------------------------------------------------------------------------  #
+#   1. Build the Docker image (run from repo root):                                               #
+#        docker build \                                                                           #
+#          -t vsu-api:local \                                                                     #
+#          -f vsu-app/Dockerfile.api \                                                            #
+#          .                                                                                      #
+#                                                                                                 #
+#   2. Run the container:                                                                         #
+#        docker run --rm -it -p 8080:8080 vsu-api:local                                           #
+#                                                                                                 #
+#   ARCHITECTURE & BUILD OVERVIEW                                                                 #
+#   --------------------------------------------------------------------------------------------  #
+#   - Multi-stage Docker build for .NET backend API only (no Angular/frontend)                    #
+#   - Includes Database project (Dataverse integration layer)                                     #
+#   - ClientApp is stubbed out during build to skip SPA compilation                               #
+#   - Runtime container runs as non-root user (appuser) for security                              #
+#   - All files in /app are owned by appuser:appgroup                                             #
+#   - Follows ERA (EMCR-ESS-PORTAL) standard API Dockerfile pattern                              #
+#                                                                                                 #
+#   TECHNOLOGIES                                                                                  #
+#   --------------------------------------------------------------------------------------------  #
+#   - Backend: ASP.NET Core (.NET 10)                                                             #
+#   - Database: Dataverse client libraries                                                        #
+#                                                                                                 #
+# ##################################################################################################
+
+# --- Runtime Base Image ---
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
+WORKDIR /app
+EXPOSE 8080
+ENV ASPNETCORE_URLS=http://*:8080
+ENV ASPNETCORE_FORWARDEDHEADERS_ENABLED=true
+ENV DOTNET_gcServer=1
+
+# --- Build Stage (SDK) ---
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+WORKDIR /src
+
+# Install Node.js (required by MSBuild SpaServices targets in csproj)
+RUN apt-get update -yq && \
+    apt-get install -yq --no-install-recommends curl && \
+    curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
+    apt-get install -yq nodejs && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Copy solution and project files first for better layer caching
+COPY vsu-app/vsu-app.sln ./vsu-app/
+COPY vsu-app/vsu-app.csproj ./vsu-app/
+COPY Database/Database.csproj ./Database/
+
+# Restore dependencies
+RUN dotnet restore "./vsu-app/vsu-app.csproj"
+
+# Copy source code
+COPY Database/ ./Database/
+COPY vsu-app/ ./vsu-app/
+
+# Stub out ClientApp to skip Angular build while satisfying MSBuild SpaServices targets.
+# The csproj PublishRunWebpack target runs npm install/build in ClientApp - this no-op stub
+# lets it complete without actually building the frontend.
+RUN rm -rf ./vsu-app/ClientApp && \
+    mkdir -p ./vsu-app/ClientApp/dist/browser && \
+    echo '{"name":"stub","scripts":{"build":"echo skip"}}' > ./vsu-app/ClientApp/package.json
+
+# Build
+RUN dotnet build "vsu-app/vsu-app.csproj" -c Release -o /app/build
+
+# --- Publish Stage ---
+FROM build AS publish
+RUN dotnet publish "vsu-app/vsu-app.csproj" -c Release -o /app/publish
+
+# --- Final Runtime Image ---
+FROM base AS final
+
+# Update all system packages for latest security patches
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Create non-root user and group for security
+RUN groupadd --system appgroup && useradd --system --gid appgroup --no-create-home appuser
+
+# Copy published app from build stage
+COPY --from=publish /app/publish ./
+
+# Set ownership of all app files to appuser:appgroup
+RUN chown -R appuser:appgroup /app
+
+# Switch to non-root user for runtime
+USER appuser
+
+ENTRYPOINT ["dotnet", "vsu-app.dll"]
