@@ -31,6 +31,10 @@ function getCRMApplication(application: iNotificationApplication) {
     victimPrimaryRaceEthnicityText: application.CaseInformation.otherRaceEthnicity,
     victimIndigenous: application.CaseInformation.indigenousStatus,
 
+    decision1ImpactToOutcome: null,
+    decision2TravelOver100KM: null,
+    decision3NoOtherFundingSource: null,
+
     applicantType: application.ApplicantInformation.applicantType,
     applicantTypeOther: application.ApplicantInformation.applicantTypeOther,
     applicantsFirstName: application.ApplicantInformation.firstName,
