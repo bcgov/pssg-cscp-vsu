@@ -21,29 +21,64 @@ namespace Gov.Cscp.Victims.Public.Controllers
             _logger = Log.Logger;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> SubmitApplication([FromBody] ApplicationDataDto model)
+        [HttpPost("notification")]
+        public async Task<IActionResult> SubmitNotificationApplication([FromBody] NotificationApplicationDataDto model)
+        {
+            if (!ModelState.IsValid)
+            {
+                _logger.Error(
+                    $"API call to 'SubmitNotificationApplication' made with invalid model state. Error is:\n{ModelState}. Source = VSU"
+                );
+                return BadRequest(ModelState);
+            }
+
+            return await ExecuteSubmitApplication(model.ToVSdCreateVSuCaseRequest(), "SubmitNotificationApplication");
+        }
+
+        [HttpPost("vtf")]
+        public async Task<IActionResult> SubmitVtfApplication([FromBody] VtfApplicationDataDto model)
+        {
+            if (!ModelState.IsValid)
+            {
+                _logger.Error(
+                    $"API call to 'SubmitVtfApplication' made with invalid model state. Error is:\n{ModelState}. Source = VSU"
+                );
+                return BadRequest(ModelState);
+            }
+
+            return await ExecuteSubmitApplication(model.ToVSdCreateVSuCaseRequest(), "SubmitVtfApplication");
+        }
+
+        [HttpPost("vtf-reimbursement")]
+        public async Task<IActionResult> SubmitVtfReimbursementApplication(
+            [FromBody] VtfReimbursementApplicationDataDto model
+        )
+        {
+            if (!ModelState.IsValid)
+            {
+                _logger.Error(
+                    $"API call to 'SubmitVtfReimbursementApplication' made with invalid model state. Error is:\n{ModelState}. Source = VSU"
+                );
+                return BadRequest(ModelState);
+            }
+
+            return await ExecuteSubmitApplication(
+                model.ToVSdCreateVSuCaseRequest(),
+                "SubmitVtfReimbursementApplication"
+            );
+        }
+
+        private async Task<IActionResult> ExecuteSubmitApplication(VSd_CreateVSuCaseRequest request, string actionName)
         {
             try
             {
-                if (!ModelState.IsValid)
-                {
-                    _logger.Error(
-                        $"API call to 'SubmitApplication' made with invalid model state. Error is:\n{ModelState}. Source = VSU"
-                    );
-                    return BadRequest(ModelState);
-                }
-
-                // Map DTO to Dataverse request
-                var request = model.ToVSdCreateVSuCaseRequest();
-
-                // Execute the request using Dataverse SDK
                 var response = (VSd_CreateVSuCaseResponse)await _organizationService.ExecuteAsync(request);
 
                 if (response.IsSuccess is not true)
                 {
                     _logger.Error(
-                        "Error while submitting application. Response from Dynamics was:\n{@Response}",
+                        "Error while submitting application via '{ActionName}'. Response from Dynamics was:\n{@Response}",
+                        actionName,
                         response
                     );
 
@@ -54,10 +89,13 @@ namespace Gov.Cscp.Victims.Public.Controllers
             }
             catch (Exception e)
             {
-                _logger.Error(e, "Unexpected error while submitting application. Source = VSU");
+                _logger.Error(
+                    e,
+                    "Unexpected error while submitting application via '{ActionName}'. Source = VSU",
+                    actionName
+                );
                 return StatusCode(500, "An unexpected error occurred while submitting the application.");
             }
-            finally { }
         }
     }
 }

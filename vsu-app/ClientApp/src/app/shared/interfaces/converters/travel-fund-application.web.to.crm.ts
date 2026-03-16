@@ -1,29 +1,26 @@
-import { ApplicationDto } from 'src/model';
+import {
+  CourtInfoDto,
+  OffenceDto,
+  ParticipantDto,
+  TravelInfoDto,
+  VtfApplicationDataDto,
+  VtfApplicationDto
+} from 'src/model';
 import { ApplicationType, EnumHelper, PARTICIPANT_TYPES } from '../../enums-list';
 import { iTravelFundApplication } from '../application.interface';
-import {
-  iApplicationFormCRM,
-  iCRMCourtInfo,
-  iCRMOffence,
-  iCRMParticipant,
-  iCRMTravelInfo
-} from '../dynamics/crm-application';
 
-export function convertTravelFundApplicationToCRM(application: iTravelFundApplication) {
-  let crm_application: iApplicationFormCRM = {
-    Application: getCRMApplication(application),
-    CourtInfoCollection: getCRMCourtInfoCollection(application),
-    DocumentCollection: [],
-    OffenceCollection: getOffenceInfo(application),
-    PoliceFileNumberCollection: [],
-    ProviderCollection: getCRMProviderCollection(application),
-    TravelInfoCollection: getCRMTravelInfoCollection(application)
+export function convertTravelFundApplicationToCRM(application: iTravelFundApplication): VtfApplicationDataDto {
+  return {
+    application: getCRMApplication(application),
+    courtInfoCollection: getCRMCourtInfoCollection(application),
+    documentCollection: [],
+    offenceCollection: getOffenceInfo(application),
+    providerCollection: getCRMProviderCollection(application),
+    travelInfoCollection: getCRMTravelInfoCollection(application)
   };
-
-  return crm_application;
 }
 
-function getCRMApplication(application: iTravelFundApplication) {
+function getCRMApplication(application: iTravelFundApplication): VtfApplicationDto {
   let enums = new EnumHelper();
 
   let temp: any = null;
@@ -35,7 +32,7 @@ function getCRMApplication(application: iTravelFundApplication) {
     relationship_to_victim = application.ApplicantInformation.IFMRelationship;
   }
 
-  let crm_application: ApplicationDto = {
+  let crm_application: VtfApplicationDto = {
     applicationType: ApplicationType.TRAVEL_FUNDS,
 
     offencesComments: application.OverviewInformation.offencesComment,
@@ -198,7 +195,7 @@ function getCRMApplication(application: iTravelFundApplication) {
   return crm_application;
 }
 function getCRMCourtInfoCollection(application: iTravelFundApplication) {
-  let court_info_collection: iCRMCourtInfo[] = [];
+  let court_info_collection: CourtInfoDto[] = [];
 
   if (application.CaseInformation.courtInfo) {
     application.CaseInformation.courtInfo.forEach((court_info) => {
@@ -213,7 +210,7 @@ function getCRMCourtInfoCollection(application: iTravelFundApplication) {
 }
 
 function getOffenceInfo(application: iTravelFundApplication) {
-  let offence_collection: iCRMOffence[] = [];
+  let offence_collection: OffenceDto[] = [];
   offence_collection = application.CaseInformation.offences
     .filter((o) => o.checked)
     .map((o) => {
@@ -223,7 +220,7 @@ function getOffenceInfo(application: iTravelFundApplication) {
 }
 
 function getCRMTravelInfoCollection(application: iTravelFundApplication) {
-  let travel_collection: iCRMTravelInfo[] = [];
+  let travel_collection: TravelInfoDto[] = [];
   let courtFileNumber = '';
   if (application.CaseInformation.courtInfo.length > 0) {
     courtFileNumber = application.CaseInformation.courtInfo[0].courtFileNumber;
@@ -231,11 +228,11 @@ function getCRMTravelInfoCollection(application: iTravelFundApplication) {
 
   application.TravelInformation.courtDates.forEach((c) => {
     travel_collection.push({
-      vsd_courtdate: c.courtDate,
+      vsd_courtdate: c.courtDate?.toISOString() ?? null,
       vsd_courtfilenumber_text: courtFileNumber,
       vsd_purposeoftravel: c.purposeOfTravel,
-      vsd_travelperiodfrom: c.travelPeriodStart,
-      vsd_travelperiodto: c.travelPeriodEnd
+      vsd_travelperiodfrom: c.travelPeriodStart?.toISOString() ?? null,
+      vsd_travelperiodto: c.travelPeriodEnd?.toISOString() ?? null
     });
   });
 
@@ -243,7 +240,7 @@ function getCRMTravelInfoCollection(application: iTravelFundApplication) {
 }
 
 function getCRMProviderCollection(application: iTravelFundApplication) {
-  let provider_collection: iCRMParticipant[] = [];
+  let provider_collection: ParticipantDto[] = [];
   let enums = new EnumHelper();
 
   //CaseInformation Accused / Offender
@@ -251,7 +248,9 @@ function getCRMProviderCollection(application: iTravelFundApplication) {
     vsd_firstname: application.CaseInformation.accusedFirstName,
     vsd_middlename: application.CaseInformation.accusedMiddleName,
     vsd_lastname: application.CaseInformation.accusedLastName,
-    vsd_birthdate: application.CaseInformation.accusedBirthDate || null,
+    vsd_birthdate: application.CaseInformation.accusedBirthDate
+      ? new Date(application.CaseInformation.accusedBirthDate).toISOString()
+      : null,
     vsd_gender: application.CaseInformation.accusedGender,
     vsd_genderidentitytext: application.CaseInformation.accusedOtherGender,
     vsd_pronouns: application.CaseInformation.accusedPronouns,
@@ -268,7 +267,7 @@ function getCRMProviderCollection(application: iTravelFundApplication) {
       vsd_firstname: accused.firstName,
       vsd_middlename: accused.middleName,
       vsd_lastname: accused.lastName,
-      vsd_birthdate: accused.birthDate || null,
+      vsd_birthdate: accused.birthDate ? new Date(accused.birthDate).toISOString() : null,
       vsd_gender: accused.gender,
       vsd_relationship1: PARTICIPANT_TYPES.ACCUSED,
       vsd_relationship2: accused.relationship

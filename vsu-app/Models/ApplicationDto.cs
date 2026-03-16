@@ -54,20 +54,17 @@ namespace Gov.Cscp.Victims.Public.Models
         [StringLength(500)]
         public string OffencesComments { get; set; }
 
-        [Required]
-        public int? Decision1ImpactToOutcome { get; set; }
+        public virtual int? Decision1ImpactToOutcome { get; set; }
 
         [StringLength(500)]
         public string Decision1Comments { get; set; }
 
-        [Required]
-        public int? Decision2TravelOver100KM { get; set; }
+        public virtual int? Decision2TravelOver100KM { get; set; }
 
         [StringLength(500)]
         public string Decision2Comments { get; set; }
 
-        [Required]
-        public int? Decision3NoOtherFundingSource { get; set; }
+        public virtual int? Decision3NoOtherFundingSource { get; set; }
 
         [StringLength(500)]
         public string Decision3Comments { get; set; }

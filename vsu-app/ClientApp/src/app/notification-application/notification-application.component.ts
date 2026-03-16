@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatStepper } from '@angular/material/stepper';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { ApplicationService } from '../services/application.service';
+import { ApplicationService } from 'src/api/application/application.service';
 import { LookupService } from '../services/lookup.service';
 import { NotificationQueueService } from '../services/notification-queue.service';
 import { ApplicantInfoHelper } from '../shared/components/applicant-information/applicant-information.helper';
@@ -180,7 +180,7 @@ export class NotificationApplicationComponent extends FormBase implements OnInit
       this.submitting = true;
       let application = this.harvestForm();
       let data = convertNotificationApplicationToCRM(application);
-      this.applicationService.submit(data).subscribe({
+      this.applicationService.postApiApplicationNotification(data).subscribe({
         next: (res) => {
           this.form.get('confirmation.confirmationNumber').patchValue('RXXXXXX');
           this.showConfirmation = true;

@@ -1,23 +1,21 @@
-import { ApplicationDto } from 'src/model';
+import { CourtInfoDto, NotificationApplicationDataDto, NotificationApplicationDto, ParticipantDto } from 'src/model';
 import { ApplicationType, EnumHelper, PARTICIPANT_TYPES } from '../../enums-list';
 import { iNotificationApplication } from '../application.interface';
-import { iApplicationFormCRM, iCRMCourtInfo, iCRMParticipant } from '../dynamics/crm-application';
 
-export function convertNotificationApplicationToCRM(application: iNotificationApplication) {
-  let crm_application: iApplicationFormCRM = {
-    Application: getCRMApplication(application),
-    CourtInfoCollection: getCRMCourtInfoCollection(application),
-    PoliceFileNumberCollection: [],
-    ProviderCollection: getCRMProviderCollection(application),
-    DocumentCollection: []
+export function convertNotificationApplicationToCRM(
+  application: iNotificationApplication
+): NotificationApplicationDataDto {
+  return {
+    application: getCRMApplication(application),
+    courtInfoCollection: getCRMCourtInfoCollection(application),
+    providerCollection: getCRMProviderCollection(application),
+    documentCollection: []
   };
-
-  return crm_application;
 }
 
-function getCRMApplication(application: iNotificationApplication) {
+function getCRMApplication(application: iNotificationApplication): NotificationApplicationDto {
   let enums = new EnumHelper();
-  let crm_application: ApplicationDto = {
+  let crm_application: NotificationApplicationDto = {
     applicationType: ApplicationType.NOTIFICATION,
     victimFirstName: application.CaseInformation.firstName,
     victimMiddleName: application.CaseInformation.middleName,
@@ -130,7 +128,7 @@ function getCRMApplication(application: iNotificationApplication) {
   return crm_application;
 }
 function getCRMCourtInfoCollection(application: iNotificationApplication) {
-  let court_info_collection: iCRMCourtInfo[] = [];
+  let court_info_collection: CourtInfoDto[] = [];
 
   if (application.CaseInformation.courtInfo) {
     application.CaseInformation.courtInfo.forEach((court_info) => {
@@ -145,7 +143,7 @@ function getCRMCourtInfoCollection(application: iNotificationApplication) {
 }
 
 function getCRMProviderCollection(application: iNotificationApplication) {
-  let provider_collection: iCRMParticipant[] = [];
+  let provider_collection: ParticipantDto[] = [];
   let enums = new EnumHelper();
 
   //CaseInformation Accused / Offender
@@ -153,7 +151,9 @@ function getCRMProviderCollection(application: iNotificationApplication) {
     vsd_firstname: application.CaseInformation.accusedFirstName,
     vsd_middlename: application.CaseInformation.accusedMiddleName,
     vsd_lastname: application.CaseInformation.accusedLastName,
-    vsd_birthdate: application.CaseInformation.accusedBirthDate,
+    vsd_birthdate: application.CaseInformation.accusedBirthDate
+      ? new Date(application.CaseInformation.accusedBirthDate).toISOString()
+      : null,
     vsd_gender: application.CaseInformation.accusedGender,
     vsd_genderidentitytext: application.CaseInformation.accusedOtherGender,
     vsd_pronouns: application.CaseInformation.accusedPronouns,
@@ -170,7 +170,7 @@ function getCRMProviderCollection(application: iNotificationApplication) {
       vsd_firstname: accused.firstName,
       vsd_middlename: accused.middleName,
       vsd_lastname: accused.lastName,
-      vsd_birthdate: accused.birthDate,
+      vsd_birthdate: accused.birthDate ? new Date(accused.birthDate).toISOString() : null,
       vsd_gender: accused.gender,
       vsd_genderidentitytext: accused.otherGender,
       vsd_pronouns: accused.pronouns,

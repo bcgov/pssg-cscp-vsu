@@ -6,7 +6,7 @@
  * OpenAPI spec version: v1
  */
 
-export interface ApplicationDto {
+export interface NotificationApplicationDto {
   applicationType?: number;
   /**
    * @minLength 0
@@ -78,21 +78,24 @@ export interface ApplicationDto {
    * @nullable
    */
   offencesComments?: string | null;
-  decision1ImpactToOutcome: number;
+  /** @nullable */
+  decision1ImpactToOutcome?: number | null;
   /**
    * @minLength 0
    * @maxLength 500
    * @nullable
    */
   decision1Comments?: string | null;
-  decision2TravelOver100KM: number;
+  /** @nullable */
+  decision2TravelOver100KM?: number | null;
   /**
    * @minLength 0
    * @maxLength 500
    * @nullable
    */
   decision2Comments?: string | null;
-  decision3NoOtherFundingSource: number;
+  /** @nullable */
+  decision3NoOtherFundingSource?: number | null;
   /**
    * @minLength 0
    * @maxLength 500
