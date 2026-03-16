@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { LookupService } from '../../../services/lookup.service';
+import { LookupService } from 'src/api/lookup/lookup.service';
 import { ApplicationType } from '../../enums-list';
 
 @Component({
@@ -22,7 +22,7 @@ export class AdditionalInfoBannerComponent implements OnInit {
     } else if (this.formType === ApplicationType.TRAVEL_FUNDS) {
       this.pdfLink = '';
     }
-    this.lookupService.getContactEmail().subscribe(
+    this.lookupService.getApiLookupContactEmail<any>().subscribe(
       (res) => {
         if (res && res.contactEmail) {
           this.contactEmail = res.contactEmail;

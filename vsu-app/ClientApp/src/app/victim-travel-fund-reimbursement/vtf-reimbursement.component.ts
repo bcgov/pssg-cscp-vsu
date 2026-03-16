@@ -4,9 +4,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatStepper } from '@angular/material/stepper';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { LookupService } from 'src/api/lookup/lookup.service';
 import { CaseDto } from 'src/model';
 import { ReimbursementService } from '../../api/reimbursement/reimbursement.service';
-import { LookupService } from '../services/lookup.service';
 import { NotificationQueueService } from '../services/notification-queue.service';
 import { AuthInfoHelper } from '../shared/components/authorization/authorization.helper';
 import { TravelExpensesHelper } from '../shared/components/travel-expenses/travel-expenses.helper';
@@ -96,7 +96,7 @@ export class VictimTravelFundReimbursementComponent extends FormBase implements 
 
     promise_array.push(
       new Promise<void>((resolve, reject) => {
-        this.lookupService.getCountries().subscribe(
+        this.lookupService.getApiLookupCountries<any>().subscribe(
           (res) => {
             this.lookupData.countries = res.value;
             if (this.lookupData.countries) {
@@ -113,7 +113,7 @@ export class VictimTravelFundReimbursementComponent extends FormBase implements 
 
     promise_array.push(
       new Promise<void>((resolve, reject) => {
-        this.lookupService.getProvinces().subscribe(
+        this.lookupService.getApiLookupProvinces<any>().subscribe(
           (res) => {
             this.lookupData.provinces = res.value;
             if (this.lookupData.provinces) {
@@ -130,7 +130,7 @@ export class VictimTravelFundReimbursementComponent extends FormBase implements 
 
     promise_array.push(
       new Promise<void>((resolve, reject) => {
-        this.lookupService.getOffences().subscribe(
+        this.lookupService.getApiLookupOffences<any>().subscribe(
           (res) => {
             this.lookupData.offences = res.value;
             if (this.lookupData.offences) {
@@ -147,7 +147,7 @@ export class VictimTravelFundReimbursementComponent extends FormBase implements 
 
     promise_array.push(
       new Promise<void>((resolve, reject) => {
-        this.lookupService.getRates().subscribe(
+        this.lookupService.getApiLookupRates<any>().subscribe(
           (res) => {
             let rates = res.value;
             let breakfast = rates.find((r) => r.vsd_configid == BREAKFAST_RATE_ID);

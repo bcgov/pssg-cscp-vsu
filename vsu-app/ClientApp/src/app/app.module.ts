@@ -24,7 +24,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { NotificationApplicationComponent } from './notification-application/notification-application.component';
-import { LookupService } from './services/lookup.service';
 import { AdditionalInfoBannerComponent } from './shared/components/additional-info-banner/additional-info-banner.component';
 import { AddressComponent } from './shared/components/address/address.component';
 import { ApplicantInformationComponent } from './shared/components/applicant-information/applicant-information.component';
@@ -107,7 +106,6 @@ import { VictimTravelFundReimbursementComponent } from './victim-travel-fund-rei
   exports: [AppRoutingModule, MatDatepickerModule, MatProgressSpinnerModule, NotificationBannerComponent],
   providers: [
     provideNgxMask(),
-    LookupService,
     ReimbursementService,
     {
       provide: STEPPER_GLOBAL_OPTIONS,

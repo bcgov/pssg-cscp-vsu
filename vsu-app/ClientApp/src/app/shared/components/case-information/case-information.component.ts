@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ControlContainer, FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
-import { LookupService } from '../../../services/lookup.service';
+import { LookupService } from 'src/api/lookup/lookup.service';
 import { NotificationQueueService } from '../../../services/notification-queue.service';
 import { ApplicationType, MY_FORMATS } from '../../enums-list';
 import { FormBase } from '../../form-base';
@@ -48,7 +48,7 @@ export class CaseInformationComponent extends FormBase implements OnInit {
     if (this.lookupData.courts && this.lookupData.courts.length > 0) {
       this.courtList = this.lookupData.courts.map((c) => c.vsd_name);
     } else {
-      this.lookupService.getCourts().subscribe(
+      this.lookupService.getApiLookupCourts<any>().subscribe(
         (res) => {
           this.lookupData.courts = res.value;
           if (this.lookupData.courts) {
@@ -67,7 +67,7 @@ export class CaseInformationComponent extends FormBase implements OnInit {
         this.offenceList = this.lookupData.offences;
         this.populateOffences();
       } else {
-        this.lookupService.getOffences().subscribe(
+        this.lookupService.getApiLookupOffences<any>().subscribe(
           (res) => {
             this.lookupData.offences = res.value;
             if (this.lookupData.offences) {
