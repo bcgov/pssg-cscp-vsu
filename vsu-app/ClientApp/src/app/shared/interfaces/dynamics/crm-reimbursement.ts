@@ -1,5 +1,4 @@
-import { CaseDto, TravelInfoDto } from 'src/model';
-import { iCRMDocument } from './crm-application';
+import { CaseDto, DocumentDto, TravelInfoDto } from 'src/model';
 
 export interface iReimbursementFormCRM {
   CaseId: CaseDto;
@@ -11,7 +10,7 @@ export interface iReimbursementFormCRM {
   MealExpenseCollection?: iCRMInvoiceLineDetail[];
   ChildcareExpenseCollection?: iCRMInvoiceLineDetail[];
   OtherExpenseCollection?: iCRMInvoiceLineDetail[];
-  DocumentCollection?: iCRMDocument[];
+  DocumentCollection?: DocumentDto[];
 }
 
 export interface iInvoice {

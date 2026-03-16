@@ -206,9 +206,9 @@ namespace Gov.Cscp.Victims.Public.Models.Mapping
         {
             var entity = new ActivityMimeAttachment
             {
-                FileName = document.vsd_filename,
-                Body = document.vsd_body,
-                Subject = document.vsd_subject,
+                FileName = document.Filename,
+                Body = document.Body,
+                Subject = document.Subject,
             };
 
             return entity;

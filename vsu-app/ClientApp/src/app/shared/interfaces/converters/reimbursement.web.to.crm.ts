@@ -180,9 +180,9 @@ function getCRMDocuments(data: iReimbursementForm): DocumentDto[] {
   data.AuthorizationInformation.documents.forEach((d) => {
     if (checkObjectHasValue(d)) {
       documents.push({
-        vsd_filename: d.filename,
-        vsd_body: d.body,
-        vsd_subject: d.subject
+        filename: d.filename,
+        body: d.body,
+        subject: d.subject
       });
     }
   });
