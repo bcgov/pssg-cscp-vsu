@@ -12,17 +12,17 @@ export interface DocumentDto {
    * @maxLength 225
    * @nullable
    */
-  vsd_filename?: string | null;
+  filename?: string | null;
   /**
    * @minLength 0
    * @maxLength 1073741823
    * @nullable
    */
-  vsd_body?: string | null;
+  body?: string | null;
   /**
    * @minLength 0
    * @maxLength 2000
    * @nullable
    */
-  vsd_subject?: string | null;
+  subject?: string | null;
 }

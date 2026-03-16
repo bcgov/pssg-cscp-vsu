@@ -4,8 +4,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatStepper } from '@angular/material/stepper';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { ApplicationService } from '../services/application.service';
-import { LookupService } from '../services/lookup.service';
+import { ApplicationService } from 'src/api/application/application.service';
+import { LookupService } from 'src/api/lookup/lookup.service';
 import { NotificationQueueService } from '../services/notification-queue.service';
 import { ApplicantInfoHelper } from '../shared/components/applicant-information/applicant-information.helper';
 import { AuthInfoHelper } from '../shared/components/authorization/authorization.helper';
@@ -93,7 +93,7 @@ export class VictimTravelFundApplicationComponent extends FormBase implements On
 
     promise_array.push(
       new Promise<void>((resolve, reject) => {
-        this.lookupService.getCountries().subscribe(
+        this.lookupService.getApiLookupCountries<any>().subscribe(
           (res) => {
             this.lookupData.countries = res.value;
             if (this.lookupData.countries) {
@@ -110,7 +110,7 @@ export class VictimTravelFundApplicationComponent extends FormBase implements On
 
     promise_array.push(
       new Promise<void>((resolve, reject) => {
-        this.lookupService.getProvinces().subscribe(
+        this.lookupService.getApiLookupProvinces<any>().subscribe(
           (res) => {
             this.lookupData.provinces = res.value;
             if (this.lookupData.provinces) {
@@ -127,7 +127,7 @@ export class VictimTravelFundApplicationComponent extends FormBase implements On
 
     promise_array.push(
       new Promise<void>((resolve, reject) => {
-        this.lookupService.getOffences().subscribe(
+        this.lookupService.getApiLookupOffences<any>().subscribe(
           (res) => {
             this.lookupData.offences = res.value;
             if (this.lookupData.offences) {
@@ -199,7 +199,7 @@ export class VictimTravelFundApplicationComponent extends FormBase implements On
       let application = this.harvestForm();
       let data = convertTravelFundApplicationToCRM(application);
 
-      this.applicationService.submit(data).subscribe({
+      this.applicationService.postApiApplicationVtf(data).subscribe({
         next: (res) => {
           this.form.get('confirmation.confirmationNumber').patchValue('RXXXXXX');
           this.showConfirmation = true;

@@ -3,8 +3,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ControlContainer, FormGroup } from '@angular/forms';
 import { noop, Observable, Observer, of, throwError } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
+import { LookupService } from 'src/api/lookup/lookup.service';
 import { config } from '../../../../config';
-import { LookupService } from '../../../services/lookup.service';
 import { ApplicationType } from '../../enums-list';
 import { FormBase } from '../../form-base';
 import { CitiesSearchResponse, iCity, iLookupData } from '../../interfaces/lookup-data.interface';
@@ -64,20 +64,27 @@ export class VSWComponent extends FormBase implements OnInit {
       switchMap((query: string) => {
         if (query) {
           let searchVal = this.form.get('city').value.toString();
-          return this.lookupService.searchCities(this.countryVal, this.provinceVal, searchVal).pipe(
-            map((data: CitiesSearchResponse) => {
-              if (data && data.CityCollection) {
-                data.CityCollection.sort((a, b) => a.vsd_name.localeCompare(b.vsd_name));
-                return data.CityCollection;
-              } else return [];
-            }),
-            tap(
-              () => noop,
-              (err) => {
-                this.errorMessage = (err && err.message) || 'Something goes wrong';
-              }
-            )
-          );
+          return this.lookupService
+            .getApiLookupCitiesSearch<any>({
+              country: this.countryVal,
+              province: this.provinceVal,
+              searchVal,
+              limit: 15
+            })
+            .pipe(
+              map((data: CitiesSearchResponse) => {
+                if (data && data.CityCollection) {
+                  data.CityCollection.sort((a, b) => a.vsd_name.localeCompare(b.vsd_name));
+                  return data.CityCollection;
+                } else return [];
+              }),
+              tap(
+                () => noop,
+                (err) => {
+                  this.errorMessage = (err && err.message) || 'Something goes wrong';
+                }
+              )
+            );
         }
         return of([]);
       })

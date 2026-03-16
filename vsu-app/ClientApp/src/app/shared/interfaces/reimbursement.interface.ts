@@ -1,6 +1,5 @@
-import { CaseDto } from 'src/model';
+import { CaseDto, DocumentDto } from 'src/model';
 import { iAddress } from './address.interface';
-import { iCRMDocument } from './dynamics/crm-application';
 
 export interface iReimbursementForm {
   CaseInformation: CaseDto;
@@ -86,7 +85,7 @@ export interface iAuthorizationInformation {
   signature: string;
 
   //extra fields on the Reimbursement form
-  documents?: iCRMDocument[];
+  documents?: DocumentDto[];
   subTotal?: number;
   travelAdvanceAlreadyPaid?: number;
   totalReimbursementClaim?: number;

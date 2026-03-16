@@ -1,17 +1,17 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { FormGroup, Validators, FormControl } from '@angular/forms';
-import { noop, Observable, Observer, of, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { retry, catchError, map, switchMap, tap } from 'rxjs/operators';
-import { CitiesSearchResponse, iCity, iCountry, iLookupData, iProvince } from '../../interfaces/lookup-data.interface';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { noop, Observable, Observer, of, throwError } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs/operators';
+import { LookupService } from 'src/api/lookup/lookup.service';
 import { config } from '../../../../config';
+import { CitiesSearchResponse, iCity, iCountry, iLookupData, iProvince } from '../../interfaces/lookup-data.interface';
 import { POSTAL_CODE, ZIP_CODE } from '../../regex.constants';
-import { LookupService } from '../../../services/lookup.service';
 
 @Component({
-    selector: 'app-address',
-    templateUrl: './address.component.html',
-    standalone: false
+  selector: 'app-address',
+  templateUrl: './address.component.html',
+  standalone: false
 })
 export class AddressComponent implements OnInit {
   countryList: iCountry[] = config.preferred_countries;
@@ -36,7 +36,10 @@ export class AddressComponent implements OnInit {
   @Input() disabled: boolean = false;
   @Input() lookupData: iLookupData;
 
-  constructor(public lookupService: LookupService, private http: HttpClient) {
+  constructor(
+    public lookupService: LookupService,
+    private http: HttpClient
+  ) {
     this.provinceType = config.canada.areaType;
     this.postalCodeType = config.canada.postalCodeName;
     this.postalCodeSample = config.canada.postalCodeSample;
@@ -66,20 +69,22 @@ export class AddressComponent implements OnInit {
           let provinceVal = this.group['controls']['province'].value.toString();
           let searchVal = this.group['controls']['city'].value.toString();
 
-          return this.lookupService.searchCities(countryVal, provinceVal, searchVal).pipe(
-            map((data: CitiesSearchResponse) => {
-              if (data && data.CityCollection) {
-                data.CityCollection.sort((a, b) => a.vsd_name.localeCompare(b.vsd_name));
-                return data.CityCollection;
-              } else return [];
-            }),
-            tap(
-              () => noop,
-              (err) => {
-                this.errorMessage = (err && err.message) || 'Something goes wrong';
-              }
-            )
-          );
+          return this.lookupService
+            .getApiLookupCitiesSearch<any>({ country: countryVal, province: provinceVal, searchVal, limit: 15 })
+            .pipe(
+              map((data: CitiesSearchResponse) => {
+                if (data && data.CityCollection) {
+                  data.CityCollection.sort((a, b) => a.vsd_name.localeCompare(b.vsd_name));
+                  return data.CityCollection;
+                } else return [];
+              }),
+              tap(
+                () => noop,
+                (err) => {
+                  this.errorMessage = (err && err.message) || 'Something goes wrong';
+                }
+              )
+            );
         }
         return of([]);
       })
@@ -92,7 +97,7 @@ export class AddressComponent implements OnInit {
     if (!this.lookupData.countries || this.lookupData.countries.length == 0) {
       promise_array.push(
         new Promise<void>((resolve, reject) => {
-          this.lookupService.getCountries().subscribe(
+          this.lookupService.getApiLookupCountries<any>().subscribe(
             (res) => {
               this.lookupData.countries = res.value;
               if (this.lookupData.countries) {
@@ -109,7 +114,7 @@ export class AddressComponent implements OnInit {
     if (!this.lookupData.provinces || this.lookupData.provinces.length == 0) {
       promise_array.push(
         new Promise<void>((resolve, reject) => {
-          this.lookupService.getProvinces().subscribe(
+          this.lookupService.getApiLookupProvinces<any>().subscribe(
             (res) => {
               this.lookupData.provinces = res.value;
               if (this.lookupData.provinces) {

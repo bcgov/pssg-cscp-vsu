@@ -206,9 +206,9 @@ namespace Gov.Cscp.Victims.Public.Models.Mapping
         {
             var entity = new ActivityMimeAttachment
             {
-                FileName = document.vsd_filename,
-                Body = document.vsd_body,
-                Subject = document.vsd_subject,
+                FileName = document.Filename,
+                Body = document.Body,
+                Subject = document.Subject,
             };
 
             return entity;
@@ -217,61 +217,132 @@ namespace Gov.Cscp.Victims.Public.Models.Mapping
         /// <summary>
         /// Maps ApplicationDataDto to a VSd_CreateVSuCaseRequest for Dataverse
         /// </summary>
-        /// <param name="applicationData">The application data from the API</param>
-        /// <returns>A VSd_CreateVSuCaseRequest ready to be executed</returns>
-        /// <exception cref="ArgumentNullException">Thrown when applicationData is null</exception>
         public static VSd_CreateVSuCaseRequest ToVSdCreateVSuCaseRequest(this ApplicationDataDto applicationData)
         {
             if (applicationData == null)
-            {
                 throw new ArgumentNullException(nameof(applicationData));
-            }
+            return BuildCreateVSuCaseRequest(
+                applicationData.Application,
+                applicationData.CourtInfoCollection,
+                applicationData.ProviderCollection,
+                applicationData.OffenceCollection,
+                applicationData.TravelInfoCollection,
+                applicationData.DocumentCollection
+            );
+        }
 
+        /// <summary>
+        /// Maps NotificationApplicationDataDto to a VSd_CreateVSuCaseRequest for Dataverse
+        /// </summary>
+        public static VSd_CreateVSuCaseRequest ToVSdCreateVSuCaseRequest(
+            this NotificationApplicationDataDto applicationData
+        )
+        {
+            if (applicationData == null)
+                throw new ArgumentNullException(nameof(applicationData));
+            return BuildCreateVSuCaseRequest(
+                applicationData.Application,
+                applicationData.CourtInfoCollection,
+                applicationData.ProviderCollection,
+                applicationData.OffenceCollection,
+                applicationData.TravelInfoCollection,
+                applicationData.DocumentCollection
+            );
+        }
+
+        /// <summary>
+        /// Maps VtfApplicationDataDto to a VSd_CreateVSuCaseRequest for Dataverse
+        /// </summary>
+        public static VSd_CreateVSuCaseRequest ToVSdCreateVSuCaseRequest(this VtfApplicationDataDto applicationData)
+        {
+            if (applicationData == null)
+                throw new ArgumentNullException(nameof(applicationData));
+            return BuildCreateVSuCaseRequest(
+                applicationData.Application,
+                applicationData.CourtInfoCollection,
+                applicationData.ProviderCollection,
+                applicationData.OffenceCollection,
+                applicationData.TravelInfoCollection,
+                applicationData.DocumentCollection
+            );
+        }
+
+        /// <summary>
+        /// Maps VtfReimbursementApplicationDataDto to a VSd_CreateVSuCaseRequest for Dataverse
+        /// </summary>
+        public static VSd_CreateVSuCaseRequest ToVSdCreateVSuCaseRequest(
+            this VtfReimbursementApplicationDataDto applicationData
+        )
+        {
+            if (applicationData == null)
+                throw new ArgumentNullException(nameof(applicationData));
+            return BuildCreateVSuCaseRequest(
+                applicationData.Application,
+                applicationData.CourtInfoCollection,
+                applicationData.ProviderCollection,
+                applicationData.OffenceCollection,
+                applicationData.TravelInfoCollection,
+                applicationData.DocumentCollection
+            );
+        }
+
+        /// <summary>
+        /// Shared helper that builds the VSd_CreateVSuCaseRequest from the constituent parts.
+        /// </summary>
+        private static VSd_CreateVSuCaseRequest BuildCreateVSuCaseRequest(
+            ApplicationDto application,
+            CourtInfoDto[] courtInfoCollection,
+            ParticipantDto[] providerCollection,
+            OffenceDto[] offenceCollection,
+            TravelInfoDto[] travelInfoCollection,
+            DocumentDto[] documentCollection
+        )
+        {
             var request = new VSd_CreateVSuCaseRequest();
 
             // Map Application
-            if (applicationData.Application != null)
+            if (application != null)
             {
-                request.Application = applicationData.Application.ToApplicationEntity();
+                request.Application = application.ToApplicationEntity();
             }
 
             // Map CourtInfo Collection
-            if (applicationData.CourtInfoCollection != null && applicationData.CourtInfoCollection.Length > 0)
+            if (courtInfoCollection != null && courtInfoCollection.Length > 0)
             {
                 request.CourtInfoCollection = new EntityCollection(
-                    applicationData.CourtInfoCollection.Select(c => c.ToCourtInfoEntity()).ToList()
+                    courtInfoCollection.Select(c => c.ToCourtInfoEntity()).ToList()
                 );
             }
 
             // Map Provider Collection
-            if (applicationData.ProviderCollection != null && applicationData.ProviderCollection.Length > 0)
+            if (providerCollection != null && providerCollection.Length > 0)
             {
                 request.ProviderCollection = new EntityCollection(
-                    applicationData.ProviderCollection.Select(p => p.ToParticipantEntity()).ToList()
+                    providerCollection.Select(p => p.ToParticipantEntity()).ToList()
                 );
             }
 
             // Map Offence Collection
-            if (applicationData.OffenceCollection != null && applicationData.OffenceCollection.Length > 0)
+            if (offenceCollection != null && offenceCollection.Length > 0)
             {
                 request.OffenceCollection = new EntityCollection(
-                    applicationData.OffenceCollection.Select(o => o.ToOffenceEntity()).ToList()
+                    offenceCollection.Select(o => o.ToOffenceEntity()).ToList()
                 );
             }
 
             // Map Travel Info Collection
-            if (applicationData.TravelInfoCollection != null && applicationData.TravelInfoCollection.Length > 0)
+            if (travelInfoCollection != null && travelInfoCollection.Length > 0)
             {
                 request.TravelInfoCollection = new EntityCollection(
-                    applicationData.TravelInfoCollection.Select(t => t.ToTravelInfoEntity()).ToList()
+                    travelInfoCollection.Select(t => t.ToTravelInfoEntity()).ToList()
                 );
             }
 
             // Map Document Collection
-            if (applicationData.DocumentCollection != null && applicationData.DocumentCollection.Length > 0)
+            if (documentCollection != null && documentCollection.Length > 0)
             {
                 request.DocumentCollection = new EntityCollection(
-                    applicationData.DocumentCollection.Select(d => d.ToDocumentEntity()).ToList()
+                    documentCollection.Select(d => d.ToDocumentEntity()).ToList()
                 );
             }
 

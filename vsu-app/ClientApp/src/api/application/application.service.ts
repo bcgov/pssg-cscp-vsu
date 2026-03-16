@@ -12,7 +12,11 @@ import { Injectable, inject } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
-import type { ApplicationDataDto } from '../../model';
+import type {
+  NotificationApplicationDataDto,
+  VtfApplicationDataDto,
+  VtfReimbursementApplicationDataDto
+} from '../../model';
 
 interface HttpClientOptions {
   readonly headers?: HttpHeaders | Record<string, string | string[]>;
@@ -35,37 +39,115 @@ interface HttpClientOptions {
 @Injectable({ providedIn: 'root' })
 export class ApplicationService {
   private readonly http = inject(HttpClient);
-  postApiApplication<TData = void>(
-    applicationDataDto: ApplicationDataDto,
+  postApiApplicationNotification<TData = void>(
+    notificationApplicationDataDto: NotificationApplicationDataDto,
     options?: HttpClientOptions & { observe?: 'body' }
   ): Observable<TData>;
-  postApiApplication<TData = void>(
-    applicationDataDto: ApplicationDataDto,
+  postApiApplicationNotification<TData = void>(
+    notificationApplicationDataDto: NotificationApplicationDataDto,
     options?: HttpClientOptions & { observe: 'events' }
   ): Observable<HttpEvent<TData>>;
-  postApiApplication<TData = void>(
-    applicationDataDto: ApplicationDataDto,
+  postApiApplicationNotification<TData = void>(
+    notificationApplicationDataDto: NotificationApplicationDataDto,
     options?: HttpClientOptions & { observe: 'response' }
   ): Observable<AngularHttpResponse<TData>>;
-  postApiApplication<TData = void>(
-    applicationDataDto: ApplicationDataDto,
+  postApiApplicationNotification<TData = void>(
+    notificationApplicationDataDto: NotificationApplicationDataDto,
     options?: HttpClientOptions & { observe?: 'body' | 'events' | 'response' }
   ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
-      return this.http.post<TData>(`/vsuwebforms/api/application`, applicationDataDto, {
+      return this.http.post<TData>(`/vsuwebforms/api/application/notification`, notificationApplicationDataDto, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events'
       });
     }
 
     if (options?.observe === 'response') {
-      return this.http.post<TData>(`/vsuwebforms/api/application`, applicationDataDto, {
+      return this.http.post<TData>(`/vsuwebforms/api/application/notification`, notificationApplicationDataDto, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response'
       });
     }
 
-    return this.http.post<TData>(`/vsuwebforms/api/application`, applicationDataDto, {
+    return this.http.post<TData>(`/vsuwebforms/api/application/notification`, notificationApplicationDataDto, {
+      ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      observe: 'body'
+    });
+  }
+  postApiApplicationVtf<TData = void>(
+    vtfApplicationDataDto: VtfApplicationDataDto,
+    options?: HttpClientOptions & { observe?: 'body' }
+  ): Observable<TData>;
+  postApiApplicationVtf<TData = void>(
+    vtfApplicationDataDto: VtfApplicationDataDto,
+    options?: HttpClientOptions & { observe: 'events' }
+  ): Observable<HttpEvent<TData>>;
+  postApiApplicationVtf<TData = void>(
+    vtfApplicationDataDto: VtfApplicationDataDto,
+    options?: HttpClientOptions & { observe: 'response' }
+  ): Observable<AngularHttpResponse<TData>>;
+  postApiApplicationVtf<TData = void>(
+    vtfApplicationDataDto: VtfApplicationDataDto,
+    options?: HttpClientOptions & { observe?: 'body' | 'events' | 'response' }
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    if (options?.observe === 'events') {
+      return this.http.post<TData>(`/vsuwebforms/api/application/vtf`, vtfApplicationDataDto, {
+        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+        observe: 'events'
+      });
+    }
+
+    if (options?.observe === 'response') {
+      return this.http.post<TData>(`/vsuwebforms/api/application/vtf`, vtfApplicationDataDto, {
+        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+        observe: 'response'
+      });
+    }
+
+    return this.http.post<TData>(`/vsuwebforms/api/application/vtf`, vtfApplicationDataDto, {
+      ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      observe: 'body'
+    });
+  }
+  postApiApplicationVtfReimbursement<TData = void>(
+    vtfReimbursementApplicationDataDto: VtfReimbursementApplicationDataDto,
+    options?: HttpClientOptions & { observe?: 'body' }
+  ): Observable<TData>;
+  postApiApplicationVtfReimbursement<TData = void>(
+    vtfReimbursementApplicationDataDto: VtfReimbursementApplicationDataDto,
+    options?: HttpClientOptions & { observe: 'events' }
+  ): Observable<HttpEvent<TData>>;
+  postApiApplicationVtfReimbursement<TData = void>(
+    vtfReimbursementApplicationDataDto: VtfReimbursementApplicationDataDto,
+    options?: HttpClientOptions & { observe: 'response' }
+  ): Observable<AngularHttpResponse<TData>>;
+  postApiApplicationVtfReimbursement<TData = void>(
+    vtfReimbursementApplicationDataDto: VtfReimbursementApplicationDataDto,
+    options?: HttpClientOptions & { observe?: 'body' | 'events' | 'response' }
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    if (options?.observe === 'events') {
+      return this.http.post<TData>(
+        `/vsuwebforms/api/application/vtf-reimbursement`,
+        vtfReimbursementApplicationDataDto,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'events'
+        }
+      );
+    }
+
+    if (options?.observe === 'response') {
+      return this.http.post<TData>(
+        `/vsuwebforms/api/application/vtf-reimbursement`,
+        vtfReimbursementApplicationDataDto,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'response'
+        }
+      );
+    }
+
+    return this.http.post<TData>(`/vsuwebforms/api/application/vtf-reimbursement`, vtfReimbursementApplicationDataDto, {
       ...(options as Omit<NonNullable<typeof options>, 'observe'>),
       observe: 'body'
     });

@@ -5,15 +5,15 @@
  * API for the Victim Services Unit Application (VSU) application
  * OpenAPI spec version: v1
  */
-import type { ApplicationDto } from './applicationDto';
 import type { CourtInfoDto } from './courtInfoDto';
 import type { DocumentDto } from './documentDto';
 import type { OffenceDto } from './offenceDto';
 import type { ParticipantDto } from './participantDto';
 import type { TravelInfoDto } from './travelInfoDto';
+import type { VtfReimbursementApplicationDto } from './vtfReimbursementApplicationDto';
 
-export interface ApplicationDataDto {
-  application?: ApplicationDto;
+export interface VtfReimbursementApplicationDataDto {
+  application?: VtfReimbursementApplicationDto;
   /** @nullable */
   courtInfoCollection?: CourtInfoDto[] | null;
   /** @nullable */
