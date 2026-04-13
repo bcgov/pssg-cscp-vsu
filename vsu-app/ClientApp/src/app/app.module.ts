@@ -24,6 +24,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { NotificationApplicationComponent } from './notification-application/notification-application.component';
+import { OutageComponent } from './outage/outage.component';
 import { AdditionalInfoBannerComponent } from './shared/components/additional-info-banner/additional-info-banner.component';
 import { AddressComponent } from './shared/components/address/address.component';
 import { ApplicantInformationComponent } from './shared/components/applicant-information/applicant-information.component';
@@ -81,6 +82,7 @@ import { VictimTravelFundReimbursementComponent } from './victim-travel-fund-rei
     VictimTravelFundReimbursementComponent,
     VSWComponent,
     VTFCaseInformationComponent,
+    OutageComponent,
     ServiceNotAvailableComponent
   ],
   imports: [

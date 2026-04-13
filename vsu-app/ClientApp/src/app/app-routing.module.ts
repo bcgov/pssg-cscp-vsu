@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { healthCheckGuard } from './guards/health.guard';
 import { HomeComponent } from './home/home.component';
 import { NotificationApplicationComponent } from './notification-application/notification-application.component';
+import { OutageComponent } from './outage/outage.component';
 import { VictimTravelFundApplicationComponent } from './victim-travel-fund-application/vtf-application.component';
 import { VictimTravelFundReimbursementComponent } from './victim-travel-fund-reimbursement/vtf-reimbursement.component';
 
@@ -9,19 +11,27 @@ const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
-    pathMatch: 'full'
-  },  
+    pathMatch: 'full',
+    canActivate: [healthCheckGuard]
+  },
   {
     path: 'notification_application',
-    component: NotificationApplicationComponent
+    component: NotificationApplicationComponent,
+    canActivate: [healthCheckGuard]
   },
   {
     path: 'vtf_application',
-    component: VictimTravelFundApplicationComponent
+    component: VictimTravelFundApplicationComponent,
+    canActivate: [healthCheckGuard]
   },
   {
     path: 'vtf_reimbursement',
-    component: VictimTravelFundReimbursementComponent
+    component: VictimTravelFundReimbursementComponent,
+    canActivate: [healthCheckGuard]
+  },
+  {
+    path: 'outage',
+    component: OutageComponent
   }
 ];
 
