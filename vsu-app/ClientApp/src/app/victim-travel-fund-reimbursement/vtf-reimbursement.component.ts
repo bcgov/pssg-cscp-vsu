@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatStepper } from '@angular/material/stepper';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -20,7 +19,6 @@ import {
   iReimbursementForm,
   iTravelInformation
 } from '../shared/interfaces/reimbursement.interface';
-import { ServiceNotAvailableComponent } from '../shared/service-not-available.component';
 
 enum PAGES {
   CASE_INFORMATION,
@@ -77,8 +75,7 @@ export class VictimTravelFundReimbursementComponent extends FormBase implements 
     private lookupService: LookupService,
     private titleService: Title,
     private reimbursementService: ReimbursementService,
-    private notify: NotificationQueueService,
-    private snackBar: MatSnackBar
+    private notify: NotificationQueueService
   ) {
     super();
   }
@@ -174,12 +171,8 @@ export class VictimTravelFundReimbursementComponent extends FormBase implements 
       .then((res) => {
         this.didLoad = true;
       })
-      .catch((err) => {
-        this.snackBar.openFromComponent(ServiceNotAvailableComponent, {
-          panelClass: ['red-snackbar'],
-          horizontalPosition: 'center',
-          verticalPosition: 'top'
-        });
+      .catch(() => {
+        this.router.navigateByUrl('/outage');
       });
   }
 
