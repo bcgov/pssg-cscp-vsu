@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Linq;
 using System.Net.Http;
@@ -164,7 +165,7 @@ namespace Gov.Cscp.Victims.Public
         {
             ConfigureLogging(env, configuration);
 
-            string pathBase = configuration["BASE_PATH"];
+            string? pathBase = configuration["BASE_PATH"];
 
             if (!string.IsNullOrEmpty(pathBase))
             {
