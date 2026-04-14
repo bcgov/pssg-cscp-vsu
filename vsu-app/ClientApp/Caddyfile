@@ -28,11 +28,11 @@
 
 	encode zstd gzip
 
-	handle /api* {
-		reverse_proxy {$API_URL}
-	}
-
-	handle {
+	route {
+		@backend {
+			path /api* /hc
+		}
+		reverse_proxy @backend {$API_URL}
 		try_files {path} {path}/ /index.html?{query}
 		file_server
 	}

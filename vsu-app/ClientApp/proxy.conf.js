@@ -1,6 +1,6 @@
 const PROXY_CONFIG = [
   {
-    context: ['/api', '/vsuwebforms/api'],
+    context: ['/api', '/vsuwebforms/api', '/vsuwebforms/hc'],
     target: 'http://localhost:5000',
     secure: false,
     logLevel: 'error',

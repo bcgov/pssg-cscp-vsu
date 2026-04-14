@@ -9,7 +9,7 @@ namespace Database.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        private static IConfiguration _configuration;
+        private static IConfiguration? _configuration;
 
         public static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
         {
@@ -43,7 +43,7 @@ namespace Database.Extensions
             // TODO add caching
 
             var http = new HttpClient();
-            var adfsUrl = _configuration["ADFS_OAUTH2_URI"] ?? throw new ArgumentNullException("ADFS_OAUTH2_URI");
+            var adfsUrl = _configuration!["ADFS_OAUTH2_URI"] ?? throw new ArgumentNullException("ADFS_OAUTH2_URI");
             var request = new HttpRequestMessage(HttpMethod.Post, adfsUrl);
             request.Headers.Add("Accept", "application/json");
             var content = new FormUrlEncodedContent(new Dictionary<string, string>() {
@@ -66,7 +66,7 @@ namespace Database.Extensions
                 var result = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(responseContent);
                 if (result?.ContainsKey("access_token") ?? false)
                 {
-                    return result["access_token"].GetString();
+                    return result["access_token"].GetString() ?? throw new InvalidOperationException("access_token value is null");
                 }
                 else if (result?.ContainsKey("error") ?? false)
                 {
