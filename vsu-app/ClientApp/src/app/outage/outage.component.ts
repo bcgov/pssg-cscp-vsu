@@ -1,6 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { HealthCheckService } from '../services/health-check.service';
+import { Component } from '@angular/core';
 
 @Component({
   standalone: false,
@@ -33,22 +31,7 @@ import { HealthCheckService } from '../services/health-check.service';
       .outage-content h1 {
         margin-bottom: 1rem;
       }
-
-      .outage-content p {
-        font-size: 1.1rem;
-        line-height: 1.6;
-      }
     `
   ]
 })
-export class OutageComponent implements OnInit {
-  private readonly healthCheckService = inject(HealthCheckService);
-  private readonly router = inject(Router);
-
-  async ngOnInit(): Promise<void> {
-    const isHealthy = await this.healthCheckService.checkHealth();
-    if (isHealthy) {
-      this.router.navigateByUrl('/');
-    }
-  }
-}
+export class OutageComponent {}
