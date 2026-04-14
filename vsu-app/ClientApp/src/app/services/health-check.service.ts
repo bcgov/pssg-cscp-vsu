@@ -26,7 +26,7 @@ export class HealthCheckService {
   async checkHealth(): Promise<boolean> {
     try {
       const response = await firstValueFrom(this.http.get<HealthCheckResponse>('/vsuwebforms/hc'));
-      const healthy = response.status !== 'Unhealthy';
+      const healthy = response.checks.every((c) => c.status === 'Healthy');
       this._isHealthy.set(healthy);
       return healthy;
     } catch {
