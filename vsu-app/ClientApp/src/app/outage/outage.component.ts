@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { HealthCheckService } from '../services/health-check.service';
 
 @Component({
   standalone: false,
@@ -34,4 +36,15 @@ import { Component } from '@angular/core';
     `
   ]
 })
-export class OutageComponent {}
+export class OutageComponent {
+  private readonly healthCheckService = inject(HealthCheckService);
+  private readonly router = inject(Router);
+
+  constructor() {
+    effect(() => {
+      if (this.healthCheckService.isHealthy()) {
+        this.router.navigateByUrl('/');
+      }
+    });
+  }
+}

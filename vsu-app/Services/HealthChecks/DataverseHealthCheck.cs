@@ -25,7 +25,7 @@ namespace Gov.Cscp.Victims.Public.Services.HealthChecks
             {
                 var response = (WhoAmIResponse)await _organizationService.ExecuteAsync(new WhoAmIRequest());
 
-                return HealthCheckResult.Healthy($"Dataverse connection is healthy. User ID: {response.UserId}");
+                return HealthCheckResult.Healthy($"Dataverse connection is healthy.");
             }
             catch (Exception ex)
             {

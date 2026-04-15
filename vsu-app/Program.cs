@@ -89,7 +89,6 @@ namespace Gov.Cscp.Victims.Public
             services
                 .AddMvc(opts =>
                 {
-                    opts.EnableEndpointRouting = false;
                     // default deny
                     var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
                     opts.Filters.Add(new AuthorizeFilter(policy));
@@ -214,19 +213,36 @@ namespace Gov.Cscp.Victims.Public
                 };
             });
 
-            // health checks
+            // Health check – returns JSON with API + Dataverse status.
+            // Overall status (and HTTP status code) is driven solely by the API self-check so that
+            // a Dataverse outage does not cause a pod crash-restart loop.
             app.MapHealthChecks(
                 "/hc",
                 new HealthCheckOptions
                 {
+                    // Allow the endpoint to be reached even when the aggregate status is Unhealthy.
+                    ResultStatusCodes =
+                    {
+                        [HealthStatus.Healthy] = 200,
+                        [HealthStatus.Degraded] = 200,
+                        [HealthStatus.Unhealthy] = 200,
+                    },
                     ResponseWriter = async (context, report) =>
                     {
+                        // Determine overall status from the API self-check only.
+                        // Dataverse failures are surfaced in the per-check details but do not
+                        // flip the overall status to Unhealthy (which would restart the pod).
+                        var overallStatus = report.Entries.TryGetValue("API", out var apiEntry)
+                            ? apiEntry.Status
+                            : report.Status;
+
+                        context.Response.StatusCode = overallStatus == HealthStatus.Unhealthy ? 503 : 200;
                         context.Response.ContentType = "application/json";
 
                         var result = JsonSerializer.Serialize(
                             new
                             {
-                                status = report.Status.ToString(),
+                                status = overallStatus.ToString(),
                                 checks = report.Entries.Select(e => new
                                 {
                                     name = e.Key,
@@ -332,11 +348,8 @@ namespace Gov.Cscp.Victims.Public
             );
 
             app.UseHttpsRedirection();
-
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(name: "default", template: "{controller}/{action=Index}/{id?}");
-            });
+            app.UseRouting();
+            app.MapControllers();
 
             // enable swagger only in development
             if (env.IsDevelopment())
