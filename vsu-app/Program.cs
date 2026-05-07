@@ -190,14 +190,13 @@ namespace Gov.Cscp.Victims.Public
 
                     var path = httpContext.Request.Path.ToString();
 
-                    // health checks and lookup endpoints
-                    var logIgnoreEndpoints = new[] { "/hc", "/api/lookup" };
+                    if (path.StartsWith("/hc", StringComparison.OrdinalIgnoreCase))
+                        return httpContext.Response.StatusCode >= 500
+                            ? Serilog.Events.LogEventLevel.Error
+                            : Serilog.Events.LogEventLevel.Verbose;
 
-                    // Suppress logging for ignored endpoints
-                    if (Array.Exists(logIgnoreEndpoints, e => path.StartsWith(e, StringComparison.OrdinalIgnoreCase)))
-                    {
-                        return Serilog.Events.LogEventLevel.Verbose; // Below minimum level
-                    }
+                    if (path.StartsWith("/api/lookup", StringComparison.OrdinalIgnoreCase))
+                        return Serilog.Events.LogEventLevel.Verbose;
 
                     // log warnings for requests that take longer than 1 second
                     return elapsed > 1000
