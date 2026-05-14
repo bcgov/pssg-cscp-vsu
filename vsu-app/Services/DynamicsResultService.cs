@@ -46,7 +46,7 @@ namespace Gov.Cscp.Victims.Public.Services
             string requestJson
         )
         {
-            string fullEndpoint = _configuration["DYNAMICS_ODATA_URI"] + endpointUrl;
+            string fullEndpoint = _configuration["Dynamics:DynamicsApiEndpointUrl"] + endpointUrl;
             requestJson = requestJson.Replace("fortunecookie", "@odata.");
 
             HttpRequestMessage _httpRequest = new HttpRequestMessage(method, fullEndpoint);

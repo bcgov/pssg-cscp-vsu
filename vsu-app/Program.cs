@@ -7,6 +7,7 @@ using System.Text.Json;
 using Database.Extensions;
 using Gov.Cscp.Victims.Public.Services;
 using Gov.Cscp.Victims.Public.Services.HealthChecks;
+using Gov.Cscp.Victims.Public.Shared.Database;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.CookiePolicy;
@@ -72,16 +73,43 @@ namespace Gov.Cscp.Victims.Public
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<TokenHandler>();
 
-            services.AddHttpClient<ICOASTAuthService, COASTAuthService>();
+            // Configure Dynamics token provider options
+            services.Configure<DynamicsTokenProviderOptions>(configuration.GetSection("Dynamics"));
+
+            // Add HTTP client factory for token providers
+            services.AddHttpClient("oauth_token");
+            services.AddHttpClient("entraid_token");
+
+            // Register both token providers
+            services.AddTransient<ADFSTokenProvider>();
+            services.AddTransient<EntraIdTokenProvider>();
+
+            // Add a memory cache for token caching
+            services.AddMemoryCache();
+            services.AddTransient<ICache, MemoryCache>();
+
+            // Register the appropriate token provider based on configuration
+            services.AddTransient<ITokenProvider>(sp =>
+            {
+                var options =
+                    sp.GetRequiredService<Microsoft.Extensions.Options.IOptions<DynamicsTokenProviderOptions>>();
+
+                return options.Value.AuthenticationType switch
+                {
+                    DynamicsAuthenticationType.OnPremise => sp.GetRequiredService<ADFSTokenProvider>(),
+                    DynamicsAuthenticationType.Cloud => sp.GetRequiredService<EntraIdTokenProvider>(),
+                    _ => throw new InvalidOperationException(
+                        $"Unknown authentication type: {options.Value.AuthenticationType}"
+                    ),
+                };
+            });
+
             services
                 .AddHttpClient<IDynamicsResultService, DynamicsResultService>()
                 .AddHttpMessageHandler<TokenHandler>();
 
             // Add Dataverse connection
             services.AddDatabase(configuration);
-
-            // Add a memory cache
-            services.AddMemoryCache();
 
             services.AddRouting(options => options.LowercaseUrls = true);
 

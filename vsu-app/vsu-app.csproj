@@ -45,6 +45,7 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Database\Database.csproj" />
+        <ProjectReference Include="..\Shared.Database\Shared.Database.csproj" />
     </ItemGroup>
     <Target
         Name="DebugEnsureNodeEnv"
