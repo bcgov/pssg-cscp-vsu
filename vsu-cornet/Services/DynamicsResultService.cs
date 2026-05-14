@@ -4,6 +4,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Gov.Cscp.Victims.Public.Models;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using Gov.Cscp.Victims.Public.Shared.Database;
 
 namespace Gov.Cscp.Victims.Public.Services
 {
@@ -17,11 +19,13 @@ namespace Gov.Cscp.Victims.Public.Services
     {
         private HttpClient _client;
         private IConfiguration _configuration;
+        private readonly DynamicsTokenProviderOptions _dynamicsOptions;
 
-        public DynamicsResultService(IConfiguration configuration, HttpClient httpClient)
+        public DynamicsResultService(IConfiguration configuration, HttpClient httpClient, IOptions<DynamicsTokenProviderOptions> dynamicsOptions)
         {
             _client = httpClient;
             _configuration = configuration;
+            _dynamicsOptions = dynamicsOptions.Value;
         }
 
         public async Task<HttpClientResult> Get(string endpointUrl)
@@ -42,7 +46,7 @@ namespace Gov.Cscp.Victims.Public.Services
             string requestJson
         )
         {
-            endpointUrl = _configuration["Dynamics:DynamicsApiEndpointUrl"] + endpointUrl;
+            endpointUrl = _dynamicsOptions.GetDynamicsApiEndpointUrl() + endpointUrl;
             requestJson = requestJson.Replace("fortunecookie", "@odata.");
 
             HttpRequestMessage _httpRequest = new HttpRequestMessage(method, endpointUrl);
