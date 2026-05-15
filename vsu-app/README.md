@@ -37,11 +37,17 @@ npm install
 
 #### Secrets Template
 
-````JSON
+```JSON
 {
   "BASE_PATH": "/vsuwebforms",
 
   "FEATURE_USE_UPDATED_COMPLIANCE_FIELDS": true,
+
+  "CONFIGURATION_OUTAGEINFORMATION_MESSAGE": "",
+  "CONFIGURATION_OUTAGEINFORMATION_STARTDATE": "",
+  "CONFIGURATION_OUTAGEINFORMATION_ENDDATE": "",
+
+  "CONTACT_EMAIL": "",
 
   "Dynamics": {
     "AuthenticationType": "OnPremise",
@@ -63,6 +69,7 @@ npm install
     }
   }
 }
+```
 
 ### Start the app
 
