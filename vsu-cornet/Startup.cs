@@ -1,4 +1,5 @@
 using Gov.Cscp.Victims.Public.Services;
+using Gov.Cscp.Victims.Public.Shared.Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +25,37 @@ namespace Gov.Cscp.Victims.Public
             services.AddTransient<TokenHandler>();
             services.AddTransient<CornetAuthHandler>();
 
-            services.AddHttpClient<ICOASTAuthService, COASTAuthService>();
+            // Configure Dynamics token provider options
+            services.Configure<DynamicsTokenProviderOptions>(Configuration.GetSection("Dynamics"));
+
+            // Add memory cache for token caching
+            services.AddMemoryCache();
+            services.AddTransient<ICache, MemoryCache>();
+
+            // Add HTTP client factory for token providers
+            services.AddHttpClient("oauth_token");
+            services.AddHttpClient("entraid_token");
+
+            // Register both token providers
+            services.AddTransient<ADFSTokenProvider>();
+            services.AddTransient<EntraIdTokenProvider>();
+
+            // Register the appropriate token provider based on configuration
+            services.AddTransient<ITokenProvider>(sp =>
+            {
+                var options =
+                    sp.GetRequiredService<Microsoft.Extensions.Options.IOptions<DynamicsTokenProviderOptions>>();
+
+                return options.Value.AuthenticationType switch
+                {
+                    DynamicsAuthenticationType.OnPremise => sp.GetRequiredService<ADFSTokenProvider>(),
+                    DynamicsAuthenticationType.Cloud => sp.GetRequiredService<EntraIdTokenProvider>(),
+                    _ => throw new System.InvalidOperationException(
+                        $"Unknown authentication type: {options.Value.AuthenticationType}"
+                    ),
+                };
+            });
+
             services
                 .AddHttpClient<IDynamicsResultService, DynamicsResultService>()
                 .AddHttpMessageHandler<TokenHandler>();

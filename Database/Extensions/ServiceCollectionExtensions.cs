@@ -1,86 +1,86 @@
 ﻿using DataverseModel;
+using Gov.Cscp.Victims.Public.Shared.Database;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.PowerPlatform.Dataverse.Client;
-using System.Text.Json;
 
-namespace Database.Extensions
+namespace Database.Extensions;
+
+public static class ServiceCollectionExtensions
 {
-    public static class ServiceCollectionExtensions
+    public static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
     {
-        private static IConfiguration? _configuration;
-
-        public static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
+        services.AddDatabaseService(configuration);
+        services.AddScoped(sp =>
         {
-            _configuration = configuration;
-
-            services.AddDatabaseService(configuration);
-            services.AddScoped(sp =>
-            {
-                var client = sp.GetRequiredService<IOrganizationServiceAsync>();
-                return new DataverseContext(client);
-            });
-            return services;
-        }
-
-        public static IServiceCollection AddDatabaseService(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddSingleton<IOrganizationServiceAsync>(sp =>
-            {
-                var logger = sp.GetRequiredService<ILogger<ServiceClient>>();
-                var uri = new Uri(configuration["DYNAMICS_ODATA_URI"]);
-                var client = new ServiceClient(uri, TokenProviderAdfs, false, logger);
-                if (!client.IsReady) throw new InvalidOperationException($"Failed to connect to Dataverse: {client.LastError}", client.LastException);
-                return client;
-            });
-
-            return services;
-        }
-
-        async static Task<string> TokenProviderAdfs(string instanceUri)
-        {
-            // TODO add caching
-
-            var http = new HttpClient();
-            var adfsUrl = _configuration!["ADFS_OAUTH2_URI"] ?? throw new ArgumentNullException("ADFS_OAUTH2_URI");
-            var request = new HttpRequestMessage(HttpMethod.Post, adfsUrl);
-            request.Headers.Add("Accept", "application/json");
-            var content = new FormUrlEncodedContent(new Dictionary<string, string>() {
-            { "grant_type", "password" },
-            { "response_mode", "form_post"},
-            { "client_id", _configuration["DYNAMICS_APP_GROUP_CLIENT_ID"] ?? throw new ArgumentNullException("DYNAMICS_APP_GROUP_CLIENT_ID") },
-            { "client_secret", _configuration["DYNAMICS_APP_GROUP_SECRET"]},
-            { "resource", _configuration["DYNAMICS_APP_GROUP_RESOURCE"] },
-            { "scope", "openid" },
-            { "username", _configuration["DYNAMICS_USERNAME"] ?? throw new ArgumentNullException("Username") },
-            { "password", _configuration["DYNAMICS_PASSWORD"] ?? throw new ArgumentNullException("Password") },
+            var client = sp.GetRequiredService<IOrganizationServiceAsync>();
+            return new DataverseContext(client);
         });
 
-            var response = await http.PostAsync(adfsUrl, content);
+        return services;
+    }
 
-            try
+    private static IServiceCollection AddDatabaseService(this IServiceCollection services, IConfiguration configuration)
+    {
+        // Configure Dynamics token provider options
+        services.Configure<DynamicsTokenProviderOptions>(configuration.GetSection("Dynamics"));
+
+        // Add memory cache for token caching
+        services.AddMemoryCache();
+        services.AddTransient<ICache, MemoryCache>();
+
+        // Add HTTP client factory for token providers
+        services.AddHttpClient("adfs_token");
+
+        services.AddHttpClient("entraid_token");
+
+        // Register both token providers
+        services.AddTransient<ADFSTokenProvider>();
+        services.AddTransient<EntraIdTokenProvider>();
+
+        // Register the appropriate token provider based on configuration
+        services.AddTransient<ITokenProvider>(sp =>
+        {
+            var options = sp.GetRequiredService<IOptions<DynamicsTokenProviderOptions>>();
+
+            return options.Value.AuthenticationType switch
             {
-                var responseContent = await response.Content.ReadAsStringAsync();
-                // response should be in JSON format.
-                var result = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(responseContent);
-                if (result?.ContainsKey("access_token") ?? false)
-                {
-                    return result["access_token"].GetString() ?? throw new InvalidOperationException("access_token value is null");
-                }
-                else if (result?.ContainsKey("error") ?? false)
-                {
-                    throw new Exception($"{result["error"].GetString()}: {result["error_description"].GetString()}");
-                }
-                else
-                {
-                    throw new Exception(responseContent);
-                }
-            }
-            catch (Exception e)
+                DynamicsAuthenticationType.OnPremise => sp.GetRequiredService<ADFSTokenProvider>(),
+                DynamicsAuthenticationType.Cloud => sp.GetRequiredService<EntraIdTokenProvider>(),
+                _ => throw new InvalidOperationException(
+                    $"Unknown authentication type: {options.Value.AuthenticationType}"
+                ),
+            };
+        });
+
+        // Register Dataverse service
+        services.AddSingleton<IOrganizationServiceAsync>(sp =>
+        {
+            var logger = sp.GetRequiredService<ILogger<ServiceClient>>();
+            var options = sp.GetRequiredService<IOptions<DynamicsTokenProviderOptions>>().Value;
+            var tokenProvider = sp.GetRequiredService<ITokenProvider>();
+
+            var uri = new Uri(options.GetDynamicsApiEndpointUrl());
+            var client = new ServiceClient(
+                uri,
+                async (instanceUri) => await tokenProvider.AcquireToken(),
+                false,
+                logger
+            );
+
+            if (!client.IsReady)
             {
-                throw new Exception($"Failed to obtain access token from OAuth2TokenEndpoint: {e.Message}", e);
+                throw new InvalidOperationException(
+                    $"Failed to connect to Dataverse: {client.LastError}",
+                    client.LastException
+                );
             }
-        }
+
+            return client;
+        });
+
+        return services;
     }
 }
