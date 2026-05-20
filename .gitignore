@@ -231,3 +231,6 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
+.playwright-mcp
+test-results
+vsu-app/ClientApp/playwright-report
