@@ -18,7 +18,7 @@ import { defineConfig, devices } from '@playwright/test';
  */
 
 const BASE_URLS: Record<string, string> = {
-  localhost: 'http://localhost:4200/',
+  localhost: 'http://localhost:4200/vsuwebforms/',
   dev: 'https://dev.justice.gov.bc.ca/vsuwebforms/',
   test: 'https://test.justice.gov.bc.ca/vsuwebforms/'
 };
