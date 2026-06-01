@@ -97,8 +97,8 @@ import { VictimTravelFundReimbursementComponent } from './victim-travel-fund-rei
     MatStepperModule,
     ReactiveFormsModule,
     SignaturePadModule,
-    TooltipModule.forRoot(),
-    TypeaheadModule.forRoot(),
+    TooltipModule,
+    TypeaheadModule,
     NgxMaskDirective,
     NgxMaskPipe,
     A11yModule
