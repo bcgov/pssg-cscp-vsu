@@ -53,12 +53,14 @@ RUN apt-get update -yq && \
 COPY vsu-app/vsu-app.sln ./vsu-app/
 COPY vsu-app/vsu-app.csproj ./vsu-app/
 COPY Database/Database.csproj ./Database/
+COPY Shared.Database/Shared.Database.csproj ./Shared.Database/
 
 # Restore dependencies
 RUN dotnet restore "./vsu-app/vsu-app.csproj"
 
 # Copy source code
 COPY Database/ ./Database/
+COPY Shared.Database/ ./Shared.Database/
 COPY vsu-app/ ./vsu-app/
 
 # Stub out ClientApp to skip Angular build while satisfying MSBuild SpaServices targets.

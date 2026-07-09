@@ -23,6 +23,7 @@ on:
     paths:
       - "vsu-app/**"
       - "Database/**"
+      - "Shared.Database/**"
       - "!vsu-app/ClientApp/**"
 
   # manual trigger
