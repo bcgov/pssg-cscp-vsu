@@ -71,11 +71,12 @@ RUN rm -rf ./vsu-app/ClientApp && \
     echo '{"name":"stub","scripts":{"build":"echo skip"}}' > ./vsu-app/ClientApp/package.json
 
 # Build
-RUN dotnet build "vsu-app/vsu-app.csproj" -c Release -o /app/build
+# Skip the CSharpier formatting step here - formatting is enforced in CI; the image build only compiles.
+RUN dotnet build "vsu-app/vsu-app.csproj" -c Release -o /app/build -p:CSharpier_Bypass=true
 
 # --- Publish Stage ---
 FROM build AS publish
-RUN dotnet publish "vsu-app/vsu-app.csproj" -c Release -o /app/publish
+RUN dotnet publish "vsu-app/vsu-app.csproj" -c Release -o /app/publish -p:CSharpier_Bypass=true
 
 # --- Final Runtime Image ---
 FROM base AS final
