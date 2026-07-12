@@ -41,20 +41,20 @@ jobs:
 
     # [5] SETUP -> API half (compile + format check) -> UI half (build) -> whole codebase (CodeQL)
     steps:
-      - uses: actions/checkout@v4
-      - uses: github/codeql-action/init@v3
+      - uses: actions/checkout@v7
+      - uses: github/codeql-action/init@v4
         with:
           languages: csharp,javascript-typescript
           queries: security-extended
 
       # ── API HALF: compile + verify formatting in one step ──
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/setup-dotnet@v5
         with:
           dotnet-version: "10.0.x"
       - run: dotnet build vsu-app/vsu-app.csproj -c Release -p:CSharpier_Check=true
 
       # ── UI HALF: build (lint deferred — angular-eslint not yet set up; tracked as a Finding) ──
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: "22.x"
           cache: npm
@@ -65,4 +65,4 @@ jobs:
           npm run build
 
       # ── WHOLE CODEBASE: CodeQL writes its report — C# + TypeScript, one run ──
-      - uses: github/codeql-action/analyze@v3
+      - uses: github/codeql-action/analyze@v4
