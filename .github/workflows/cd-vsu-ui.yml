@@ -54,7 +54,7 @@ jobs:
           cache-to: type=gha,mode=max
           provenance: mode=max                    # SLSA provenance — workflow, exact commit, base image name+digest
           sbom: true                              # SPDX SBOM — every package inside, queryable forever
-      - uses: aquasecurity/trivy-action@0.28.0    # third-party — pin to commit SHA when hardening
+      - uses: aquasecurity/trivy-action@v0.35.0    # third-party — pin to commit SHA when hardening
         with:
           image-ref: ${{ secrets.OCP4_REGISTRY }}/${{ secrets.OCP4_NAMESPACE }}/vsu-ui:latest
           format: sarif
