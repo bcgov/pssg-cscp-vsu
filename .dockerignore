@@ -1,0 +1,18 @@
+# .dockerignore — repo root: the bouncer at COPY's door. ONE file guards EVERY image
+# (vsu-api, vsu-ui) because the build context is always the repo root.
+# history & secrets — never in an image
+.git
+**/.env*
+# pipeline & IDE files — images run apps, not pipelines or editors
+.github
+.vs
+.vscode
+.idea
+# local build junk — the image builds fresh; stale local outputs stay out
+**/bin
+**/obj
+**/node_modules
+**/dist
+**/.angular
+# docs — readable on GitHub, dead weight in an image
+**/*.md
