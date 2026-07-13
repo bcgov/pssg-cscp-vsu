@@ -25,6 +25,9 @@ RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser
 ENV API_URL=
 RUN chmod +rw /config/caddy
 COPY --from=builder /usr/bin/caddy /usr/bin/caddy
+# Strip the file capability BuildKit preserves on the copied binary. Caddy binds 2015/2016 (non-privileged),
+# so cap_net_bind_service is unneeded, and its presence blocks exec under allowPrivilegeEscalation:false (no_new_privs).
+RUN apk add --no-cache libcap && setcap -r /usr/bin/caddy && getcap /usr/bin/caddy || true
 COPY vsu-app/ClientApp/Caddyfile /etc/caddy/Caddyfile
 COPY --from=ng-builder /src/dist/browser/ /site
 RUN chown -R appuser:appgroup /site
