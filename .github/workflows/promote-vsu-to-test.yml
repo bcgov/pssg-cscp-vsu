@@ -66,4 +66,5 @@ jobs:
           for img in $LIST; do
             oc rollout status deployment/$img-argo --timeout=300s   # vsu-api-argo / vsu-ui-argo
           done
-          oc -n f9a9e6-test exec deploy/vsu-ui-argo -- wget -qO- http://localhost:2015/hc > /dev/null   # verify from inside the cluster (the runner can't reach the internal route)
+          # VERIFY = rollout status only: the pipeline SA has 'view' (not exec), and the runner is off-network,
+          # so neither an in-pod 'oc exec' /hc nor an external curl works here. Ready pods = the verify.
