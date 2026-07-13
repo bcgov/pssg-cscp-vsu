@@ -66,4 +66,4 @@ jobs:
           for img in $LIST; do
             oc rollout status deployment/$img-argo --timeout=300s   # vsu-api-argo / vsu-ui-argo
           done
-          curl -fsS --retry 3 --retry-delay 5 https://coast-vsu-test.silver.devops.bcgov/hc > /dev/null
+          oc -n f9a9e6-test exec deploy/vsu-ui-argo -- wget -qO- http://localhost:2015/hc > /dev/null   # verify from inside the cluster (the runner can't reach the internal route)
