@@ -43,9 +43,8 @@ jobs:
         with:
           images: ${{ secrets.OCP4_REGISTRY }}/${{ secrets.OCP4_NAMESPACE }}/vsu-api
           tags: |
-            type=raw,value=latest          # newest build — what Argo dev watches here, and a promotion's default source
-            type=raw,value=development     # dev environment tag (kept for the estate contract; Argo-dev keys on :latest for VSU)
-            type=sha                       # sha-<commit> — permanent per-commit bookmark
+            type=raw,value=latest
+            type=sha
       - uses: docker/build-push-action@v7
         with:
           context: .
