@@ -1,6 +1,7 @@
 import { computed, inject } from '@angular/core';
 import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import moment from 'moment-timezone';
 import { pipe, tap } from 'rxjs';
 import { ConfigurationService } from '../../api/configuration/configuration.service';
 import { Configuration } from '../shared/interfaces/configuration.interface';
@@ -28,6 +29,18 @@ export const ConfigurationStore = signalStore(
     outageMessage: computed(() => configuration()?.outageMessage ?? null),
     outageStartDate: computed(() => configuration()?.outageStartDate ?? null),
     outageEndDate: computed(() => configuration()?.outageEndDate ?? null)
+  })),
+  withComputed((store) => ({
+    showAnnouncementBanner: computed(() => {
+      const message = store.outageMessage();
+      const startDate = store.outageStartDate();
+      const endDate = store.outageEndDate();
+      if (!message || !startDate || !endDate) return false;
+      const current = moment().tz('America/Vancouver');
+      const start = moment(startDate).tz('America/Vancouver');
+      const end = moment(endDate).tz('America/Vancouver');
+      return current.isBetween(start, end, null, '[]');
+    })
   })),
   withMethods((store, configurationService = inject(ConfigurationService)) => ({
     loadConfiguration: rxMethod<void>(
