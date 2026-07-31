@@ -1,5 +1,6 @@
 # ##################################################################################################
 #   VSU-API · ASP.NET Core (.NET 10) · backend only · multi-stage · full repo context · non-root
+#   Runtime + SDK: Alpine (smaller image, reduced attack surface)
 #
 #   Build (from repo root, ALWAYS — the context is the repo root so every COPY starts there):
 #     docker build -t vsu-api:local -f vsu-app/Dockerfile.api .
@@ -11,7 +12,7 @@
 # ##################################################################################################
 
 # --- Runtime base ---
-FROM mcr.microsoft.com/dotnet/aspnet:10.0@sha256:1fa23fc4872d95fd71c2833ebe65d7e84a43b2d51a31d119516852f13d9505a7 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:10.0-alpine@sha256:27b6b84beeede74fd16886177d360799c8e4299ceadfbd64eef57bafead7878a AS base
 WORKDIR /app
 EXPOSE 8080
 ENV ASPNETCORE_URLS=http://*:8080
@@ -19,17 +20,12 @@ ENV ASPNETCORE_FORWARDEDHEADERS_ENABLED=true
 ENV DOTNET_gcServer=1
 
 # --- Build stage (SDK) ---
-FROM mcr.microsoft.com/dotnet/sdk:10.0@sha256:ed034a8bf0b24ded0cbbac07e17825d8e9ebfe21e308191d0f7421eaf5ad4664 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0-alpine@sha256:d8ee39817ca03a3757288e83c37ed73cc969a286c603b827c7cbe33add1c2d1c AS build
 WORKDIR /src
 
 # Node exists ONLY to satisfy the csproj SpaServices target, which shells out to npm during publish.
 # The ClientApp stub below makes that a no-op — nothing frontend is actually built in this image.
-RUN apt-get update -yq && \
-    apt-get install -yq --no-install-recommends curl && \
-    curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
-    apt-get install -yq nodejs && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache nodejs npm
 
 # Full repo context (T1.2) — shared projects (Database, Shared.Database) and root configs
 # (.csharpierrc included) are guaranteed present. Hand-picked COPY lists break builds silently.
@@ -47,7 +43,7 @@ RUN dotnet publish "vsu-app/vsu-app.csproj" -c Release -o /app/publish -p:CSharp
 # --- Final runtime image ---
 FROM base AS final
 WORKDIR /app
-RUN groupadd --system appgroup && useradd --system --gid appgroup --no-create-home appuser
+RUN addgroup -S appgroup && adduser -S -G appgroup appuser
 COPY --from=build /app/publish ./
 RUN chown -R appuser:appgroup /app
 USER appuser
