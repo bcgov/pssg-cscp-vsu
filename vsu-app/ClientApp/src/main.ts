@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { AppModule } from './app/app.module';
 import { ConfigurationLoaderService } from './app/services/configuration-loader.service';
 import { HealthCheckService } from './app/services/health-check.service';
+import { ConfigurationStore } from './app/store/configuration.store';
 import { environment } from './environments/environment';
 
 export function getBaseUrl() {
@@ -23,6 +24,7 @@ platformBrowserDynamic()
         const healthCheckService = inject(HealthCheckService);
         const router = inject(Router);
         const configurationLoaderService = inject(ConfigurationLoaderService);
+        const configStore = inject(ConfigurationStore);
 
         const isHealthy = await healthCheckService.checkHealth();
 
@@ -32,6 +34,10 @@ platformBrowserDynamic()
         }
 
         await Promise.all([configurationLoaderService.loadConfiguration()]);
+
+        if (configStore.maintenanceMode()) {
+          router.navigateByUrl('/maintenance');
+        }
       })
     ]
   })

@@ -25,6 +25,7 @@ export const ConfigurationStore = signalStore(
   withComputed(({ configuration }) => ({
     config: computed(() => configuration()),
     featureFlags: computed(() => configuration()?.featureFlags ?? null),
+    maintenanceMode: computed(() => configuration()?.maintenanceMode ?? false),
     outageMessage: computed(() => configuration()?.outageMessage ?? null),
     outageStartDate: computed(() => configuration()?.outageStartDate ?? null),
     outageEndDate: computed(() => configuration()?.outageEndDate ?? null)

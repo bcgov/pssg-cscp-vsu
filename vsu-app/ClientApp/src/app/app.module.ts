@@ -23,6 +23,7 @@ import { ReimbursementService } from '../api/reimbursement/reimbursement.service
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
+import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { NotificationApplicationComponent } from './notification-application/notification-application.component';
 import { OutageComponent } from './outage/outage.component';
 import { AlertComponent } from './shared/alert/alert.component';
@@ -83,6 +84,7 @@ import { VictimTravelFundReimbursementComponent } from './victim-travel-fund-rei
     VictimTravelFundReimbursementComponent,
     VSWComponent,
     VTFCaseInformationComponent,
+    MaintenanceComponent,
     OutageComponent
   ],
   imports: [

@@ -21,7 +21,7 @@
       <main class="app-content">
         <div class="app-main">
           @if (showAnnouncementBanner()) {
-            <app-alert [message]="outageMessage() ?? ''"></app-alert>
+            <app-alert [message]="outageMessage() ?? ''" type="danger"></app-alert>
           }
           <router-outlet></router-outlet>
         </div>
