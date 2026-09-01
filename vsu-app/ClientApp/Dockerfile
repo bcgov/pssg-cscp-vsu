@@ -6,7 +6,7 @@
 # ##################################################################################################
 
 # --- Angular build stage ---
-FROM node:22.23.1-alpine@sha256:16e22a550f3863206a3f701448c45f7912c6896a62de43add43bb9c86130c3e2 AS ng-builder
+FROM node:22.23.2-alpine@sha256:c610fcdfb1d5b4740dd70c284ed3cb16bb857e0f7166196e36a5501df7a3aa32 AS ng-builder
 WORKDIR /src
 # dependency lists FIRST — the npm ci layer stays cached until they change
 COPY vsu-app/ClientApp/package*.json ./
@@ -15,7 +15,7 @@ COPY vsu-app/ClientApp/ ./
 RUN npm run build -- --configuration production
 
 # --- Caddy builder — custom binary with the replace-response plugin ---
-FROM caddy:2.11.4-builder@sha256:198d47eaee306d4d0c38a9960c89ff2c959aa29ad51d3e2dafa3e93ac961782a AS builder
+FROM caddy:2.11.4-builder@sha256:4bdeabce8e79d36b23d1cba7d20598cec2c1117ace960d8ca06071f945e8fc9b AS builder
 RUN xcaddy build --with github.com/caddyserver/replace-response
 
 # --- Runtime stage ---
