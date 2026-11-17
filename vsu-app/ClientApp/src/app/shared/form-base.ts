@@ -445,7 +445,7 @@ export class FormBase {
       const step_label = step_header ? step_header.label : '';
       const this_step = stepper._steps.find((step) => step.label == step_label);
       if (this_step) {
-        const formGroupName = this_step.stepControl.get('name').value;
+        const formGroupName = (this_step.stepControl as unknown as AbstractControl).get('name').value;
         const formParts = this.form.get(formGroupName);
 
         let formValid = true;

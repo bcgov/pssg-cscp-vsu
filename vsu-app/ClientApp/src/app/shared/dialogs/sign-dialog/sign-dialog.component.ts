@@ -1,12 +1,13 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { SignaturePadComponent } from '@almothafar/angular-signature-pad';
 
 @Component({
-    selector: 'app-sign-dialog',
-    templateUrl: './sign-dialog.component.html',
-    styleUrls: ['./sign-dialog.component.scss'],
-    standalone: false
+  selector: 'app-sign-dialog',
+  templateUrl: './sign-dialog.component.html',
+  styleUrls: ['./sign-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class SignPadDialog implements OnInit {
   public signatureImage: any;

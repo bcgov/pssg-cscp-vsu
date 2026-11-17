@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ControlContainer, FormGroup } from '@angular/forms';
 import { noop, Observable, Observer, of, throwError } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
@@ -12,6 +12,7 @@ import { CitiesSearchResponse, iCity, iLookupData } from '../../interfaces/looku
 @Component({
   standalone: false,
   selector: 'app-victim-service-worker',
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './victim-service-worker.component.html'
 })
 export class VSWComponent extends FormBase implements OnInit {

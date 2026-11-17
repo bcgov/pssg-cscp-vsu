@@ -1,10 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ControlContainer, FormGroup } from '@angular/forms';
 import { FormBase } from '../../form-base';
 
 @Component({
   standalone: false,
   selector: 'app-contact-method',
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './contact-method.component.html'
 })
 export class ContactMethodComponent extends FormBase implements OnInit {

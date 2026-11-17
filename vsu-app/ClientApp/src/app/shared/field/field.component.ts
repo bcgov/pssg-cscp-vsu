@@ -1,9 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   standalone: false,
   selector: 'app-field',
   templateUrl: './field.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./field.component.scss']
 })
 export class FieldComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { LookupService } from 'src/api/lookup/lookup.service';
 import { ApplicationType } from '../../enums-list';
 
@@ -6,6 +6,7 @@ import { ApplicationType } from '../../enums-list';
   standalone: false,
   selector: 'app-additional-info-banner',
   templateUrl: './additional-info-banner.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./additional-info-banner.component.scss']
 })
 export class AdditionalInfoBannerComponent implements OnInit {

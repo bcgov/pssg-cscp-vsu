@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { EnumHelper } from '../../enums-list';
@@ -17,6 +17,7 @@ import { FormBase } from '../../form-base';
   selector: 'app-pronoun-selector',
   templateUrl: './pronoun-selector.component.html',
   styleUrls: ['./pronoun-selector.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class PronounSelectorComponent extends FormBase implements OnInit, OnDestroy {

@@ -15,11 +15,13 @@ COPY vsu-app/ClientApp/ ./
 RUN npm run build -- --configuration production
 
 # --- Caddy builder — custom binary with the replace-response plugin ---
-FROM caddy:2.11.4-builder@sha256:198d47eaee306d4d0c38a9960c89ff2c959aa29ad51d3e2dafa3e93ac961782a AS builder
-RUN xcaddy build --with github.com/caddyserver/replace-response
+FROM caddy:2.11.9-builder@sha256:f9beaa5ddbe7df6f26ebbcf9cbf44e05a1917b9bba464f0c3229038d7e2e6e13 AS builder
+# golang.org/x/net is pinned above Caddy's own version: v0.55.0 has CVE-2026-78661 (fixed in 0.62.0).
+RUN xcaddy build --with github.com/caddyserver/replace-response \
+    --replace golang.org/x/net=golang.org/x/net@v0.63.0
 
 # --- Runtime stage ---
-FROM caddy:2.11.4-alpine@sha256:5f5c8640aae01df9654968d946d8f1a56c497f1dd5c5cda4cf95ab7c14d58648 AS final
+FROM caddy:2.11.9-alpine@sha256:003a97808e781aa9f7e75cc2f43d34d461099031faf5e20faefb9f61126836f0 AS final
 RUN apk update && apk upgrade --no-cache
 RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser
 ENV API_URL=
