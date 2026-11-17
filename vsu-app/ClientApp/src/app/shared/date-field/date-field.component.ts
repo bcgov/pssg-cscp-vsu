@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import moment from 'moment';
 import { Subscription } from 'rxjs';
@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs';
   standalone: false,
   selector: 'app-date-field',
   templateUrl: './date-field.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./date-field.component.scss']
 })
 export class DateFieldComponent implements OnInit, OnDestroy {

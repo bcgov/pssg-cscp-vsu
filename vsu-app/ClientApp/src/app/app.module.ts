@@ -1,4 +1,4 @@
-import { AngularSignaturePadModule as SignaturePadModule } from '@almothafar/angular-signature-pad';
+import { SignaturePadComponent } from '@almothafar/angular-signature-pad';
 import { A11yModule } from '@angular/cdk/a11y';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { HttpClientModule } from '@angular/common/http';
@@ -100,7 +100,7 @@ import { VictimTravelFundReimbursementComponent } from './victim-travel-fund-rei
     MatSnackBarModule,
     MatStepperModule,
     ReactiveFormsModule,
-    SignaturePadModule,
+    SignaturePadComponent,
     TooltipModule,
     TypeaheadModule,
     NgxMaskDirective,

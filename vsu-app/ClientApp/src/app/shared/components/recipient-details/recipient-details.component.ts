@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import {
   AbstractControl,
   ControlContainer,
@@ -25,6 +25,7 @@ import { RecipientDetailsHelper } from './recipient-details.helper';
   selector: 'app-recipient-details',
   templateUrl: './recipient-details.component.html',
   styleUrls: ['./recipient-details.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [
     { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
     { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS }

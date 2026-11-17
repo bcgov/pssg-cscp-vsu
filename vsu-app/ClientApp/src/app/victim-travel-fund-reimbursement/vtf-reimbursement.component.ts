@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
 import { Title } from '@angular/platform-browser';
@@ -36,6 +36,7 @@ const MILEAGE_RATE_ID = '92351edf-2a7d-eb11-b824-00505683fbf4';
   standalone: false,
   selector: 'app-vtf-reimbursement',
   templateUrl: './vtf-reimbursement.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./vtf-reimbursement.component.scss']
 })
 export class VictimTravelFundReimbursementComponent extends FormBase implements OnInit {

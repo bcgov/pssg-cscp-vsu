@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
 import { Title } from '@angular/platform-browser';
@@ -28,6 +28,7 @@ import { iLookupData } from '../shared/interfaces/lookup-data.interface';
   standalone: false,
   selector: 'app-vtf-application',
   templateUrl: './vtf-application.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./vtf-application.component.scss']
 })
 export class VictimTravelFundApplicationComponent extends FormBase implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ControlContainer, FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { LookupService } from 'src/api/lookup/lookup.service';
 import { NotificationQueueService } from '../../../services/notification-queue.service';
@@ -10,6 +10,7 @@ import { iLookupData, iOffence } from '../../interfaces/lookup-data.interface';
   standalone: false,
   selector: 'app-travel-overview',
   templateUrl: './travel-overview.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./travel-overview.component.scss']
 })
 export class TravelOverviewComponent extends FormBase implements OnInit {

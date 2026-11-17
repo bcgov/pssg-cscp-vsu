@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { noop, Observable, Observer, of, throwError } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
@@ -11,6 +11,7 @@ import { POSTAL_CODE, ZIP_CODE } from '../../regex.constants';
 @Component({
   selector: 'app-address',
   templateUrl: './address.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class AddressComponent implements OnInit {

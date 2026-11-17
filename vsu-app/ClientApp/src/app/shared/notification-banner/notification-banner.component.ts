@@ -1,19 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { Notification, NotificationQueueService } from '../../services/notification-queue.service';
 
 @Component({
-    selector: 'app-notification-banner',
-    templateUrl: './notification-banner.component.html',
-    styleUrls: ['./notification-banner.component.css'],
-    animations: [
-        trigger('fadeAnimation', [
-            state('in', style({ opacity: 1 })),
-            transition(':enter', [style({ opacity: 0 }), animate(400)]),
-            transition(':leave', animate(600, style({ opacity: 0 })))
-        ])
-    ],
-    standalone: false
+  selector: 'app-notification-banner',
+  templateUrl: './notification-banner.component.html',
+  styleUrls: ['./notification-banner.component.css'],
+  animations: [
+    trigger('fadeAnimation', [
+      state('in', style({ opacity: 1 })),
+      transition(':enter', [style({ opacity: 0 }), animate(400)]),
+      transition(':leave', animate(600, style({ opacity: 0 })))
+    ])
+  ],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class NotificationBannerComponent implements OnInit {
   staticAlertClosed = false;

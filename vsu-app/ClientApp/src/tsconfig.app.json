@@ -11,5 +11,8 @@
     "src/main.server.ts",
     "src/app/app.server.module.ts",
     "src/app/shared/components/address/address.helper.ts"
-  ]
+  ],
+  "angularCompilerOptions": {
+    "strictTemplates": false
+  }
 }

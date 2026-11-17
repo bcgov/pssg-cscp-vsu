@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ControlContainer, FormGroup } from '@angular/forms';
 import { ApplicationType } from '../../enums-list';
 import { FormBase } from '../../form-base';
@@ -7,6 +7,7 @@ import { iLookupData } from '../../interfaces/lookup-data.interface';
 @Component({
   standalone: false,
   selector: 'app-designate',
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './designate.component.html'
 })
 export class DesignateComponent extends FormBase implements OnInit {

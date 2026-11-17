@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ControlContainer, FormGroup } from '@angular/forms';
 import { ReimbursementService } from '../../../../api/reimbursement/reimbursement.service';
 import { ApplicationType } from '../../enums-list';
@@ -9,6 +9,7 @@ import { iLookupData } from '../../interfaces/lookup-data.interface';
   standalone: false,
   selector: 'app-vtf-case-information',
   templateUrl: './vtf-case-information.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./vtf-case-information.component.scss']
 })
 export class VTFCaseInformationComponent extends FormBase implements OnInit {
@@ -22,7 +23,7 @@ export class VTFCaseInformationComponent extends FormBase implements OnInit {
 
   constructor(
     private controlContainer: ControlContainer,
-    private reimbursementService: ReimbursementService,
+    private reimbursementService: ReimbursementService
   ) {
     super();
   }
@@ -48,24 +49,23 @@ export class VTFCaseInformationComponent extends FormBase implements OnInit {
     if (info && info.caseNumber && info.birthDate && info.firstName && info.lastName) {
       //validate
       this.reimbursementService.postApiReimbursementCheckCase<any>(info).subscribe({
-          next: (res) => {
-            this.didCheck = true;
-            this.form.get('didCheck').patchValue(this.didCheck);
-            this.isValid = res.Results?.IsSuccess || res.isSuccess;
-            if (this.isValid) {
-              this.form.get('isValid').patchValue(this.isValid);
-              const caseId = res.Results?.CaseId?.Id || res.caseId;
-              this.form.get('incidentId').patchValue(caseId);
-            } else {
-              this.form.get('isValid').patchValue(this.isValid);
-              this.form.get('incidentId').patchValue('');
-            }
-          },
-          error: (err) => {
-            console.log(err);
+        next: (res) => {
+          this.didCheck = true;
+          this.form.get('didCheck').patchValue(this.didCheck);
+          this.isValid = res.Results?.IsSuccess || res.isSuccess;
+          if (this.isValid) {
+            this.form.get('isValid').patchValue(this.isValid);
+            const caseId = res.Results?.CaseId?.Id || res.caseId;
+            this.form.get('incidentId').patchValue(caseId);
+          } else {
+            this.form.get('isValid').patchValue(this.isValid);
+            this.form.get('incidentId').patchValue('');
           }
+        },
+        error: (err) => {
+          console.log(err);
         }
-      );
+      });
     } else {
       //haven't filled in all fields
     }
