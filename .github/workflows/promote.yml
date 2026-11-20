@@ -1,6 +1,8 @@
 # Moves a build from one tag to the next, by hand, then waits until it runs and is ready. test takes
 # what dev has, or one exact build you name. prod takes what test has, now or at a set time. What was there
 # before is kept as the backup.
+# Trivy scans each build before it moves. A promote to prod stops when a build has a fixable HIGH or CRITICAL
+# that .trivyignore does not hold.
 name: promote
 # The title of the run in the Actions list.
 run-name: ${{ inputs.action }} ${{ inputs.service }} → ${{ inputs.to }} ${{ inputs.build }}${{ inputs.at != '' && format(' at {0} Pacific', inputs.at) || '' }}
@@ -51,10 +53,71 @@ jobs:
           MIN=$(( ($(TZ=America/Vancouver date -d "$AT" +%s) - $(date +%s) + 59) / 60 ))
           [ "$MIN" -ge 1 ] && [ "$MIN" -le 43200 ] || { echo "::error::$AT Pacific has passed, or is more than 30 days ahead."; exit 1; }
 
+  # Scan each build before it moves, before any reviewer is asked: the build test would take, or the one prod would
+  # take. For test it only reports. For prod it stops the promote of every image when one has a fixable HIGH or
+  # CRITICAL that .trivyignore does not hold with the date the Product Owner agreed, or when it cannot scan. A
+  # promote at a set time is scanned when it is booked. A rollback is not scanned.
+  scan:
+    needs: time
+    if: ${{ !cancelled() && !failure() && inputs.action == 'promote' }}
+    runs-on: ubuntu-24.04
+    # The build environment holds BUILDER_TOKEN, which can read the images in tools.
+    environment: build
+    # One job per image you chose.
+    strategy:
+      fail-fast: false
+      matrix:
+        image: ${{ fromJSON(inputs.service == 'all' && '["vsu-api","vsu-ui"]' || format('["{0}"]', inputs.service)) }}
+    name: scan ${{ matrix.image }}
+    # Where the image is, and the tag the environment would take. The registry and the namespace are GitHub secrets.
+    env:
+      REGISTRY: ${{ secrets.REGISTRY }}
+      IMAGE: ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_NAMESPACE }}/${{ matrix.image }}
+      FROM: ${{ inputs.to == 'prod' && 'test' || inputs.build || 'dev' }}
+    steps:
+      # Get the code, for its .trivyignore.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { persist-credentials: false }
+      # Sign in to the registry as github-builder, and pull the build. For test, a failure here stops nothing.
+      - name: docker pull
+        continue-on-error: ${{ inputs.to != 'prod' }}
+        env:
+          BUILDER_TOKEN: ${{ secrets.BUILDER_TOKEN }}
+        run: |
+          echo "$BUILDER_TOKEN" | docker login "$REGISTRY" -u github-builder --password-stdin
+          docker pull -q "$IMAGE:$FROM" && docker tag "$IMAGE:$FROM" ${{ matrix.image }}:promote
+      # Scan it. For prod, a fixable HIGH or CRITICAL that .trivyignore does not hold fails this step, so nothing moves.
+      - name: Trivy
+        continue-on-error: ${{ inputs.to != 'prod' }}
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          image-ref: ${{ matrix.image }}:promote
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          format: table
+          output: trivy.txt
+          exit-code: ${{ inputs.to == 'prod' && '1' || '0' }}
+      # Put what it found on the run's Summary.
+      - name: findings on the summary
+        if: always() && hashFiles('trivy.txt') != ''
+        env:
+          IMAGE: ${{ matrix.image }}
+        run: |
+          { echo "### Trivy, $IMAGE:$FROM"; echo '```'; cat trivy.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+      # When it stops a promote to prod, open an issue for DevOps.
+      - name: open an issue
+        if: ${{ failure() && inputs.to == 'prod' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          IMAGE: ${{ matrix.image }}
+        run: |
+          gh issue create -R "$GITHUB_REPOSITORY" --title "promote failed: prod" --label cicd --assignee rohithvarmayadla \
+            --body "The scan before the promote to prod stopped it, started by $GITHUB_ACTOR. The build of $IMAGE has a fixable HIGH or CRITICAL that .trivyignore does not hold, or it could not be scanned. Nothing moved. The table is on the run's Summary: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+
   # A promote at a set time: one of prod's reviewers approves it now. Then prod-at's timer is set to the minutes
   # left, and the promote below waits on it.
   timer:
-    needs: time
+    needs: [time, scan]
     runs-on: ubuntu-24.04
     # The prod environment waits for one of its reviewers, and holds RELEASE_TIMER_TOKEN.
     environment: prod
@@ -99,8 +162,8 @@ jobs:
             --body "The timed promote of ${{ inputs.service }} to prod was not set, started by $GITHUB_ACTOR. Nothing moved. The run: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
 
   promote:
-    needs: [time, timer]
-    # It runs when nothing before it failed. A promote now skips the two jobs above.
+    needs: [time, scan, timer]
+    # It runs when nothing before it failed. A promote now skips the time and the timer, and a rollback skips the scan.
     if: ${{ !cancelled() && !failure() }}
     runs-on: ubuntu-24.04
     # The environment holds PROMOTER_TOKEN and NAMESPACE: test, prod, or prod-at for a promote at a set time.
