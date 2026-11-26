@@ -39,6 +39,12 @@ namespace Gov.Cscp.Victims.Public.Controllers
                         UseUpdatedComplianceFields = configuration.GetValue<bool>(
                             "FEATURE_USE_UPDATED_COMPLIANCE_FIELDS"
                         ),
+                        ProcessingTimeBannerEnabled =
+                            bool.TryParse(
+                                configuration["FEATURE_PROCESSING_TIME_BANNER_ENABLED"],
+                                out var processingTimeBannerEnabled
+                            ) && processingTimeBannerEnabled,
+                        ProcessingTimeBannerMessage = configuration["FEATURE_PROCESSING_TIME_BANNER_MESSAGE"],
                     },
                 };
 
@@ -65,4 +71,6 @@ public class Configuration
 public class FeatureFlagConfiguration
 {
     public bool UseUpdatedComplianceFields { get; set; }
+    public bool ProcessingTimeBannerEnabled { get; set; }
+    public string ProcessingTimeBannerMessage { get; set; }
 }
