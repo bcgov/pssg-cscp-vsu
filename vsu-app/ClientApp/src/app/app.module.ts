@@ -48,6 +48,7 @@ import { DateFieldComponent } from './shared/date-field/date-field.component';
 import { SignPadDialog } from './shared/dialogs/sign-dialog/sign-dialog.component';
 import { FieldComponent } from './shared/field/field.component';
 import { NotificationBannerComponent } from './shared/notification-banner/notification-banner.component';
+import { ProcessingTimeBannerComponent } from './shared/processing-time-banner/processing-time-banner.component';
 import { VictimTravelFundApplicationComponent } from './victim-travel-fund-application/vtf-application.component';
 import { VictimTravelFundReimbursementComponent } from './victim-travel-fund-reimbursement/vtf-reimbursement.component';
 
@@ -72,6 +73,7 @@ import { VictimTravelFundReimbursementComponent } from './victim-travel-fund-rei
     NotificationApplicationComponent,
     NotificationBannerComponent,
     NotificationOverviewComponent,
+    ProcessingTimeBannerComponent,
     PronounSelectorComponent,
     RaceSelectorComponent,
     RecipientDetailsComponent,

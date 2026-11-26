@@ -8,4 +8,6 @@ export interface Configuration {
 
 export interface FeatureFlagConfiguration {
   useUpdatedComplianceFields: boolean;
+  processingTimeBannerEnabled: boolean;
+  processingTimeBannerMessage: string;
 }
